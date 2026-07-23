@@ -136,6 +136,8 @@ This pass started from known-good commit
 `24dbc72fdd520debb1818b9c323be293dc2469a1`. Its 8,228-byte solver is
 preserved byte-for-byte at
 `experiments/mathgraph/regressions/solver_24dbc72.py`.
+The equality-chain implementation and its isolated official artifacts were
+committed as `eab2902af7f876872e1576d31f0d6e91c1be6d21`.
 
 Before cleanup, `df -h .` reported 268 MiB free, `.lake` used 7.1 GiB, and
 `~/.elan` used 18 GiB. The following safe, reproducible data was removed:
@@ -146,7 +148,7 @@ Before cleanup, `df -h .` reported 268 MiB free, `.lake` used 7.1 GiB, and
 
 The pinned 4.30.0-rc2 toolchain, current package checkouts, compiled
 dependencies, accepted regressions, source, and Git history were retained.
-After cleanup and all benchmarks, 5.7 GiB remains free; `.lake` is 7.1 GiB
+After cleanup and all benchmarks, 5.9 GiB remains free; `.lake` is 7.1 GiB
 and `~/.elan` is 13 GiB.
 
 ### Algorithm and proof provenance
