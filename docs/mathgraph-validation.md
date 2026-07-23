@@ -118,16 +118,183 @@ clean default result file) to prevent cross-set aggregation.
 
 ## Known limitations
 
-- TRUE coverage is limited to a target that is one direct source instance.
 - FALSE search is limited to exhaustive Fin 2.
-- No reusable semantic model bank, completion, proof DAG, or LLM path yet.
+- TRUE search is bounded equality chaining and congruence, not completion.
+- The term pool and graph limits deliberately leave many target sides
+  unreachable.
+- No semantic model bank, critical-pair completion, or LLM path exists yet.
 - Docker sandbox execution could not be tested because Docker is unavailable.
 - The default runner output path is submission-name-based rather than
   problem-set-based, so clean or isolated outputs are required for accurate
   per-set summaries.
 
+## Equality-chain pass
+
+### Frozen baseline and disk gate
+
+This pass started from known-good commit
+`24dbc72fdd520debb1818b9c323be293dc2469a1`. Its 8,228-byte solver is
+preserved byte-for-byte at
+`experiments/mathgraph/regressions/solver_24dbc72.py`.
+
+Before cleanup, `df -h .` reported 268 MiB free, `.lake` used 7.1 GiB, and
+`~/.elan` used 18 GiB. The following safe, reproducible data was removed:
+
+- `~/.cache/mathlib` (806 MiB downloaded package cache);
+- generated `pipeline/results/mathgraph.json` (12 KiB);
+- unused Lean release candidates 4.27.0-rc1 and 4.30.0-rc1 (about 4.8 GiB).
+
+The pinned 4.30.0-rc2 toolchain, current package checkouts, compiled
+dependencies, accepted regressions, source, and Git history were retained.
+After cleanup and all benchmarks, 5.7 GiB remains free; `.lake` is 7.1 GiB
+and `~/.elan` is 13 GiB.
+
+### Algorithm and proof provenance
+
+Parsed terms remain immutable tuples. Each derived equality records its
+left and right terms, derivation kind, parent node IDs, exact source
+substitution, orientation, and (for congruence) child side plus sibling term.
+The permitted node kinds are:
+
+1. source instance;
+2. symmetry;
+3. transitivity;
+4. congruence on the left child;
+5. congruence on the right child;
+6. reflexivity.
+
+The runtime order is strict parse, direct TRUE instance, exhaustive and
+independently replayed Fin 2 FALSE search, bounded TRUE equality search, then
+abstention.
+
+The bounded TRUE search constructs a deterministic term pool from target
+variables, target/source subterms whose variables are bound by the target,
+and shallow compositions. It performs target-guided source matching followed
+by fair layered substitution enumeration. Source-instance edges form an
+undirected graph; explicit symmetry nodes account for reverse traversal.
+Bounded congruence rounds wrap proved equalities in left and right one-hole
+contexts. A weighted shortest-path search minimizes source instances, then
+congruence steps, then aggregate term size and path length. The selected path
+is compiled into explicit transitivity nodes.
+
+Before judge submission, a separate Python replay checks every node against
+its parents and exact source substitution. Lean generation uses only source
+hypotheses, `Eq.symm`, `Eq.trans`, `congrArg`, and `rfl`.
+
+Hard limits:
+
+| Resource | Limit |
+|---|---:|
+| Maximum generated term size | 13 tree nodes |
+| Term pool | 40 |
+| Substitution core | 9 terms |
+| Source-substitution attempts | 30,000 |
+| Source graph edges | 1,600 |
+| Total graph edges | 4,000 |
+| Derivation nodes | 4,500 |
+| Congruence rounds | 3 |
+| Fin 2 local deadline | 1.0 s |
+| Equality-chain local deadline | 2.0 s |
+| Generated TRUE certificate | 50,000 bytes |
+
+### Exact commands
+
+```bash
+source .env.judge
+python3 -m pipeline.runner \
+  --submission submissions/mathgraph \
+  --problems experiments/mathgraph/regressions/equality_chain_cases.json \
+  --output /tmp/mathgraph-equality-chain.json
+python3 experiments/mathgraph/run_sample20_regression.py
+python3 -m pipeline.runner \
+  --submission submissions/mathgraph \
+  --problems examples/problems/sample_20.json \
+  --output experiments/mathgraph/results/sample_20_equality_chain.json
+python3 -m pipeline.runner \
+  --submission submissions/mathgraph \
+  --problems examples/problems/sample_200.json \
+  --output experiments/mathgraph/results/sample_200_equality_chain.json
+python3 scripts/run_harness.py
+python3 scripts/run_marathon_harness.py
+```
+
+`run_sample20_regression.py` always uses a fresh temporary result path,
+asserts the exact 20 problem IDs with no duplicates, requires exactly eight
+accepted FALSE certificates, and rejects any non-accepted judge call.
+
+### Synthetic and existing regressions
+
+All nine equation-only synthetic cases passed through the real proxy and
+official judge:
+
+| Constructor requirement | Official result |
+|---|---:|
+| Direct source instance | accepted TRUE |
+| Two source uses plus transitivity | accepted TRUE |
+| Reversed source orientation | accepted TRUE |
+| Left-child congruence | accepted TRUE |
+| Right-child congruence | accepted TRUE |
+| Nested congruence | accepted TRUE |
+| Both sides converge to an intermediate | accepted TRUE |
+| Idempotent/noncommutative FALSE control | accepted FALSE |
+| Associative/noncommutative FALSE control | accepted FALSE |
+
+Each used one judge call and zero LLM calls. The original TRUE and FALSE
+proxy regressions also remain 2/2 officially accepted. Exact generated Lean,
+judge status, timings, and logs are retained in
+`experiments/mathgraph/results/equality_chain_proxy.json` and
+`initial_proxy_equality_chain.json`.
+
+### Clean benchmark results
+
+| Metric | `sample_20` | `sample_200` |
+|---|---:|---:|
+| Accepted TRUE | 1 | 64 |
+| Accepted FALSE | 8 | 84 |
+| Unresolved | 11 | 52 |
+| Incorrect / incomplete / malformed / unparsed | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| Direct-instance TRUE hits | 0 | 57 |
+| Equality-chain TRUE hits | 1 | 7 |
+| Fin 2 FALSE hits | 8 | 84 |
+| LLM-assisted hits | 0 | 0 |
+| Median runtime | 0.09 s | 1.225 s |
+| Maximum runtime | 4.15 s | 6.60 s |
+| Total runtime | 19.02 s | 237.14 s |
+| Largest TRUE certificate | 623 bytes | 1,093 bytes |
+| Largest FALSE certificate | 259 bytes | 259 bytes |
+
+The solver is 23,678 bytes. Equality-chain DAGs had 8 nodes for the
+`sample_20` win and 3–13 nodes (median 4) for the seven `sample_200` chain
+wins. Every emitted mathematical DAG replayed successfully, and every
+resulting judge request was officially accepted. There is currently no gap
+between mathematical replay and official acceptance.
+
+Equality chaining therefore generalizes beyond direct instances: it adds one
+clean `sample_20` TRUE and seven `sample_200` TRUEs without losing any frozen
+FALSE win or producing a rejected judge attempt.
+
+### Unresolved TRUE phenotypes
+
+The frozen post-benchmark structural audit grouped the 36 unresolved
+TRUE-labelled `sample_200` rows as:
+
+| Generic phenotype | Count |
+|---|---:|
+| Only one target side generated | 21 |
+| Bounded graph saturated without a connection | 12 |
+| Both target sides generated but disconnected | 3 |
+
+The dominant obstruction is one-sided reachability, not Lean compilation.
+
+### Official harness regression
+
+After implementation and both benchmarks, the unmodified Solo harness
+remained 66/66 green with all challenger checks passing. The unmodified
+Marathon harness remained 25 passed, 0 failed.
+
 ## Next highest-leverage experiment
 
-Add generic equality-chain replay on the TRUE side. The current `sample_20`
-misses all ten TRUE controls, while its exhaustive Fin 2 constructor already
-accepts eight FALSE cases without a single rejected judge attempt.
+Add bounded source re-entry: feed newly proved intermediate terms back into
+target-guided source instantiation while preserving the existing proof DAG
+and limits. This directly targets the dominant one-sided-reachability
+phenotype without jumping to unrestricted critical-pair completion.

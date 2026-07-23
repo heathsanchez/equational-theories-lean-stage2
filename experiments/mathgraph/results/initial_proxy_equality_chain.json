@@ -1,0 +1,52 @@
+[
+  {
+    "id": "mathgraph_initial_true",
+    "eq1_id": 900001,
+    "eq2_id": 900002,
+    "elapsed_seconds": 8.56,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h ((x ◇ y)) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h ((x ◇ y)) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 8.52
+      }
+    ]
+  },
+  {
+    "id": "mathgraph_initial_false",
+    "eq1_id": 4,
+    "eq2_id": 65,
+    "elapsed_seconds": 1.71,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.67
+      }
+    ]
+  }
+]
