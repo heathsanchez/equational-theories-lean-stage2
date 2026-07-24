@@ -690,3 +690,224 @@ and contextual overlap added no marginal public win. The next broad reusable
 constructor should be bounded, officially verified **Fin 3 countermodel
 search**, preserving the same content-hash promotion and fail-closed
 discipline.
+
+## Verified Fin 3 countermodel pass
+
+This pass started from authoritative commit
+`65270e74e3d2fcf10883b516f3ae1e79203ff757`. The implementation commit is
+`56ac3db867a9403868be39f97ae22131858e97b3`
+(`add verified Fin 3 countermodel constructor`). The exact starting solver is
+preserved as `experiments/mathgraph/regressions/solver_65270e7.py`: 75,870
+bytes, SHA-256
+`b026c85cf66ed9ecb0b8baf9fd1a3d1915208fe7719793ee2c1cf5a7334aa4c0`.
+
+The contextual portfolio remains empty in production. The frozen 150-row
+regression floor and all previously accepted verdicts are enforced using
+isolated result files. The frozen production artifacts are:
+
+| Artifact | SHA-256 |
+|---|---|
+| Production `sample_20` | `ef6ea116b1bab964274fee1f205e3bf27c770f6d91c65aac9574d493aaf85e6d` |
+| Production `sample_200` | `c4efdcca30a9a12ad4a76a26641e3790e44cb8503024c7c762e8ccccf55d8857` |
+| Equality-chain suite | `987f7cf71c938d8831337edc6ee8d0d2e8788fa241eb74eb58457cc1f6f6800d` |
+| Source-reentry suite | `87c15430ae7293e6da65b51234754adb27e30575f1c8583b14cc4741d0f195b9` |
+| Contextual suite | `c06d2692ddba7aa0bc3f13fbc926cffb2b0457314ed6df65eeb16c4cbfe7d0dd` |
+
+### Model representation, evaluator, and replay
+
+A partial Fin 3 operation is a flat nine-cell vector in row-major order.
+Unassigned cells are represented internally by `-1`; complete tables contain
+only 0, 1, and 2. Lean serialization reshapes the same flat vector to
+`[[...],[...],[...]]`.
+
+Both equation sides are compiled into one shared subterm DAG. Each variable
+node references an assignment slot and each operation node references its two
+child nodes. A complete evaluation computes every repeated subterm once. A
+partial evaluation returns either a known value, one unresolved table cell,
+or an expression blocked by an unresolved child.
+
+Independent replay does not use incremental search caches. It checks:
+
+- exactly nine total cells with values in `0..2`;
+- the source equation for every Fin 3 assignment;
+- the stored target assignment and its genuine target disequality;
+- existence of a target failure under full enumeration;
+- byte-exact agreement between the replayed flat table and Lean
+  serialization.
+
+Only after replay succeeds does the solver emit the accepted `Magma (Fin 3)`
+certificate using `finOpTable` and `decideFin!`.
+
+### Search engines and sound constraints
+
+Three fixed engines were implemented:
+
+| Engine | Search | Initial bounds |
+|---|---|---|
+| Fin3-fast | target-witness-guided partial backtracking | 25,000 states; 0.5 s; 16 retained models |
+| Fin3-medium | source-model partial backtracking | 150,000 states; 2 s; 64 retained models |
+| Fin3-complete-bounded | canonical complete enumeration | all 19,683 raw tables; 3 s; 64 retained models |
+
+All source assignments are precompiled and ranked by direct cell dependency,
+repeated assigned values, and lexical order. Partial propagation is limited to
+sound consequences: determined unequal sides prune; a known value opposite
+one unresolved root cell forces that cell; the same pending cell on both sides
+is satisfied; conflicting forced values prune. Other unresolved expressions
+are not guessed or rewritten.
+
+Target assignments are ranked by number of distinct elements, induced direct
+cell dependencies, structural asymmetry, and lexical order. The branch cell
+score combines static source dependency frequency, currently exposed source
+constraint cells, and cells exposed by the selected target witness.
+
+Each retained source model is canonicalized under all six permutations of
+Fin 3. Complete enumeration evaluates only a table that is the lexicographically
+least representative of its relabelling orbit. This reduces 19,683 raw tables
+to 3,330 canonical representatives without assuming an idempotent diagonal.
+No partial-table symmetry condition is imposed. The canonical model bank is
+local to one solver invocation and is not required for correctness or
+cross-problem persistence.
+
+Inputs with more than six source or target variables, or a side larger than
+63 term nodes, fail closed before assignment-space construction.
+
+### Synthetic official regressions
+
+The 16 equation-only Fin 3 cases produced:
+
+| Result | Count |
+|---|---:|
+| Officially accepted FALSE | 13 |
+| Officially accepted TRUE controls | 2 |
+| Bounded pathological abstention | 1 |
+| Rejected judge calls | 0 |
+| LLM calls | 0 |
+
+Coverage includes the preserved Fin 2-first route, no-Fin-2/yes-Fin-3
+implications, a genuinely three-element model, noncommutative and
+nonassociative models, a model with no idempotent diagonal entry, witnesses
+using one/two/all-three elements, one- and multi-variable source laws,
+completed-prefix replay after deadline expiry, and rejection of both a
+corrupted table and corrupted serialization. The largest Fin 3 certificate is
+271 bytes.
+
+The existing equality-chain suite remains 9/9. Source re-entry remains eight
+accepted TRUE, two accepted FALSE, and one bounded abstention. The contextual
+research suite independently reconstructs, replays, and officially accepts
+all 12 positive constructors while permitting the intentionally disabled
+production contextual route to abstain; its three FALSE controls and one
+pathological abstention also remain correct.
+
+### Development selection and untouched holdout
+
+The exact existing equation-content hash split was retained:
+
+| Split | Frozen TRUE / FALSE | Fin 3 TRUE / FALSE | Marginal gain |
+|---|---:|---:|---:|
+| Development | 34 / 35 | 34 / 37 | +2 FALSE |
+| Untouched holdout | 32 / 49 | 32 / 57 | +8 FALSE |
+
+Both development gains came from Fin3-fast. Fin3-medium and canonical complete
+enumeration added zero accepted case after fast and were disabled in
+production. On the all-engine development run:
+
+| Engine | Attempts | Hits | Partial states | Canonical complete tables |
+|---|---:|---:|---:|---:|
+| Fin3-fast | 31 | 2 | 130,630 | 6,683 source models reached |
+| Fin3-medium | 29 | 0 | 11,171 | 867 complete source models reached |
+| Fin3-complete-bounded | 29 | 0 | 0 | 96,570 |
+
+Complete enumeration removed 474,237 raw relabelling duplicates across those
+29 diagnostic attempts.
+
+The alternate order Fin3-fast before source re-entry was rejected on
+development timing. Across the two Fin 3 gains it would save about 0.023
+seconds of failed re-entry search, but on the existing development re-entry
+win it adds about 0.176 seconds of failed Fin 3 search before the 0.116-second
+successful re-entry. Production therefore remains:
+
+```text
+direct TRUE
+→ equality chain
+→ Fin 2
+→ source re-entry
+→ Fin3-fast
+→ abstain
+```
+
+### Final clean benchmarks and performance
+
+| Metric | `sample_20` | `sample_200` |
+|---|---:|---:|
+| Accepted TRUE | 1 | 66 |
+| Accepted FALSE | 10 | 94 |
+| Total accepted | 11 | 160 |
+| Unresolved | 9 | 40 |
+| Fin3-fast hits | 2 | 10 |
+| Fin3-medium hits | 0 | 0 |
+| Complete-enumeration hits | 0 | 0 |
+| Incorrect / incomplete / malformed / unparsed | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| LLM calls | 0 | 0 |
+| Total runtime | 32.01 s | 296.96 s |
+
+The promoted score moves from 150/200 to **160/200**: +10 FALSE, no TRUE or
+FALSE regression, and no rejected judge outcome. Full runtime increases from
+283.64 to 296.96 seconds: +13.32 seconds, or 1.332 seconds per added accepted
+FALSE. The median unresolved-row runtime moves from 0.23 to 0.33 seconds.
+
+Across all 50 full-sample Fin3-fast attempts, the engine recorded:
+
+| Metric | Total |
+|---|---:|
+| Partial states visited | 197,778 |
+| Complete source tables reached | 11,265 |
+| Source assignments evaluated | 4,134,776 |
+| Early source prunes | 120,940 |
+| Target witnesses tested | 12,419 |
+| Symmetry duplicate source models removed | 10,829 |
+| Target-falsifying models | 10 |
+
+The largest individual fast search visited 18,270 partial states; the largest
+accepted search reached 2,451 complete source tables. Five attempts reached
+their 0.5-second deadline and abstained. Maximum replay time was 0.000077
+seconds. Every Fin 3 certificate is 271 bytes; the largest certificate from
+any final constructor is 1,134 bytes. The final solver is 94,219 bytes,
+comfortably below the 500,000-byte cap.
+
+### Exhaustive bounded obstructions
+
+After the final run, six known FALSE rows remain unresolved. Diagnostic
+complete enumeration checked all 3,330 canonical Fin 3 tables for each:
+
+| Residual classification | Count |
+|---|---:|
+| Fin 3 source models exist, but all satisfy the target | 4 |
+| Source constraints have no Fin 3 model | 2 |
+| Replay or Lean failure | 0 |
+
+Thus all six have an exhaustive **no countermodel of order ≤ 3** record. The
+diagnostic audit tested 19,980 canonical tables, removed 98,118 raw symmetry
+duplicates, evaluated 54,936 source assignments, and completed in about 0.91
+seconds. This is bounded obstruction evidence, not a proof of the implication.
+
+### Official gates and next experiment
+
+The final source and result hashes are:
+
+| Artifact | SHA-256 |
+|---|---|
+| Solver | `521e078e1233ecec8f6fd688c8a1b676acd5f2b6d0846dbd93e43dd4dc1f8437` |
+| `sample_20` | `861af3ef20cd2363606b7d75f84aa39dfbf8f56fbf37808eb887dccbe2f3d4f3` |
+| `sample_200` | `1f195aabbb01a884a3c6a6670c804a66580e6428c78bd0d4665b28e7a57f73f6` |
+| Fin 3 synthetic suite | `8bf13e4a7d10b098bedb880837018e8261dfc28c63d1327a12b0ea150e1addca` |
+
+The unmodified Solo harness passes 66/66 and the unmodified Marathon harness
+passes 25/25. Invalid judge outcomes, replay failures, Lean rejections, and
+LLM calls are all zero. `df -h /Users/heath` reports 8.2 GiB free.
+
+The dominant remaining FALSE obstruction is now a source law with one or more
+Fin 3 models for which every model satisfies the target. The next
+highest-leverage reusable constructor is a **bounded Fin 4
+target-witness-guided CSP/backtracker**, reusing the compiled constraints,
+independent replay, and safe complete-model canonicalization. Exhaustive
+`4^16` table enumeration should not be attempted as the primary route.
