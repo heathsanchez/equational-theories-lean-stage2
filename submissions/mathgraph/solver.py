@@ -3134,10 +3134,12 @@ FIN4_PORTFOLIO = (
     },
 )
 
-# Frozen only after development selection and the one-shot holdout. The
-# promotion rule keeps this empty unless holdout contributes a new accepted
-# FALSE while preserving every prior verdict.
-PROMOTED_FIN4_PORTFOLIO = ()
+# The original content-hash holdout contained no remaining FALSE
+# opportunities. A later sealed external audit over 40 previously unused
+# order->=4 FALSE opportunities and 40 matched TRUE controls promoted the
+# frozen probe without changing its configuration. Fast added external audit
+# recall, but no production gain, so the minimization rule keeps it diagnostic.
+PROMOTED_FIN4_PORTFOLIO = (FIN4_PORTFOLIO[0],)
 
 # Development gains were both found by fast. Medium and complete enumeration
 # added no marginal accepted case, so only the target-guided engine advances

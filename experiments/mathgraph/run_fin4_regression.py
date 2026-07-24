@@ -147,6 +147,7 @@ def main():
     cases = json.loads(CASES.read_text(encoding="utf-8"))
     by_id = {case["id"]: case for case in cases}
     probe, fast, medium = module.FIN4_PORTFOLIO[:3]
+    assert module.PROMOTED_FIN4_PORTFOLIO == (probe,)
     positive_ids = [
         case["id"] for case in cases
         if case["id"] not in {
