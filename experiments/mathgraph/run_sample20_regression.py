@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run isolated MathGraph regressions and enforce the frozen 1ad667b floor."""
+"""Run isolated MathGraph regressions and enforce the frozen fb671c7 floor."""
 
 import argparse
 import hashlib
@@ -26,6 +26,9 @@ EXPECTED_HASHES = {
     "equality_chain_proxy": "987f7cf71c938d8831337edc6ee8d0d2e8788fa241eb74eb58457cc1f6f6800d",
     "contextual_proxy": "c06d2692ddba7aa0bc3f13fbc926cffb2b0457314ed6df65eeb16c4cbfe7d0dd",
     "finite_model_proxy": "8bf13e4a7d10b098bedb880837018e8261dfc28c63d1327a12b0ea150e1addca",
+    "development": "8df0acc3383ea5080dc144127aa95254854204b2ea044d0289dd9896e7095fd4",
+    "holdout": "b70927d14da452636db269ffc8109c1f8ccf7934fef8290623ab9887fc25f045",
+    "generic_engine_summary": "ae4e4f54fde13da1c2e12077b64891ba102cb28c372666c154fb3cbf0352f8d9",
 }
 HASHED_ARTIFACTS = {
     **BASELINES,
@@ -33,7 +36,16 @@ HASHED_ARTIFACTS = {
     "equality_chain_proxy": RESULTS / "equality_chain_source_reentry.json",
     "contextual_proxy": RESULTS / "contextual_overlap_proxy.json",
     "finite_model_proxy": RESULTS / "fin3_proxy.json",
+    "development": RESULTS / "fin3_development_frozen" / "sample_200_development.json",
+    "holdout": RESULTS / "fin3_frozen" / "sample_200_holdout.json",
+    "generic_engine_summary": RESULTS / "finite_model_refactor_summary.json",
 }
+FROZEN_SOLVER = (
+    ROOT / "experiments" / "mathgraph" / "regressions" / "solver_fb671c7.py"
+)
+FROZEN_SOLVER_SHA256 = (
+    "c88b9d78daabde4ab099dffef807a8d5aaac803b5b883275a3b4a0cfd6a31816"
+)
 
 
 def content_digest(problem):
@@ -66,6 +78,9 @@ def verify_baseline(name):
 def verify_all_frozen_hashes():
     for name in EXPECTED_HASHES:
         verify_baseline(name)
+    assert hashlib.sha256(FROZEN_SOLVER.read_bytes()).hexdigest() == (
+        FROZEN_SOLVER_SHA256
+    ), "frozen fb671c7 solver changed"
 
 
 def rejected_categories(rows):

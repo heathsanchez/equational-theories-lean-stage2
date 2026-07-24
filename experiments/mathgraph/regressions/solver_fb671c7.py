@@ -9,7 +9,6 @@ import json
 import sys
 import time
 import heapq
-from collections import deque
 from itertools import permutations, product
 
 
@@ -1770,7 +1769,6 @@ class FiniteModelEngine:
         maximum_states,
         maximum_models,
         maximum_nogoods=4096,
-        options=None,
     ):
         if (
             not isinstance(domain_size, int)
@@ -1796,26 +1794,6 @@ class FiniteModelEngine:
         self.maximum_states = maximum_states
         self.maximum_models = maximum_models
         self.maximum_nogoods = maximum_nogoods
-        self.options = dict(options or {})
-        self.support_propagation = bool(
-            self.options.get("support_propagation", False)
-        )
-        self.incremental_propagation = bool(
-            self.options.get("incremental_propagation", False)
-        )
-        self.reversible_trail = bool(
-            self.options.get("reversible_trail", False)
-        )
-        self.symmetry_enabled = self.options.get("symmetry_enabled", True)
-        self.diverse_witnesses = bool(
-            self.options.get("diverse_witnesses", False)
-        )
-        self.support_branching = bool(
-            self.options.get("support_branching", False)
-        )
-        self.target_witness_limit = self.options.get(
-            "target_witness_limit"
-        )
         self.full_domain = (1 << domain_size) - 1
         self.source_compiled = compile_equation(source)
         self.target_compiled = compile_equation(target)
@@ -1823,10 +1801,6 @@ class FiniteModelEngine:
             self.source_compiled, domain_size
         )
         self.target_assignments = self.rank_target_assignments()
-        if self.target_witness_limit is not None:
-            self.target_assignments = self.target_assignments[
-                : max(0, int(self.target_witness_limit))
-            ]
         self.partial_states = 0
         self.complete_tables = 0
         self.source_assignments_evaluated = 0
@@ -1849,46 +1823,6 @@ class FiniteModelEngine:
         self.branch_values = 0
         self.maximum_depth = 0
         self.nogoods = []
-        self.nogood_records = set()
-        self.nogood_index = {}
-        self.empty_nogoods = []
-        self.literal_frequency = {}
-        self.nogood_conflict_activity = [
-            0 for _ in range(domain_size * domain_size)
-        ]
-        self.contradiction_activity = [
-            0 for _ in range(domain_size * domain_size)
-        ]
-        self.trail = []
-        self.changed_cells = set()
-        self.constraint_evaluations = 0
-        self.term_support_evaluations = 0
-        self.support_cache_hits = 0
-        self.forced_assignments = 0
-        self.support_disjoint_contradictions = 0
-        self.source_contradictions = 0
-        self.target_contradictions = 0
-        self.target_support_disjoint_guaranteed = 0
-        self.nogoods_minimized = 0
-        self.symmetry_permutations_tested = 0
-        self.symmetry_seconds = 0.0
-        self.propagation_seconds = 0.0
-        self.activity_seconds = 0.0
-        self.nogood_seconds = 0.0
-        self.canonicalization_seconds = 0.0
-        self.search_started = time.monotonic()
-        self.first_source_model_seconds = None
-        self.target_witnesses_fully_searched = 0
-        self.nogood_causes = {
-            "source": 0,
-            "target": 0,
-            "domain": 0,
-            "support": 0,
-            "symmetry": 0,
-        }
-        self.nogood_minimization_remaining = int(
-            self.options.get("nogood_minimization_budget", 0)
-        )
         self.static_cell_frequency = self.cell_frequency(
             self.source_compiled, self.source_assignments
         )
@@ -1896,12 +1830,6 @@ class FiniteModelEngine:
             self.target_compiled, self.target_assignments
         )
         self.constraint_graph = self.build_constraints()
-        (
-            self.source_constraint_cells,
-            self.cell_source_constraints,
-        ) = self.build_support_dependencies(
-            self.source_compiled, self.source_assignments
-        )
 
     def expired(self):
         return time.monotonic() >= self.deadline
@@ -1951,50 +1879,6 @@ class FiniteModelEngine:
             for item in graph
         )
 
-    def build_support_dependencies(self, compiled, assignments):
-        """Conservative assignment dependencies for incremental rescanning."""
-        by_assignment = []
-        by_cell = [
-            set() for _ in range(self.domain_size * self.domain_size)
-        ]
-        for assignment_id, assignment in enumerate(assignments):
-            supports = []
-            dependencies = []
-            for node in compiled[0]:
-                if node[0] == "variable":
-                    supports.append(1 << assignment[node[1]])
-                    dependencies.append(set())
-                    continue
-                left_support = supports[node[1]]
-                right_support = supports[node[2]]
-                cells = set(dependencies[node[1]])
-                cells.update(dependencies[node[2]])
-                for left in range(self.domain_size):
-                    if not left_support & (1 << left):
-                        continue
-                    for right in range(self.domain_size):
-                        if right_support & (1 << right):
-                            cells.add(self.domain_size * left + right)
-                dependencies.append(cells)
-                # Under the initially unconstrained table, every operation
-                # output may be any domain value.
-                supports.append(self.full_domain)
-            cells = dependencies[compiled[1]] | dependencies[compiled[2]]
-            frozen = tuple(sorted(cells))
-            by_assignment.append(frozen)
-            for cell in frozen:
-                by_cell[cell].add(assignment_id)
-        return tuple(by_assignment), tuple(
-            tuple(sorted(indices)) for indices in by_cell
-        )
-
-    @staticmethod
-    def assignment_shape(assignment):
-        names = {}
-        return tuple(
-            names.setdefault(value, len(names)) for value in assignment
-        )
-
     def rank_target_assignments(self):
         assignments = list(
             product(
@@ -2002,82 +1886,28 @@ class FiniteModelEngine:
                 repeat=len(self.target_compiled[3]),
             )
         )
-        legacy_asymmetry = structural_distance(
-            self.target[0], self.target[1]
-        )
+        asymmetry = structural_distance(self.target[0], self.target[1])
 
         def key(assignment):
             dependencies = set()
-            supports = []
-            direct_cells = []
             nodes = self.target_compiled[0]
             for node in nodes:
-                if node[0] == "variable":
-                    supports.append(1 << assignment[node[1]])
-                    direct_cells.append(None)
+                if node[0] != "operation":
                     continue
-                left_support = supports[node[1]]
-                right_support = supports[node[2]]
-                cell = None
-                if (
-                    singleton_value(left_support) is not None
-                    and singleton_value(right_support) is not None
-                ):
-                    cell = (
-                        self.domain_size * singleton_value(left_support)
-                        + singleton_value(right_support)
+                left, right = nodes[node[1]], nodes[node[2]]
+                if left[0] == "variable" and right[0] == "variable":
+                    dependencies.add(
+                        self.domain_size * assignment[left[1]]
+                        + assignment[right[1]]
                     )
-                    dependencies.add(cell)
-                supports.append(self.full_domain)
-                direct_cells.append(cell)
-            left_id, right_id = self.target_compiled[1:3]
-            left_support = supports[left_id]
-            right_support = supports[right_id]
-            support_asymmetry = (left_support ^ right_support).bit_count()
-            direct_exposure = sum(cell is not None for cell in direct_cells)
-            direct_root = (
-                direct_cells[left_id] is not None
-                or direct_cells[right_id] is not None
-            )
-            if not self.diverse_witnesses:
-                return (
-                    len(set(assignment)),
-                    len(dependencies),
-                    -legacy_asymmetry,
-                    assignment,
-                )
             return (
                 len(set(assignment)),
                 len(dependencies),
-                -direct_exposure,
-                -support_asymmetry,
-                -int(direct_root),
-                -(len(assignment) - len(set(assignment))),
+                -asymmetry,
                 assignment,
             )
 
         assignments.sort(key=key)
-        if self.diverse_witnesses:
-            # With a blank table, assignments with the same equality pattern
-            # are related by an element relabelling. Keep one deterministic
-            # representative and interleave cardinalities so a small witness
-            # budget does not collapse onto a single pattern size.
-            representatives = {}
-            for assignment in assignments:
-                representatives.setdefault(
-                    self.assignment_shape(assignment), assignment
-                )
-            buckets = {}
-            for assignment in representatives.values():
-                buckets.setdefault(len(set(assignment)), []).append(assignment)
-            assignments = []
-            offset = 0
-            while any(offset < len(bucket) for bucket in buckets.values()):
-                for cardinality in range(1, self.domain_size + 1):
-                    bucket = buckets.get(cardinality, ())
-                    if offset < len(bucket):
-                        assignments.append(bucket[offset])
-                offset += 1
         return tuple(assignments)
 
     def source_holds_complete(self, table):
@@ -2111,13 +1941,7 @@ class FiniteModelEngine:
         return None
 
     def retain_source_model(self, table):
-        if self.first_source_model_seconds is None:
-            self.first_source_model_seconds = (
-                time.monotonic() - self.search_started
-            )
-        started = time.monotonic()
         canonical = self.canonicalize(table)
-        self.canonicalization_seconds += time.monotonic() - started
         if canonical in self.model_keys:
             self.symmetry_duplicates += 1
             return
@@ -2132,73 +1956,9 @@ class FiniteModelEngine:
             return True, False
         if restricted == 0:
             return False, False
-        if self.reversible_trail:
-            self.trail.append((cell, previous))
         domains[cell] = restricted
-        self.changed_cells.add(cell)
         self.domain_reductions += previous.bit_count() - restricted.bit_count()
-        if singleton_value(restricted) is not None and (
-            singleton_value(previous) is None
-        ):
-            self.forced_assignments += 1
         return True, True
-
-    def evaluate_supports(self, compiled, assignment, domains):
-        """Sound over-approximating supports for one compiled term DAG."""
-        values = []
-        self.term_support_evaluations += len(compiled[0])
-        for node in compiled[0]:
-            if node[0] == "variable":
-                values.append((1 << assignment[node[1]], None))
-                continue
-            self.support_cache_hits += 2
-            left_domain = values[node[1]][0]
-            right_domain = values[node[2]][0]
-            output_domain = 0
-            left_singleton = singleton_value(left_domain)
-            right_singleton = singleton_value(right_domain)
-            root_cell = None
-            for left in range(self.domain_size):
-                if not left_domain & (1 << left):
-                    continue
-                row = self.domain_size * left
-                for right in range(self.domain_size):
-                    if right_domain & (1 << right):
-                        output_domain |= domains[row + right]
-            if left_singleton is not None and right_singleton is not None:
-                root_cell = (
-                    self.domain_size * left_singleton + right_singleton
-                )
-            values.append((output_domain, root_cell))
-        return values
-
-    def restrict_root_support(
-        self, compiled, values, root_id, required, domains
-    ):
-        support, direct_cell = values[root_id]
-        required &= support
-        if direct_cell is not None:
-            return self.restrict_domain(domains, direct_cell, required)
-        node = compiled[0][root_id]
-        if node[0] != "operation":
-            return True, False
-        left_support = values[node[1]][0]
-        right_support = values[node[2]][0]
-        candidates = []
-        for left in range(self.domain_size):
-            if not left_support & (1 << left):
-                continue
-            for right in range(self.domain_size):
-                if not right_support & (1 << right):
-                    continue
-                cell = self.domain_size * left + right
-                if domains[cell] & required:
-                    candidates.append(cell)
-                    if len(candidates) > 1:
-                        return True, False
-        if len(candidates) == 1:
-            return self.restrict_domain(domains, candidates[0], required)
-        return False, False
 
     def propagate_equality(self, domains, left, right):
         left_domain, left_cell = left
@@ -2223,40 +1983,16 @@ class FiniteModelEngine:
             changed |= reduced
         return True, changed
 
-    def propagate_equality_support(
-        self, domains, compiled, values
-    ):
-        left_id, right_id = compiled[1:3]
-        left_domain, left_cell = values[left_id]
-        right_domain, right_cell = values[right_id]
-        common = left_domain & right_domain
-        if common == 0:
-            self.support_disjoint_contradictions += 1
-            return False, False
-        changed = False
-        for root_id, root_cell in (
-            (left_id, left_cell),
-            (right_id, right_cell),
-        ):
-            if root_cell is not None or self.support_propagation:
-                valid, reduced = self.restrict_root_support(
-                    compiled, values, root_id, common, domains
-                )
-                if not valid:
-                    return False, False
-                changed |= reduced
-        return True, changed
-
     def propagate_disequality(self, domains, assignment):
-        values = self.evaluate_supports(
-            self.target_compiled, assignment, domains
+        left, right = evaluate_compiled_domains(
+            self.target_compiled,
+            assignment,
+            domains,
+            self.domain_size,
         )
-        left = values[self.target_compiled[1]]
-        right = values[self.target_compiled[2]]
         left_domain, left_cell = left
         right_domain, right_cell = right
         if left_domain & right_domain == 0:
-            self.target_support_disjoint_guaranteed += 1
             return True, False
         if left_cell is not None and left_cell == right_cell:
             return False, False
@@ -2274,86 +2010,25 @@ class FiniteModelEngine:
             )
         return True, False
 
-    def evaluate_source_constraint(self, domains, assignment_id):
-        self.constraint_evaluations += 1
-        self.source_assignments_evaluated += 1
-        assignment = self.source_assignments[assignment_id]
-        if self.support_propagation:
-            values = self.evaluate_supports(
-                self.source_compiled, assignment, domains
-            )
-            return self.propagate_equality_support(
-                domains, self.source_compiled, values
-            )
-        left, right = evaluate_compiled_domains(
-            self.source_compiled,
-            assignment,
-            domains,
-            self.domain_size,
-        )
-        return self.propagate_equality(domains, left, right)
-
-    def propagate_incremental(self, domains, target_assignment):
-        queue = deque(range(len(self.source_assignments)))
-        queued = set(queue)
-        target_pending = target_assignment is not None
-        while queue or target_pending:
-            self.propagation_rounds += 1
-            while queue:
-                assignment_id = queue.popleft()
-                queued.discard(assignment_id)
-                self.changed_cells.clear()
-                valid, _ = self.evaluate_source_constraint(
-                    domains, assignment_id
-                )
-                if not valid:
-                    self.early_source_prunes += 1
-                    self.source_contradictions += 1
-                    return False, "source"
-                for cell in self.changed_cells:
-                    for affected in self.cell_source_constraints[cell]:
-                        if affected not in queued:
-                            queued.add(affected)
-                            queue.append(affected)
-                    target_pending = target_assignment is not None
-            if target_pending:
-                target_pending = False
-                self.changed_cells.clear()
-                self.constraint_evaluations += 1
-                valid, _ = self.propagate_disequality(
-                    domains, target_assignment
-                )
-                if not valid:
-                    self.target_contradictions += 1
-                    return False, "target"
-                for cell in self.changed_cells:
-                    for affected in self.cell_source_constraints[cell]:
-                        if affected not in queued:
-                            queued.add(affected)
-                            queue.append(affected)
-        return True, None
-
     def propagate(self, domains, target_assignment=None):
         """Reach a fixed point using only sound equality/disequality rules."""
-        started = time.monotonic()
-        if self.incremental_propagation:
-            result = self.propagate_incremental(
-                domains, target_assignment
-            )
-            self.propagation_seconds += time.monotonic() - started
-            return result
         changed = True
         while changed:
             self.propagation_rounds += 1
             changed = False
-            for assignment_id in range(len(self.source_assignments)):
-                valid, reduced = self.evaluate_source_constraint(
-                    domains, assignment_id
+            for assignment in self.source_assignments:
+                self.source_assignments_evaluated += 1
+                left, right = evaluate_compiled_domains(
+                    self.source_compiled,
+                    assignment,
+                    domains,
+                    self.domain_size,
+                )
+                valid, reduced = self.propagate_equality(
+                    domains, left, right
                 )
                 if not valid:
                     self.early_source_prunes += 1
-                    self.source_contradictions += 1
-                    self.propagation_seconds += time.monotonic() - started
                     return False, "source"
                 changed |= reduced
             if target_assignment is not None:
@@ -2361,52 +2036,11 @@ class FiniteModelEngine:
                     domains, target_assignment
                 )
                 if not valid:
-                    self.target_contradictions += 1
-                    self.propagation_seconds += time.monotonic() - started
                     return False, "target"
                 changed |= reduced
-        self.propagation_seconds += time.monotonic() - started
         return True, None
 
     def choose_cell(self, domains, target_assignment=None):
-        started = time.monotonic()
-        if self.support_branching:
-            target_pressure = [0] * len(domains)
-            if target_assignment is not None:
-                values = self.evaluate_supports(
-                    self.target_compiled, target_assignment, domains
-                )
-                for node_id, node in enumerate(self.target_compiled[0]):
-                    if node[0] != "operation":
-                        continue
-                    left_support = values[node[1]][0]
-                    right_support = values[node[2]][0]
-                    for left in range(self.domain_size):
-                        if not left_support & (1 << left):
-                            continue
-                        for right in range(self.domain_size):
-                            if right_support & (1 << right):
-                                target_pressure[
-                                    self.domain_size * left + right
-                                ] += 1
-            candidates = [
-                cell for cell, domain in enumerate(domains)
-                if domain.bit_count() > 1
-            ]
-            selected = min(
-                candidates,
-                key=lambda cell: (
-                    domains[cell].bit_count(),
-                    -len(self.cell_source_constraints[cell]),
-                    -target_pressure[cell],
-                    -self.static_cell_frequency[cell],
-                    -self.nogood_conflict_activity[cell],
-                    -self.contradiction_activity[cell],
-                    cell,
-                ),
-            )
-            self.activity_seconds += time.monotonic() - started
-            return selected
         source_activity = list(self.static_cell_frequency)
         target_activity = list(self.target_cell_frequency)
         for assignment in self.source_assignments:
@@ -2449,53 +2083,7 @@ class FiniteModelEngine:
             < self.full_domain.bit_count()
         ):
             self.mrv_reductions += 1
-        self.activity_seconds += time.monotonic() - started
         return selected
-
-    def order_branch_values(self, domains, cell, target_assignment):
-        values = [
-            value for value in range(self.domain_size)
-            if domains[cell] & (1 << value)
-        ]
-        if not self.support_branching:
-            return values
-        previous = domains[cell]
-        scored = []
-        for value in values:
-            domains[cell] = 1 << value
-            target_overlap = self.domain_size + 1
-            target_disjoint = 0
-            if target_assignment is not None:
-                target_values = self.evaluate_supports(
-                    self.target_compiled, target_assignment, domains
-                )
-                left = target_values[self.target_compiled[1]][0]
-                right = target_values[self.target_compiled[2]][0]
-                target_overlap = (left & right).bit_count()
-                target_disjoint = int((left & right) == 0)
-            source_disjoint = 0
-            source_intersection = 0
-            for assignment_id in self.cell_source_constraints[cell][:32]:
-                supports = self.evaluate_supports(
-                    self.source_compiled,
-                    self.source_assignments[assignment_id],
-                    domains,
-                )
-                left = supports[self.source_compiled[1]][0]
-                right = supports[self.source_compiled[2]][0]
-                intersection = (left & right).bit_count()
-                source_disjoint += int(intersection == 0)
-                source_intersection += intersection
-            scored.append((
-                -target_disjoint,
-                target_overlap,
-                source_disjoint,
-                -source_intersection,
-                value,
-            ))
-        domains[cell] = previous
-        scored.sort()
-        return [item[-1] for item in scored]
 
     def assigned_facts(self, domains):
         return frozenset(
@@ -2506,80 +2094,22 @@ class FiniteModelEngine:
         )
 
     def nogood_applies(self, facts, target_assignment):
-        started = time.monotonic()
-        candidate_ids = set(self.empty_nogoods)
-        for fact in facts:
-            candidate_ids.update(self.nogood_index.get(fact, ()))
-        for record_id in sorted(candidate_ids):
-            scope, nogood, _ = self.nogoods[record_id]
+        for scope, nogood in self.nogoods:
             if scope is not None and scope != target_assignment:
                 continue
             if nogood <= facts:
                 self.nogoods_reused += 1
-                for cell, _ in nogood:
-                    self.nogood_conflict_activity[cell] += 1
-                self.nogood_seconds += time.monotonic() - started
                 return True
-        self.nogood_seconds += time.monotonic() - started
         return False
 
-    def minimize_nogood(self, facts, scope):
-        if (
-            self.nogood_minimization_remaining <= 0
-            or len(facts) < 2
-            or len(facts) > 8
-        ):
-            return facts
-        minimized = set(facts)
-        for literal in sorted(facts):
-            if self.nogood_minimization_remaining <= 0:
-                break
-            self.nogood_minimization_remaining -= 1
-            trial = minimized - {literal}
-            domains = [self.full_domain] * (self.domain_size ** 2)
-            for cell, value in trial:
-                domains[cell] = 1 << value
-            previous_trail = self.reversible_trail
-            self.reversible_trail = False
-            valid, _ = self.propagate(domains, scope)
-            self.reversible_trail = previous_trail
-            if not valid:
-                minimized = trial
-                self.nogoods_minimized += 1
-        return frozenset(minimized)
-
-    def learn_nogood(self, facts, scope, cause="domain"):
-        if self.support_propagation:
-            facts = self.minimize_nogood(facts, scope)
-        record = (scope, facts, cause)
-        key = (scope, facts)
+    def learn_nogood(self, facts, scope):
+        record = (scope, facts)
         if (
             len(self.nogoods) < self.maximum_nogoods
-            and key not in self.nogood_records
+            and record not in self.nogoods
         ):
-            record_id = len(self.nogoods)
             self.nogoods.append(record)
-            self.nogood_records.add(key)
             self.nogoods_learned += 1
-            if cause in self.nogood_causes:
-                self.nogood_causes[cause] += 1
-            for literal in facts:
-                self.literal_frequency[literal] = (
-                    self.literal_frequency.get(literal, 0) + 1
-                )
-            if facts:
-                rarest = min(
-                    facts,
-                    key=lambda literal: (
-                        self.literal_frequency.get(literal, 0),
-                        literal,
-                    ),
-                )
-                self.nogood_index.setdefault(rarest, []).append(record_id)
-            else:
-                self.empty_nogoods.append(record_id)
-            for cell, _ in facts:
-                self.contradiction_activity[cell] += 1
 
     def relabel_domains(self, domains, permutation):
         transformed = [self.full_domain] * len(domains)
@@ -2598,20 +2128,15 @@ class FiniteModelEngine:
         return tuple(transformed)
 
     def partial_symmetry_prunable(self, domains, target_assignment):
-        started = time.monotonic()
-        if not self.symmetry_enabled:
-            return False
         constrained = {
             cell for cell, domain in enumerate(domains)
             if domain != self.full_domain
         }
         if not constrained:
-            self.symmetry_seconds += time.monotonic() - started
             return False
         current = tuple(domains)
         used = set(target_assignment or ())
         for permutation in permutations(range(self.domain_size)):
-            self.symmetry_permutations_tested += 1
             if any(permutation[value] != value for value in used):
                 continue
             mapped_cells = {
@@ -2625,19 +2150,12 @@ class FiniteModelEngine:
                 continue
             if self.relabel_domains(domains, permutation) < current:
                 self.symmetry_branch_prunes += 1
-                self.symmetry_seconds += time.monotonic() - started
                 return True
-        self.symmetry_seconds += time.monotonic() - started
         return False
 
     def domains_to_table(self, domains):
         table = tuple(singleton_value(domain) for domain in domains)
         return table if all(value is not None for value in table) else None
-
-    def rollback_domains(self, domains, mark):
-        while len(self.trail) > mark:
-            cell, previous = self.trail.pop()
-            domains[cell] = previous
 
     def branch(self, domains, target_assignment=None, depth=0):
         if self.expired():
@@ -2648,84 +2166,48 @@ class FiniteModelEngine:
             return None
         self.partial_states += 1
         self.maximum_depth = max(self.maximum_depth, depth)
-        mark = len(self.trail)
-        current = domains if self.reversible_trail else list(domains)
-        result = None
-        try:
-            facts_before = self.assigned_facts(current)
-            if self.nogood_applies(facts_before, target_assignment):
-                return None
-            disjoint_before = self.support_disjoint_contradictions
-            valid, contradiction = self.propagate(
-                current, target_assignment
-            )
-            if not valid:
-                scope = (
-                    None if contradiction == "source"
-                    else target_assignment
-                )
-                cause = contradiction
-                if (
-                    contradiction == "source"
-                    and self.support_disjoint_contradictions
-                    > disjoint_before
-                ):
-                    cause = "support"
-                self.learn_nogood(
-                    self.assigned_facts(current), scope, cause
-                )
-                return None
-            if self.partial_symmetry_prunable(current, target_assignment):
-                self.nogood_causes["symmetry"] += 1
-                return None
-            complete = self.domains_to_table(current)
-            if complete is not None:
-                self.complete_tables += 1
-                if not self.source_holds_complete(complete):
-                    return None
-                self.source_models += 1
-                self.retain_source_model(complete)
-                witness = self.target_witness(
-                    complete, target_assignment
-                )
-                if witness is not None:
-                    self.target_falsifying_models += 1
-                    result = (complete, witness)
-                return result
-            cell = self.choose_cell(current, target_assignment)
-            values = self.order_branch_values(
-                current, cell, target_assignment
-            )
-            self.branch_choices += 1
-            self.branch_values += len(values)
-            for value in values:
-                value_mark = len(self.trail)
-                if self.reversible_trail:
-                    self.trail.append((cell, current[cell]))
-                    current[cell] = 1 << value
-                    branch = current
-                else:
-                    branch = list(current)
-                    branch[cell] = 1 << value
-                found = self.branch(
-                    branch, target_assignment, depth=depth + 1
-                )
-                if self.reversible_trail:
-                    self.rollback_domains(current, value_mark)
-                if found is not None:
-                    result = found
-                    return result
-                if self.exhaustion is not None:
-                    return None
-            self.learn_nogood(
-                self.assigned_facts(current),
-                target_assignment,
-                "domain",
-            )
+        current = list(domains)
+        facts_before = self.assigned_facts(current)
+        if self.nogood_applies(facts_before, target_assignment):
             return None
-        finally:
-            if self.reversible_trail:
-                self.rollback_domains(current, mark)
+        valid, contradiction = self.propagate(current, target_assignment)
+        if not valid:
+            scope = None if contradiction == "source" else target_assignment
+            self.learn_nogood(self.assigned_facts(current), scope)
+            return None
+        if self.partial_symmetry_prunable(current, target_assignment):
+            return None
+        complete = self.domains_to_table(current)
+        if complete is not None:
+            self.complete_tables += 1
+            if not self.source_holds_complete(complete):
+                return None
+            self.source_models += 1
+            self.retain_source_model(complete)
+            witness = self.target_witness(complete, target_assignment)
+            if witness is not None:
+                self.target_falsifying_models += 1
+                return complete, witness
+            return None
+        cell = self.choose_cell(current, target_assignment)
+        values = [
+            value for value in range(self.domain_size)
+            if current[cell] & (1 << value)
+        ]
+        self.branch_choices += 1
+        self.branch_values += len(values)
+        for value in values:
+            branch = list(current)
+            branch[cell] = 1 << value
+            found = self.branch(
+                branch, target_assignment, depth=depth + 1
+            )
+            if found is not None:
+                return found
+            if self.exhaustion is not None:
+                return None
+        self.learn_nogood(self.assigned_facts(current), target_assignment)
+        return None
 
     def search_target_guided(self):
         for assignment in self.target_assignments:
@@ -2740,7 +2222,6 @@ class FiniteModelEngine:
                 return found
             if self.exhaustion is not None:
                 break
-            self.target_witnesses_fully_searched += 1
         return None
 
     def search_partial_source_models(self):
@@ -3072,73 +2553,6 @@ FINITE_MODEL_PROTOTYPES = (
     },
 )
 
-FIN4_ENGINE_OPTIONS = {
-    "support_propagation": True,
-    "incremental_propagation": True,
-    "reversible_trail": True,
-    "diverse_witnesses": True,
-    "support_branching": True,
-    "symmetry_enabled": True,
-    "nogood_minimization_budget": 16,
-}
-
-FIN4_PORTFOLIO = (
-    {
-        "name": "fin4-probe",
-        "domain_size": 4,
-        "kind": "target-guided",
-        "seconds": 0.20,
-        "maximum_states": 10000,
-        "maximum_models": 4,
-        "options": {
-            **FIN4_ENGINE_OPTIONS,
-            "target_witness_limit": 16,
-        },
-    },
-    {
-        "name": "fin4-fast",
-        "domain_size": 4,
-        "kind": "target-guided",
-        "seconds": 0.75,
-        "maximum_states": 75000,
-        "maximum_models": 16,
-        "options": {
-            **FIN4_ENGINE_OPTIONS,
-            "target_witness_limit": 64,
-        },
-    },
-    {
-        "name": "fin4-medium",
-        "domain_size": 4,
-        "kind": "target-guided",
-        "seconds": 3.0,
-        "maximum_states": 400000,
-        "maximum_models": 64,
-        "options": {
-            **FIN4_ENGINE_OPTIONS,
-            "target_witness_limit": 256,
-        },
-    },
-    {
-        "name": "fin4-deep-diagnostic",
-        "domain_size": 4,
-        "kind": "target-guided",
-        "seconds": 15.0,
-        "maximum_states": 2000000,
-        "maximum_models": 256,
-        "options": {
-            **FIN4_ENGINE_OPTIONS,
-            "target_witness_limit": 256,
-        },
-        "production_eligible": False,
-    },
-)
-
-# Frozen only after development selection and the one-shot holdout. The
-# promotion rule keeps this empty unless holdout contributes a new accepted
-# FALSE while preserving every prior verdict.
-PROMOTED_FIN4_PORTFOLIO = ()
-
 # Development gains were both found by fast. Medium and complete enumeration
 # added no marginal accepted case, so only the target-guided engine advances
 # to untouched holdout.
@@ -3205,36 +2619,7 @@ def report_finite_model(
         "symmetry_branch_prunes": search.symmetry_branch_prunes,
         "branch_choices": search.branch_choices,
         "branch_values": search.branch_values,
-        "mean_branch_factor": round(
-            search.branch_values / search.branch_choices, 6
-        ) if search.branch_choices else 0.0,
         "maximum_depth": search.maximum_depth,
-        "constraint_evaluations": search.constraint_evaluations,
-        "term_support_evaluations": search.term_support_evaluations,
-        "support_cache_hits": search.support_cache_hits,
-        "forced_assignments": search.forced_assignments,
-        "support_disjoint_contradictions":
-            search.support_disjoint_contradictions,
-        "source_contradictions": search.source_contradictions,
-        "target_contradictions": search.target_contradictions,
-        "target_support_disjoint_guaranteed":
-            search.target_support_disjoint_guaranteed,
-        "nogoods_minimized": search.nogoods_minimized,
-        "nogood_causes": search.nogood_causes,
-        "symmetry_permutations_tested":
-            search.symmetry_permutations_tested,
-        "symmetry_seconds": round(search.symmetry_seconds, 6),
-        "propagation_seconds": round(search.propagation_seconds, 6),
-        "activity_seconds": round(search.activity_seconds, 6),
-        "nogood_seconds": round(search.nogood_seconds, 6),
-        "canonicalization_seconds":
-            round(search.canonicalization_seconds, 6),
-        "first_source_model_seconds": (
-            round(search.first_source_model_seconds, 6)
-            if search.first_source_model_seconds is not None else None
-        ),
-        "target_witnesses_fully_searched":
-            search.target_witnesses_fully_searched,
         "complete": search.complete,
         "exhaustion": search.exhaustion,
         "replay_seconds": round(replay_seconds, 6),
@@ -3461,34 +2846,6 @@ def run_solo():
                 found = search.search_partial_source_models()
             else:
                 found = search.search_complete_enumeration()
-        except (
-            KeyError, IndexError, MemoryError, RecursionError, TypeError,
-            ValueError,
-        ):
-            continue
-        if found is not None and finish_finite_candidate(
-            source, target, search, found, configuration["name"]
-        ):
-            return
-        if found is None:
-            report_finite_model(search, configuration["name"], False)
-
-    for configuration in PROMOTED_FIN4_PORTFOLIO:
-        seconds = min(
-            configuration["seconds"], max(0.1, timeout / 20.0)
-        )
-        finite_deadline = time.monotonic() + seconds
-        try:
-            search = FiniteModelEngine(
-                configuration["domain_size"],
-                source,
-                target,
-                finite_deadline,
-                configuration["maximum_states"],
-                configuration["maximum_models"],
-                options=configuration["options"],
-            )
-            found = search.search_target_guided()
         except (
             KeyError, IndexError, MemoryError, RecursionError, TypeError,
             ValueError,
