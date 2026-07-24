@@ -157,16 +157,38 @@ def substitute(term, mapping):
     return ("op", substitute(term[1], mapping), substitute(term[2], mapping))
 
 
+def structural_distance(left, right):
+    """Small deterministic tree distance used only for target-guided ranking."""
+    if left == right:
+        return 0
+    if left[0] != right[0]:
+        return term_size(left) + term_size(right)
+    if left[0] == "var":
+        return 1
+    return (
+        structural_distance(left[1], right[1])
+        + structural_distance(left[2], right[2])
+    )
+
+
+def is_subterm(needle, term):
+    return needle == term or (
+        term[0] == "op"
+        and (is_subterm(needle, term[1]) or is_subterm(needle, term[2]))
+    )
+
+
 class EqualityNode:
     """A single immutable-by-convention equality derivation."""
 
     __slots__ = (
-        "lhs", "rhs", "kind", "parents", "substitution", "context", "orientation"
+        "lhs", "rhs", "kind", "parents", "substitution", "context",
+        "orientation", "generation", "term_origins",
     )
 
     def __init__(
         self, lhs, rhs, kind, parents=(), substitution=(), context=None,
-        orientation=False,
+        orientation=False, generation=0, term_origins=(),
     ):
         self.lhs = lhs
         self.rhs = rhs
@@ -175,13 +197,15 @@ class EqualityNode:
         self.substitution = tuple(substitution)
         self.context = context
         self.orientation = orientation
+        self.generation = generation
+        self.term_origins = tuple(term_origins)
 
 
 class EqualitySearch:
     MAX_TERM_SIZE = 13
     MAX_POOL_TERMS = 40
     MAX_CORE_TERMS = 9
-    MAX_SOURCE_ATTEMPTS = 30000
+    MAX_SOURCE_ATTEMPTS = 1000000
     MAX_SOURCE_EDGES = 1600
     # Graph saturation stops at 4,000 edges; reserve 500 additional nodes for
     # the final explicit symmetry/transitivity proof chain.
@@ -190,14 +214,38 @@ class EqualitySearch:
     MAX_CONGRUENCE_ROUNDS = 3
     MAX_CERTIFICATE_BYTES = 50000
 
-    def __init__(self, source, target, deadline):
+    def __init__(self, source, target, deadline, limits=None):
         self.source = source
         self.target = target
         self.deadline = deadline
+        limits = limits or {}
+        self.max_term_size = limits.get("max_term_size", self.MAX_TERM_SIZE)
+        self.max_pool_terms = limits.get("max_pool_terms", self.MAX_POOL_TERMS)
+        self.max_core_terms = limits.get("max_core_terms", self.MAX_CORE_TERMS)
+        self.max_source_attempts = limits.get(
+            "max_source_attempts", self.MAX_SOURCE_ATTEMPTS
+        )
+        self.max_source_edges = limits.get(
+            "max_source_edges", self.MAX_SOURCE_EDGES
+        )
+        self.max_derivation_nodes = limits.get(
+            "max_derivation_nodes", self.MAX_DERIVATION_NODES
+        )
+        self.max_graph_edges = limits.get(
+            "max_graph_edges", self.MAX_GRAPH_EDGES
+        )
+        self.max_congruence_rounds = limits.get(
+            "max_congruence_rounds", self.MAX_CONGRUENCE_ROUNDS
+        )
         self.nodes = []
         self.adjacency = {}
         self.edge_keys = set()
         self.graph_edges = 0
+        self.initial_pool = ()
+        self.generations_completed = 0
+        self.source_instances_by_generation = {}
+        self.exhaustion = None
+        self.reentry_terms_used = set()
 
     def expired(self):
         return time.monotonic() >= self.deadline
@@ -207,14 +255,16 @@ class EqualitySearch:
         return term_size(term), render_term(term)
 
     def add_node(self, node, graph_edge=True):
-        if len(self.nodes) >= self.MAX_DERIVATION_NODES:
+        if len(self.nodes) >= self.max_derivation_nodes:
+            self.exhaustion = self.exhaustion or "term budget exhausted"
             return None
         if graph_edge:
             key = (node.lhs, node.rhs)
             reverse = (node.rhs, node.lhs)
             if key in self.edge_keys or reverse in self.edge_keys:
                 return None
-            if self.graph_edges >= self.MAX_GRAPH_EDGES:
+            if self.graph_edges >= self.max_graph_edges:
+                self.exhaustion = self.exhaustion or "term budget exhausted"
                 return None
             self.edge_keys.add(key)
             self.graph_edges += 1
@@ -241,28 +291,39 @@ class EqualitySearch:
                 composed = ("op", left, right)
                 if term_size(composed) <= 9:
                     terms.add(composed)
-                if len(terms) >= self.MAX_POOL_TERMS * 2:
+                if len(terms) >= self.max_pool_terms * 2:
                     break
-            if len(terms) >= self.MAX_POOL_TERMS * 2:
+            if len(terms) >= self.max_pool_terms * 2:
                 break
-        return sorted(terms, key=self.term_key)[:self.MAX_POOL_TERMS]
+        return sorted(terms, key=self.term_key)[:self.max_pool_terms]
 
-    def add_source_substitution(self, values):
+    def add_source_substitution(
+        self, values, generation=0, origins=(), orientation=False
+    ):
         sl, sr, source_vars = self.source
         mapping = dict(zip(source_vars, values))
         lhs = substitute(sl, mapping)
         rhs = substitute(sr, mapping)
-        if term_size(lhs) > self.MAX_TERM_SIZE or term_size(rhs) > self.MAX_TERM_SIZE:
-            return
+        if (
+            term_size(lhs) > self.max_term_size
+            or term_size(rhs) > self.max_term_size
+        ):
+            return None
         substitution = tuple((v, mapping[v]) for v in source_vars)
-        self.add_node(EqualityNode(
-            lhs, rhs, "source instance", substitution=substitution,
-            orientation=False,
+        node_id = self.add_node(EqualityNode(
+            lhs, rhs, "source instance" if generation == 0 else "source reentry",
+            substitution=substitution, orientation=orientation,
+            generation=generation, term_origins=origins,
         ))
+        if node_id is not None:
+            self.source_instances_by_generation[generation] = (
+                self.source_instances_by_generation.get(generation, 0) + 1
+            )
+        return node_id
 
     def instantiate_sources(self, pool):
         source_vars = self.source[2]
-        core = pool[:self.MAX_CORE_TERMS]
+        core = pool[:self.max_core_terms]
         attempts = 0
 
         # Target-guided instances first: match either source side against each
@@ -280,10 +341,14 @@ class EqualitySearch:
                     self.add_source_substitution([mapping[v] for v in source_vars])
                     attempts += 1
                     if (
-                        attempts >= self.MAX_SOURCE_ATTEMPTS
-                        or self.graph_edges >= self.MAX_SOURCE_EDGES
+                        attempts >= self.max_source_attempts
+                        or self.graph_edges >= self.max_source_edges
                         or self.expired()
                     ):
+                        if attempts >= self.max_source_attempts:
+                            self.exhaustion = "instance budget exhausted"
+                        elif self.expired():
+                            self.exhaustion = "timeout"
                         return
 
         # Fair bounded enumeration: layer k includes every substitution whose
@@ -295,10 +360,14 @@ class EqualitySearch:
                 self.add_source_substitution([core[i] for i in indexes])
                 attempts += 1
                 if (
-                    attempts >= self.MAX_SOURCE_ATTEMPTS
-                    or self.graph_edges >= self.MAX_SOURCE_EDGES
+                    attempts >= self.max_source_attempts
+                    or self.graph_edges >= self.max_source_edges
                     or self.expired()
                 ):
+                    if attempts >= self.max_source_attempts:
+                        self.exhaustion = "instance budget exhausted"
+                    elif self.expired():
+                        self.exhaustion = "timeout"
                     return
 
     def node_cost(self, node_id):
@@ -358,6 +427,8 @@ class EqualitySearch:
                 node_id = self.add_node(EqualityNode(
                     parent.rhs, parent.lhs, "symmetry", parents=(node_id,)
                 ), graph_edge=False)
+                if node_id is None:
+                    return None
             oriented.append(node_id)
         root = oriented[0]
         for next_id in oriented[1:]:
@@ -372,10 +443,15 @@ class EqualitySearch:
                 return None
         return root
 
-    def add_congruence_round(self, siblings, first_node):
+    def add_congruence_round(self, siblings, first_node, edge_limit=None):
+        edge_limit = (
+            self.max_graph_edges if edge_limit is None else edge_limit
+        )
         snapshot_end = len(self.nodes)
         for parent_id in range(first_node, snapshot_end):
-            if self.expired() or self.graph_edges >= self.MAX_GRAPH_EDGES:
+            if self.expired() or self.graph_edges >= edge_limit:
+                if self.expired():
+                    self.exhaustion = "timeout"
                 return
             parent = self.nodes[parent_id]
             if parent.kind in ("symmetry", "transitivity", "reflexivity"):
@@ -384,33 +460,36 @@ class EqualitySearch:
                 left_lhs = ("op", parent.lhs, sibling)
                 left_rhs = ("op", parent.rhs, sibling)
                 if (
-                    term_size(left_lhs) <= self.MAX_TERM_SIZE
-                    and term_size(left_rhs) <= self.MAX_TERM_SIZE
+                    term_size(left_lhs) <= self.max_term_size
+                    and term_size(left_rhs) <= self.max_term_size
                 ):
                     self.add_node(EqualityNode(
                         left_lhs, left_rhs, "congruence on left child",
                         parents=(parent_id,), context=("left", sibling),
+                        generation=parent.generation,
                     ))
                 right_lhs = ("op", sibling, parent.lhs)
                 right_rhs = ("op", sibling, parent.rhs)
                 if (
-                    term_size(right_lhs) <= self.MAX_TERM_SIZE
-                    and term_size(right_rhs) <= self.MAX_TERM_SIZE
+                    term_size(right_lhs) <= self.max_term_size
+                    and term_size(right_rhs) <= self.max_term_size
                 ):
                     self.add_node(EqualityNode(
                         right_lhs, right_rhs, "congruence on right child",
                         parents=(parent_id,), context=("right", sibling),
+                        generation=parent.generation,
                     ))
 
     def solve(self):
         pool = self.make_pool()
+        self.initial_pool = tuple(pool)
         self.instantiate_sources(pool)
         root = self.shortest_path()
         if root is not None:
             return self.nodes, root
         siblings = pool[:10]
         first = 0
-        for _ in range(self.MAX_CONGRUENCE_ROUNDS):
+        for _ in range(self.max_congruence_rounds):
             before = len(self.nodes)
             self.add_congruence_round(siblings, first)
             root = self.shortest_path()
@@ -421,13 +500,307 @@ class EqualitySearch:
                 break
         return None
 
+    def components(self):
+        """Return graph component IDs without mutating the search state."""
+        component = {}
+        for start in sorted(self.adjacency, key=self.term_key):
+            if start in component:
+                continue
+            component_id = len(component)
+            stack = [start]
+            component[start] = component_id
+            while stack:
+                term = stack.pop()
+                for neighbor, _, _ in self.adjacency.get(term, ()):
+                    if neighbor not in component:
+                        component[neighbor] = component_id
+                        stack.append(neighbor)
+        return component
+
+    def collect_reentry_terms(self, generation, maximum, targeted=False):
+        """Select bounded derived arguments and retain their provenance."""
+        target_left, target_right = self.target[:2]
+        target_subterms = set(walk_subterms(target_left)) | set(
+            walk_subterms(target_right)
+        )
+        components = self.components()
+        target_components = {
+            components[t]
+            for t in (target_left, target_right)
+            if t in components
+        }
+        initial = set(self.initial_pool)
+        origins = {}
+
+        def record(term, node_id):
+            if term_size(term) <= self.max_term_size:
+                origins.setdefault(term, set()).add(node_id)
+
+        for node_id, node in enumerate(self.nodes):
+            if node.kind in ("symmetry", "transitivity", "reflexivity"):
+                continue
+            record(node.lhs, node_id)
+            record(node.rhs, node_id)
+            for term in walk_subterms(node.lhs):
+                record(term, node_id)
+            for term in walk_subterms(node.rhs):
+                record(term, node_id)
+
+        # Deterministic representatives of every merged equality class.
+        by_component = {}
+        for term, component_id in components.items():
+            by_component.setdefault(component_id, []).append(term)
+        representatives = {
+            min(terms, key=self.term_key) for terms in by_component.values()
+        }
+
+        source_sides = self.source[:2]
+
+        def unifies_source_side(term):
+            for pattern in source_sides:
+                substitution = {}
+                if match_term(pattern, term, substitution):
+                    return True
+            return False
+
+        def connected_target(term):
+            return components.get(term) in target_components
+
+        candidates = []
+        for term, parent_ids in origins.items():
+            if term in initial or term in self.reentry_terms_used:
+                continue
+            target_related = (
+                term in target_subterms
+                or connected_target(term)
+                or any(is_subterm(term, context) for context in target_subterms)
+                or any(is_subterm(context, term) for context in target_subterms)
+            )
+            if targeted and not target_related:
+                continue
+            score = (
+                0 if any(
+                    self.nodes[parent_id].generation == generation - 1
+                    for parent_id in parent_ids
+                ) else 1,
+                0 if connected_target(term) else 1,
+                0 if term in target_subterms else 1,
+                min(
+                    structural_distance(term, target_left),
+                    structural_distance(term, target_right),
+                ),
+                0 if term in representatives else 1,
+                0 if unifies_source_side(term) else 1,
+                term_size(term),
+                render_term(term),
+            )
+            candidates.append((score, term, tuple(sorted(parent_ids))))
+        candidates.sort()
+        selected = [
+            (term, parent_ids)
+            for _, term, parent_ids in candidates[:maximum]
+        ]
+        self.reentry_terms_used.update(term for term, _ in selected)
+        return selected
+
+    def reentry_instance_rank(self, values, components, target_subterms):
+        sl, sr, source_vars = self.source
+        mapping = dict(zip(source_vars, values))
+        lhs, rhs = substitute(sl, mapping), substitute(sr, mapping)
+        target_left, target_right = self.target[:2]
+        left_component = components.get(lhs)
+        right_component = components.get(rhs)
+        target_components = {
+            components[t]
+            for t in (target_left, target_right)
+            if t in components
+        }
+        connects_regions = (
+            left_component is not None
+            and right_component is not None
+            and left_component != right_component
+        )
+        connected_to_target = (
+            left_component in target_components
+            or right_component in target_components
+        )
+        involves_target_subterm = lhs in target_subterms or rhs in target_subterms
+        distance = min(
+            structural_distance(lhs, target_left),
+            structural_distance(lhs, target_right),
+            structural_distance(rhs, target_left),
+            structural_distance(rhs, target_right),
+        )
+        unifies = False
+        for side in (lhs, rhs):
+            for pattern in self.source[:2]:
+                substitution = {}
+                if match_term(pattern, side, substitution):
+                    unifies = True
+                    break
+            if unifies:
+                break
+        return (
+            0 if connects_regions else 1,
+            0 if connected_to_target else 1,
+            0 if involves_target_subterm else 1,
+            distance,
+            0 if unifies else 1,
+            term_size(lhs) + term_size(rhs),
+            tuple(render_term(value) for value in values),
+        )
+
+    def instantiate_reentry(
+        self, selected, generation, maximum_instances, targeted=False
+    ):
+        """Rank and add a bounded second-generation source portfolio."""
+        source_vars = self.source[2]
+        origin_by_term = {term: ids for term, ids in selected}
+        new_terms = [term for term, _ in selected]
+        base = list(self.initial_pool[:6])
+        pool = []
+        for term in new_terms + base:
+            if term not in pool:
+                pool.append(term)
+        components = self.components()
+        target_subterms = set(walk_subterms(self.target[0])) | set(
+            walk_subterms(self.target[1])
+        )
+        connected_components = {
+            components[target]
+            for target in self.target[:2]
+            if target in components
+        }
+        ranked = {}
+        attempt_cap = max(maximum_instances * 20, 1000)
+        attempts = 0
+
+        def consider(mapping):
+            nonlocal attempts
+            if attempts >= attempt_cap:
+                return
+            attempts += 1
+            values = tuple(mapping[v] for v in source_vars)
+            if not any(value in origin_by_term for value in values):
+                return
+            lhs = substitute(self.source[0], mapping)
+            rhs = substitute(self.source[1], mapping)
+            if (
+                term_size(lhs) > self.max_term_size
+                or term_size(rhs) > self.max_term_size
+            ):
+                return
+            if targeted and not (
+                lhs in target_subterms
+                or rhs in target_subterms
+                or components.get(lhs) in connected_components
+                or components.get(rhs) in connected_components
+            ):
+                return
+            ranked[values] = self.reentry_instance_rank(
+                values, components, target_subterms
+            )
+
+        # First bind a source side to every selected/target term and fill the
+        # remaining variables from a small fair pool.
+        useful = new_terms + sorted(target_subterms, key=self.term_key)
+        for pattern in self.source[:2]:
+            for concrete in useful:
+                partial = {}
+                if not match_term(pattern, concrete, partial):
+                    continue
+                missing = [v for v in source_vars if v not in partial]
+                for fill in product(pool[:10], repeat=len(missing)):
+                    mapping = dict(partial)
+                    mapping.update(zip(missing, fill))
+                    consider(mapping)
+                    if attempts >= attempt_cap or self.expired():
+                        break
+                if attempts >= attempt_cap or self.expired():
+                    break
+            if attempts >= attempt_cap or self.expired():
+                break
+
+        # Ensure substitutions using several derived arguments are considered.
+        if not self.expired():
+            for values in product(pool[:12], repeat=len(source_vars)):
+                consider(dict(zip(source_vars, values)))
+                if attempts >= attempt_cap or self.expired():
+                    break
+
+        added = 0
+        for values, _ in sorted(ranked.items(), key=lambda item: item[1]):
+            origin_records = tuple(
+                (
+                    variable,
+                    value,
+                    origin_by_term.get(value, ()),
+                )
+                for variable, value in zip(source_vars, values)
+            )
+            if self.add_source_substitution(
+                values, generation=generation, origins=origin_records
+            ) is not None:
+                added += 1
+            if added >= maximum_instances or self.expired():
+                break
+        if added >= maximum_instances:
+            self.exhaustion = "instance budget exhausted"
+        elif self.expired():
+            self.exhaustion = "timeout"
+        return added
+
+    def solve_reentry(self, generations, new_terms, instances, targeted=False):
+        """Continue a completed initial closure under bounded source re-entry."""
+        for generation in range(1, generations + 1):
+            remaining_generations = generations - generation + 1
+            edge_limit = self.graph_edges + max(
+                1,
+                (self.max_graph_edges - self.graph_edges)
+                // remaining_generations,
+            )
+            selected = self.collect_reentry_terms(
+                generation, new_terms, targeted=targeted
+            )
+            if not selected:
+                break
+            before = len(self.nodes)
+            self.instantiate_reentry(
+                selected,
+                generation,
+                min(
+                    instances,
+                    max(1, (edge_limit - self.graph_edges) // 2),
+                ),
+                targeted=targeted,
+            )
+            # A re-entered law can become useful only after a congruence wrap.
+            self.add_congruence_round(
+                [term for term, _ in selected[:10]], before, edge_limit=edge_limit
+            )
+            self.generations_completed = generation
+            # Partial-state validation is deliberate: check the graph even if
+            # a wall-time or instance limit fired during this generation.
+            root = self.shortest_path()
+            if root is not None:
+                return self.nodes, root
+            if self.expired():
+                self.exhaustion = "timeout"
+                break
+        # One final prefix check prevents a just-completed proof from being
+        # discarded when the deadline fired at the end of the last loop.
+        root = self.shortest_path()
+        if root is not None:
+            return self.nodes, root
+        return None
+
 
 def replay_dag(source, nodes, root):
     if root is None or root >= len(nodes):
         return False
     sl, sr, source_vars = source
     for node_id, node in enumerate(nodes):
-        if node.kind == "source instance":
+        if node.kind in ("source instance", "source reentry"):
             mapping = dict(node.substitution)
             if tuple(mapping) != source_vars:
                 return False
@@ -436,6 +809,27 @@ def replay_dag(source, nodes, root):
                 lhs, rhs = rhs, lhs
             if (node.lhs, node.rhs) != (lhs, rhs):
                 return False
+            if node.kind == "source instance":
+                if node.generation != 0 or node.term_origins:
+                    return False
+            else:
+                if node.generation <= 0:
+                    return False
+                origin_variables = tuple(record[0] for record in node.term_origins)
+                if origin_variables != source_vars:
+                    return False
+                for variable, term, parent_ids in node.term_origins:
+                    if mapping.get(variable) != term:
+                        return False
+                    for parent_id in parent_ids:
+                        if parent_id >= node_id:
+                            return False
+                        parent = nodes[parent_id]
+                        if not (
+                            is_subterm(term, parent.lhs)
+                            or is_subterm(term, parent.rhs)
+                        ):
+                            return False
         elif node.kind == "symmetry":
             if len(node.parents) != 1 or node.parents[0] >= node_id:
                 return False
@@ -486,8 +880,15 @@ def make_dag_certificate(target, nodes, root):
     visit(root)
     ordered = sorted(needed)
     names = {node_id: "p" + str(i) for i, node_id in enumerate(ordered)}
+    maximum_generation = max((nodes[node_id].generation for node_id in ordered), default=0)
+    constructor = (
+        "source-reentry generation " + str(maximum_generation)
+        if maximum_generation
+        else "equality-chain"
+    )
     lines = [
         "import JudgeProblem",
+        "-- mathgraph constructor: " + constructor,
         "",
         "def submission : Goal := by",
         "  intro G _ h",
@@ -497,7 +898,7 @@ def make_dag_certificate(target, nodes, root):
         lines.append("  intro " + " ".join(target_vars))
     for node_id in ordered:
         node = nodes[node_id]
-        if node.kind == "source instance":
+        if node.kind in ("source instance", "source reentry"):
             mapping = dict(node.substitution)
             expression = "h" + "".join(
                 " (" + render_term(mapping[v]) + ")" for v in mapping
@@ -540,10 +941,12 @@ def eval_term(term, assignment, table):
     ]
 
 
-def equation_holds(equation, table):
+def equation_holds(equation, table, deadline=None):
     lhs, rhs, variables = equation
     n = len(table)
     for values in product(range(n), repeat=len(variables)):
+        if deadline is not None and time.monotonic() >= deadline:
+            return None
         assignment = dict(zip(variables, values))
         if eval_term(lhs, assignment, table) != eval_term(rhs, assignment, table):
             return False
@@ -559,9 +962,19 @@ def find_fin2_countermodel(source, target, deadline):
             [(encoded >> (2 * row + col)) & 1 for col in range(2)]
             for row in range(2)
         ]
-        if equation_holds(source, table) and not equation_holds(target, table):
+        source_holds = equation_holds(source, table, deadline)
+        if source_holds is None:
+            return None
+        target_holds = (
+            equation_holds(target, table, deadline) if source_holds else True
+        )
+        if target_holds is None:
+            return None
+        if source_holds and not target_holds:
             # Deliberate second replay before certificate generation.
-            if equation_holds(source, table) and not equation_holds(target, table):
+            source_replay = equation_holds(source, table, deadline)
+            target_replay = equation_holds(target, table, deadline)
+            if source_replay is True and target_replay is False:
                 return table
     return None
 
@@ -620,6 +1033,122 @@ def judge(verdict, code):
     return response if response is not None else {}
 
 
+REENTRY_PORTFOLIO = (
+    {
+        "name": "light",
+        "seconds": 1.0,
+        "generations": 1,
+        "new_terms": 24,
+        "instances": 400,
+        "targeted": False,
+        "reentry_term_size": 15,
+        "reentry_nodes": 1500,
+        "reentry_edges": 1400,
+        "limits": {
+            "max_term_size": 13,
+            "max_pool_terms": 36,
+            "max_core_terms": 8,
+            "max_source_attempts": 8000,
+            "max_source_edges": 600,
+            "max_derivation_nodes": 900,
+            "max_graph_edges": 800,
+            "max_congruence_rounds": 2,
+        },
+    },
+    {
+        "name": "medium",
+        "seconds": 3.0,
+        "generations": 2,
+        "new_terms": 32,
+        "instances": 1000,
+        "targeted": False,
+        "reentry_term_size": 15,
+        "reentry_nodes": 4000,
+        "reentry_edges": 3600,
+        "limits": {
+            "max_term_size": 13,
+            "max_pool_terms": 40,
+            "max_core_terms": 9,
+            "max_source_attempts": 18000,
+            "max_source_edges": 1200,
+            "max_derivation_nodes": 2200,
+            "max_graph_edges": 1800,
+            "max_congruence_rounds": 3,
+        },
+    },
+    {
+        "name": "targeted",
+        "seconds": 5.0,
+        "generations": 2,
+        "new_terms": 32,
+        "instances": 2000,
+        "targeted": True,
+        "reentry_term_size": 15,
+        "reentry_nodes": 6000,
+        "reentry_edges": 5600,
+        "limits": {
+            "max_term_size": 13,
+            "max_pool_terms": 40,
+            "max_core_terms": 9,
+            "max_source_attempts": 24000,
+            "max_source_edges": 1600,
+            "max_derivation_nodes": 3000,
+            "max_graph_edges": 2400,
+            "max_congruence_rounds": 3,
+        },
+    },
+)
+
+# The content-hash development half promoted only medium. Light added no
+# accepted development case, and targeted added no win after medium; retaining
+# either in production would add runtime without improving the selection score.
+PROMOTED_REENTRY_PORTFOLIO = (REENTRY_PORTFOLIO[1],)
+
+
+def report_search(search, portfolio, found, replay_seconds=0.0, code_bytes=0):
+    maximum_term = 0
+    for node in search.nodes:
+        maximum_term = max(
+            maximum_term, term_size(node.lhs), term_size(node.rhs)
+        )
+    payload = {
+        "portfolio": portfolio,
+        "found": bool(found),
+        "generations": search.generations_completed,
+        "source_instances": search.source_instances_by_generation,
+        "equality_nodes": len(search.nodes),
+        "graph_edges": search.graph_edges,
+        "max_term_size": maximum_term,
+        "certificate_bytes": code_bytes,
+        "replay_seconds": round(replay_seconds, 6),
+        "exhaustion": search.exhaustion,
+    }
+    print(
+        "MATHGRAPH_METRICS " + json.dumps(payload, separators=(",", ":")),
+        file=sys.stderr,
+        flush=True,
+    )
+
+
+def finish_dag_candidate(source, target, search, found, portfolio):
+    if found is None:
+        report_search(search, portfolio, False)
+        return False
+    nodes, root = found
+    replay_start = time.monotonic()
+    replayed = replay_dag(source, nodes, root)
+    replay_seconds = time.monotonic() - replay_start
+    if not replayed or (nodes[root].lhs, nodes[root].rhs) != target[:2]:
+        report_search(search, portfolio, False, replay_seconds)
+        return False
+    code, _ = make_dag_certificate(target, nodes, root)
+    code_bytes = len(code.encode("utf-8"))
+    report_search(search, portfolio, True, replay_seconds, code_bytes)
+    if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
+        return False
+    return judge("true", code).get("status") == "accepted"
+
+
 def run_solo():
     startup = read_message()
     if startup is None:
@@ -640,11 +1169,30 @@ def run_solo():
         if judge("true", code).get("status") == "accepted":
             return
 
-    # Fin 2 is tiny, but retain an explicit hard local deadline so malformed
-    # or unexpectedly large incoming terms cannot turn this stage unbounded.
     timeout = budget.get("timeout_seconds", 0)
     if not isinstance(timeout, (int, float)) or timeout <= 0:
         return
+
+    # Preserve the validated generation-zero constructor as an independent
+    # gate before any source re-entry experiment.
+    chain_deadline = time.monotonic() + min(2.0, max(0.1, timeout / 20.0))
+    try:
+        chain_search = EqualitySearch(source, target, chain_deadline)
+        found = chain_search.solve()
+    except (
+        KeyError, IndexError, MemoryError, RecursionError, TypeError, ValueError
+    ):
+        return
+    if found is not None:
+        if finish_dag_candidate(
+            source, target, chain_search, found, "initial-chain"
+        ):
+            return
+    else:
+        report_search(chain_search, "initial-chain", False)
+
+    # Fin 2 is tiny, but retain an explicit hard local deadline so malformed
+    # or unexpectedly large incoming terms cannot turn this stage unbounded.
     deadline = time.monotonic() + min(1.0, max(0.05, timeout / 20.0))
     try:
         table = find_fin2_countermodel(source, target, deadline)
@@ -655,21 +1203,42 @@ def run_solo():
         if judge("false", code).get("status") == "accepted":
             return
 
-    chain_deadline = time.monotonic() + min(2.0, max(0.1, timeout / 20.0))
-    try:
-        found = EqualitySearch(source, target, chain_deadline).solve()
-    except (KeyError, IndexError, MemoryError, RecursionError, TypeError, ValueError):
-        return
-    if found is not None:
-        nodes, root = found
-        if not replay_dag(source, nodes, root):
+    for configuration in PROMOTED_REENTRY_PORTFOLIO:
+        seconds = min(
+            configuration["seconds"], max(0.1, timeout / 20.0)
+        )
+        reentry_deadline = time.monotonic() + seconds
+        try:
+            search = EqualitySearch(
+                source, target, reentry_deadline, configuration["limits"]
+            )
+            initial = search.solve()
+            if initial is not None:
+                # The pass tests re-entry in isolation. A generation-zero hit
+                # under a different budget is not promoted as a re-entry win.
+                report_search(search, configuration["name"], False)
+                continue
+            search.max_term_size = configuration["reentry_term_size"]
+            search.max_derivation_nodes = configuration["reentry_nodes"]
+            search.max_graph_edges = configuration["reentry_edges"]
+            search.exhaustion = None
+            found = search.solve_reentry(
+                configuration["generations"],
+                configuration["new_terms"],
+                configuration["instances"],
+                targeted=configuration["targeted"],
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            continue
+        if found is not None and finish_dag_candidate(
+            source, target, search, found, configuration["name"]
+        ):
             return
-        if (nodes[root].lhs, nodes[root].rhs) != target[:2]:
-            return
-        code, _ = make_dag_certificate(target, nodes, root)
-        if len(code.encode("utf-8")) > EqualitySearch.MAX_CERTIFICATE_BYTES:
-            return
-        judge("true", code)
+        if found is None:
+            report_search(search, configuration["name"], False)
     # Unresolved: EOF is intentional. Never guess and never ask an LLM.
 
 

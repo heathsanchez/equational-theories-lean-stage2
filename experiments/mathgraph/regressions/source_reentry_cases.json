@@ -1,0 +1,79 @@
+[
+  {
+    "id": "reentry_one_generation",
+    "eq1_id": 920001,
+    "eq2_id": 920002,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y))"
+  },
+  {
+    "id": "reentry_two_generations",
+    "eq1_id": 920003,
+    "eq2_id": 920004,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y)))"
+  },
+  {
+    "id": "reentry_after_congruence",
+    "eq1_id": 920005,
+    "eq2_id": 920006,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ y))"
+  },
+  {
+    "id": "reentry_reversed_source_orientation",
+    "eq1_id": 920007,
+    "eq2_id": 920008,
+    "equation1": "x = (x ◇ x) ◇ y",
+    "equation2": "((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y))"
+  },
+  {
+    "id": "reentry_convergent_intermediate",
+    "eq1_id": 920009,
+    "eq2_id": 920010,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y))"
+  },
+  {
+    "id": "reentry_collapse_law",
+    "eq1_id": 920011,
+    "eq2_id": 920012,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x)))"
+  },
+  {
+    "id": "reentry_projection_absorption",
+    "eq1_id": 920013,
+    "eq2_id": 920014,
+    "equation1": "x = (x ◇ x) ◇ y",
+    "equation2": "((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y)))"
+  },
+  {
+    "id": "reentry_false_control_one",
+    "eq1_id": 920015,
+    "eq2_id": 920016,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ x) ◇ (y ◇ x)) = ((y ◇ y) ◇ ((x ◇ y) ◇ y))"
+  },
+  {
+    "id": "reentry_false_control_two",
+    "eq1_id": 920017,
+    "eq2_id": 920018,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((y ◇ y) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y)))"
+  },
+  {
+    "id": "reentry_growth_pathological_abstain",
+    "eq1_id": 920019,
+    "eq2_id": 920020,
+    "equation1": "a = (b ◇ (c ◇ (d ◇ (e ◇ (f ◇ (g ◇ (h ◇ (i ◇ (j ◇ (k ◇ (l ◇ (m ◇ (n ◇ (o ◇ (p ◇ (q ◇ (r ◇ (s ◇ (t ◇ (u ◇ (v ◇ (w ◇ (x ◇ (y ◇ z))))))))))))))))))))))))",
+    "equation2": "x = y"
+  },
+  {
+    "id": "reentry_complete_prefix_before_timeout",
+    "eq1_id": 920021,
+    "eq2_id": 920022,
+    "equation1": "(x ◇ x) ◇ y = x",
+    "equation2": "((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ ((x ◇ y) ◇ y))"
+  }
+]
