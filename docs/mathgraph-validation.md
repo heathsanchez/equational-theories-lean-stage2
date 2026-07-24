@@ -1073,3 +1073,234 @@ The first capability improvement should be stronger generic support
 propagation for nested operation nodes and cheaper incremental activity
 updates, followed by the existing target-guided search—not a larger blind
 budget and not exhaustive `4^16` enumeration.
+
+## Bounded Fin-4 promotion experiment
+
+This separate capability pass started from
+`fb671c7a6a56cea3fa5bc6273b8cb48daa66f6a8`. The implementation commit is
+`8088bc2666839eedd165433e75a14512579178be`
+(`add bounded Fin 4 finite-model promotion route`). The exact 104,686-byte
+starting solver is preserved as
+`experiments/mathgraph/regressions/solver_fb671c7.py`, SHA-256
+`c88b9d78daabde4ab099dffef807a8d5aaac803b5b883275a3b4a0cfd6a31816`.
+The 66 TRUE / 94 FALSE production floor and every existing verdict remained
+frozen.
+
+The result is a **capability success but promotion failure**. Three genuine
+order-4 countermodels were officially accepted on development, but the
+one-shot holdout gained zero FALSE cases. `PROMOTED_FIN4_PORTFOLIO` therefore
+remains empty and production remains 160/200.
+
+### Frozen artifacts and preregistration
+
+Before implementation, the regression gate was extended to verify the hashes
+of the current sample results, both exact content-hash split artifacts, all
+constructor suites, the generic-engine summary, and the frozen solver. Every
+experimental invocation used a unique temporary result path. The
+preregistered grid fixed probe, fast, medium, and deep bounds before accepted
+IDs were inspected.
+
+| Configuration | Witness cap | State cap | Time | Model bank |
+|---|---:|---:|---:|---:|
+| Fin4-probe | 16 | 10,000 | 0.20 s | 4 |
+| Fin4-fast | 64 | 75,000 | 0.75 s | 16 |
+| Fin4-medium | 256 | 400,000 | 3.0 s | 64 |
+| Fin4-deep diagnostic | 256 | 2,000,000 | 15.0 s | 256 |
+
+The deep configuration was never production-eligible. Search budgets were not
+increased after results were observed.
+
+### Frozen-engine profile
+
+The unchanged generic engine was profiled on all 29 development residuals, a
+content-hash-selected structural sample, and the six known FALSE residuals.
+Across the sampled initial source constraints, root forms were:
+
+| Root result | Count |
+|---|---:|
+| Known singleton | 7,120 |
+| Direct table cell | 128 |
+| Nested multi-cell support | 11,344 |
+
+This supports the nested-term hypothesis, but timing showed that implementation
+cost mattered equally. Frozen diagnostic time was 32.74 seconds in repeated
+propagation scans, 27.62 seconds in linear nogood lookup, 18.25 seconds in
+activity recomputation, 2.02 seconds in symmetry, and 0.0003 seconds in
+canonicalization. Certificate emission and replay were not bottlenecks.
+
+The unchanged probe already found one development order-4 model in about
+0.046 seconds. Deep diagnostics found three of the six known FALSE residuals,
+showing that model order was useful before any implementation change.
+
+### Sound nested support propagation
+
+For each fixed variable assignment, the compiled term DAG now computes a
+memoized possible-value bitmask for every node. Variables have singleton
+support. For an operation node `u ◇ v`, its support is the union of
+`table_domain[a,b]` over every `a` and `b` in the child supports. This is an
+over-approximation: correlations between child values may add impossible
+pairs, but no attainable value is removed.
+
+For a source equality, disjoint root supports reject the branch. Direct root
+cells are intersected with the common support. A nested root is restricted
+only when exactly one child-value pair has a table-cell domain intersecting
+the required common support. In that case any satisfying completion must use
+that pair, so restricting its responsible cell is sound. No general inverse
+operation or correlation assumption is made.
+
+For a selected target disequality, disjoint supports guarantee the witness;
+the same singleton rejects it; and a singleton opposite a direct root cell
+removes that singleton value. Overlapping non-singleton supports remain
+pending and are never treated as equality.
+
+### Incremental queue, caches, and reversible state
+
+Every source assignment has a conservative dependency set derived from its
+compiled support closure. Changed table cells enqueue only possibly affected
+constraints. Per-evaluation DAG support arrays are epoch-local and repeated
+subterms reuse their already computed child supports.
+
+Fin-4 branching uses one mutable domain vector and a reversible trail.
+Recursive return restores domain changes to the branch mark; propagation,
+assignment, and rollback no longer copy the entire table state. Activity uses
+conservative support influence, target participation, equality frequency,
+nogood conflict activity, recent contradiction activity, and a deterministic
+cell tie-break.
+
+Value ordering first prefers stronger target disequality support, then avoids
+immediate source-support contradictions, maximizes source intersections, and
+uses numeric order last. This is an ordering heuristic only; it never removes
+a domain value.
+
+Invocation-local nogoods are indexed by their rarest literal. Source
+contradictions are globally scoped within the invocation; target contradictions
+remain scoped to their exact target witness. Small nogoods receive bounded
+deletion tests, and a literal is removed only when propagation independently
+reproduces a contradiction. Timeout and state exhaustion never learn a
+nogood.
+
+The existing conservative partial stabilizer is unchanged. Metrics were added
+for permutations tested, time, and states pruned. Development symmetry-on
+used fewer states and slightly less wall time than symmetry-off, so it remained
+enabled. Complete tables still use full `n!` canonicalization.
+
+Target assignments are structurally ranked and deduplicated by equality
+pattern under the blank-table element-relabelling action. Cardinality buckets
+are interleaved so a small witness budget includes structurally different
+patterns. No ID, label, equation literal, or benchmark-membership feature is
+available to the route.
+
+### Synthetic and metamorphic verification
+
+The 20-case Fin-4 suite produced 17/17 officially accepted positive
+certificates, one TRUE control with no FALSE judge call, and one required
+variable-cap abstention. Four additional presentations—variable renaming,
+source reversal, target reversal, and term mirroring—were independently
+searched, replayed, and officially accepted. Element relabelling was also
+replayed.
+
+Coverage includes:
+
+- an exhaustively established no-countermodel-of-order-at-most-three case;
+- nested support, source-support disjointness, and target-support
+  disjointness;
+- direct-cell singleton removal and repeated-subterm caching;
+- a stored four-element target witness;
+- noncommutative, nonassociative, and no-idempotent Fin-4 tables;
+- target-guided versus source-only search;
+- source and scoped-target nogood reuse;
+- symmetry on/off verdict equivalence;
+- corrupted table and serialization rejection;
+- completed-prefix replay after deadline;
+- unchanged Fin-2 and Fin-3 replay/certificate paths.
+
+On the minimal synthetic case, candidate search used 25 states versus 444 for
+the frozen engine and 1,234 for source-only search. The largest Fin-4
+certificate is 287 bytes.
+
+### Development selection
+
+The selected support/incremental/symmetry policy was frozen at solver SHA-256
+`ddb646624106d143a6b0882b1ec46fa9e047dc40214310010b5dda89f55f2eb7`
+before holdout.
+
+| Configuration | Attempts | Accepted gains | Engine time | States |
+|---|---:|---:|---:|---:|
+| Fin4-probe | 29 | 2 | 5.15 s | 12,315 |
+| Fin4-fast after probe miss | 27 | 1 | 15.39 s | 36,378 |
+| Fin4-medium after fast miss | 26 | 0 | 32.25 s | 70,356 |
+
+Development moved from 34 TRUE / 37 FALSE to **34 TRUE / 40 FALSE**.
+Probe plus fast cost 20.55 pure engine seconds, or 6.85 seconds per development
+gain. Medium added no independent value and remained diagnostic.
+
+The three accepted models all have minimal order four because their existing
+order-at-most-three searches were exhaustive. Each stored target witness uses
+two elements. Probe contributed two certificates and fast one; all certificates
+were 287 bytes.
+
+Aggregate selected development metrics:
+
+| Metric | Probe | Fast |
+|---|---:|---:|
+| Propagation rounds | 12,368 | 35,739 |
+| Constraint evaluations | 489,254 | 1,459,299 |
+| Term support evaluations | 5,801,654 | 17,608,128 |
+| Support-cache hits | 6,427,042 | 19,342,296 |
+| Domain reductions | 26,859 | 80,862 |
+| Forced assignments | 8,859 | 26,779 |
+| Support-disjoint contradictions | 7,318 | 22,693 |
+| Nogoods learned / minimized / reused | 10,922 / 184 / 655 | 33,293 / 174 / 1,608 |
+| Symmetry permutations / prunes | 75,599 / 364 | 219,857 / 526 |
+| Mean branch factor | 3.942 | 3.960 |
+| Maximum depth | 13 | 13 |
+
+### Untouched holdout and promotion decision
+
+The frozen solver and two-stage portfolio were run once on the holdout. The
+result stayed **32 TRUE / 57 FALSE**, with zero Fin-4 gain and zero invalid
+outcome. Probe and fast each made 11 attempts, used 10,562 combined states,
+and cost 5.35 pure engine seconds.
+
+Post hoc label analysis explains the zero: all six known FALSE residuals happen
+to lie in the content-hash development half, while the 11 holdout residuals
+are known TRUE. This fact was not used by routing or configuration selection.
+The preregistered requirement was nevertheless holdout FALSE gain at least
+one, so promotion correctly failed. Neither probe nor fast is enabled in
+production.
+
+### Clean production and official gates
+
+| Metric | `sample_20` | `sample_200` |
+|---|---:|---:|
+| Accepted TRUE | 1 | 66 |
+| Accepted FALSE | 10 | 94 |
+| Total | 11 | 160 |
+| Unresolved | 9 | 40 |
+| Runtime | 39.07 s | 303.33 s |
+
+The clean full runtime is 15.59 seconds lower than the prior generic-engine
+318.92-second run and 6.37 seconds above the 296.96-second pre-refactor run.
+The improvement comes from generic nogood indexing and lower-overhead state
+management; Fin 4 is disabled in production. Because the promoted gain is
+zero, seconds per promoted acceptance is undefined.
+
+The final solver is 130,559 bytes, safely below the 500,000-byte limit. Solo
+passes 66/66 and Marathon 25/25. The generic finite-model suite, equality
+chains, source re-entry, and contextual research suites all retain their
+expected accepted/abstention results. Incorrect, incomplete, malformed,
+unparsed, replay-failure, Lean-rejection, and LLM-call counts are zero.
+
+Production residuals remain 34 known TRUE and six known FALSE. Diagnostic
+Fin-4 search certifies three of those six FALSE rows, leaving three for which
+the frozen portfolio reached no source model or target-falsifying model. The
+dominant remaining finite-model obstruction is therefore not certificate
+generation but finding any useful order-4 source model within small bounds.
+
+The next pass should not increase Fin-4 budgets or proceed directly to Fin 5.
+The exact next experiment should create a **balanced promotion holdout for
+FALSE-constructor evaluation**, derived only from equation-content hashes but
+stratified before constructor tuning so both halves contain unresolved finite
+countermodel opportunities. Re-evaluate the already frozen probe route on that
+audit split without changing its code. Only if that independent audit
+transfers should a structural router be considered for production.
