@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run isolated MathGraph regressions and enforce the frozen 65270e7 floor."""
+"""Run isolated MathGraph regressions and enforce the frozen 1ad667b floor."""
 
 import argparse
 import hashlib
@@ -16,21 +16,23 @@ SOLVER = ROOT / "submissions" / "mathgraph"
 PROBLEMS = ROOT / "examples" / "problems"
 RESULTS = ROOT / "experiments" / "mathgraph" / "results"
 BASELINES = {
-    "sample_20": RESULTS / "contextual_final" / "sample_20.json",
-    "sample_200": RESULTS / "contextual_final" / "sample_200.json",
+    "sample_20": RESULTS / "fin3_final" / "sample_20.json",
+    "sample_200": RESULTS / "fin3_final" / "sample_200.json",
 }
 EXPECTED_HASHES = {
-    "sample_20": "ef6ea116b1bab964274fee1f205e3bf27c770f6d91c65aac9574d493aaf85e6d",
-    "sample_200": "c4efdcca30a9a12ad4a76a26641e3790e44cb8503024c7c762e8ccccf55d8857",
+    "sample_20": "861af3ef20cd2363606b7d75f84aa39dfbf8f56fbf37808eb887dccbe2f3d4f3",
+    "sample_200": "1f195aabbb01a884a3c6a6670c804a66580e6428c78bd0d4665b28e7a57f73f6",
     "source_reentry_proxy": "87c15430ae7293e6da65b51234754adb27e30575f1c8583b14cc4741d0f195b9",
     "equality_chain_proxy": "987f7cf71c938d8831337edc6ee8d0d2e8788fa241eb74eb58457cc1f6f6800d",
     "contextual_proxy": "c06d2692ddba7aa0bc3f13fbc926cffb2b0457314ed6df65eeb16c4cbfe7d0dd",
+    "finite_model_proxy": "8bf13e4a7d10b098bedb880837018e8261dfc28c63d1327a12b0ea150e1addca",
 }
 HASHED_ARTIFACTS = {
     **BASELINES,
     "source_reentry_proxy": RESULTS / "source_reentry_proxy.json",
     "equality_chain_proxy": RESULTS / "equality_chain_source_reentry.json",
     "contextual_proxy": RESULTS / "contextual_overlap_proxy.json",
+    "finite_model_proxy": RESULTS / "fin3_proxy.json",
 }
 
 

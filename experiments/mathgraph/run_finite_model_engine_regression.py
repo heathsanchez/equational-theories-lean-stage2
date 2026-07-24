@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Official Fin 3 proxy suite plus independent semantic/replay audits."""
+"""Generic finite-model CSP proxy suite and semantic/replay audits."""
 
 import argparse
 import importlib.util
@@ -57,7 +57,8 @@ def metrics(row):
 def direct_search(solver, problem, configuration):
     source = solver.parse_equation(problem["equation1"])
     target = solver.parse_equation(problem["equation2"])
-    search = solver.Fin3Search(
+    search = solver.FiniteModelEngine(
+        configuration["domain_size"],
         source,
         target,
         time.monotonic() + configuration["seconds"],
@@ -71,6 +72,15 @@ def direct_search(solver, problem, configuration):
     else:
         found = search.search_complete_enumeration()
     return source, target, search, found
+
+
+def officially_verify(problem, code):
+    from judge.verify import verify_answer
+    from pipeline.proxy import _to_judge_problem
+
+    answer = json.dumps({"verdict": "false", "code": code})
+    result = verify_answer(_to_judge_problem(problem), answer)
+    assert result["status"] == "accepted", (problem["id"], result)
 
 
 def main():
@@ -133,7 +143,7 @@ def main():
     assert not rejected, rejected
 
     solver = load_solver()
-    fast = solver.FIN3_PORTFOLIO[0]
+    fast = solver.FINITE_MODEL_PORTFOLIO[0]
     audited = {}
     for problem_id in sorted(FIN3_FALSE_CASES):
         source, target, search, found = direct_search(
@@ -145,8 +155,11 @@ def main():
         assert solver.replay_countermodel(
             source, target, table, 3, witness, serialized
         )
-        assert solver.find_fin2_countermodel(
-            source, target, time.monotonic() + 0.2
+        fin2 = solver.FiniteModelEngine(
+            2, source, target, time.monotonic() + 0.2, 0, 16
+        )
+        assert fin2.search_complete_enumeration(
+            canonical_only=False
         ) is None
         audited[problem_id] = (source, target, search, table, witness)
 
@@ -173,10 +186,10 @@ def main():
         for assignment in product(range(3), repeat=len(target[2]))
         if len(set(assignment)) == 3
         and solver.evaluate_compiled(
-            solver.compile_equation(target), assignment, table
+            solver.compile_equation(target), assignment, table, 3
         )[0]
         != solver.evaluate_compiled(
-            solver.compile_equation(target), assignment, table
+            solver.compile_equation(target), assignment, table, 3
         )[1]
     )
     assert solver.replay_countermodel(
@@ -185,7 +198,7 @@ def main():
     )
 
     reference = by_problem["fin3_no_fin2_countermodel"]
-    for configuration in solver.FIN3_PORTFOLIO[1:]:
+    for configuration in solver.FINITE_MODEL_PORTFOLIO[1:]:
         source, target, search, found = direct_search(
             solver, reference, configuration
         )
@@ -219,7 +232,7 @@ def main():
         solver.serialize_flat_table(table, 3) + " ",
     )
 
-    complete_config = solver.FIN3_PORTFOLIO[2]
+    complete_config = solver.FINITE_MODEL_PORTFOLIO[2]
     true_control = by_problem["fin3_true_control_one"]
     source, target, complete, found = direct_search(
         solver, true_control, complete_config
@@ -228,12 +241,59 @@ def main():
     assert complete.complete_tables == 3330
     assert complete.symmetry_duplicates == 16353
 
+    # Fin 2, Fin 3, and Fin 4 share the exact replay/certificate methods.
+    fin2_problem = by_problem["fin3_old_fin2_route"]
+    source = solver.parse_equation(fin2_problem["equation1"])
+    target = solver.parse_equation(fin2_problem["equation2"])
+    fin2 = solver.FiniteModelEngine(
+        2, source, target, time.monotonic() + 0.2, 0, 16
+    )
+    found = fin2.search_complete_enumeration(canonical_only=False)
+    assert found is not None and fin2.replay(*found)
+    officially_verify(fin2_problem, fin2.emit_certificate(found[0]))
+
+    fin3_problem = by_problem["fin3_no_fin2_countermodel"]
+    source, target, fin3, table, witness = audited[
+        "fin3_no_fin2_countermodel"
+    ]
+    assert fin3.replay(table, witness)
+    officially_verify(fin3_problem, fin3.emit_certificate(table))
+    assert fin3.domain_reductions > 0
+    assert fin3.branch_choices > 0
+    assert fin3.nogoods_learned > 0
+
+    fin4_config = solver.FINITE_MODEL_PROTOTYPES[0]
+    source, target, fin4, found = direct_search(
+        solver, fin3_problem, fin4_config
+    )
+    assert found is not None and fin4.replay(*found)
+    officially_verify(fin3_problem, fin4.emit_certificate(found[0]))
+    assert "Fin 4" in fin4.emit_certificate(found[0])
+
+    # A TRUE control forces fixed-point propagation, MRV, scoped nogood reuse,
+    # and conservative stabilizer pruning without producing a countermodel.
+    symmetric = by_problem["fin3_true_control_several"]
+    source = solver.parse_equation(symmetric["equation1"])
+    target = solver.parse_equation(symmetric["equation2"])
+    csp = solver.FiniteModelEngine(
+        3, source, target, time.monotonic() + 2.0, 100000, 16
+    )
+    assert csp.search_target_guided() is None
+    assert csp.propagation_rounds > 0
+    assert csp.domain_reductions > 0
+    assert csp.mrv_reductions > 0
+    assert csp.nogoods_learned > 0
+    assert csp.nogoods_reused > 0
+    assert csp.symmetry_branch_prunes > 0
+    assert csp.maximum_depth > 0
+
     largest_certificate = max(
         len((row.get("code") or "").encode("utf-8")) for row in rows
     )
     print(
-        "Fin 3 regression: 13 accepted FALSE, 2 accepted TRUE, "
-        "1 bounded abstention, zero rejected judge calls; "
+        "finite-model regression: 13 production-path accepted FALSE, "
+        "2 accepted TRUE, 1 bounded abstention, zero rejected judge calls; "
+        "generic Fin 2/3/4 direct certificates accepted; "
         f"largest certificate {largest_certificate} bytes"
     )
 
