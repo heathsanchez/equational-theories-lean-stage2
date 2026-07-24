@@ -911,3 +911,165 @@ highest-leverage reusable constructor is a **bounded Fin 4
 target-witness-guided CSP/backtracker**, reusing the compiled constraints,
 independent replay, and safe complete-model canonicalization. Exhaustive
 `4^16` table enumeration should not be attempted as the primary route.
+
+## Generic finite-model CSP refactor
+
+This architecture pass started from authoritative HEAD
+`1ad667b6930274a3ce02a3ceb6dc53a2d6a4627e`. The implementation commit is
+`c31e9da7a12db87c69b1a219ef7bb2a1785e164f`
+(`refactor finite models into generic CSP engine`). The exact starting solver
+is preserved as `experiments/mathgraph/regressions/solver_1ad667b.py`: 94,219
+bytes, SHA-256
+`521e078e1233ecec8f6fd688c8a1b676acd5f2b6d0846dbd93e43dd4dc1f8437`.
+The frozen production floor is 66 accepted TRUE plus 94 accepted FALSE.
+
+The pass deliberately separates architecture from score promotion. Fin 2 and
+the promoted Fin 3 route now use one generic engine in production. Fin 4 is
+exercised only by synthetic direct verification and is not in the production
+portfolio.
+
+### Engine architecture
+
+`FiniteModelEngine(domain_size, ...)` owns the complete finite-model route:
+
+```text
+compile source and target once
+→ build cell/assignment constraint graph
+→ propagate possible-value domains to a fixed point
+→ branch by MRV and dynamic constraint influence
+→ learn invocation-local sound nogoods
+→ prune under a conservative partial-table stabilizer
+→ canonicalize the complete table
+→ independently replay source and target
+→ emit one generic Fin n certificate
+```
+
+An `n`-element magma is a row-major `n*n` table. Every partial cell is a
+bitmask of possible values in `0..n-1`; a singleton is an assigned cell and
+the full bitmask is `UNASSIGNED`. No propagation step guesses a value. The
+source and target use the same compiled subterm DAG and the same total and
+partial evaluators for every domain size.
+
+Fixed-point propagation applies:
+
+- intersection of the possible values of source-equality roots;
+- contradiction when two determined source sides differ;
+- singleton reduction;
+- target-root disequality propagation for a selected witness;
+- contradiction when a selected target witness is forced equal.
+
+The static constraint graph maps table cells to source and target assignments
+with a direct dependency. Dynamic activity adds cells exposed while evaluating
+nested terms in the current state. Branch selection is deterministic:
+minimum remaining values, then greatest unresolved source influence, then
+greatest target influence, then row-major cell index.
+
+When a branch is exhaustively contradictory, the engine records the singleton
+cell facts that imply the contradiction. Source nogoods are valid throughout
+that invocation; target-disequality nogoods are scoped to their exact target
+witness. A timeout or state-budget exit never learns a nogood.
+
+Partial symmetry is intentionally conservative. A permutation may prune only
+if it fixes every element used by the selected target witness, maps the
+current constrained-cell set onto itself, and produces a lexicographically
+smaller possible-value state. Source laws are invariant under relabelling and
+the fixed witness remains the same, which justifies this orbit pruning without
+assuming idempotence. Complete tables retain the existing full `n!`
+canonicalization.
+
+The engine exposes `build_constraints`, `propagate`, `branch`, `replay`,
+`canonicalize`, and `emit_certificate`. The old Fin-2 enumerator,
+Fin-3-specific partial evaluator, Fin-3 relabelling/canonicalization helpers,
+`Fin3Search`, and separate FALSE-certificate entry point were removed. The
+remaining complete enumeration is a generic reference mode used by Fin 2 and
+bounded diagnostics.
+
+### Generic replay and certificates
+
+Replay is independent of search caches and accepts an arbitrary `n`. It checks
+the exact `n*n` table shape and range, byte-exact serialization, every source
+assignment, the stored target witness, and a genuine target failure. Only a
+successful replay reaches `emit_fin_certificate`, whose Lean output varies
+only in `Fin n` and the serialized table dimensions.
+
+The generic synthetic suite runs all three sizes through these same methods:
+
+| Domain | Route | Replay | Official Lean certificate |
+|---|---|---|---|
+| Fin 2 | complete generic enumeration | pass | accepted |
+| Fin 3 | target-guided generic CSP | pass | accepted |
+| Fin 4 | target-guided prototype | pass | accepted |
+
+The Fin-4 proxy found its model in 19 states and 21 propagation rounds, with
+61 domain reductions, 12 branch choices, maximum depth 12, and a 287-byte
+certificate. It is a capability check, not a benchmark promotion.
+
+The full finite-model proxy result remains 13 accepted FALSE, two accepted
+TRUE controls, and one required bounded abstention. It additionally forces
+fixed-point propagation, MRV, nogood learning and reuse, stabilizer pruning,
+corrupt-replay rejection, and completion immediately before deadline. The
+existing equality-chain suite remains 9/9; source re-entry remains eight TRUE,
+two FALSE, and one bounded abstention; and the contextual research audit
+remains 12 independently accepted TRUE, three FALSE, and one bounded
+abstention. Rejected judge calls and LLM calls are zero.
+
+### Frozen compatibility evaluation
+
+No configuration selection or search-budget increase was performed. The
+existing equation-content SHA-256 split and promoted 0.5-second Fin-3
+configuration were retained unchanged.
+
+| Evaluation | Accepted TRUE | Accepted FALSE | Unresolved | Runtime |
+|---|---:|---:|---:|---:|
+| `sample_20` | 1 | 10 | 9 | 36.64 s |
+| Development half | 34 | 37 | 29 | 141.07 s |
+| Holdout half | 32 | 57 | 11 | 165.39 s |
+| Clean `sample_200` | 66 | 94 | 40 | 318.92 s |
+
+Every one of the 160 frozen accepted rows retains its verdict. The score gain
+is deliberately zero: this pass proves the replacement architecture before a
+Fin-4 promotion experiment. Incorrect, incomplete-proof, malformed, unparsed,
+replay-failure, and Lean-rejection counts are all zero.
+
+The clean full run is 21.96 seconds slower than the previous 296.96-second
+run, a 7.4% wall-time increase. At the same time, the generic Fin-3 CSP reduces
+its 50 production attempts from 197,778 to 73,895 partial states. Its aggregate
+engine metrics are:
+
+| Metric | Aggregate |
+|---|---:|
+| Propagation rounds | 55,157 |
+| Domain reductions | 66,065 |
+| MRV reductions | 3,990 |
+| Nogoods learned / reused | 35,989 / 23,079 |
+| Safe partial-symmetry prunes | 337 |
+| Branch choices / values | 24,523 / 73,093 |
+| Mean branch factor | 2.981 |
+| Maximum depth | 9 |
+| Fin-3 hits | 10 |
+| Maximum finite certificate | 271 bytes |
+| Maximum finite replay time | 0.000101 s |
+
+The larger wall time despite fewer states measures the cost of repeated
+possible-value propagation and activity scoring in Python. This is an
+optimization target, not a reason to weaken the verified search.
+
+The final solver is 104,686 bytes (SHA-256
+`c88b9d78daabde4ab099dffef807a8d5aaac803b5b883275a3b4a0cfd6a31816`),
+well below the 500,000-byte cap. The largest certificate in the clean
+`sample_200` run is 1,008 bytes. The unmodified Solo harness passes 66/66 and
+the unmodified Marathon harness passes 25/25. The compact validation manifest
+records hashes of each isolated output; generated benchmark logs remain local
+rather than adding bulky artifacts to Git.
+
+The residual set is unchanged: 34 unresolved TRUE rows and six unresolved
+FALSE rows. Of the latter, four have Fin-3 source models but every such model
+satisfies the target, and two have no Fin-3 source model. These are bounded
+order-at-most-three obstructions, not implication proofs.
+
+The next constructor should be a separate **Fin-4 promotion pass using this
+generic engine**, retaining the same development/frozen/holdout protocol.
+The first capability improvement should be stronger generic support
+propagation for nested operation nodes and cheaper incremental activity
+updates, followed by the existing target-guided search—not a larger blind
+budget and not exhaustive `4^16` enumeration.
