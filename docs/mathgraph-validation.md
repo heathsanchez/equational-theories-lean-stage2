@@ -505,3 +505,188 @@ when they introduce the missing target side or join a target-connected
 component, while retaining the same proof-DAG replay and content-hash
 promotion discipline. This is the next reusable TRUE route before broad
 critical-pair completion or higher-order finite model search.
+
+## Goal-directed contextual overlap and narrowing pass
+
+This pass started from authoritative commit
+`d75ce6862341bfb295cee2b20ae985dd821c2ab7`. The implementation commit is
+`f6c92ce` (`add goal-directed contextual overlap constructor`). The exact
+starting solver is preserved as
+`experiments/mathgraph/regressions/solver_d75ce68.py`: 45,493 bytes,
+SHA-256
+`66ae78355d4f01a5528559a0923264644fa8f77287e8a33ae34ab426f7455d31`.
+
+The regression gate verifies these unchanged frozen artifact hashes:
+
+| Frozen artifact | SHA-256 |
+|---|---|
+| `sample_20` | `cc92c7e86c38bf3dbf0781ae4891a66661e502e3f6a208e246132151884407a9` |
+| `sample_200` | `5ee84fd8028420d42aebaf67f6506d94aebaf9f3bf9af32f2848d554b7bf8625` |
+| Source-reentry proxy | `87c15430ae7293e6da65b51234754adb27e30575f1c8583b14cc4741d0f195b9` |
+| Equality-chain proxy | `987f7cf71c938d8831337edc6ee8d0d2e8788fa241eb74eb58457cc1f6f6800d` |
+
+Every clean invocation still writes to a unique temporary result file before
+copying its validated output. The gate requires every previously accepted row
+to remain accepted with the same verdict, at least 66 TRUE and 84 FALSE on
+the full sample, no rejected judge category, no LLM call, and both official
+harnesses green.
+
+### Algorithm and proof representation
+
+`ContextualSearch` adds two bounded search operations without adding a trusted
+proof rule:
+
+- Target narrowing starts from both target sides and target-connected graph
+  components. It matches either source side at non-variable subterm paths,
+  completes an ordered concrete source substitution, replaces the match by
+  the opposite source side, and ranks results by exact target introduction,
+  target-subterm occurrence, component connection, structural distance, term
+  size, and variable diversity.
+- Contextual overlap indexes both sides and orientations of bounded concrete
+  source instances. It overlaps an inner equality at a proper non-variable
+  position of an outer equality, lifts the inner proof through the recorded
+  one-hole context, and combines it with the outer proof by symmetry and
+  transitivity. Depth-two search may reuse bounded consequences as outer
+  equalities, but is not unrestricted completion.
+
+Contexts are root-relative tuples of `L` and `R`. `get_subterm` and
+`replace_subterm` operate on the parsed term tree. A nested replacement is
+compiled into an ordinary chain of left- or right-child `congrArg` nodes.
+Overlap metadata records the outer and inner node IDs, selected sides,
+context path, exact before and after subterms, changed outer term, consequence,
+and structural score. Final DAG nodes remain only source instance, symmetry,
+transitivity, congruence, and reflexivity.
+
+Independent replay does not invoke search. It checks parent-before-child DAG
+order, every ordered source substitution and orientation, congruence
+endpoints, transitivity joins, context path validity, exact subterm
+replacement, overlap records, target endpoints, term-size bounds, and node
+budgets before Lean generation. Lean certificates use explicit `have`
+bindings, `Eq.symm`, `Eq.trans`, and nested `congrArg`.
+
+### Fixed experimental portfolio
+
+The preregistered configurations were:
+
+| Route | Bounds |
+|---|---|
+| Target narrowing | depth 3; context depth 5; branching 20; 750 terms; 3,000 DAG nodes; term size 19; 3 s |
+| Contextual light | overlap depth 1; context depth 3; 300 source instances; 1,000 candidates; 1,500 new nodes; term size 17; 1 s |
+| Contextual medium | overlap depth 2; context depth 5; 800 source instances; 4,000 candidates; 6,000 new nodes; term size 21; 5 s |
+
+The full portfolio was evaluated only on development. All five marginal
+accepted cases came from target narrowing. Light and medium added zero after
+narrowing, so both were removed. Target narrowing before source re-entry was
+then frozen because it avoids re-entry work on more development wins than the
+single existing development re-entry win on which it adds work.
+
+The untouched holdout added zero accepted cases. This fails the preregistered
+promotion rule, which required at least one holdout gain or a major runtime
+reduction. Consequently `PROMOTED_CONTEXTUAL_PORTFOLIO` is empty: the
+constructor is implemented and regression-tested but is not on the production
+route.
+
+### Synthetic official regressions
+
+The 16 equation-only contextual cases produced:
+
+| Result | Count |
+|---|---:|
+| Officially accepted TRUE | 12 |
+| Officially accepted FALSE controls | 3 |
+| Growth-pathological bounded abstention | 1 |
+| Rejected judge calls | 0 |
+| LLM calls | 0 |
+
+The positive suite covers left- and right-child overlap into a source lhs,
+overlap into the rhs, reversed inner and outer orientations, nested context,
+self-overlap with different substitutions, target narrowing, bidirectional
+meeting, temporary expansion, transitivity after congruence, and a proof
+prefix replayed after deadline expiry. The variable-position control records
+suppression rather than generating bare-variable overlaps. All nine synthetic
+overlap certificates use overlap depth 1. The largest synthetic proof DAG has
+7 used nodes and the largest certificate is 943 bytes.
+
+The existing nine equality-chain cases remain 9/9 accepted. The existing
+source-reentry suite remains eight accepted TRUE, two accepted FALSE, and one
+bounded abstention, including an officially accepted expired-prefix replay.
+
+### Development, untouched holdout, and final production
+
+The split membership and SHA-256 equation-content method were not changed.
+
+| Evaluation | Frozen TRUE / FALSE | Experimental TRUE / FALSE | Gain |
+|---|---:|---:|---:|
+| Development | 34 / 35 | 39 / 35 | +5 TRUE |
+| Untouched holdout | 32 / 49 | 32 / 49 | 0 |
+| Combined split outputs, diagnostic only | 66 / 84 | 71 / 84 | +5 TRUE |
+
+The combined diagnostic is not a promoted full-set score. Because the gain
+failed to generalize to holdout, the final clean production benchmarks use
+the empty contextual portfolio:
+
+| Metric | `sample_20` | `sample_200` |
+|---|---:|---:|
+| Accepted TRUE | 1 | 66 |
+| Accepted FALSE | 8 | 84 |
+| Unresolved | 11 | 50 |
+| Incorrect / incomplete / malformed / unparsed | 0 / 0 / 0 / 0 | 0 / 0 / 0 / 0 |
+| Target-narrowing production hits | 0 | 0 |
+| Contextual-light production hits | 0 | 0 |
+| Contextual-medium production hits | 0 | 0 |
+| LLM calls | 0 | 0 |
+| Total runtime | 31.9 s | 283.7 s |
+
+The final solver is 75,870 bytes, below the 500,000-byte cap. Its clean
+production score remains 150/200, so net promoted gain is zero. The
+implementation adds no production search runtime; the 2.46-second difference
+from the prior 281.24-second full run is normal judge/startup variance.
+
+For runtime selection, the all-route development experiment took 284.19
+seconds versus 138.54 seconds at baseline: +145.65 seconds, or 29.13 seconds
+per development-only gain. After freezing target narrowing alone, the clean
+holdout took 161.91 seconds versus 161.82 seconds at baseline, with unresolved
+median 0.27 versus 0.20 seconds and no gain. A judge-free standalone audit of
+target narrowing over all 50 frozen unresolved rows took 0.847 seconds total,
+0.0084 seconds median, and 0.195 seconds maximum. Thus narrowing itself is
+small, but it offers neither the required holdout gain nor a major end-to-end
+runtime reduction. Seconds per promoted accepted result is undefined because
+none was promoted.
+
+Target narrowing produced five marginal development wins. When ordered before
+re-entry it produced six experimental certificates in the combined split,
+preempting one already-accepted source-reentry row. There were zero public
+contextual-overlap light or medium wins and therefore no public overlap-depth
+distribution. The largest experimental target-narrowing proof DAG has 22 used
+nodes and its largest certificate is 2,041 bytes.
+
+### Structural result and official gates
+
+As a diagnostic, the five development gains would reduce unresolved TRUE from
+34 to 29. The strict source-reentry graph phenotype would move:
+
+| Phenotype | Frozen | Experimental |
+|---|---:|---:|
+| Only one exact target side enters | 27 | 23 |
+| Both enter but remain disconnected | 5 | 4 |
+| Neither enters | 2 | 2 |
+
+Three of the five gains explicitly introduce the missing exact target side;
+two connect through generated intermediates. No accepted search records a
+direct existing-component join. Since the route was not promoted, the final
+production phenotype remains 27 / 5 / 2.
+
+There are zero incorrect, incomplete, malformed, unparsed, replay, extraction,
+or Lean-rejection outcomes. The unmodified Solo harness passes 66/66. The
+unmodified Marathon harness passes 25/25; its sandboxed invocation could not
+bind localhost, and the unchanged command passed with loopback permission.
+After validation, `df -h /Users/heath` reports 8.1 GiB free.
+
+## Next highest-leverage experiment after contextual holdout
+
+Do not deepen the deterministic TRUE saturation stack yet. Contextual
+narrowing found a concentrated development cluster but zero holdout cases,
+and contextual overlap added no marginal public win. The next broad reusable
+constructor should be bounded, officially verified **Fin 3 countermodel
+search**, preserving the same content-hash promotion and fail-closed
+discipline.
