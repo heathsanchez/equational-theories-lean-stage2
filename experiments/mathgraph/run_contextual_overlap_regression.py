@@ -144,8 +144,16 @@ def main():
     positives = OVERLAP_CASES | NARROWING_CASES
     for problem_id in positives:
         row = by_id[problem_id]
-        assert row.get("solved") and row.get("verdict") == "true", problem_id
-        assert row.get("judge_calls") == 1 and row.get("llm_calls") == 0
+        # The contextual production portfolio is intentionally disabled after
+        # its zero-gain holdout. Production may solve an easy proxy through an
+        # earlier route or abstain; the direct constructor audits below provide
+        # the official accepted certificate requirement for every positive.
+        if row.get("solved"):
+            assert row.get("verdict") == "true", problem_id
+            assert row.get("judge_calls") == 1
+        else:
+            assert row.get("judge_calls") == 0
+        assert row.get("llm_calls") == 0
     for problem_id in FALSE_CASES:
         row = by_id[problem_id]
         assert row.get("solved") and row.get("verdict") == "false", problem_id

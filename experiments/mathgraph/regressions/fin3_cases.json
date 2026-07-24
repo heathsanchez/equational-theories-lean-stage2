@@ -1,0 +1,114 @@
+[
+  {
+    "id": "fin3_old_fin2_route",
+    "eq1_id": 940001,
+    "eq2_id": 940002,
+    "equation1": "x ◇ x = x",
+    "equation2": "x ◇ y = y ◇ x"
+  },
+  {
+    "id": "fin3_no_fin2_countermodel",
+    "eq1_id": 940003,
+    "eq2_id": 940004,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_requires_three_elements",
+    "eq1_id": 940005,
+    "eq2_id": 940006,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_noncommutative_model",
+    "eq1_id": 940007,
+    "eq2_id": 940008,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_nonassociative_model",
+    "eq1_id": 940009,
+    "eq2_id": 940010,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_no_idempotent_diagonal",
+    "eq1_id": 940011,
+    "eq2_id": 940012,
+    "equation1": "x ◇ (x ◇ (x ◇ x)) = x",
+    "equation2": "x ◇ x = x"
+  },
+  {
+    "id": "fin3_target_witness_one_element",
+    "eq1_id": 940013,
+    "eq2_id": 940014,
+    "equation1": "x ◇ (x ◇ (x ◇ x)) = x",
+    "equation2": "x ◇ x = x"
+  },
+  {
+    "id": "fin3_target_witness_two_elements",
+    "eq1_id": 940015,
+    "eq2_id": 940016,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_target_witness_three_elements",
+    "eq1_id": 940017,
+    "eq2_id": 940018,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_source_one_variable",
+    "eq1_id": 940019,
+    "eq2_id": 940020,
+    "equation1": "x ◇ (x ◇ (x ◇ x)) = x",
+    "equation2": "x ◇ x = x"
+  },
+  {
+    "id": "fin3_source_several_variables",
+    "eq1_id": 940021,
+    "eq2_id": 940022,
+    "equation1": "(x ◇ x) ◇ y = x ◇ (x ◇ y)",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_true_control_one",
+    "eq1_id": 940023,
+    "eq2_id": 940024,
+    "equation1": "x ◇ x = x",
+    "equation2": "y ◇ y = y"
+  },
+  {
+    "id": "fin3_true_control_several",
+    "eq1_id": 940025,
+    "eq2_id": 940026,
+    "equation1": "(x ◇ y) ◇ z = x ◇ (y ◇ z)",
+    "equation2": "(a ◇ b) ◇ c = a ◇ (b ◇ c)"
+  },
+  {
+    "id": "fin3_growth_pathological_abstain",
+    "eq1_id": 940027,
+    "eq2_id": 940028,
+    "equation1": "a = (b ◇ (c ◇ (d ◇ (e ◇ (f ◇ (g ◇ (h ◇ (i ◇ (j ◇ (k ◇ (l ◇ (m ◇ (n ◇ (o ◇ (p ◇ (q ◇ (r ◇ (s ◇ (t ◇ (u ◇ (v ◇ (w ◇ (x ◇ (y ◇ z))))))))))))))))))))))))",
+    "equation2": "x = y"
+  },
+  {
+    "id": "fin3_complete_prefix_after_deadline",
+    "eq1_id": 940029,
+    "eq2_id": 940030,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  },
+  {
+    "id": "fin3_corrupted_replay_control",
+    "eq1_id": 940031,
+    "eq2_id": 940032,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)"
+  }
+]
