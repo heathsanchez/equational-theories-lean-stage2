@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run isolated MathGraph regressions and enforce the frozen 896e063 floor."""
+"""Run isolated MathGraph regressions and enforce the frozen d75ce68 floor."""
 
 import argparse
 import hashlib
@@ -16,12 +16,19 @@ SOLVER = ROOT / "submissions" / "mathgraph"
 PROBLEMS = ROOT / "examples" / "problems"
 RESULTS = ROOT / "experiments" / "mathgraph" / "results"
 BASELINES = {
-    "sample_20": RESULTS / "sample_20_equality_chain.json",
-    "sample_200": RESULTS / "sample_200_equality_chain.json",
+    "sample_20": RESULTS / "source_reentry_frozen" / "sample_20.json",
+    "sample_200": RESULTS / "source_reentry_frozen" / "sample_200.json",
 }
 EXPECTED_HASHES = {
-    "sample_20": "28755ecca76ed6c357f1b54607584031b7f48d91f65eb336807e431b2ead4b5c",
-    "sample_200": "dc25ca21a26ec8a5e2dfa92d4ddc58a089b1b0ffdeeb2353a141fd27d469392c",
+    "sample_20": "cc92c7e86c38bf3dbf0781ae4891a66661e502e3f6a208e246132151884407a9",
+    "sample_200": "5ee84fd8028420d42aebaf67f6506d94aebaf9f3bf9af32f2848d554b7bf8625",
+    "source_reentry_proxy": "87c15430ae7293e6da65b51234754adb27e30575f1c8583b14cc4741d0f195b9",
+    "equality_chain_proxy": "987f7cf71c938d8831337edc6ee8d0d2e8788fa241eb74eb58457cc1f6f6800d",
+}
+HASHED_ARTIFACTS = {
+    **BASELINES,
+    "source_reentry_proxy": RESULTS / "source_reentry_proxy.json",
+    "equality_chain_proxy": RESULTS / "equality_chain_source_reentry.json",
 }
 
 
@@ -44,12 +51,17 @@ def load_json(path):
 
 
 def verify_baseline(name):
-    path = BASELINES[name]
+    path = HASHED_ARTIFACTS[name]
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     assert digest == EXPECTED_HASHES[name], (
         f"{name} authoritative baseline hash changed: {digest}"
     )
     return load_json(path)
+
+
+def verify_all_frozen_hashes():
+    for name in EXPECTED_HASHES:
+        verify_baseline(name)
 
 
 def rejected_categories(rows):
@@ -151,8 +163,9 @@ def main():
     parser.add_argument("--official-harnesses", action="store_true")
     args = parser.parse_args()
 
-    baseline20 = verify_baseline("sample_20")
-    baseline200 = verify_baseline("sample_200")
+    verify_all_frozen_hashes()
+    baseline20 = load_json(BASELINES["sample_20"])
+    baseline200 = load_json(BASELINES["sample_200"])
     sample20 = load_json(PROBLEMS / "sample_20.json")
     sample200 = load_json(PROBLEMS / "sample_200.json")
 
