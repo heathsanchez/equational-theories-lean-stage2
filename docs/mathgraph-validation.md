@@ -1304,3 +1304,155 @@ stratified before constructor tuning so both halves contain unresolved finite
 countermodel opportunities. Re-evaluate the already frozen probe route on that
 audit split without changing its code. Only if that independent audit
 transfers should a structural router be considered for production.
+
+## Sealed external Fin-4 constructor audit
+
+The requested follow-up started from
+`1e2d896f0bedc682cb1bee21717ce2d6ed3f48c8`. The audit and promotion
+implementation commit is
+`b0152176e431b2d2ba1a2d3c5061cb2999fab09c`. Before any audit execution the
+solver was verified byte-for-byte at SHA-256
+`ddb646624106d143a6b0882b1ec46fa9e047dc40214310010b5dda89f55f2eb7`.
+No propagation, witness ordering, branching, nogood, symmetry, budget, replay,
+or certificate setting changed before the result was closed and hashed.
+
+The old content-hash holdout was unsuitable specifically for Fin-4 transfer:
+its 11 residuals were all TRUE, while all six residual FALSE opportunities
+were in development. Its original non-promotion decision remains valid, but
+zero recoverable FALSE rows made it unable to estimate Fin-4 recall.
+
+### Provenance and sealed construction
+
+The external source was the locally cached official-format `normal`, `hard1`,
+`hard2`, and `hard3` corpora under `/Users/heath/Documents/SAIR`, containing
+1,669 labelled rows. The builder normalized both equations by parsing and
+canonical rendering, then hashed the ordered source-target pair. It scanned
+the samples, every constructor suite, the Marathon fixture, and historical
+result JSON. The provenance registry contains 355 previously used content
+pairs. It excluded 116 candidate occurrences by prior content hash, leaving
+1,553 unique external candidates.
+
+The builder used no Fin-4 result. Exact Fin-2 and Fin-3 screening identified
+153 FALSE opportunities with no countermodel of order at most three. A
+deterministic seed,
+`fa92d10462bbf183fc17dc47dedc69902d8a7e8c20287e4a5e237826ee67cc90`,
+was derived as specified from the starting HEAD and audit version. It selected
+40 structurally diverse FALSE opportunities and greedily matched 40 TRUE
+controls. Twenty of 40 pairs matched the complete structural bucket; matching
+distance was 4.480 mean, 5.708 median, and 8.333 maximum.
+
+The label-bearing builder wrote separate inputs and label files. The runner
+accepted only the input, manifest, and preregistration paths; it had no label
+argument or label-file constant. The complete raw result was closed at
+SHA-256
+`3520ba599ce40227a54ca800fec7b0bf1930fa522785e29f2afc9f5c26148953`
+before evaluation loaded the sealed labels. This is a reproducible
+process-separation and hashing mechanism, not cryptographic protection from a
+malicious operator.
+
+| Artifact | SHA-256 |
+|---|---|
+| label-hidden inputs | `42f3680536f5bdcfe0e63b9d4eb977be4515ac978ea49088c86f4011c144c30c` |
+| sealed labels | `511a818977434e5dc6abd8bae11ce8de707d76f3fa24c97c09ae246727a0ce68` |
+| provenance registry | `79c2da6cb646bdec88bf7ad90da7673055f2104e86192da0e3f241ee69162ec1` |
+| preregistration | `cb75578cb9b3a11ac56f08e8b4cfd1cadaafaad3e897e813edd8decb7bc44915` |
+
+This meets the `external-large` definition: 40 previously unused FALSE rows,
+40 matched previously unused TRUE controls, the official judge contract, and
+complete provenance hashes.
+
+### Preregistered result
+
+The production comparator accepted none of the 40 FALSE opportunities, as
+intended by selecting rows with exhaustive no-countermodel-of-order-at-most-
+three records. Existing TRUE constructors accepted eight of the 40 controls.
+
+| Frozen configuration | Marginal external FALSE gain |
+|---|---:|
+| Fin4-probe | 17 |
+| Fin4-fast after probe miss | 2 |
+| Fin4-medium after fast miss, diagnostic | 1 |
+| Fin4-deep on the preregistered ten-row subset | 0 |
+
+Probe plus fast recovered 19/40 baseline-unresolved FALSE rows, or 47.5%.
+The Wilson 95% interval is 32.94%–62.50%; the 10,000-replicate bootstrap
+stratified over 37 source-equation clusters is 30.95%–64.86%. The gains span
+19 source families; no family contributes more than two. They span shallow
+and nested terms, one-to-two and three-plus source-variable strata, and both
+the no-Fin-3-source-model and Fin-3-source-models-satisfy-target phenotypes.
+Witness cardinalities are seven of size one, ten of size two, and three of
+size three.
+
+Probe plus fast consumed 122.16 seconds across the 72 baseline-unresolved
+audit rows, or 6.43 seconds per added FALSE. It used 120,753 partial states,
+119,096 propagation rounds, 3,007,666 constraint evaluations, 37,466,076
+term-support evaluations, 43,315,984 support-cache hits, 111,850 learned
+nogoods (911 minimized, 4,571 reused), and 732,571 symmetry permutation tests
+with 1,731 prunes. Maximum depth was 14.
+
+All 20 discovered tables replayed and received official acceptance. No TRUE
+control caused a Fin-4 judge call. Incorrect, malformed, incomplete,
+replay-failed, Lean-rejected, and unparsed counts are zero. With zero observed
+invalid outcomes over 20 emitted certificates, the one-sided 95% upper bound
+on the conditional invalid-certificate rate is 13.91%; this finite audit does
+not prove universal precision.
+
+Every hit was checked under variable renaming, source-side reversal,
+target-side reversal, mirrored term presentation, and element relabelling.
+All 100 constructed certificates were officially accepted. The unchanged
+search re-found 76/80 searched presentations within the same wall budgets;
+the remaining four still had officially replayed valid transformed tables and
+represent timing-limited search variance, not verdict variance.
+
+The three old development hits remain historical evidence only. Their content
+hashes, frozen route, states, time, witness size, and canonical table are
+recorded in `fin4_promotion_summary.json`: two probe hits used 25 and 27 states
+in 0.009 and 0.026 seconds, while the fast hit used 1,238 states in 0.483
+seconds. All have exhaustive order-at-most-three obstructions, two-element
+witnesses, distinct canonical tables, and 287-byte certificates. None enters
+the external numerator.
+
+All preregistered promotion conditions passed: 40 external opportunities,
+19 gains against a required four, positive bootstrap lower bound, gains in
+multiple structural families, no single-source dependence, zero invalid
+outcomes, 6.43 seconds per external gain, and preservation of the production
+floor.
+
+### Minimal production promotion
+
+Production first tested the frozen probe/fast portfolio and gained two sample
+FALSE rows, both from probe. Following the preregistered minimization rule,
+fast remains diagnostic and production promotes only unchanged Fin4-probe:
+16 target witnesses, 10,000 states, 0.20 seconds, and four retained source
+models. It runs only after Fin 3 on rows still unresolved.
+
+| Metric | Frozen production | Probe-only production |
+|---|---:|---:|
+| Accepted TRUE | 66 | 66 |
+| Accepted FALSE | 94 | 96 |
+| Total | 160 | **162** |
+| Unresolved | 40 | 38 |
+| Full runtime | 318.92 s | 332.30 s |
+
+The authoritative runtime increase is 13.38 seconds, or 6.69 seconds per new
+acceptance. Against the paired clean disabled run of 314.4 seconds, the
+increase is 17.9 seconds, or 8.95 seconds per gain. Both satisfy the preferred
+runtime-value threshold. The final probe made 40 attempts, used 16,294
+partial states, learned 14,544 nogoods, and produced two officially accepted
+Fin-4 certificates. The final solver is 130,752 bytes with SHA-256
+`a5493e0b60b7c92bc5f76381f778c5f17fcb2c43994654da717e013c4e1cbe56`.
+
+`sample_20` remains 1 TRUE / 10 FALSE. Solo is 66/66 and Marathon is 25/25.
+The generic finite-model, 20-case Fin-4, nine-case equality-chain,
+source-reentry, and contextual research suites all pass their exact accepted
+and bounded-abstention contracts. LLM calls and all invalid outcome categories
+remain zero.
+
+The production residual is now 34 known TRUE and four known FALSE. The
+dominant overall obstruction is therefore deterministic TRUE reach, not small
+finite-model coverage. The next pass should add a broad, proof-producing TRUE
+constructor using bounded equational normalization with independently replayed
+critical consequences, evaluated on a new content-hash development/holdout
+split. Fin4-fast and medium should remain diagnostics; Fin 5 should wait until
+the four FALSE residuals have an external model-order profile showing that a
+higher-order ladder is the limiting factor.
