@@ -1456,3 +1456,180 @@ critical consequences, evaluated on a new content-hash development/holdout
 split. Fin4-fast and medium should remain diagnostics; Fin 5 should wait until
 the four FALSE residuals have an external model-order profile showing that a
 higher-order ladder is the limiting factor.
+
+## Proof-producing equational normalization audit
+
+This pass started from
+`3215158571e2c15dbf8bfaa410c5beb4e84dec61`. The implementation commit is
+`3cf9660031a46e09cfa5e5498d885f06945ae294`. Before implementation, the
+production solver was preserved byte-for-byte as `solver_3215158.py`:
+130,752 bytes at SHA-256
+`a5493e0b60b7c92bc5f76381f778c5f17fcb2c43994654da717e013c4e1cbe56`.
+The regression manifest records every one of the 66 TRUE and 96 FALSE
+accepted row verdicts, rather than enforcing only aggregate counts.
+
+### Constructor and trusted boundary
+
+`EquationalNormalizer` is a bounded compilation and proof-compression layer.
+It generates concrete source instances from source/target variables, target
+subterms, shallow terms, and variable-identification substitutions. It adds
+renamed first-order and exact proper overlaps and exact-endpoint compositions.
+Every consequence is represented by a proof DAG and replayed before it can
+become a rule.
+
+The selected orientation is the target-independent well-founded order
+
+```text
+term size
+→ term depth
+→ nonlinear repetition penalty
+→ distinct variables
+→ canonical prefix serialization
+```
+
+Only strict decreases become rules. Alpha-equivalent rule patterns are merged,
+the cheapest proof is retained, and the frozen coverage-diverse selector
+chooses a bounded target-relevant rulebook. Normalization is deterministic
+innermost rewriting. Each step records its path, rule, match substitution,
+before/after terms, and decrease. The independent trace replayer redoes
+schematic matching, repeated-variable checks, context replacement, and proof
+DAG validation without calling consequence search.
+
+The trusted proof boundary did not grow. Certificates use only universally
+quantified source instantiation, reflexivity, symmetry, transitivity, and
+`congrArg`. The left and right target traces must reach exactly the same
+canonical term; similar, alpha-equivalent, or merely overlapping normal forms
+are insufficient. Local critical-pair inspection is a rulebook-quality metric,
+not a claim of global confluence.
+
+The frozen diagnostic portfolio is:
+
+| Configuration | Time | Consequences | Decreasing rules | Selected rules | Max term |
+|---|---:|---:|---:|---:|---:|
+| Norm-probe | 0.20 s | 250 | 32 | 8 | 15 |
+| Norm-fast | 0.75 s | 800 | 64 | 16 | 17 |
+| Norm-medium | 3.00 s | 2,000 | 128 | 24 | 19 |
+| Norm-deep diagnostic | 15.00 s | 4,000 | 256 | 48 | 21 |
+
+Contextual overlap and narrowing remain disabled in production. The
+normalizer's promoted portfolio is also empty.
+
+### Synthetic and development results
+
+The equation-only synthetic suite has 30 cases. Twenty-four positive
+certificates were officially accepted. Six abstention, corruption, and FALSE
+controls made no incorrect TRUE call. Corrupted rule provenance and corrupted
+match substitutions were rejected. The largest accepted synthetic proof DAG
+has 11 nodes and the largest certificate is 763 bytes.
+
+The preregistered development grid compared size-first and depth-first
+orientation priorities with coverage-diverse and reduction-utility selectors,
+using probe, fast, and medium without changing their bounds. Production before
+normalization was 34 TRUE / 39 FALSE on development, with 27 unresolved rows.
+Every configuration gained zero. The frozen tie-break selected size-first plus
+coverage because it was the simplest candidate; no accepted IDs or row-specific
+exceptions entered selection.
+
+This is a useful negative result. The medium diagnostic generated many valid
+decreasing rules, but on the 34 full-sample TRUE residuals 31 rulebooks never
+matched either target side, two reduced at least one side but ended at distinct
+normal forms, and one required a nonlocal or expansion-first step. No
+normalization or consequence budget was exhausted. The dominant failure is
+representation mismatch, not too few rules.
+
+### Sealed external TRUE audit
+
+Provenance was rebuilt to include the earlier Fin-4 audit, all samples,
+constructor suites, and accessible historical artifacts. Normalized ordered
+source-target content hashes excluded 196 previously used occurrences. The
+four cached official-format corpora supplied 1,473 unique candidates after
+exclusion.
+
+The deterministic seed was
+`4b938d37735f527f09ee5bf78ad091b24f62fd9a7ee894498b3eceb31399c4e9`.
+The builder selected 40 previously unused labelled TRUE rows on which the
+162/200 production solver abstained. It screened a 73-row baseline-unresolved
+FALSE pool and selected 40 nearest-neighbour controls. Matching distance was
+4.8125 mean, 4.5 median, and 13.75 maximum.
+The compact matcher used equation structure, repetition signatures, Fin-2
+source/countermodel counts, and direct-instance counts. It did not recompute
+full Fin-3/Fin-4 or equality-graph profiles for all 1,473 candidates; this is a
+matching-quality limitation, not label leakage.
+
+The runner accepted no label path and asserted the frozen implementation hash
+`b096ebef09a5cc11de9ad22f37a196111d29979beb8f759463643bba44f6b231`.
+It closed the complete raw output at SHA-256
+`72d0b298d0df2e11faadb626379eaa40eddff2b2d881da6e1743ec7ee253f62a`
+before the evaluator loaded labels. As with the Fin-4 audit, process separation
+and hashes provide experimental integrity, not cryptographic protection from a
+malicious operator.
+
+| Artifact | SHA-256 |
+|---|---|
+| provenance | `7157a5f89f34968a65596b6c4dbca61241711b45869544fcb0f6f0045bf6b56e` |
+| audit manifest | `30b11d194812a43e5937a99723cdb2e39fdb7d53f90f96040ea8afde8c8fbd80` |
+| label-hidden inputs | `7c5330e9b7fd58ae7ebedbb603a4239380540fdcc6e04307b67c932fcf5c9405` |
+| sealed labels | `25682b32d89d73ff232e2ec0c7e840cc8e1f275547babce3505d8f918da3a5f6` |
+| preregistration | `1affb70fe97a809fb2337a2719276d02dc8e65be2294945efb23f0f958f72403` |
+| external summary | `1cd5b3c2851e919f4c8fbbf775f62e431914f966f8f01b6c0ab4361f3a9439a5` |
+
+The audit is externally balanced: 40 unused TRUE opportunities and 40 matched
+unused FALSE controls. Probe, fast, medium, and the preregistered ten-row deep
+subset all gained zero. External recall is 0/40; its Wilson 95% interval is
+0%–8.76%, and the source-cluster bootstrap interval is 0%–0%. The engine used
+150.05 seconds over 250 attempts. With no gain, seconds per added TRUE is
+undefined.
+
+Across the external audit it generated 150,514 source instances, replayed
+49,321 candidate equalities, retained 20,021 decreasing rules, removed 28,802
+alpha duplicates, selected 4,320 rules, and inspected 13,784 local critical
+pairs (10,259 joined and 3,525 unresolved). It performed only 21 target rewrite
+steps in total and recorded 250 distinct-normal-form abstentions. Consequence
+and normalization budget exits were both zero.
+
+No FALSE control produced a candidate or TRUE judge call. There were no
+incorrect, malformed, incomplete, unparsed, Lean-rejected, or external replay
+failures. There were no external hits, so the required metamorphic hit audit is
+vacuous rather than evidence of invariance.
+
+The preregistered rule required at least four external gains
+(`max(3, 10% of 40)`), a positive source-cluster bootstrap lower bound, three
+source families, and a full-sample TRUE gain. It therefore failed decisively.
+Medium and deep do not become production routes.
+
+### Clean production decision
+
+Production remains unchanged:
+
+| Set | TRUE | FALSE | Total | Unresolved |
+|---|---:|---:|---:|---:|
+| sample_20 | 1 | 10 | 11/20 | 9 |
+| development | 34 | 39 | 73/100 | 27 |
+| holdout | 32 | 57 | 89/100 | 11 |
+| sample_200 | 66 | 96 | **162/200** | 38 |
+
+The clean full run was 318.25 seconds, 14.05 seconds below the frozen
+332.30-second measurement; since no constructor was promoted, this is run
+variance rather than a claimed speed improvement. Net promoted gain is zero
+and seconds per added acceptance is undefined. The implementation solver is
+177,344 bytes, below the 500,000-byte intake limit.
+
+All 162 accepted verdicts were preserved. `sample_20`, both content-hash
+halves, and the full sample had zero rejected judge outcomes and zero LLM
+calls. The nine-case equality-chain suite, source-reentry suite, contextual
+research suite, generic finite-model suite, and Fin-4 capability suite retained
+their exact accepted/abstention contracts. The Solo solver cases are 66/66 and
+Marathon is 25/25. The repository-wide Solo command also reported two
+submit-CLI ANSI-style failures unrelated to the MathGraph submission; all 66
+solver cases, 79 public attacks, and four infrastructure attacks passed.
+
+The residual remains 34 TRUE and four FALSE. The dominant TRUE phenotype is
+31/34 cases with many replayed decreasing consequences but no rule matching a
+target subterm. The next pass should therefore test one bounded,
+proof-producing **expansion-before-reduction** layer: mine schematic,
+target-independent lemmas by anti-unifying replayed consequences, permit one
+strictly bounded expansion into a normalization-recognized representation, and
+then use the existing explicit trace compiler. It must receive another sealed
+external TRUE audit before promotion. Increasing normalization budgets, adding
+more undirected contextual edges, or moving directly to Fin 5 is not supported
+by this evidence.

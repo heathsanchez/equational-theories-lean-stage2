@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run isolated MathGraph regressions and enforce the frozen fb671c7 floor."""
+"""Run isolated MathGraph regressions and enforce the frozen 162/200 floor."""
 
 import argparse
 import hashlib
@@ -46,6 +46,10 @@ FROZEN_SOLVER = (
 FROZEN_SOLVER_SHA256 = (
     "c88b9d78daabde4ab099dffef807a8d5aaac803b5b883275a3b4a0cfd6a31816"
 )
+NORMALIZATION_BASELINE = RESULTS / "normalization_baseline_manifest.json"
+NORMALIZATION_BASELINE_SHA256 = (
+    "f3a87079fe15ae167ce52dc2f07589b357be8f803742f0118b387836487a07f2"
+)
 
 
 def content_digest(problem):
@@ -81,6 +85,9 @@ def verify_all_frozen_hashes():
     assert hashlib.sha256(FROZEN_SOLVER.read_bytes()).hexdigest() == (
         FROZEN_SOLVER_SHA256
     ), "frozen fb671c7 solver changed"
+    assert hashlib.sha256(NORMALIZATION_BASELINE.read_bytes()).hexdigest() == (
+        NORMALIZATION_BASELINE_SHA256
+    ), "frozen 162/200 normalization baseline changed"
 
 
 def rejected_categories(rows):
@@ -115,6 +122,21 @@ def validate_rows(name, rows, problems, baseline_rows):
         assert current.get("verdict") == frozen.get("verdict"), (
             f"{name}: changed frozen verdict {problem_id}"
         )
+    normalization_floor = load_json(NORMALIZATION_BASELINE)
+    exact_floor = normalization_floor[
+        "sample_20_accepted" if name == "sample_20"
+        else "sample_200_accepted"
+    ]
+    for problem_id, verdict in exact_floor.items():
+        if problem_id not in expected_ids:
+            continue
+        current = by_id[problem_id]
+        assert current.get("solved"), (
+            f"{name}: lost frozen 162-floor win {problem_id}"
+        )
+        assert current.get("verdict") == verdict, (
+            f"{name}: changed frozen 162-floor verdict {problem_id}"
+        )
 
     accepted_true = sum(
         row.get("solved") and row.get("verdict") == "true" for row in rows
@@ -122,8 +144,16 @@ def validate_rows(name, rows, problems, baseline_rows):
     accepted_false = sum(
         row.get("solved") and row.get("verdict") == "false" for row in rows
     )
-    frozen_true = sum(row.get("verdict") == "true" for row in baseline_by_id.values())
-    frozen_false = sum(row.get("verdict") == "false" for row in baseline_by_id.values())
+    frozen_true = sum(
+        verdict == "true"
+        for problem_id, verdict in exact_floor.items()
+        if problem_id in expected_ids
+    )
+    frozen_false = sum(
+        verdict == "false"
+        for problem_id, verdict in exact_floor.items()
+        if problem_id in expected_ids
+    )
     assert accepted_true >= frozen_true, (
         f"{name}: TRUE floor {frozen_true}, got {accepted_true}"
     )
