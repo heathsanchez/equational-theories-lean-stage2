@@ -1633,3 +1633,195 @@ then use the existing explicit trace compiler. It must receive another sealed
 external TRUE audit before promotion. Increasing normalization budgets, adding
 more undirected contextual edges, or moving directly to Fin 5 is not supported
 by this evidence.
+
+## BridgeIR representation-activation audit
+
+This pass started from
+`f9430e5d6210e1e0fe5b8878a5b3b35b3c86d0ce`. The implementation commit is
+`f243df7c118e9cedd606c341c057e4c244cd4f42`. The starting solver was preserved
+byte-for-byte as `solver_f9430e5.py`: 177,344 bytes at SHA-256
+`b096ebef09a5cc11de9ad22f37a196111d29979beb8f759463643bba44f6b231`.
+The implementation solver is 211,218 bytes at SHA-256
+`68729dde1e27c544e5d3e12504ea5878d57ad0af70cf16c80bb238433976dcf8`.
+The exact 66 TRUE and 96 FALSE production verdicts remain the frozen
+regression floor.
+
+### Architecture and soundness boundary
+
+`BridgeIR` is an activation layer, not an independent proof system. For each
+target side it alternates one bounded representation rewrite with the frozen
+normalizer:
+
+```text
+original side
+→ source-derived concrete equality in a recorded context
+→ deterministic normalization
+→ optional second bridge
+→ deterministic normalization
+```
+
+Each state retains its concrete term, original-to-current proof DAG node,
+bridge depth, exact bridge steps, term bounds, pre/post normalizer matches,
+normal form, normalization trace, and provenance. The beam is deterministic
+and ranks newly activated matches before normalized-term distance, expansion
+size, and proof cost. It deduplicates by concrete term, target-variable
+identity, bridge depth, and normalized result, retaining the cheapest proof.
+A bridge-only state with no activation improvement is pruned.
+
+Bridge evidence comes only from independently replayed normalizer
+consequences: forward decreasing rules, their reverse use within the expansion
+cap, concrete source instances over target vocabulary, and optional replayed
+nonorientable evidence. Anti-unification can propose a concrete instantiation,
+but the proposal is usable only if the resulting equality is already
+independently replayable. Development showed no value from nonorientable
+evidence or anti-unification proposals, so both are disabled in the frozen
+probe/fast audit configuration. Reverse use of decreasing rules is retained
+because disabling it removed the only development activation.
+
+No reassociation, permutation, factoring, projection, absorption, or expansion
+is trusted syntactically. A bridge match rechecks repeated variables, rejects
+unbound replacement variables, records the exact context path, reconstructs
+the result, and proves contextual replacement through nested `congrArg`.
+Independent replay does not invoke bridge generation or ranking: it validates
+source instances, every proof-DAG edge, bridge orientation, concrete matching,
+context replacement, term and depth bounds, each normalization step, exact
+shared normal form, and parent-before-child order. The final target proof is
+also audited to contain no source-only variable. Certificates use only source
+instantiation, `Eq.refl`, `Eq.symm`, `Eq.trans`, and `congrArg`; uncontrolled
+`simp` is not used.
+
+The preregistered diagnostic portfolio retained the requested bounds:
+
+| Configuration | Bridge depth | State cap | DAG cap | Time |
+|---|---:|---:|---:|---:|
+| Bridge-probe | 1 | 128 | 256 | 0.20 s |
+| Bridge-fast | 2 | 1,000 | 512 | 0.75 s |
+| Bridge-medium | 2 | 5,000 | 1,000 | 3.00 s |
+| Bridge-deep diagnostic | 3 | 25,000 | 2,000 | 15.00 s |
+
+Normalization budgets were not increased. Contextual overlap, contextual
+narrowing, standalone normalization, and BridgeIR all remain disabled in
+production.
+
+### Synthetic suite and development selection
+
+The equation-only BridgeIR suite contains 30 cases. Twenty-four positive
+certificates were officially accepted; six soundness, pathological-growth, and
+FALSE controls abstained without a TRUE judge call. Independent corruption
+checks rejected a modified context path and a modified bridge substitution.
+The suite covers forward and reverse bridge use, nested left/right contexts,
+alternating bridge-normalize steps, convergence through one or both target
+sides, repeated-variable matching, variable-identity protection, unproved
+reassociation/permutation rejection, cycle suppression, and metamorphic
+presentations.
+
+The fixed development baseline was 34 TRUE / 39 FALSE with 27 unresolved.
+The preregistered grid compared activation-first and distance-first ranking,
+depth one and two, nonorientable evidence, reverse rules, anti-unification, and
+probe alone versus probe plus fast. Every variant gained zero accepted
+theorems. Activation-first with depth two and probe+fast was frozen because it
+exposed the only activation while retaining the smaller evidence set:
+nonorientable evidence off, reverse rules on, anti-unification off.
+
+On the full 34-row TRUE residual, only `true_4561_4566` moved from no match to
+a replayed match. It produced 93 activated states (78 reverse expansions), but
+the normalized forms remained distinct and no certificate was emitted. Thus
+one of the former 31 no-match rows moved to activated-but-unproved, 30 remained
+no-match, and theorem gain was zero. There were no replay failures or unbound
+variable violations.
+
+### Sealed external audit
+
+The new audit did not reuse the previous normalization opportunity set.
+Provenance included all samples and prior constructor/audit inputs. Normalized
+ordered equation-content hashes excluded 276 previously used rows. Four local
+official-format corpora (`normal`, `hard1`, `hard2`, and `hard3`) supplied
+1,393 candidates after exclusion. The builder did not run BridgeIR.
+
+Using the preregistered seed derived from the starting HEAD and
+`bridge-ir-external-audit-v1`, it selected 40 previously unused TRUE
+opportunities and 40 matched FALSE controls. Every selected row was unresolved
+by the frozen production solver, had replayed decreasing rules, and had zero
+initial target matches. Deterministic nearest-neighbour matching used only
+equation structure and earlier-constructor phenotypes; distance was 5.957 mean,
+5.55 median, and 17.04 maximum. Labels were stored separately and were not
+loaded until the label-hidden raw output and closure record were closed and
+hashed. This is process-level experimental integrity, not cryptographic
+protection from a malicious operator.
+
+| Artifact | SHA-256 |
+|---|---|
+| frozen BridgeIR solver | `68729dde1e27c544e5d3e12504ea5878d57ad0af70cf16c80bb238433976dcf8` |
+| provenance | `63a8111cf8d6968e364d582f5800d09076cb4fea967053948914a868ed6f4f43` |
+| audit manifest | `157de2be84dd9ef07d48b2d24f78bb3972747143f820330605807ea7236845de` |
+| label-hidden inputs | `c9422887172d2f2f7f4620001cb92ecc0f669b96fda44193feff13050ac273fd` |
+| sealed labels | `07b65fdb099595e7de1c1bee8e2bbc8ed278b3f5cc641398568d6de7a3f73b32` |
+| raw output | `36207db7a5715c2741f285de6ab6a40792c3fb5d9f4a33a835afcb95ab973987` |
+| closure record | `aa88c2a21ab7168da78abb367105238df96a32f3e0f28a149f762e80ac4324a7` |
+
+Probe activated three opportunity rows and proved one. Fast added six
+activated rows and one proof. Probe+fast therefore activated 9/40 (22.5%) and
+proved 2/40 (5.0%); activation-to-proof conversion was 2/9 (22.22%).
+Medium added one diagnostic proof but no further activated row, and deep added
+no proof. Probe+fast theorem recall has Wilson 95% interval
+1.38%–16.50%; the source-cluster bootstrap interval is 0%–12.5%.
+
+The three all-diagnostic hits came from three distinct source families, though
+all were in the nested, source-variable-count-at-least-three structural
+stratum. Probe+fast used 51.14 engine seconds and 22.32 judge seconds, or 36.73
+end-to-end seconds per gain. It replayed 14,674 bridge equalities, attempted
+144,704 concrete matches, created 1,058 activated states, deduplicated 1,009,
+and found two shared normal forms. Maximum promoted-comparator bridge depth was
+two, the largest proof DAG had 22 nodes, and the largest certificate was 1,963
+bytes. Replay failures were zero.
+
+No FALSE control produced a BridgeIR candidate or TRUE judge call. All invalid
+outcome categories were zero. With zero events in 40 controls, the one-sided
+95% upper bound on the per-row event rate is 7.22%. Metamorphic checks covered
+variable renaming, source reversal, target reversal, and mirrored
+presentations for all three diagnostic hits: all 12 certificates were
+officially accepted with zero invalid outcomes.
+
+### Promotion decision and residual interpretation
+
+The preregistered rule required at least four external gains, at least 25%
+activation-to-proof conversion, a positive cluster-bootstrap lower bound, no
+single-family concentration, at most 20 seconds per gain, preservation of the
+162-verdict floor, and a clean full-sample TRUE gain. BridgeIR failed the gain,
+conversion, bootstrap, family-concentration, runtime, and full-sample-gain
+conditions. It remains a verified diagnostic constructor; the production
+portfolio is empty.
+
+Clean production remains:
+
+| Set | TRUE | FALSE | Total | Unresolved |
+|---|---:|---:|---:|---:|
+| sample_20 | 1 | 10 | 11/20 | 9 |
+| development | 34 | 39 | 73/100 | 27 |
+| holdout | 32 | 57 | 89/100 | 11 |
+| sample_200 | 66 | 96 | **162/200** | 38 |
+
+Net promoted gain is zero, so production seconds per added acceptance is
+undefined. The clean full-sample runtime was 320.95 seconds; because BridgeIR is
+not in the production portfolio, its difference from earlier clean runs is
+ordinary run variance rather than constructor overhead. All 162 verdicts remain
+preserved with zero rejected judge outcomes and zero LLM calls. The final
+implementation solver remains below the 500,000 byte intake limit at 211,218
+bytes. The current repository-wide Solo run is
+fully green, including all 66 solver cases, and Marathon is 25/25. The
+equality-chain, source-reentry, contextual research, normalization, generic
+finite-model, Fin-4, and BridgeIR suites all retain their exact
+accepted/abstention contracts. The residual remains 34 TRUE and four FALSE.
+
+BridgeIR establishes that bounded representation repair is real but sparse:
+it activated 22.5% of a carefully selected external no-match set, produced two
+probe/fast theorems, and survived metamorphic replay, yet it barely touched the
+public residual and converted too few activations. The dominant obstruction is
+now more precise: for most residuals no bounded source-derived equality matches
+the target representation; when a bridge does activate normalization, the
+normal forms often still differ. The next pass should not enlarge BridgeIR or
+normalization budgets. It should characterize the nine external
+activated-but-mostly-unproved traces and the 30 public no-bridge-match cases to
+design one generic **source-derived nonlocal lemma abstraction** with an
+independently sealed audit. Fin 5 and unrestricted contextual completion remain
+unsupported.

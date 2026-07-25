@@ -128,6 +128,10 @@ def main():
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--variant", choices=tuple(VARIANTS))
+    parser.add_argument(
+        "--scope", choices=("development", "holdout", "sample200"),
+        default="development",
+    )
     args = parser.parse_args()
     module = load_solver()
     problems = json.loads(PROBLEMS.read_text())
@@ -135,7 +139,11 @@ def main():
         problems,
         key=lambda row: (digest(row), row["equation1"], row["equation2"]),
     )
-    development = ordered[:100]
+    development = {
+        "development": ordered[:100],
+        "holdout": ordered[100:],
+        "sample200": problems,
+    }[args.scope]
     baseline = {
         row["id"]: row for row in json.loads(args.baseline.read_text())
     }

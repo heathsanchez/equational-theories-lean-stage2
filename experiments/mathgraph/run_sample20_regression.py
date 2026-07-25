@@ -50,6 +50,13 @@ NORMALIZATION_BASELINE = RESULTS / "normalization_baseline_manifest.json"
 NORMALIZATION_BASELINE_SHA256 = (
     "f3a87079fe15ae167ce52dc2f07589b357be8f803742f0118b387836487a07f2"
 )
+BRIDGE_FROZEN_SOLVER = (
+    ROOT / "experiments" / "mathgraph" / "regressions"
+    / "solver_f9430e5.py"
+)
+BRIDGE_FROZEN_SOLVER_SHA256 = (
+    "b096ebef09a5cc11de9ad22f37a196111d29979beb8f759463643bba44f6b231"
+)
 
 
 def content_digest(problem):
@@ -88,6 +95,9 @@ def verify_all_frozen_hashes():
     assert hashlib.sha256(NORMALIZATION_BASELINE.read_bytes()).hexdigest() == (
         NORMALIZATION_BASELINE_SHA256
     ), "frozen 162/200 normalization baseline changed"
+    assert hashlib.sha256(BRIDGE_FROZEN_SOLVER.read_bytes()).hexdigest() == (
+        BRIDGE_FROZEN_SOLVER_SHA256
+    ), "frozen f9430e5 BridgeIR baseline solver changed"
 
 
 def rejected_categories(rows):
