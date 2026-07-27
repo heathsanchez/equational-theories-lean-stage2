@@ -1,0 +1,66 @@
+[
+  {
+    "id": "quotient_true_1120_714",
+    "eq1_id": 1120,
+    "eq2_id": 714,
+    "equation1": "x = y ◇ ((y ◇ (y ◇ x)) ◇ y)",
+    "equation2": "x = y ◇ (y ◇ ((y ◇ x) ◇ y))",
+    "answer": true
+  },
+  {
+    "id": "quotient_true_3083_3094",
+    "eq1_id": 3083,
+    "eq2_id": 3094,
+    "equation1": "x = (((x ◇ y) ◇ y) ◇ z) ◇ z",
+    "equation2": "x = (((x ◇ y) ◇ z) ◇ z) ◇ y",
+    "answer": true
+  },
+  {
+    "id": "quotient_true_1022_99",
+    "eq1_id": 1022,
+    "eq2_id": 99,
+    "equation1": "x = x ◇ ((x ◇ (x ◇ y)) ◇ x)",
+    "equation2": "x = x ◇ ((x ◇ x) ◇ x)",
+    "answer": true
+  },
+  {
+    "id": "quotient_true_425_1630",
+    "eq1_id": 425,
+    "eq2_id": 1630,
+    "equation1": "x = x ◇ (x ◇ (y ◇ (z ◇ w)))",
+    "equation2": "x = (x ◇ x) ◇ ((x ◇ x) ◇ y)",
+    "answer": true
+  },
+  {
+    "id": "quotient_true_4082_4109",
+    "eq1_id": 4082,
+    "eq2_id": 4109,
+    "equation1": "x ◇ x = ((y ◇ x) ◇ x) ◇ z",
+    "equation2": "x ◇ x = ((y ◇ z) ◇ z) ◇ y",
+    "answer": true
+  },
+  {
+    "id": "quotient_true_1874_4357",
+    "eq1_id": 1874,
+    "eq2_id": 4357,
+    "equation1": "x = (x ◇ (y ◇ z)) ◇ (y ◇ w)",
+    "equation2": "x ◇ (y ◇ z) = x ◇ (y ◇ w)",
+    "answer": true
+  },
+  {
+    "id": "quotient_false_control_907_2534",
+    "eq1_id": 907,
+    "eq2_id": 2534,
+    "equation1": "x = y ◇ ((y ◇ x) ◇ (x ◇ y))",
+    "equation2": "x = (y ◇ ((y ◇ x) ◇ y)) ◇ y",
+    "answer": false
+  },
+  {
+    "id": "quotient_false_control_1682_411",
+    "eq1_id": 1682,
+    "eq2_id": 411,
+    "equation1": "x = (y ◇ x) ◇ ((x ◇ x) ◇ y)",
+    "equation2": "x = x ◇ (x ◇ (x ◇ (x ◇ x)))",
+    "answer": false
+  }
+]

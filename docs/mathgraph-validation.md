@@ -1825,3 +1825,36 @@ activated-but-mostly-unproved traces and the 30 public no-bridge-match cases to
 design one generic **source-derived nonlocal lemma abstraction** with an
 independently sealed audit. Fin 5 and unrestricted contextual completion remain
 unsupported.
+## Proof-producing equality-class matching
+
+Starting from `c1e23ab86f24ed1105b5c3157e7859d77178e298`, the TRUE
+pipeline gained a bounded source-law matcher over *verified* equality classes.
+This is a proof-producing version of matching modulo a quotient presentation:
+syntactically different repeated-variable occurrences may match only when the
+existing replayed DAG proves that they are equal.  Representative replacement
+is never silent.  Every path is rebuilt from `Eq.symm`, `Eq.trans`, and nested
+`congrArg`, followed by an ordinary source-law instance.
+
+The route retains at most 256 verified initial equality edges, collects at most
+4,096 structurally ranked candidates, accepts at most 128 new source instances
+per generation for two generations, uses the existing term-size cap of 17, and
+has a three-second wall limit.  Candidates are ranked by connection to the
+opposite target component and then structural distance.  Failed candidates are
+transactionally rolled back.  Terms containing variables not bound by the
+target theorem are excluded from proof classes.
+
+On the previous label-hidden BridgeIR audit, the frozen matcher produced 11
+officially accepted proofs among 40 TRUE opportunities and no proof candidate
+among 40 matched FALSE controls.  On clean `sample_200` it adds six officially
+accepted TRUE results:
+
+`true_1120_714`, `true_3083_3094`, `true_1022_99`,
+`true_425_1630`, `true_4082_4109`, and `true_1874_4357`.
+
+The promoted clean score is 72 TRUE plus 96 FALSE, or 168/200, with zero
+rejected judge calls and zero LLM calls.  `sample_20` remains 1 TRUE plus 10
+FALSE.  Full `sample_200` wall time is 416.5 seconds, a measured marginal cost
+of 97.58 seconds, or 16.3 seconds per added acceptance.  The focused regression
+suite accepts all six positives and abstains on both FALSE controls.  Solo
+solver cases remain 66/66; the repository-wide command retains only its two
+pre-existing unrelated submit-CLI ANSI failures.  Marathon remains 25/25.
