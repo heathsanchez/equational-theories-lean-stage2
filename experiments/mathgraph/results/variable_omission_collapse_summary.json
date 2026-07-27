@@ -1,0 +1,49 @@
+{
+  "constructor": "variable-omission universal collapse",
+  "starting_head": "352ece49e95d51929b743120117111084a20a7b7",
+  "proof_shape": "two source instances, symmetry, transitivity",
+  "sample_20": {
+    "before": "1 TRUE + 10 FALSE = 11/20",
+    "after": "5 TRUE + 10 FALSE = 15/20",
+    "true_gain": 4,
+    "rejected_judge_calls": 0
+  },
+  "sample_200": {
+    "before": "72 TRUE + 96 FALSE = 168/200",
+    "after": "75 TRUE + 96 FALSE = 171/200",
+    "true_gain": 3,
+    "new_hits": [
+      "true_1595_1593",
+      "true_195_1948",
+      "true_1785_1783"
+    ],
+    "seconds": 463.0,
+    "rejected_judge_calls": 0
+  },
+  "available_labelled_corpora": {
+    "phenotype_rows": 44,
+    "true": 44,
+    "false": 0
+  },
+  "metamorphic_official_results": {
+    "cases": 12,
+    "accepted": 12,
+    "transformations": [
+      "base",
+      "source-side reversal",
+      "target-side reversal",
+      "variable renaming"
+    ]
+  },
+  "gates": {
+    "focused_suite": "3 TRUE accepted; non-omission FALSE control abstained",
+    "solo_solver_cases": "66/66",
+    "solo_unrelated_submit_cli_failures": 2,
+    "marathon": "25/25",
+    "llm_calls": 0
+  },
+  "solver": {
+    "sha256": "ed3dd31c8e9cc06dfeab2ee18b8aa5143aff3b947fff50efbbe780c80ecf79ed",
+    "bytes": 228972
+  }
+}

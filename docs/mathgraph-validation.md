@@ -1866,3 +1866,22 @@ the two structurally matched external audit opportunities gained a proof.
 Matching inside newly derived target representations produced no additional
 public proof.  These negative controls rule out indiscriminate deeper quotient
 saturation as the next production step.
+
+### Variable-omission universal collapse
+
+The first collapse-context constructor recognizes a source equality with a
+variable side that does not occur on the opposite side.  For
+`∀ x ys, x = T(ys)`, it instantiates the law once at each target side while
+holding `ys` fixed, then composes the two equalities through the common
+`T(ys)`.  The complete proof has two source-instance nodes, one symmetry node,
+and one transitivity node.  The reversed source orientation is handled
+explicitly.
+
+Every one of the 44 matching rows across the accessible labelled sample and
+audit corpora is TRUE-labelled.  Twelve official metamorphic checks covering
+variable renaming and reversal of either equation side are accepted.  On
+`sample_200`, the constructor proves `true_1595_1593`, `true_195_1948`, and
+`true_1785_1783`, raising the clean score to 75 TRUE plus 96 FALSE, or 171/200,
+with zero rejected judge calls.  On `sample_20`, it adds four TRUE proofs,
+raising that score from 11/20 to 15/20.  Marathon remains 25/25 and the Solo
+solver cases remain 66/66; only the two unrelated submit-CLI ANSI checks fail.
