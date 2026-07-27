@@ -52,6 +52,10 @@ class QuotientMatcher:
         self.generations = 0
         self.replay_failures = 0
         self.maximum_term_size = config["maximum_term_size"]
+        self.frontiers = {
+            "left": {target[0]},
+            "right": {target[1]},
+        }
         target_variables = set(self.target[2])
         for node_id, node in enumerate(self.nodes[:self.edge_cap]):
             if (
@@ -228,14 +232,19 @@ class QuotientMatcher:
         return root
 
     def target_paths(self):
-        for side_name, root in (("left", self.target[0]), ("right", self.target[1])):
-            stack = [(root, ())]
-            while stack:
-                term, path = stack.pop()
-                yield side_name, root, term, path
-                if term[0] == "op":
-                    stack.append((term[2], path + ("R",)))
-                    stack.append((term[1], path + ("L",)))
+        for side_name in ("left", "right"):
+            roots = sorted(
+                self.frontiers[side_name],
+                key=lambda term: (self.m.term_size(term), self.m.render_term(term)),
+            )[:32]
+            for root in roots:
+                stack = [(root, ())]
+                while stack:
+                    term, path = stack.pop()
+                    yield side_name, root, term, path
+                    if term[0] == "op":
+                        stack.append((term[2], path + ("R",)))
+                        stack.append((term[1], path + ("L",)))
 
     def one_generation(self, maximum_instances=128):
         added = []
@@ -299,8 +308,8 @@ class QuotientMatcher:
                         orientation,
                     )
                     candidates.append((
-                        score, pattern, replacement, reverse, root, concrete,
-                        path, representatives, witness,
+                        score, side_name, pattern, replacement, reverse, root,
+                        concrete, path, representatives, witness,
                     ))
                     if len(candidates) >= 4096:
                         break
@@ -310,8 +319,8 @@ class QuotientMatcher:
                 break
         candidates.sort(key=lambda item: item[0])
         for (
-            _, pattern, replacement, reverse, root, concrete, path,
-            representatives, witness,
+            _, side_name, pattern, replacement, reverse, root, concrete,
+            path, representatives, witness,
         ) in candidates:
                     if time.monotonic() >= self.deadline:
                         self.rebuild_members()
@@ -367,6 +376,7 @@ class QuotientMatcher:
                         del self.nodes[candidate_start:]
                         continue
                     self.add_edge(node.lhs, node.rhs, lifted)
+                    self.frontiers[side_name].add(node.rhs)
                     added.append(lifted)
                     self.instances += 1
                     if len(added) >= maximum_instances:
@@ -375,10 +385,10 @@ class QuotientMatcher:
         self.rebuild_members()
         return added
 
-    def solve(self, generations=2):
+    def solve(self, generations=2, maximum_instances=128):
         for generation in range(generations):
             self.generations = generation + 1
-            self.one_generation()
+            self.one_generation(maximum_instances)
             if self.find(self.target[0]) == self.find(self.target[1]):
                 root = self.path_proof(self.target[0], self.target[1])
                 if root is not None and self.m.replay_dag(
@@ -396,6 +406,10 @@ def main():
     parser.add_argument("--id")
     parser.add_argument("--input", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--seconds", type=float, default=5.0)
+    parser.add_argument("--generations", type=int, default=2)
+    parser.add_argument("--instances", type=int, default=128)
+    parser.add_argument("--edge-cap", type=int, default=256)
     args = parser.parse_args()
     module = load_solver()
     if args.input:
@@ -426,9 +440,10 @@ def main():
         started = time.monotonic()
         try:
             search = QuotientMatcher(
-                module, source, target, started + 5.0
+                module, source, target, started + args.seconds,
+                edge_cap=args.edge_cap,
             )
-            found = search.solve()
+            found = search.solve(args.generations, args.instances)
         except Exception as error:
             results.append({"id": row["id"], "error": repr(error)})
             continue

@@ -1858,3 +1858,11 @@ of 97.58 seconds, or 16.3 seconds per added acceptance.  The focused regression
 suite accepts all six positives and abstains on both FALSE controls.  Solo
 solver cases remain 66/66; the repository-wide command retains only its two
 pre-existing unrelated submit-CLI ANSI failures.  Marathon remains 25/25.
+
+Two post-promotion diagnostics were kept out of production.  Expanding the
+verified equality edge cap to 512 and allowing three generations found one
+additional officially accepted public proof (`true_2935_3138`), but neither of
+the two structurally matched external audit opportunities gained a proof.
+Matching inside newly derived target representations produced no additional
+public proof.  These negative controls rule out indiscriminate deeper quotient
+saturation as the next production step.
