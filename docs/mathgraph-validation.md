@@ -2022,3 +2022,32 @@ The production solver is 251,172 bytes with SHA-256
 The next TRUE-side target is the remaining class of nonorientable universal
 clauses that do not immediately expose a missing bare variable; the preferred
 route is local ATP-skeleton trace repair rather than broader saturation.
+
+# Target-Grounded Unit Refutation
+
+Starting from `b08e498`, the existing replayable unit-superposition engine was
+given a target-grounded mode. Source variables remain schematic, while target
+variables are encoded as rigid constants and every target subterm receives a
+replayable naming equality. A contradiction of the rigid target disequality
+therefore yields an equality proof of the original target. Before certificate
+generation all naming constants are expanded, the ordinary proof recipe is
+compiled, and the resulting source-only equality DAG is independently
+replayed. Rigid names never enter Lean.
+
+The configuration was frozen at 0.5 seconds, 16 rounds, 2,000 clauses, term
+size 45, and 20,000 proof nodes. It runs only after every prior production
+route has abstained. The released Stage 1 evaluation subsets provided a useful
+out-of-sample audit: the frozen solver accepted 679/800 before this route,
+leaving 41 TRUE opportunities and 80 FALSE controls. Target grounding found
+eight proofs, all accepted by the official Lean judge, across eight distinct
+source laws: five in `evaluation_order5` and three in `evaluation_hard`. It
+produced no candidate on any of the 80 FALSE controls. The TRUE opportunity
+rate was 8/41 = 19.5% (Wilson 95% interval 10.2%–34.0%).
+
+All eight hits survive the 0.5-second bound; certificates range from 4,349 to
+18,949 bytes and proof DAGs from 16 to 86 nodes. The route gains none of the
+seven hardest remaining public TRUE rows, which is useful anti-overfitting
+evidence: its measured gain is on newly released evaluation strata rather
+than on public-row-specific logic. The projected released-evaluation score is
+687/800 with zero LLM calls. Compact hashes and per-hit metrics are recorded
+in `target_grounded_refutation_summary.json`.

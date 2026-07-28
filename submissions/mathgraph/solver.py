@@ -6345,6 +6345,282 @@ def finish_compact_superposition_candidate(source, target, search, recipe):
     return judge("true", code).get("status") == "accepted"
 
 
+class RigidSuperpositionModule:
+    """Make target variables rigid while retaining schematic source variables."""
+
+    EqualityNode = EqualityNode
+
+    @staticmethod
+    def rigid(term):
+        return term[0] == "var" and term[1].startswith("@")
+
+    @classmethod
+    def term_variables(cls, term):
+        return {
+            variable for variable in term_variables(term)
+            if not variable.startswith("@")
+        }
+
+    @classmethod
+    def substitute_partial(cls, term, mapping):
+        if term[0] == "var":
+            return term if cls.rigid(term) else mapping.get(term[1], term)
+        return (
+            "op",
+            cls.substitute_partial(term[1], mapping),
+            cls.substitute_partial(term[2], mapping),
+        )
+
+    @classmethod
+    def apply(cls, term, substitution, visiting=None):
+        visiting = set() if visiting is None else visiting
+        if term[0] == "var":
+            if cls.rigid(term) or term[1] not in substitution:
+                return term
+            if term[1] in visiting:
+                return term
+            return cls.apply(
+                substitution[term[1]], substitution, visiting | {term[1]}
+            )
+        return (
+            "op",
+            cls.apply(term[1], substitution, visiting),
+            cls.apply(term[2], substitution, visiting),
+        )
+
+    @classmethod
+    def occurs(cls, variable, term, substitution):
+        term = cls.apply(term, substitution)
+        if term[0] == "var":
+            return not cls.rigid(term) and term[1] == variable
+        return (
+            cls.occurs(variable, term[1], substitution)
+            or cls.occurs(variable, term[2], substitution)
+        )
+
+    @classmethod
+    def replace_variable(cls, term, variable, replacement):
+        if term[0] == "var":
+            return (
+                replacement
+                if not cls.rigid(term) and term[1] == variable
+                else term
+            )
+        return (
+            "op",
+            cls.replace_variable(term[1], variable, replacement),
+            cls.replace_variable(term[2], variable, replacement),
+        )
+
+    @classmethod
+    def unify_terms(cls, left, right):
+        substitution = {}
+        pending = [(left, right)]
+        while pending:
+            first, second = pending.pop()
+            first = cls.apply(first, substitution)
+            second = cls.apply(second, substitution)
+            if first == second:
+                continue
+            if first[0] == "var" and not cls.rigid(first):
+                if cls.occurs(first[1], second, substitution):
+                    return None
+                substitution = {
+                    variable: cls.replace_variable(
+                        value, first[1], second
+                    )
+                    for variable, value in substitution.items()
+                }
+                substitution[first[1]] = second
+                continue
+            if second[0] == "var" and not cls.rigid(second):
+                if cls.occurs(second[1], first, substitution):
+                    return None
+                substitution = {
+                    variable: cls.replace_variable(
+                        value, second[1], first
+                    )
+                    for variable, value in substitution.items()
+                }
+                substitution[second[1]] = first
+                continue
+            if first[0] != "op" or second[0] != "op":
+                return None
+            pending.extend(((first[1], second[1]), (first[2], second[2])))
+        return substitution
+
+    @classmethod
+    def match_term(cls, pattern, concrete, mapping):
+        if pattern[0] == "var":
+            if cls.rigid(pattern):
+                return pattern == concrete
+            previous = mapping.get(pattern[1])
+            if previous is None:
+                mapping[pattern[1]] = concrete
+                return True
+            return previous == concrete
+        return (
+            concrete[0] == "op"
+            and cls.match_term(pattern[1], concrete[1], mapping)
+            and cls.match_term(pattern[2], concrete[2], mapping)
+        )
+
+    @classmethod
+    def alpha_canonical_term(cls, term, names):
+        if cls.rigid(term):
+            return term
+        if term[0] == "var":
+            if term[1] not in names:
+                names[term[1]] = "v" + str(len(names))
+            return ("var", names[term[1]])
+        return (
+            "op",
+            cls.alpha_canonical_term(term[1], names),
+            cls.alpha_canonical_term(term[2], names),
+        )
+
+    def __getattr__(self, name):
+        return globals()[name]
+
+
+class TargetGroundedRefutation:
+    """A bounded unit-superposition refutation of a rigid target disequality."""
+
+    def __init__(self, source, target, deadline, limits):
+        self.source = source
+        self.target = target
+        self.constants = {}
+        self.reverse_constants = {}
+        rigid_target = (
+            self.name_target(target[0], "L"),
+            self.name_target(target[1], "R"),
+            target[2],
+        )
+        self.search = CompactSuperposition(
+            RigidSuperpositionModule(),
+            source,
+            rigid_target,
+            deadline,
+            limits,
+        )
+        for constant, term in sorted(self.reverse_constants.items()):
+            self.search.add_clause(Recipe(
+                term, ("var", constant), "reflexivity"
+            ))
+
+    @classmethod
+    def encode_rigid(cls, term):
+        if term[0] == "var":
+            return ("var", "@" + term[1])
+        return (
+            "op",
+            cls.encode_rigid(term[1]),
+            cls.encode_rigid(term[2]),
+        )
+
+    def name_target(self, term, prefix):
+        encoded = self.encode_rigid(term)
+        for index, subterm in enumerate(walk_subterms(encoded)):
+            name = "@" + prefix + str(index)
+            self.constants[subterm] = name
+            self.reverse_constants[name] = subterm
+        return ("var", self.constants[encoded])
+
+    def inline(self, term):
+        if term[0] == "var":
+            if term[1] in self.reverse_constants:
+                return self.inline(self.reverse_constants[term[1]])
+            if term[1].startswith("@"):
+                return ("var", term[1][1:])
+            return term
+        return ("op", self.inline(term[1]), self.inline(term[2]))
+
+    def inline_recipe(self, recipe, cache=None):
+        cache = {} if cache is None else cache
+        if id(recipe) in cache:
+            return cache[id(recipe)]
+        parents = tuple(
+            self.inline_recipe(parent, cache) for parent in recipe.parents
+        )
+        data = recipe.data
+        if recipe.kind == "source":
+            substitution, reverse = data
+            data = (
+                tuple(
+                    (variable, self.inline(value))
+                    for variable, value in substitution
+                ),
+                reverse,
+            )
+        elif recipe.kind == "instantiate":
+            data = tuple(
+                (variable, self.inline(value)) for variable, value in data
+            )
+        elif recipe.kind == "congruence":
+            data = (data[0], self.inline(data[1]))
+        result = Recipe(
+            self.inline(recipe.lhs),
+            self.inline(recipe.rhs),
+            recipe.kind,
+            parents,
+            data,
+        )
+        cache[id(recipe)] = result
+        return result
+
+    def solve(self):
+        recipe = self.search.solve()
+        if recipe is None:
+            return None
+        recipe = self.inline_recipe(recipe)
+        compiler = CompactSuperposition(
+            sys.modules[__name__],
+            self.source,
+            self.target,
+            time.monotonic() + 1,
+            self.search.limits,
+        )
+        nodes, root = compiler.compile(recipe)
+        if (
+            (nodes[root].lhs, nodes[root].rhs) != self.target[:2]
+            or not replay_dag(
+                self.source,
+                nodes,
+                root,
+                maximum_term_size=self.search.limits[
+                    "maximum_replay_term_size"
+                ],
+                maximum_nodes=self.search.limits["maximum_proof_nodes"],
+            )
+        ):
+            return None
+        return nodes, root
+
+
+def finish_target_grounded_candidate(source, target, engine, found):
+    if found is None:
+        return False
+    nodes, root = found
+    code, proof_nodes = make_dag_certificate(target, nodes, root)
+    code_bytes = len(code.encode("utf-8"))
+    print(
+        "MATHGRAPH_METRICS " + json.dumps({
+            "portfolio": "target-grounded-refutation",
+            "found": True,
+            "clauses": len(engine.search.clauses),
+            "rounds": engine.search.rounds,
+            "superpositions": engine.search.superpositions,
+            "proof_nodes": proof_nodes,
+            "certificate_bytes": code_bytes,
+        }, separators=(",", ":")),
+        file=sys.stderr,
+        flush=True,
+    )
+    if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
+        return False
+    return judge("true", code).get("status") == "accepted"
+
+
 def finish_bridge_ir_candidate(source, target, search, found, portfolio):
     if found is None:
         report_bridge_ir(search, portfolio, False)
@@ -6732,6 +7008,42 @@ def run_solo():
             source, target, search, found, configuration["name"]
         ):
             return
+
+    # Ground the target disequality while keeping source variables schematic.
+    # This is intentionally last: earlier proof and finite-model routes avoid
+    # paying its bounded 0.5 second cost on already resolved implications.
+    grounded_limits = dict(COMPACT_SUPERPOSITION_PROBE)
+    grounded_limits.update({
+        "seconds": 0.5,
+        "maximum_term_size": 45,
+        "maximum_replay_term_size": 160,
+        "maximum_depth": 10,
+        "maximum_rules": 192,
+        "maximum_rounds": 16,
+        "new_clauses_per_round": 128,
+        "maximum_clauses": 2000,
+        "normalization_steps": 96,
+        "maximum_proof_nodes": 20000,
+    })
+    grounded_seconds = min(0.5, max(0.05, timeout / 100.0))
+    grounded_search = None
+    try:
+        grounded_search = TargetGroundedRefutation(
+            source,
+            target,
+            time.monotonic() + grounded_seconds,
+            grounded_limits,
+        )
+        grounded_found = grounded_search.solve()
+    except (
+        KeyError, IndexError, MemoryError, RecursionError, TypeError,
+        ValueError,
+    ):
+        grounded_found = None
+    if finish_target_grounded_candidate(
+        source, target, grounded_search, grounded_found
+    ):
+        return
 
     # Unresolved: EOF is intentional. Never guess and never ask an LLM.
 
