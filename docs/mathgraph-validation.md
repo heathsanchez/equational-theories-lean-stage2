@@ -1885,3 +1885,33 @@ variable renaming and reversal of either equation side are accepted.  On
 with zero rejected judge calls.  On `sample_20`, it adds four TRUE proofs,
 raising that score from 11/20 to 15/20.  Marathon remains 25/25 and the Solo
 solver cases remain 66/66; only the two unrelated submit-CLI ANSI checks fail.
+
+### Replayable symbolic superposition
+
+The next residual audit used Vampire 5.0.1 strictly as a diagnostic proof-shape
+oracle.  It proved all 25 remaining TRUE rows in 0.01--0.04 seconds each, but it
+is not shipped, invoked, or trusted by the production solver.  Its traces
+isolated two omissions in the existing proof-producing normalizer: concrete
+source substitutions consumed the candidate budget before symbolic critical
+pairs, and consequences whose auxiliary proof parameters disappeared from
+their endpoints were not specialized for target use.
+
+The promoted constructor runs symbolic critical pairs first with zero concrete
+source substitutions.  When a replayed consequence has no endpoint occurrence
+of an internal proof parameter, compilation deterministically specializes that
+parameter to an already-bound target term.  The complete specialized DAG is
+then replayed from source instances, symmetry, transitivity, and congruence.
+No external prover output enters the proof DAG.
+
+On the label-hidden BridgeIR audit the frozen layer produced four officially
+accepted TRUE certificates among 40 TRUE opportunities and no candidate among
+40 matched FALSE controls.  On clean `sample_200` it adds
+`true_2942_5`, `true_130_1759`, and `true_674_668`, yielding 78 TRUE plus
+96 FALSE, or 174/200, with zero rejected judge calls.  Clean `sample_20`
+improves to 6 TRUE plus 10 FALSE, or 16/20.  Marathon remains 25/25 and all 66
+Solo solver cases pass; the two unrelated submit-CLI ANSI failures remain.
+
+The remaining 22 TRUE rows all have short external superposition proofs.  The
+next bounded experiment is therefore iterative symbolic superposition with
+demodulation and explicit DAG reconstruction, not broader rewriting or larger
+finite-model search.

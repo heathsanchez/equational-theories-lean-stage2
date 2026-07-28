@@ -3665,6 +3665,16 @@ class EquationalNormalizer:
                 term_variables(rhs) <= term_variables(lhs)
                 and source_argument_variables <= term_variables(lhs)
             )
+            # A replayed symbolic critical consequence can contain auxiliary
+            # proof parameters which cancel from both endpoints.  Such a rule
+            # remains universally specializable: compilation fills the
+            # internal parameters with an arbitrary matched target term.
+            if (
+                not schematic
+                and term_variables(rhs) <= term_variables(lhs)
+                and term_variables(lhs)
+            ):
+                schematic = True
             if schematic:
                 names = {}
                 alpha = (
@@ -3841,6 +3851,25 @@ class EquationalNormalizer:
         return current == expected
 
     def instantiate_proof(self, node_id, mapping, output, cache):
+        mapping = dict(mapping)
+        stack = [node_id]
+        visited = set()
+        internal_variables = set()
+        while stack:
+            current = stack.pop()
+            if current in visited:
+                continue
+            visited.add(current)
+            proof = self.nodes[current]
+            internal_variables |= term_variables(proof.lhs)
+            internal_variables |= term_variables(proof.rhs)
+            stack.extend(proof.parents)
+        fallback = next(
+            iter(mapping.values()),
+            ("var", self.target[2][0]),
+        )
+        for variable in internal_variables:
+            mapping.setdefault(variable, fallback)
         key = (node_id, tuple(sorted(mapping.items())))
         if key in cache:
             return cache[key]
@@ -5107,8 +5136,28 @@ NORMALIZATION_PORTFOLIO = (
     },
 )
 
-# Frozen only after development selection and a sealed external TRUE audit.
-PROMOTED_NORMALIZATION_PORTFOLIO = ()
+SYMBOLIC_SUPERPOSITION = {
+    "name": "symbolic-superposition",
+    "seconds": 0.35,
+    "ordering": "size",
+    "selector": "coverage",
+    # Preserve the candidate budget for symbolic critical pairs.  Concrete
+    # source instances are already covered by the earlier equality routes.
+    "candidate_equalities": 1200,
+    "replayed_rules": 400,
+    "selected_rules": 128,
+    "source_substitutions": 0,
+    "overlap_candidates": 800,
+    "composition_candidates": 512,
+    "normalization_steps": 96,
+    "maximum_term_size": 27,
+    "maximum_proof_nodes": 3000,
+}
+
+# One symbolic generation gained three public TRUE cases and four of forty
+# label-hidden external TRUE opportunities, with no candidate on forty matched
+# FALSE controls.  The earlier concrete normalization portfolios remain off.
+PROMOTED_NORMALIZATION_PORTFOLIO = (SYMBOLIC_SUPERPOSITION,)
 
 BRIDGE_IR_PORTFOLIO = (
     {
