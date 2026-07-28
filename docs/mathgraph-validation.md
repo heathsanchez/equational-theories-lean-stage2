@@ -1954,8 +1954,11 @@ Both runs had zero rejected judge calls and zero LLM calls.
 
 On unseen hard distributions, the same probe found replayable proofs for 17/24
 `hard1` TRUE rows and 0/45 FALSE rows, and 23/100 `hard2` TRUE rows and 0/100
-FALSE rows. Twenty `hard2` certificates fit the official 100 KB limit. Solo is
-66/66 and Marathon is 25/25. The 249,066-byte candidate has SHA-256
+FALSE rows. A post-freeze run on `hard3` found 97/195 TRUE and 0/205 FALSE,
+with all 97 certificates below the production cap. On the 1,000-row normal
+distribution it found 33/500 TRUE and 0/500 FALSE; 30 fit the production cap.
+Twenty `hard2` certificates fit the official 100 KB limit. Solo is 66/66 and
+Marathon is 25/25. The 249,066-byte candidate has SHA-256
 `9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5`.
 Full metrics are in `compact_superposition_promotion_summary.json`.
 

@@ -64,6 +64,18 @@
       "false_candidates": "0/100",
       "under_official_100kb_certificate_limit": 20,
       "engine_seconds": 13.526
+    },
+    "hard3": {
+      "true_candidates": "97/195",
+      "false_candidates": "0/205",
+      "under_production_50kb_certificate_limit": 97,
+      "engine_seconds": 23.029
+    },
+    "normal": {
+      "true_candidates": "33/500",
+      "false_candidates": "0/500",
+      "under_production_50kb_certificate_limit": 30,
+      "engine_seconds": 50.437
     }
   },
   "gates": {
