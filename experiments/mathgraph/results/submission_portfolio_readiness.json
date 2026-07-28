@@ -1,0 +1,63 @@
+{
+  "starting_head": "b911d9d",
+  "production_score": "85 TRUE + 96 FALSE = 181/200",
+  "variants": {
+    "solo_deterministic": {
+      "path": "submissions/mathgraph/solver.py",
+      "bytes": 249066,
+      "llm_fallback": false
+    },
+    "solo_hybrid": {
+      "path": "submissions/mathgraph_solo_hybrid/solver.py",
+      "bytes": 252449,
+      "llm_fallback": true,
+      "maximum_calls_per_residual": 3,
+      "acceptance_authority": "official per-problem judge"
+    },
+    "marathon_deterministic": {
+      "path": "submissions/mathgraph_marathon_deterministic/solver.py",
+      "bytes": 251014,
+      "llm_fallback": false,
+      "acceptance_authority": "official Marathon scorer"
+    },
+    "marathon_hybrid": {
+      "path": "submissions/mathgraph_marathon_hybrid/solver.py",
+      "bytes": 255204,
+      "llm_fallback": true,
+      "acceptance_authority": "official Marathon scorer"
+    }
+  },
+  "tests": {
+    "solo_core_harness": "66/66",
+    "marathon_harness": "25/25",
+    "solo_hybrid_no_api": {
+      "llm_calls": 1,
+      "judge_calls": 0,
+      "result": "clean abstention"
+    },
+    "solo_hybrid_rejection_feedback": {
+      "llm_calls": 3,
+      "judge_calls": 3,
+      "result": "three rejected candidates followed by clean abstention"
+    },
+    "marathon_deterministic_zero_token_smoke": {
+      "accepted": 2,
+      "attempted": 2,
+      "total": 5,
+      "invalid": 0
+    },
+    "marathon_hybrid_zero_token_smoke": {
+      "accepted": 2,
+      "attempted": 2,
+      "total": 5,
+      "invalid": 0
+    }
+  },
+  "integrity": {
+    "llm_outputs_are_candidates_only": true,
+    "no_self_accepted_marathon_verdicts": true,
+    "failed_llm_candidates_are_not_cached": true,
+    "verified_deterministic_solver_unchanged": true
+  },
+  "remaining_gate": "Run the Solo and Marathon hybrid variants against each actual competition model; no local API key is available."
+}

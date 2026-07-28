@@ -1958,3 +1958,30 @@ FALSE rows. Twenty `hard2` certificates fit the official 100 KB limit. Solo is
 66/66 and Marathon is 25/25. The 249,066-byte candidate has SHA-256
 `9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5`.
 Full metrics are in `compact_superposition_promotion_summary.json`.
+
+### Four-slot submission portfolio
+
+The 181/200 deterministic solver is retained unchanged as the Solo precision
+submission. Three isolated variants add a Solo hybrid, Marathon deterministic,
+and Marathon hybrid path. All four are single-file submissions between 249 KB
+and 256 KB.
+
+The Solo hybrid calls the model only after every deterministic constructor
+abstains. It requests a Lean tactic body, rejects forbidden or oversized text,
+and accepts only through the official per-problem judge. A three-round
+synthetic rejection test produced three judge calls followed by clean
+abstention; an unavailable-API test produced no judge call.
+
+The Marathon variants execute the same deterministic constructors across the
+manifest. Recording a candidate raises a local control signal and never
+returns a synthetic accepted response. The official Marathon scorer is the
+sole acceptance authority. The hybrid then allocates one model call to each
+remaining row in structural-difficulty order. Generated candidates are not
+cached or treated as verified during the run. With a zero-token budget both
+Marathon variants scored 2/5 on the official smoke manifest with two accepted
+deterministic certificates and no invalid output.
+
+The core Solo harness remains 66/66 and Marathon remains 25/25. Actual
+model-specific hybrid recall is the remaining external gate because no local
+competition-model API key is configured. Portfolio details are recorded in
+`submission_portfolio_readiness.json`.
