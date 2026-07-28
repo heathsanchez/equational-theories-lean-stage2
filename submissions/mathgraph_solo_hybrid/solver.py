@@ -9,6 +9,7 @@ import json
 import sys
 import time
 import heapq
+import textwrap
 from collections import defaultdict, deque
 from itertools import permutations, product
 
@@ -3026,6 +3027,7 @@ def extract_llm_proof(text):
 
 
 def make_llm_true_certificate(proof):
+    proof = textwrap.dedent(proof)
     body = "\n".join(
         "  " + line if line.strip() else ""
         for line in proof.splitlines()
