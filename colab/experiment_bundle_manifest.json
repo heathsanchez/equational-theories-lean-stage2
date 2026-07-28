@@ -1,0 +1,328 @@
+{
+  "schema": "mathgraph.compact-experiment-bundle.v1",
+  "excluded": [
+    "caches and __pycache__",
+    "Lean build products and .lake",
+    "old ATP outputs",
+    "sealed label files",
+    "unrelated experiment artifacts",
+    "credentials"
+  ],
+  "files": [
+    {
+      "path": "colab/README.md",
+      "bytes": 2148,
+      "sha256": "901c5eb49c19d5ab855ed1dcf5af5495bc1ea2eb1e2b22920f4451e2d2f03917"
+    },
+    {
+      "path": "colab/bootstrap_mathgraph.py",
+      "bytes": 5099,
+      "sha256": "a5a559199796003dd8e3682ddd4da9ac49f0adf1c32dbc4907692eabe32f5886"
+    },
+    {
+      "path": "colab/data/six_residuals.json",
+      "bytes": 1505,
+      "sha256": "1daa4537b3eb7f20abf270cf79c904c4eb120e4ce84e9cb1afb87fe0cbb384d3"
+    },
+    {
+      "path": "colab/data/smoke_normal_0158.json",
+      "bytes": 242,
+      "sha256": "bd97be630efec0b24019fe92091b685c764835c5e374f6af0969ba69ffea5fbc"
+    },
+    {
+      "path": "colab/run_continuation_experiment.sh",
+      "bytes": 1768,
+      "sha256": "058ff7a020e936ffd5caef5ec61d8426e93bf6eae48bd3e2af45892712e7bc1a"
+    },
+    {
+      "path": "colab/run_frozen_baseline.sh",
+      "bytes": 1793,
+      "sha256": "c6677cd43ca4376ef13ae10f761ae993a0326af027151edf230540dfd59752af"
+    },
+    {
+      "path": "environment_manifest.json",
+      "bytes": 1140,
+      "sha256": "d5cdb0ebbd0467390a0b04fe6bfa2a374bed9dfc25730069aa3e1c4ddad8e314"
+    },
+    {
+      "path": "experiments/mathgraph/audit_stair_climber_components.py",
+      "bytes": 5796,
+      "sha256": "3b3905e24f5f369a34801a63a41febf2a1a3b4011cc790fb959867f62b90e447"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/HANDOFF.md",
+      "bytes": 6339,
+      "sha256": "d1d43c19a2a7ad3f52ed7084f34eba16e41a68405aa448b562875e66c3334b87"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/build_transfer_audit.py",
+      "bytes": 8378,
+      "sha256": "03cfe2122b0f92be8b740e266278f94dbb0924e4261db14323df0794c7a2b5d4"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/clause_quotient_diagnostic_summary.json",
+      "bytes": 2290,
+      "sha256": "6838bd039da912a8f23100212610b8a86a61743b41329b8175f3c340b19cc1f0"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_aware_clause_state_spec.md",
+      "bytes": 3017,
+      "sha256": "e7666d942cf199ad51150cf973d4b76e8f73802b01c1724c7fe704a23249bbc2"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_effect_analysis.json",
+      "bytes": 61018,
+      "sha256": "c69e8eb3e2c914eb0ae5689b988257ee0c7fad3fd52796953c89068074b33c53"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_effect_preregistration.json",
+      "bytes": 2374,
+      "sha256": "4f6f762c01e51293f2f58edbfd39db9e4751b59113c8ab1af978a264cc56a15a"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_novelty_counterfactual.json",
+      "bytes": 918,
+      "sha256": "3f3ac559a4def5e933a4762b5c6d4901c1031427176c158a271df0a0474298c8"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_novelty_decision.md",
+      "bytes": 1925,
+      "sha256": "ee4afdc7fe93c9ab27d8f74e3e3d7d5aef022a034075c660d578bc7a7f8eb52f"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_novelty_preregistration.json",
+      "bytes": 2573,
+      "sha256": "76d6d46dfa3e3b700a52abb353a915185064595edb1efc7b1aba4f9047ac0d19"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/continuation_novelty_summary.json",
+      "bytes": 2708,
+      "sha256": "f7a675f23a097f0b3bc3f0f2efd3e7967393f258265f5698e1cfed1957c4816f"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/demodulation_corruption_tests.json",
+      "bytes": 436,
+      "sha256": "7fe1f029ee4dd6d665019d70275ee1317dfe2345bd6aa4d0f39808e066b5e45c"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/demodulation_replay_spec.md",
+      "bytes": 1043,
+      "sha256": "4e39a5c0f9eb5f3d7cae485ead4264baa22e7c32ddc21e7f2ccb2a135074da0e"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/demodulation_soundness_spec.md",
+      "bytes": 1325,
+      "sha256": "a026bf9f5b83db497716e47f13bddd2442cad61df4f1c79a2b447f76a147c3fb"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/global_budget_development_summary.json",
+      "bytes": 3037,
+      "sha256": "196eafb36c8044869f2b33ff7237163fad7c369f8b561e69d18efbefb918af2e"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/lazy_clause_state_preregistration.json",
+      "bytes": 1228,
+      "sha256": "cbcfa4bb718fcdba0bc7f83982493d3b376a309e163f1c35af596764c59a5ad4"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/operation_relative_clause_state_preregistration.json",
+      "bytes": 1410,
+      "sha256": "fc61edd5c9da4b16da36daea4c6754ef66a87ff1aec40fe202ad1fdf2859ea7e"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/paramodulator_baseline_audit.md",
+      "bytes": 3332,
+      "sha256": "efb9aee21b8e8e2cc23c8a35f31f02df38492d6fdff4dd80162bb75c52222f9d"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/production_promotion_decision.md",
+      "bytes": 5762,
+      "sha256": "fff6d085fbc01d2a7dc353a7c9b29b612bfdea7e1019309754a65dee08ef2200"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/proof_ancestry_causal_analysis.json",
+      "bytes": 1784,
+      "sha256": "83db46011f36c6eda5c030b5e2b7f789e9f0569ca2052f3018bf8b9a193c4d24"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/retrieval_equivalence_tests.json",
+      "bytes": 249,
+      "sha256": "9af6a3348f61cb65af990de48b4312c2b1df0e82e251d62b0fea86875dc2e649"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/run_continuation_effect_analysis.py",
+      "bytes": 10604,
+      "sha256": "540bc4632fea8d0600530f6b43626f0d41d5e1f3cd13bd0c9d6d806603789deb"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/run_continuation_novelty_counterfactual.py",
+      "bytes": 3603,
+      "sha256": "43b55963c0a4d03e2d4373f2a7db82767ef9bde033447689901dccaf74fbde98"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/run_demodulation_corruption_tests.py",
+      "bytes": 4511,
+      "sha256": "d6df484839846730911e7e2b79bc09929dc22f6c0d7b0f8a86de5342d0d92c11"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py",
+      "bytes": 87335,
+      "sha256": "6f2891c7cd23dc45699c2040b559cb2d37d40030a581d27880b1746d285375a8"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/scheduler_config_preregistration.json",
+      "bytes": 3557,
+      "sha256": "941a871c07c97b7ee9de64f923bdb71196a578b8155d86946b544371ed16b556"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/scheduler_local_transfer_results.json",
+      "bytes": 2483,
+      "sha256": "d8d16853ba6a98d20fd1ec102d3514171c36831055380dca630e03a608e18bfe"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_clause_quotient_all_results.json",
+      "bytes": 9654,
+      "sha256": "91a0820ca2a01bee2e21326d25b823457013908460bd66978e0deadbd73a038b"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_clause_quotient_merge_results.json",
+      "bytes": 10145,
+      "sha256": "8cce14bd0d8b8c9eb1606771ffbed7c2b3b8ca435777538d52118dc5991c5c49"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_clause_quotient_results.json",
+      "bytes": 17634,
+      "sha256": "ebe6caf4ffa00d909059c61071da4118cea7b17ab236e5f922d7bb6b5c33024a"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_continuation_novelty_cn1_results.json",
+      "bytes": 15162,
+      "sha256": "ac2a5bf08c2de8b639413ee9344014ce553b716a3893f6ead887f42598d05a93"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_continuation_novelty_cn2_results.json",
+      "bytes": 13266,
+      "sha256": "75d30c1cedde9bcb175021bcce0cb197b994b2534ca7f0920a63b3d6d5e7e9c4"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_factorial_report.md",
+      "bytes": 2366,
+      "sha256": "d2deb66f6c09e7f33ad44cf957424ab3864568b57aa1aab81ab8e682f844c22b"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_factorial_results.json",
+      "bytes": 1282,
+      "sha256": "3d46e9820a2c737d11551ad5beb41de70a969437f33197b2b0e0622be7fce3eb"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_forward_demodulation_results.json",
+      "bytes": 10137,
+      "sha256": "a173881930edf386f412ccf1a453e3ca244173288975877e2d5bd61a3332edd4"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_global_budget_matrix.json",
+      "bytes": 63115,
+      "sha256": "b0aaeb03dd52da2ed1cfff46e77b2932b34e8660b8adce4a7c5c7f0860aff76a"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_lazy_clause_state_results.json",
+      "bytes": 10837,
+      "sha256": "6e9cdec958188d560f441e62f4d885c4454068e18e2c947d1ee16b824283b914"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_lean_results.json",
+      "bytes": 814,
+      "sha256": "46756f76b05d4b45fded64f34282a3a4389ff1d60db2ff2e2c85fd7b9a21f95e"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_operation_relative_results.json",
+      "bytes": 13221,
+      "sha256": "0690f2365c82997b2f1e7ad868ddd0d7641480fc0dd3ed75752fca30961720bf"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/six_residual_scheduler_local_results.json",
+      "bytes": 14618,
+      "sha256": "64a02281fe44e1e0f0ccac7405b0fa1a8945c2daad9b241de595ea6eee74a09f"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/summarize_continuation_effect_analysis.py",
+      "bytes": 3590,
+      "sha256": "9dc0d0fc62b8d01503eeab4dc53db0169ec01b44292d145d00fb8bbddf067b45"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/transfer_audit_preregistration.json",
+      "bytes": 1353,
+      "sha256": "8553ee5ca341fa70246ef8b52bbcf6b0b8c8b23c0345928f12e0bf18957a9797"
+    },
+    {
+      "path": "experiments/mathgraph/paramodulator_control/transfer_audit_results.json",
+      "bytes": 2360,
+      "sha256": "16cb05e74475ae6d33dd3c6955d584ebfafff7dc4454c0ac83209bb5cce4b45b"
+    },
+    {
+      "path": "judge/JudgeDecide/DecideBang.lean",
+      "bytes": 150,
+      "sha256": "4b83154198d442d41366abfa8d09fea44016aaf6f8eb6a5dae55aadcbed5915f"
+    },
+    {
+      "path": "judge/JudgeFinOp/MemoFinOp.lean",
+      "bytes": 486,
+      "sha256": "7ae1c13a209893a6f3cc4c52cd784cdc4cf70660fb5cfe3db7b9ff58a3006f18"
+    },
+    {
+      "path": "judge/JudgeMagma/Magma.lean",
+      "bytes": 530,
+      "sha256": "8bc1d23fd58f993297b246454e9fa97f97c69494783ddd3e04b9075c34c3bab4"
+    },
+    {
+      "path": "judge/JudgeSupport/Inspect.lean",
+      "bytes": 1138,
+      "sha256": "02317cd7beb7a3c2a62c093ef97829b9a78e4e902aa181cd446665db0c42d174"
+    },
+    {
+      "path": "judge/__init__.py",
+      "bytes": 201,
+      "sha256": "c33249a374e0ed049bc685cbbf3d99e375699e71602cd71e7af20cf9ed948d9a"
+    },
+    {
+      "path": "judge/verify.py",
+      "bytes": 30072,
+      "sha256": "214e32b70b0855fc2f22b9438ee85953b90e9a292c030511292a01203066558f"
+    },
+    {
+      "path": "lake-manifest.json",
+      "bytes": 3191,
+      "sha256": "5a5a4e44cec019d3db1516a8a2e988a257f04f56190d2f181cc01b2ec1cb431a"
+    },
+    {
+      "path": "lakefile.lean",
+      "bytes": 662,
+      "sha256": "1c49e3e44c6be2819d3bccb82e23ea9f4ed930ff3b84f9fe409f13ab59aef0fc"
+    },
+    {
+      "path": "lean-toolchain",
+      "bytes": 29,
+      "sha256": "ce4c4e3d87434b9663f46de25ce34b48a0cf0d392e0a320a0787b4674a2d7b61"
+    },
+    {
+      "path": "pipeline/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pipeline/proxy.py",
+      "bytes": 45661,
+      "sha256": "89913ba428eab9c154c36f2fb3118aead85b98ea9805fc28518e94b80178ee5c"
+    },
+    {
+      "path": "requirements-lock.txt",
+      "bytes": 413,
+      "sha256": "5ec7a8874660a236d2502add4e10039705e54328e3adfba941fb8343c0ee28a9"
+    },
+    {
+      "path": "submissions/mathgraph/solver.py",
+      "bytes": 313240,
+      "sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1"
+    }
+  ]
+}
