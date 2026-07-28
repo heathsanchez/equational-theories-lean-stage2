@@ -6,6 +6,8 @@
 - Research branch: `mathgraph/context-calculus-research`
 - Frozen research snapshot:
   `d8c40c8608db034436273b25846b51fbea0f7655`
+- Exact reproducible Colab checkout:
+  `8b09788b4c3ad4e09203f26c891055d4a5d9b7eb`
 - Snapshot subject: `record paramodulator control research freeze`
 - Production solver: `submissions/mathgraph/solver.py`
 - Production SHA-256:

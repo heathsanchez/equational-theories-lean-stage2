@@ -52,6 +52,8 @@ not overwrite the committed results.
 - Frozen released-set result: `794/800` (`394 TRUE + 400 FALSE`)
 - Research snapshot commit:
   `d8c40c8608db034436273b25846b51fbea0f7655`
+- Exact Colab checkout commit:
+  `8b09788b4c3ad4e09203f26c891055d4a5d9b7eb`
 
 See
 `experiments/mathgraph/paramodulator_control/HANDOFF.md`

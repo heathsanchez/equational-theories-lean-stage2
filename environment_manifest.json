@@ -4,6 +4,7 @@
   "repository": "https://github.com/heathsanchez/equational-theories-lean-stage2.git",
   "branch": "mathgraph/context-calculus-research",
   "research_snapshot_commit": "d8c40c8",
+  "handoff_checkout_commit": "8b09788b4c3ad4e09203f26c891055d4a5d9b7eb",
   "python": {
     "verified_version": "3.11.14",
     "supported_colab_major_minor": ["3.11", "3.12"],

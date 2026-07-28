@@ -14,7 +14,7 @@ from pathlib import Path
 REPOSITORY = "https://github.com/heathsanchez/equational-theories-lean-stage2.git"
 BRANCH = "mathgraph/context-calculus-research"
 # Updated by the final metadata commit to the immutable handoff commit.
-PINNED_COMMIT = "d8c40c8608db034436273b25846b51fbea0f7655"
+PINNED_COMMIT = "8b09788b4c3ad4e09203f26c891055d4a5d9b7eb"
 SOLVER_SHA256 = "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1"
 SOLVER_BYTES = 313240
 
