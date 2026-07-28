@@ -6094,6 +6094,18 @@ FIN4_PORTFOLIO = (
 # recall, but no production gain, so the minimization rule keeps it diagnostic.
 PROMOTED_FIN4_PORTFOLIO = (FIN4_PORTFOLIO[0],)
 
+PROMOTED_FIN5_PORTFOLIO = ({
+    "name": "fin5-compression",
+    "domain_size": 5,
+    "seconds": 60.0,
+    "maximum_states": 5000000,
+    "maximum_models": 128,
+    "options": {
+        **FIN4_ENGINE_OPTIONS,
+        "target_witness_limit": 8,
+    },
+},)
+
 # Development gains were both found by fast. Medium and complete enumeration
 # added no marginal accepted case, so only the target-guided engine advances
 # to untouched holdout.
@@ -6730,6 +6742,34 @@ def run_solo():
             return
         if found is None:
             report_finite_model(search, configuration["name"], False)
+
+    if len(source[2]) == 3 and len(target[2]) == 2:
+        for configuration in PROMOTED_FIN5_PORTFOLIO:
+            seconds = min(
+                configuration["seconds"], max(0.1, timeout / 20.0)
+            )
+            try:
+                search = FiniteModelEngine(
+                    configuration["domain_size"],
+                    source,
+                    target,
+                    time.monotonic() + seconds,
+                    configuration["maximum_states"],
+                    configuration["maximum_models"],
+                    options=configuration["options"],
+                )
+                found = search.search_target_guided()
+            except (
+                KeyError, IndexError, MemoryError, RecursionError, TypeError,
+                ValueError,
+            ):
+                continue
+            if found is not None and finish_finite_candidate(
+                source, target, search, found, configuration["name"]
+            ):
+                return
+            if found is None:
+                report_finite_model(search, configuration["name"], False)
 
     # Match source-law instances modulo replayed equality classes.  This route
     # remains bounded, reconstructs every representative replacement, and
