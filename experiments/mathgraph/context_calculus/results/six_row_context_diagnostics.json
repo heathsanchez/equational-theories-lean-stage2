@@ -1,0 +1,121 @@
+{
+  "schema": "mathgraph.context-residual-phase1.v1",
+  "constructor_trusted": false,
+  "rows": [
+    {
+      "row": "evaluation_hard_0196",
+      "source": "x = (y * x) * ((x * z) * z)",
+      "target": "x = (y * (z * (y * z))) * z",
+      "distinguished_variable": "x",
+      "compound_substitution": "(y \u25c7 x)",
+      "instantiated_source_lhs": "(y \u25c7 x)",
+      "instantiated_source_rhs": "((y \u25c7 (y \u25c7 x)) \u25c7 (((y \u25c7 x) \u25c7 z) \u25c7 z))",
+      "embedded_contraction_matches": [],
+      "unambiguous_endpoint": false,
+      "independent_prefix_replay_possible": false,
+      "rejection_reason": "The concrete reversed source instance has no exact matching subterm in the instantiated equality.",
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have hconst : \u2200 (x z a b : G), (a \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 z) = (b \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 z) := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), (y \u25c7 x) \u25c7 ((x \u25c7 a) \u25c7 a) = (y \u25c7 x) \u25c7 ((x \u25c7 b) \u25c7 b) := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h ((y \u25c7 x)) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "not_applicable_no_valid_prefix"
+    },
+    {
+      "row": "evaluation_normal_0036",
+      "source": "x = ((x * y) * (x * z)) * y",
+      "target": "x = ((x * y) * y) * (x * z)",
+      "distinguished_variable": "x",
+      "compound_substitution": "((x \u25c7 y) \u25c7 (x \u25c7 z))",
+      "instantiated_source_lhs": "((x \u25c7 y) \u25c7 (x \u25c7 z))",
+      "instantiated_source_rhs": "(((((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 z)) \u25c7 y)",
+      "embedded_contraction_matches": [
+        {
+          "side": "rhs",
+          "path": "LL",
+          "before_subterm": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "after_subterm": "x",
+          "contracted_endpoint": "((x \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 z)) \u25c7 y)",
+          "explicit_derived_lemma_type": "\u2200 x y z, ((x \u25c7 y) \u25c7 (x \u25c7 z)) = ((x \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 z)) \u25c7 y)"
+        }
+      ],
+      "unambiguous_endpoint": true,
+      "independent_prefix_replay_possible": true,
+      "rejection_reason": null,
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have hconst : \u2200 (x z a b : G), ((x \u25c7 a) \u25c7 (x \u25c7 z)) \u25c7 a = ((x \u25c7 b) \u25c7 (x \u25c7 z)) \u25c7 b := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), ((x \u25c7 y) \u25c7 (x \u25c7 a)) \u25c7 y = ((x \u25c7 y) \u25c7 (x \u25c7 b)) \u25c7 y := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h (((x \u25c7 y) \u25c7 (x \u25c7 z))) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "accepted"
+    },
+    {
+      "row": "evaluation_normal_0040",
+      "source": "x = (((x * y) * x) * x) * z",
+      "target": "x = (((x * y) * y) * z) * y",
+      "distinguished_variable": "x",
+      "compound_substitution": "(((x \u25c7 y) \u25c7 x) \u25c7 x)",
+      "instantiated_source_lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 x)",
+      "instantiated_source_rhs": "(((((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 x)) \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 x)) \u25c7 z)",
+      "embedded_contraction_matches": [],
+      "unambiguous_endpoint": false,
+      "independent_prefix_replay_possible": false,
+      "rejection_reason": "The concrete reversed source instance has no exact matching subterm in the instantiated equality.",
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have hconst : \u2200 (x z a b : G), (((x \u25c7 a) \u25c7 x) \u25c7 x) \u25c7 z = (((x \u25c7 b) \u25c7 x) \u25c7 x) \u25c7 z := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), (((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 a = (((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 b := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h ((((x \u25c7 y) \u25c7 x) \u25c7 x)) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "not_applicable_no_valid_prefix"
+    },
+    {
+      "row": "evaluation_normal_0158",
+      "source": "x = (x * (y * y)) * (x * z)",
+      "target": "x = (x * (x * y)) * y",
+      "distinguished_variable": "x",
+      "compound_substitution": "(x \u25c7 (y \u25c7 y))",
+      "instantiated_source_lhs": "(x \u25c7 (y \u25c7 y))",
+      "instantiated_source_rhs": "(((x \u25c7 (y \u25c7 y)) \u25c7 (y \u25c7 y)) \u25c7 ((x \u25c7 (y \u25c7 y)) \u25c7 z))",
+      "embedded_contraction_matches": [],
+      "unambiguous_endpoint": false,
+      "independent_prefix_replay_possible": false,
+      "rejection_reason": "The concrete reversed source instance has no exact matching subterm in the instantiated equality.",
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have hconst : \u2200 (x z a b : G), (x \u25c7 (a \u25c7 a)) \u25c7 (x \u25c7 z) = (x \u25c7 (b \u25c7 b)) \u25c7 (x \u25c7 z) := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), (x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 a) = (x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 b) := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h ((x \u25c7 (y \u25c7 y))) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "not_applicable_no_valid_prefix"
+    },
+    {
+      "row": "evaluation_order5_0014",
+      "source": "x = y * (x * (((z * y) * y) * y))",
+      "target": "x = ((y * z) * (x * y)) * (x * z)",
+      "distinguished_variable": "x",
+      "compound_substitution": "(x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "instantiated_source_lhs": "(x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "instantiated_source_rhs": "(y \u25c7 ((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "embedded_contraction_matches": [],
+      "unambiguous_endpoint": false,
+      "independent_prefix_replay_possible": false,
+      "rejection_reason": "The concrete reversed source instance has no exact matching subterm in the instantiated equality.",
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have hconst : \u2200 (x z a b : G), a \u25c7 (x \u25c7 (((z \u25c7 a) \u25c7 a) \u25c7 a)) = b \u25c7 (x \u25c7 (((z \u25c7 b) \u25c7 b) \u25c7 b)) := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), y \u25c7 (x \u25c7 (((a \u25c7 y) \u25c7 y) \u25c7 y)) = y \u25c7 (x \u25c7 (((b \u25c7 y) \u25c7 y) \u25c7 y)) := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h ((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "not_applicable_no_valid_prefix"
+    },
+    {
+      "row": "evaluation_order5_0042",
+      "source": "x = (y * z) * ((x * (x * y)) * z)",
+      "target": "x = (x * (x * y)) * (z * (z * w))",
+      "distinguished_variable": "x",
+      "compound_substitution": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+      "instantiated_source_lhs": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+      "instantiated_source_rhs": "((y \u25c7 z) \u25c7 ((((x \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 (((x \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 y)) \u25c7 z))",
+      "embedded_contraction_matches": [],
+      "unambiguous_endpoint": false,
+      "independent_prefix_replay_possible": false,
+      "rejection_reason": "The concrete reversed source instance has no exact matching subterm in the instantiated equality.",
+      "downstream_use_claimed_by_rejected_candidate": "simp only [lem1, h, hconst, hconst2]",
+      "rejected_candidate_lean": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  have hconst : \u2200 (x z a b : G), (a \u25c7 z) \u25c7 ((x \u25c7 (x \u25c7 a)) \u25c7 z) = (b \u25c7 z) \u25c7 ((x \u25c7 (x \u25c7 b)) \u25c7 z) := fun x z a b => (h x a z).symm.trans (h x b z)\n  have hconst2 : \u2200 (x y a b : G), (y \u25c7 a) \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 a) = (y \u25c7 b) \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 b) := fun x y a b => (h x y a).symm.trans (h x y b)\n  have lem1 : \u2200 (x y z : G), _ := by\n      intro x y z\n      have h1 := h (((x \u25c7 (x \u25c7 y)) \u25c7 z)) y z\n      rw [(h x y z).symm] at h1\n      exact h1\n  simp only [lem1, h, hconst, hconst2]\n",
+      "prefix_lean_check": "not_applicable_no_valid_prefix"
+    }
+  ],
+  "summary": {
+    "rows": 6,
+    "unambiguous_replayable_prefixes": 1,
+    "required_to_continue": 3,
+    "criterion_passed": false,
+    "alpha_equivalent_schema_test": "not applicable: only one valid prefix",
+    "lean_checked_explicit_prefixes": 1,
+    "lean_accepted_explicit_prefixes": 1,
+    "note": "The single valid prefix was compiled as an explicit universally quantified Lean theorem. This is not a proof of the benchmark target."
+  }
+}
