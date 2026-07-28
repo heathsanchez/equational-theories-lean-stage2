@@ -39,3 +39,49 @@ def test_generic_fin5_replay_and_certificate():
     certificate = engine.emit_certificate(table)
     assert "Fin 5" in certificate
     assert len(certificate.encode("utf-8")) < 1000
+
+
+def test_structured_templates_cover_crossed_coordinate_families():
+    solver = load_solver()
+    examples = (
+        (
+            "x = (y * x) * (x * (z * w))",
+            "x * (y * z) = x * (z * y)",
+            "crossed-square-2",
+            4,
+        ),
+        (
+            "x = ((y * y) * x) * (x * z)",
+            "x * (x * y) = (x * y) * x",
+            "crossed-square-2",
+            4,
+        ),
+        (
+            "x = (y * x) * (x * z)",
+            "x * y = x * ((z * y) * w)",
+            "crossed-square-3-perturbed",
+            9,
+        ),
+    )
+    for source_text, target_text, name, order in examples:
+        source = solver.parse_equation(source_text)
+        target = solver.parse_equation(target_text)
+        found = solver.structured_model_candidate(source, target)
+        assert found is not None
+        assert found[:2] == (name, order)
+        _, _, table, witness = found
+        assert solver.replay_countermodel(
+            source,
+            target,
+            table,
+            order,
+            witness,
+            solver.serialize_flat_table(table, order),
+        )
+
+
+def test_large_structured_certificate_raises_recursion_bound():
+    solver = load_solver()
+    _, order, table = solver.STRUCTURED_MODEL_TEMPLATES[1]
+    certificate = solver.emit_fin_certificate(table, order)
+    assert "set_option maxRecDepth 100000 in" in certificate

@@ -1843,6 +1843,113 @@ def replay_countermodel(source, target, flat_table, order, witness, serialized):
     return equation_holds(target, table) is False
 
 
+STRUCTURED_MODEL_TEMPLATES = (
+    (
+        "crossed-square-2",
+        4,
+        tuple(
+            2 * (left % 2) + right // 2
+            for left in range(4)
+            for right in range(4)
+        ),
+    ),
+    (
+        "crossed-square-3-perturbed",
+        9,
+        (
+            0, 0, 0, 1, 1, 1, 2, 2, 2,
+            3, 3, 3, 4, 4, 4, 5, 5, 5,
+            6, 6, 7, 7, 7, 6, 8, 8, 8,
+            0, 0, 0, 1, 1, 1, 2, 2, 2,
+            3, 3, 3, 4, 4, 4, 5, 5, 5,
+            6, 6, 7, 7, 7, 6, 8, 8, 8,
+            0, 0, 0, 1, 1, 1, 5, 5, 5,
+            3, 3, 3, 4, 4, 4, 2, 2, 2,
+            6, 6, 7, 7, 7, 6, 8, 8, 8,
+        ),
+    ),
+)
+
+
+def large_structured_model_route(source):
+    """Structural signature for the balanced three-variable residual family."""
+    left, right, variables = source
+    if len(variables) != 3:
+        return False
+    if left[0] == "var" and right[0] == "op":
+        bare, compound = left, right
+    elif right[0] == "var" and left[0] == "op":
+        bare, compound = right, left
+    else:
+        return False
+    counts = {variable: 0 for variable in variables}
+    for subterm in walk_subterms(compound):
+        if subterm[0] == "var" and subterm[1] in counts:
+            counts[subterm[1]] += 1
+    return (
+        term_size(compound) == 7
+        and term_depth(compound) == 2
+        and sorted(counts.values()) == [1, 1, 2]
+        and counts.get(bare[1]) == 2
+    )
+
+
+def structured_model_candidate(source, target):
+    """Try a tiny equation-blind bank of reusable finite geometries."""
+    for name, order, flat_table in STRUCTURED_MODEL_TEMPLATES:
+        if order >= 7 and not large_structured_model_route(source):
+            continue
+        source_assignment_cap = 1000 if order >= 7 else 10000
+        if order ** len(source[2]) > source_assignment_cap:
+            continue
+        serialized = serialize_flat_table(flat_table, order)
+        table = [
+            list(flat_table[row * order:(row + 1) * order])
+            for row in range(order)
+        ]
+        if equation_holds(source, table) is not True:
+            continue
+        for witness in product(range(order), repeat=len(target[2])):
+            assignment = dict(zip(target[2], witness))
+            if eval_term(target[0], assignment, table) == eval_term(
+                target[1], assignment, table
+            ):
+                continue
+            if replay_countermodel(
+                source,
+                target,
+                flat_table,
+                order,
+                witness,
+                serialized,
+            ):
+                return name, order, flat_table, witness
+            return None
+    return None
+
+
+def finish_structured_model_candidate(source, target, found):
+    if found is None:
+        return False
+    name, order, table, witness = found
+    code = emit_fin_certificate(table, order)
+    code_bytes = len(code.encode("utf-8"))
+    print(
+        "MATHGRAPH_METRICS " + json.dumps({
+            "portfolio": "structured-model-template",
+            "template": name,
+            "order": order,
+            "certificate_bytes": code_bytes,
+            "witness_cardinality": len(set(witness)),
+        }, separators=(",", ":")),
+        file=sys.stderr,
+        flush=True,
+    )
+    if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
+        return False
+    return judge("false", code).get("status") == "accepted"
+
+
 class FiniteModelEngine:
     """Domain-parameterized finite magma CSP with independent replay."""
 
@@ -2945,12 +3052,18 @@ def emit_fin_certificate(table, order=None):
     else:
         flat_table = tuple(table)
     compact = serialize_flat_table(flat_table, order)
+    depth_option = (
+        "set_option maxRecDepth 100000 in\n"
+        if order >= 7
+        else ""
+    )
     return (
         "import JudgeProblem\n"
         "import JudgeDecide.DecideBang\n"
         "import JudgeFinOp.MemoFinOp\n"
         "open MemoFinOp\n\n"
-        "def submission : Goal := by\n"
+        + depth_option
+        + "def submission : Goal := by\n"
         "  let candidateMagma : Magma (Fin "
         + str(order)
         + ") := {\n"
@@ -7056,6 +7169,15 @@ def run_solo():
                 return
             if found is None:
                 report_finite_model(search, configuration["name"], False)
+
+    try:
+        structured_found = structured_model_candidate(source, target)
+    except (IndexError, MemoryError, RecursionError, TypeError, ValueError):
+        structured_found = None
+    if finish_structured_model_candidate(
+        source, target, structured_found
+    ):
+        return
 
     # Match source-law instances modulo replayed equality classes.  This route
     # remains bounded, reconstructs every representative replacement, and

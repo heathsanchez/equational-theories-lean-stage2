@@ -1,0 +1,61 @@
+{
+  "schema_version": "mathgraph.structured-model-template.v1",
+  "starting_head": "026734630e7f887547b968108ed835c5674c5161",
+  "release_tag": "mathgraph-687-rc1",
+  "method": {
+    "routing": "equation-blind replay of a fixed structural model portfolio",
+    "templates": [
+      {
+        "name": "crossed-square-2",
+        "order": 4,
+        "definition": "op(a,b) = 2*(a mod 2) + floor(b/2)",
+        "table_cells": 16
+      },
+      {
+        "name": "crossed-square-3-perturbed",
+        "order": 9,
+        "definition": "sparse perturbation of crossed-square coordinate geometry",
+        "table_cells": 81
+      }
+    ],
+    "id_lookup": false,
+    "equation_lookup": false,
+    "label_routing": false,
+    "independent_semantic_replay": true
+  },
+  "released_evaluation": {
+    "starting_score": {"true": 367, "false": 320, "total": 687, "rows": 800},
+    "new_false_candidates": 64,
+    "new_true_candidates": 0,
+    "projected_score": {"true": 367, "false": 384, "total": 751, "rows": 800},
+    "projected_rate": 0.93875,
+    "remaining": {"true": 33, "false": 16},
+    "extra_hard_false_gain": 58,
+    "other_strata_false_gain": 6,
+    "crossed_square_2_gain": 33,
+    "crossed_square_3_perturbed_gain": 31
+  },
+  "external_family_evidence": {
+    "hard1_hard2_hard3_false_hits": 24,
+    "independent_source_families": 13,
+    "true_control_candidates": 0,
+    "released_new_source_family_hits": [17210, 28959]
+  },
+  "official_verification": {
+    "order4_representatives_accepted": 2,
+    "order9_representatives_accepted": 1,
+    "order9_initial_rejection": {
+      "category": "Lean maxRecDepth",
+      "resolved_by": "explicit certificate-local maxRecDepth 100000",
+      "model_changed": false
+    },
+    "post_fix_replay_failures": 0,
+    "post_fix_lean_rejections": 0
+  },
+  "integrity": {
+    "vampire_discovery_models_sha256": "b10ff860f3528b6d0861073e7897654fc477db8dd4e96677fcc81fefd83bd884",
+    "initial_smoke_sha256": "83385776422b22b700677366f221f9457ba0b35c1d1ca294f3913d0ecb85e01c",
+    "order9_fixed_smoke_sha256": "7e6a3ed3ddaea4464f258edec22c6c814e742695c9fb209141859fc1204eee8b",
+    "new_source_holdout_smoke_sha256": "ae12a9e97450380ca290e4100764c540874f2984ea4d925c3265d7f2f43e4f0e"
+  }
+}

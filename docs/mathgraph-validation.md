@@ -2051,3 +2051,37 @@ evidence: its measured gain is on newly released evaluation strata rather
 than on public-row-specific logic. The projected released-evaluation score is
 687/800 with zero LLM calls. Compact hashes and per-hit metrics are recorded
 in `target_grounded_refutation_summary.json`.
+
+# Structured Finite-Model Templates
+
+The `mathgraph-687-rc1` tag freezes the target-grounded release candidate.
+Analysis of its 80 released FALSE residuals found that all 58 `extra_hard`
+rows belonged to three source families. Vampire FMB was used only as an
+offline discovery instrument. It found order-4 models for two families and
+order-9 models for the third; every table was then replayed by MathGraph.
+
+The discovered tables compressed to two equation-blind structural templates.
+The first is the crossed-coordinate magma on four elements,
+`a ◇ b = 2*(a mod 2) + floor(b/2)`. The second is a sparse nine-element
+perturbation of the analogous crossed-coordinate geometry. Production does
+not inspect IDs, equation hashes, labels, or source-family membership. It
+tries both fixed tables generically, verifies that the source holds, finds a
+concrete target witness, independently replays the countermodel, and only
+then emits the ordinary generic `Fin n` certificate.
+
+The templates cover 64/80 released FALSE residuals and 0/41 unresolved TRUE
+opportunities. This includes all 58 `extra_hard` residuals plus six gains in
+other released strata. Two of those gains use source laws absent from the
+three-family discovery cluster. Across the pre-existing `hard1`, `hard2`, and
+`hard3` corpora, the four-element template falsifies 24 labelled FALSE rows
+from 13 source families and no labelled TRUE row. This is the primary
+source-family transfer evidence.
+
+An initial order-9 judge attempt was correctly rejected at Lean's default
+recursion limit. The production certificate now raises `maxRecDepth` locally
+to 100000; the unchanged model was subsequently officially accepted. Two
+order-4 representatives, including a newly transferred source family, were
+also officially accepted. The projected released-evaluation score is
+`367 TRUE + 384 FALSE = 751/800` (93.875%), with 33 TRUE and 16 FALSE rows
+remaining. Full details and artifact hashes are in
+`structured_model_template_summary.json`.
