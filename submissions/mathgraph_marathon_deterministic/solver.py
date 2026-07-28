@@ -5427,10 +5427,8 @@ class CompactSuperposition:
                     self.m.term_variables(clause.lhs)
                     | self.m.term_variables(clause.rhs)
                 )
-                base = {
-                    variable: self.target[0]
-                    for variable in variables
-                }
+                anchor = ("var", self.target[2][0])
+                base = {variable: anchor for variable in variables}
                 left_mapping = dict(base)
                 right_mapping = dict(base)
                 left_mapping[distinguished] = self.target[0]
@@ -5600,6 +5598,7 @@ class CompactSuperposition:
 COMPACT_SUPERPOSITION_PROBE = {
     "seconds": 0.20,
     "maximum_term_size": 35,
+    "maximum_replay_term_size": 80,
     "maximum_depth": 7,
     "maximum_rules": 96,
     "maximum_rounds": 8,
@@ -6315,7 +6314,10 @@ def finish_compact_superposition_candidate(source, target, search, recipe):
         source,
         nodes,
         root,
-        maximum_term_size=search.limits["maximum_term_size"],
+        maximum_term_size=search.limits.get(
+            "maximum_replay_term_size",
+            search.limits["maximum_term_size"],
+        ),
         maximum_nodes=search.limits["maximum_proof_nodes"],
     )
     if not replayed or (nodes[root].lhs, nodes[root].rhs) != target[:2]:
