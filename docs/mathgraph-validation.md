@@ -1915,3 +1915,19 @@ The remaining 22 TRUE rows all have short external superposition proofs.  The
 next bounded experiment is therefore iterative symbolic superposition with
 demodulation and explicit DAG reconstruction, not broader rewriting or larger
 finite-model search.
+
+#### Superposition generalization ceiling
+
+A follow-up used the same frozen one-second diagnostic oracle on the existing
+label-hidden BridgeIR audit.  It proved all 40/40 external TRUE opportunities
+and zero of 40 matched FALSE controls.  Median TRUE time was 0.0127 seconds.
+Thirty-five of the forty TRUE proofs used at most five superposition steps,
+37 used at most eight, and 39 used at most fifteen.  The largest proof used 39
+superposition and 26 demodulation steps.
+
+This is evidence about constructor capability, not a production certificate:
+Vampire remains absent from the solver and its results are not accepted
+terminal forms.  It does show that goal-directed unit equality superposition
+generalizes far beyond the public residual cluster.  The implementation target
+is a compact internal engine that reconstructs each selected superposition and
+demodulation step into the existing replayed equality DAG.

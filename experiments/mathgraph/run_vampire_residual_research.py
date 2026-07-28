@@ -2,6 +2,7 @@
 """Diagnostic Vampire coverage of the current TRUE residuals."""
 
 import importlib.util
+import argparse
 import json
 import subprocess
 import sys
@@ -60,9 +61,20 @@ def current_residuals():
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--input", type=Path)
+    parser.add_argument("--output", type=Path, default=Path(
+        "/tmp/mathgraph-vampire-residuals.json"
+    ))
+    parser.add_argument("--seconds", type=int, default=10)
+    args = parser.parse_args()
     module = load_solver()
     results = []
-    for index, row in enumerate(current_residuals(), 1):
+    rows = current_residuals()
+    if args.input:
+        payload = json.loads(args.input.read_text())
+        rows = payload["rows"] if isinstance(payload, dict) else payload
+    for index, row in enumerate(rows, 1):
         source = module.parse_equation(row["equation1"])
         target = module.parse_equation(row["equation2"])
         problem = (
@@ -78,10 +90,11 @@ def main():
             try:
                 run = subprocess.run(
                     [
-                        "vampire", "--mode", "casc", "--time_limit", "10",
+                        "vampire", "--mode", "casc", "--time_limit",
+                        str(args.seconds),
                         "--proof", "tptp", handle.name,
                     ],
-                    capture_output=True, text=True, timeout=12,
+                    capture_output=True, text=True, timeout=args.seconds + 2,
                 )
                 output = run.stdout + run.stderr
             except subprocess.TimeoutExpired as error:
@@ -109,11 +122,11 @@ def main():
         }
         results.append(record)
         print(
-            f"[{index}/25] "
+            f"[{index}/{len(rows)}] "
             + json.dumps({k: v for k, v in record.items() if k != "proof"}),
             flush=True,
         )
-    Path("/tmp/mathgraph-vampire-residuals.json").write_text(
+    args.output.write_text(
         json.dumps({"diagnostic_only": True, "rows": results}, indent=2)
     )
 
