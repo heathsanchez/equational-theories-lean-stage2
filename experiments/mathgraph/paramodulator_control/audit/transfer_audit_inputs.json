@@ -1,0 +1,5224 @@
+{
+  "rows": [
+    {
+      "id": "demod_bcf68ca74c54805867a1",
+      "eq1_id": 8794,
+      "eq2_id": 37581,
+      "equation1": "x = (y \u25c7 (z \u25c7 (((y \u25c7 x) \u25c7 z) \u25c7 y)))",
+      "equation2": "x = (((y \u25c7 (y \u25c7 (z \u25c7 x))) \u25c7 z) \u25c7 y)",
+      "content_sha256": "2c7d180ee3195184410ee65be33cc3981cd711c1f01c63e4b2bd4ec2b8f5ab06",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_31520e00e144c83da3f7",
+      "eq1_id": 26344,
+      "eq2_id": 20781,
+      "equation1": "x = ((y \u25c7 ((z \u25c7 y) \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 z))",
+      "content_sha256": "40bddc85df323e77616d0c1ca0db9a86c5b06c7a4b088abd2c7aad5b1a910dca",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_c36efa7ad85f4abb2331",
+      "eq1_id": 15535,
+      "eq2_id": 30681,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 w))) \u25c7 z)",
+      "content_sha256": "67fedba907114d7a75ad32b2c6203efb32bfe544c9ad2e65699ef5e37080731a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_78cda0abcff87eae3e52",
+      "eq1_id": 5296,
+      "eq2_id": 13035,
+      "equation1": "x = (y \u25c7 (z \u25c7 (y \u25c7 (y \u25c7 (x \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 (z \u25c7 (y \u25c7 x))) \u25c7 z))",
+      "content_sha256": "6f6b6de3c6da532fb321068a678d2c7ea3d5609547e2dac37bf3051d1686ce0d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_551ebe208c75a098cca5",
+      "eq1_id": 22455,
+      "eq2_id": 24410,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 y) \u25c7 y) \u25c7 ((z \u25c7 z) \u25c7 z))",
+      "content_sha256": "9af9449fedf50b5c20f43a88b390bb4666a489d05d56f8a4bbfa33546286e938",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_50c7b614e64704e415a1",
+      "eq1_id": 30591,
+      "eq2_id": 26151,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 ((y \u25c7 y) \u25c7 y)) \u25c7 (z \u25c7 y))",
+      "content_sha256": "2cbb8e23f2fb7cb5c238c1901db9cbe3ff538d7e5d097e3653f800eed556d10a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          5,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_4152955d4b08b89ff20d",
+      "eq1_id": 25964,
+      "eq2_id": 24315,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 z) \u25c7 ((z \u25c7 w) \u25c7 w))",
+      "content_sha256": "29f916ba2953840a4a62bcbeee1bf78d6c30fe5d60abc654825ad43cc322fceb",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_d6050065697b9888e8e3",
+      "eq1_id": 22836,
+      "eq2_id": 32329,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((y \u25c7 x) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 x)) \u25c7 z)",
+      "content_sha256": "81163ad243f2cab902c84f67be777e2dba50e3a20095c1dbf16a57ff5055907f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_fba9af353cae92419a41",
+      "eq1_id": 36550,
+      "eq2_id": 14638,
+      "equation1": "x = ((((y \u25c7 x) \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((x \u25c7 z) \u25c7 (y \u25c7 x)) \u25c7 z))",
+      "content_sha256": "45f83142480c67aa7ca0bc0a0dbc004a13596dcec22cab07cacebfc301307472",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_47339bd8492a3ba9ad5a",
+      "eq1_id": 17522,
+      "eq2_id": 19239,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 x) \u25c7 (y \u25c7 w)))",
+      "content_sha256": "01e7f2ceb67b9cbdcb4f7505112d3b06d65e723fd62c2d82ec47ecbf004e2ac7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_8c1d27c5cd1f4035c334",
+      "eq1_id": 22818,
+      "eq2_id": 33860,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 (x \u25c7 (z \u25c7 x))) \u25c7 y)",
+      "content_sha256": "e794a8b936e1e43873b13ffcf85a2161fb5f6a9cf23e9f7fdc9b81bd30e4b1ea",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_a7079f0a824c848daf4b",
+      "eq1_id": 5889,
+      "eq2_id": 39576,
+      "equation1": "x = (y \u25c7 (x \u25c7 (z \u25c7 ((z \u25c7 y) \u25c7 z))))",
+      "equation2": "x = ((((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 x) \u25c7 z)",
+      "content_sha256": "901469ac7f2acf4b8f1831eb873b1e96ba7ecf4335da4cd9e6708e3099a08c9d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_545e24c65787a22d6b49",
+      "eq1_id": 25964,
+      "eq2_id": 10334,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 x) \u25c7 ((z \u25c7 x) \u25c7 w)))",
+      "content_sha256": "2aa9ef95a7f0fc7b85f12b635fdc38ced6ca27ae28333ccb8102bc247c4ea964",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_05d802ae9fd7d4bac4db",
+      "eq1_id": 30591,
+      "eq2_id": 7560,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 w)))",
+      "content_sha256": "4331cc0096d637ed2b4e587f358a1cea3765a890e004c410b5883e3fec48074f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_50da42d79036584eb4bf",
+      "eq1_id": 41082,
+      "eq2_id": 9607,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((z \u25c7 x) \u25c7 (y \u25c7 (y \u25c7 y))))",
+      "content_sha256": "9d147384de91c5b5fcb4869275803f2b8e6181045b260e2789f476c658d4a924",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_0efa2d024257a147fc59",
+      "eq1_id": 28770,
+      "eq2_id": 21727,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((y \u25c7 (y \u25c7 x)) \u25c7 (y \u25c7 (y \u25c7 z)))",
+      "content_sha256": "9b9bd38a5efa8739c830b5700799b6f1430f151d81e33c82ecce8562b3def0b2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_a1ff08982b2dc6fbe3ed",
+      "eq1_id": 37581,
+      "eq2_id": 15884,
+      "equation1": "x = (((y \u25c7 (y \u25c7 (z \u25c7 x))) \u25c7 z) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (((z \u25c7 (z \u25c7 x)) \u25c7 y) \u25c7 z))",
+      "content_sha256": "b4ec550e1e5c6b7a4dc034be88bac8e7ff6aa7e1a054c2947b194219bc266ee2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_b59f8d74ad15bcd77c18",
+      "eq1_id": 38283,
+      "eq2_id": 27862,
+      "equation1": "x = (((y \u25c7 ((x \u25c7 y) \u25c7 z)) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 (y \u25c7 x)) \u25c7 y) \u25c7 (x \u25c7 y))",
+      "content_sha256": "91bafdb2e7f3c81e9d1d27e4155b33ab7c90f3650e03b90df1616aa5c6e39f77",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 2,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "id": "demod_f02b18b059ee4b548301",
+      "eq1_id": 25534,
+      "eq2_id": 5363,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (z \u25c7 x))) \u25c7 (z \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (z \u25c7 (x \u25c7 (z \u25c7 y)))))",
+      "content_sha256": "ba8c679d11855d782964852abbf5bfd4e403870726519cf047b1e6328851e873",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_e8247ab4bde0388e385a",
+      "eq1_id": 15535,
+      "eq2_id": 6197,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 y))))",
+      "content_sha256": "a9d232a0a0b7f163407c04e0823c72280e90271e230c59f5beff797ae6e2c527",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_219dc345e4fb800524e2",
+      "eq1_id": 18364,
+      "eq2_id": 31301,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 z) \u25c7 (y \u25c7 x))) \u25c7 z)",
+      "content_sha256": "8f20b9c4156edb53604ddfd8281c6053d6faef37c26aefb25c2438438ecc2dd1",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_a7d4fbc04cebecb8bb0a",
+      "eq1_id": 9697,
+      "eq2_id": 31622,
+      "equation1": "x = (y \u25c7 ((z \u25c7 y) \u25c7 (z \u25c7 (x \u25c7 y))))",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 y) \u25c7 (z \u25c7 x))) \u25c7 y)",
+      "content_sha256": "56deb4aba67f28e7af6e7ddbda0712317fd31d6378b607dafbb54794040e4926",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_7d3f75950af38e952206",
+      "eq1_id": 28770,
+      "eq2_id": 8872,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (((z \u25c7 x) \u25c7 z) \u25c7 z)))",
+      "content_sha256": "7169185ddd34e190e88261901fa64720d6d017aec655aeb2c5fa0a7c3730f771",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_6aa4b1cba15541a089fd",
+      "eq1_id": 28098,
+      "eq2_id": 6749,
+      "equation1": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 (x \u25c7 z))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 z))))",
+      "content_sha256": "85faba88a4f5785fbdb747efadd831a4bb0bf0abdf1bb36a79eb51aa5f316748",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_931bd696feb055036899",
+      "eq1_id": 27755,
+      "eq2_id": 32198,
+      "equation1": "x = (((y \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 (z \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 y)) \u25c7 y)",
+      "content_sha256": "28d69720cf4ec31703a5e0e5e801353c7bd0adcc8e66bbf0ffedc13476f5950d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_f9b07534ec8b4a6ee7f3",
+      "eq1_id": 22818,
+      "eq2_id": 8105,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 ((w \u25c7 (y \u25c7 w)) \u25c7 z)))",
+      "content_sha256": "33303824400e1209d2b56c1c061986fcc44c66bf169c20c7815c729b843af274",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_dbd2a8883d990c93b023",
+      "eq1_id": 35981,
+      "eq2_id": 13768,
+      "equation1": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 z)) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 ((z \u25c7 y) \u25c7 z)) \u25c7 y))",
+      "content_sha256": "1b249538c04baeb0ccb62a5bc3cbf6709eb7a5898a951b7e0621a12b6f3bfcaa",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_52f07b963bcd8d75269b",
+      "eq1_id": 22455,
+      "eq2_id": 5805,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (x \u25c7 (x \u25c7 ((z \u25c7 z) \u25c7 z))))",
+      "content_sha256": "d6062a32574a26b30139e67d57c4cadd5abb0922c55d71701471a20c603374b7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_743f7b7c0c97e9bb45af",
+      "eq1_id": 22827,
+      "eq2_id": 22505,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 z) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 (x \u25c7 y)) \u25c7 ((z \u25c7 z) \u25c7 z))",
+      "content_sha256": "5142b9de0cf153a06d8099992066f4d3ca25cbad2650a0d730145df5a0630d7f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d33808567db15f43e665",
+      "eq1_id": 20034,
+      "eq2_id": 14810,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 z))",
+      "content_sha256": "474f0222f9a9ede46e110757a71225ea058fa77acf6a64c384507bd5d431e407",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_d671b83ea55bf7308824",
+      "eq1_id": 41082,
+      "eq2_id": 27066,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 y) \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 y))",
+      "content_sha256": "ca7584e753277f727eb7fddf3574ce90484ada3de9e06e077a4e80ad97459840",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_a357752066a851966693",
+      "eq1_id": 25411,
+      "eq2_id": 14886,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (x \u25c7 z))) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 x) \u25c7 (z \u25c7 y)) \u25c7 y))",
+      "content_sha256": "c28aa851fabb54e818923fd7a45d8640bc5b9fd5748c1248685e7afddcf10899",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_3193040e22efb7c30383",
+      "eq1_id": 22818,
+      "eq2_id": 26882,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 (y \u25c7 z)) \u25c7 (x \u25c7 z))",
+      "content_sha256": "8546969f8c832a0e43c472caddd0020df043a3d7a638e8a0fc8a267f38b320be",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_40c35d349cce462df61d",
+      "eq1_id": 15535,
+      "eq2_id": 26039,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 z) \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "content_sha256": "15571087a4e9a84c73abb1f78804acb0becb521fab5d323d6385da32f17f4d58",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_3dc6f83a7394ae4216f5",
+      "eq1_id": 37822,
+      "eq2_id": 19921,
+      "equation1": "x = (((y \u25c7 (z \u25c7 (z \u25c7 y))) \u25c7 x) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((z \u25c7 (z \u25c7 y)) \u25c7 z))",
+      "content_sha256": "b3bf8e046ee2d489992f9e241a401f7415339aa74e74729021f1a2aa6517b5aa",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_824e0260ff4ac8dea192",
+      "eq1_id": 25964,
+      "eq2_id": 7944,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (y \u25c7 (z \u25c7 ((y \u25c7 (z \u25c7 x)) \u25c7 z)))",
+      "content_sha256": "c491de4037365b0a0c50177280b0ad23368c66cfba1c3c7455a00609854b43e6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_a908024f3d97eb9919d7",
+      "eq1_id": 8747,
+      "eq2_id": 30500,
+      "equation1": "x = (y \u25c7 (z \u25c7 (((x \u25c7 z) \u25c7 y) \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 z))) \u25c7 z)",
+      "content_sha256": "82d853e92abd1ede22a0e96918cf5bbf77e500c3c9639543ec395727e4f2908a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_3b786f139501ed078b0a",
+      "eq1_id": 17522,
+      "eq2_id": 11151,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 (y \u25c7 z)))",
+      "content_sha256": "6178d319c4a0e60111b2010405d36c456888351fd17778ec15629d62ad6ecc37",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_8dbfbeb0083d6a3e4ccd",
+      "eq1_id": 4916,
+      "eq2_id": 40938,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (((((y \u25c7 x) \u25c7 z) \u25c7 x) \u25c7 z) \u25c7 y)",
+      "content_sha256": "0e7d3327383a8fa32798074720b2d4612d7d626ac8e128363359e54a91b9cb05",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_77167873cb0d6286642d",
+      "eq1_id": 19870,
+      "eq2_id": 7709,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (y \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 y)))",
+      "content_sha256": "cf02630aade52edcace556e0870c61eadc2fabccd7a2fb820d7c520a237c3d65",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ed9eb9dd240afbc30f38",
+      "eq1_id": 35058,
+      "eq2_id": 26063,
+      "equation1": "x = (((y \u25c7 z) \u25c7 ((x \u25c7 z) \u25c7 y)) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 z) \u25c7 z)) \u25c7 (z \u25c7 y))",
+      "content_sha256": "68c06b341f381843190f1fa4341f4b420c13e6e85dd93182fd8be978d5cdabbf",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_7067cfb47b9834f3c163",
+      "eq1_id": 22818,
+      "eq2_id": 19899,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((z \u25c7 (y \u25c7 x)) \u25c7 y))",
+      "content_sha256": "daa98a8f75a1f952c2a74a4c8f5e7180f8d07ebde35b15565d6a7a5a748733a1",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_17b008f9c14a055f7d92",
+      "eq1_id": 37527,
+      "eq2_id": 7588,
+      "equation1": "x = (((y \u25c7 (y \u25c7 (x \u25c7 z))) \u25c7 z) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((y \u25c7 (z \u25c7 x)) \u25c7 z)))",
+      "content_sha256": "ef3865926011c1f8c2bcbc86151b43232f838590c0211330ed07945a5014030a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d7bd46d41b2b51201ed1",
+      "eq1_id": 32198,
+      "eq2_id": 36536,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 y)) \u25c7 y)",
+      "equation2": "x = ((((y \u25c7 x) \u25c7 y) \u25c7 (z \u25c7 z)) \u25c7 y)",
+      "content_sha256": "1b27c067db59d3bb43c34ab80165e3da0966bb8e876926a432bf8a145140ffa6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d98196a4952adecf757f",
+      "eq1_id": 19873,
+      "eq2_id": 37607,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 (y \u25c7 (z \u25c7 z))) \u25c7 x) \u25c7 y)",
+      "content_sha256": "9895e8a95ae487b6eabb7f453cf49208d039d98ec7954e673163b3fd03b3a25b",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_19333dbc6d886ba24558",
+      "eq1_id": 41082,
+      "eq2_id": 13075,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((y \u25c7 (z \u25c7 (w \u25c7 y))) \u25c7 w))",
+      "content_sha256": "56582a570769254b4588d8d95245b137dc9871a2a7fcc6d00d879bc214704a04",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_017b8bef1f04aa06ca92",
+      "eq1_id": 41082,
+      "eq2_id": 15430,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((x \u25c7 (x \u25c7 x)) \u25c7 z) \u25c7 z))",
+      "content_sha256": "02c3bdbf8265281789cfba8af9e68bfb874fd5a6aebe4e2e3f340ba0f25e1c7b",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c40fd051efd6f05f51e3",
+      "eq1_id": 17522,
+      "eq2_id": 27319,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 (z \u25c7 z)) \u25c7 (y \u25c7 z))",
+      "content_sha256": "a65ebbc193498bdd544a989721c09652ccd39dc0cea4ed9898c2708480d2b1bd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_5f6beb0680d811b2f54c",
+      "eq1_id": 15535,
+      "eq2_id": 5098,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (y \u25c7 (y \u25c7 (y \u25c7 (x \u25c7 z)))))",
+      "content_sha256": "af9d2ecb039ee006fed6f0caa2c6b6d0ced9ad986f6fc7cee3042c8d2dd27361",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_7e72abeee2a6a1414558",
+      "eq1_id": 10337,
+      "eq2_id": 22615,
+      "equation1": "x = (y \u25c7 ((y \u25c7 x) \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 (y \u25c7 x)) \u25c7 ((z \u25c7 y) \u25c7 z))",
+      "content_sha256": "3ed2b229850537377f5b9093972970c283bd2c70e398a202a7ea5ac5262a06cb",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6ae981f82aa7fcbb2d23",
+      "eq1_id": 28770,
+      "eq2_id": 12346,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 y) \u25c7 w) \u25c7 (x \u25c7 z)))",
+      "content_sha256": "14521e5348101b4f914b6b714d0c127861a03823cc3ceca542aae1b9fcdfeb03",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_9f4a435b637c9bc50e67",
+      "eq1_id": 22455,
+      "eq2_id": 31417,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 ((y \u25c7 y) \u25c7 (z \u25c7 x))) \u25c7 y)",
+      "content_sha256": "809f64a44609e170b432288babedc318a00d274d65904f4d7afdad44eb2789b9",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_486a2c6409a4a4289f29",
+      "eq1_id": 4916,
+      "eq2_id": 21095,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (((y \u25c7 y) \u25c7 w) \u25c7 w))",
+      "content_sha256": "0de9b5e363cf2749f87d879a3880822cef715836c05bfc8098d6d9056d9bff6e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_4d95890cfa242f687c0a",
+      "eq1_id": 25964,
+      "eq2_id": 38263,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (((y \u25c7 ((x \u25c7 y) \u25c7 x)) \u25c7 x) \u25c7 z)",
+      "content_sha256": "a322e9e137527106a9526f6fb0f013d34da8011a09694c830e60b84c4cedaafa",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_9339e18d7cbc088a1161",
+      "eq1_id": 15535,
+      "eq2_id": 16637,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((((z \u25c7 x) \u25c7 z) \u25c7 x) \u25c7 z))",
+      "content_sha256": "2e28b3eef544a71d3667e0e835a775c1c0ad55a94b77d1f5e8ae5cb066fea106",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_2479e80f242e46d9efec",
+      "eq1_id": 8867,
+      "eq2_id": 18364,
+      "equation1": "x = (y \u25c7 (z \u25c7 (((z \u25c7 x) \u25c7 y) \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 y)))",
+      "content_sha256": "4ff5668acec3e86b84ea3815d4ebcf9d09b8f107b732910c3436ccff48c70ef9",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_479052f44a6b3ad960bb",
+      "eq1_id": 32329,
+      "eq2_id": 10505,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 x)) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((z \u25c7 x) \u25c7 ((z \u25c7 z) \u25c7 y)))",
+      "content_sha256": "e81e2cfc954964cf27ced2b4ea852ca222501de5a0026e59f2a349a41af5e701",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_f5ea95dcc876cd2cc920",
+      "eq1_id": 21029,
+      "eq2_id": 15523,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (((x \u25c7 z) \u25c7 z) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (((x \u25c7 (z \u25c7 y)) \u25c7 z) \u25c7 z))",
+      "content_sha256": "256e92e7e34cf846a691f661f4648c72e30bf12e1bcecbdd27a676458a5eaac0",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_82a28b7a984827455f56",
+      "eq1_id": 33193,
+      "eq2_id": 33055,
+      "equation1": "x = ((y \u25c7 (((y \u25c7 z) \u25c7 x) \u25c7 y)) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 (((x \u25c7 z) \u25c7 y) \u25c7 x)) \u25c7 z)",
+      "content_sha256": "ac83538401596f3fec3042943a7324441b3aea074a879c8cd36af1879044b8c3",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_87b6a43ade3aba3cbc72",
+      "eq1_id": 25414,
+      "eq2_id": 35178,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (x \u25c7 z))) \u25c7 (z \u25c7 y))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 ((z \u25c7 x) \u25c7 y)) \u25c7 z)",
+      "content_sha256": "b9b661615c3c131563f0b6d441de7a8c5506a0d27a04c16c94edeef98a8f79af",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_438460c8a1ae1d9cd2cf",
+      "eq1_id": 41082,
+      "eq2_id": 31690,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 z) \u25c7 (y \u25c7 z))) \u25c7 y)",
+      "content_sha256": "7e656351fafe575630b0a3666e9a45fb3e4195c84b698acedcd331d008b366bd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_06f58239d7ae629693a4",
+      "eq1_id": 22455,
+      "eq2_id": 34869,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 y) \u25c7 ((x \u25c7 x) \u25c7 x)) \u25c7 z)",
+      "content_sha256": "05d7f800bfc81c3783bfa355c2470698af3ce81508b95a545cc299de37e14aee",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_555a6ba5fa51c9ac17da",
+      "eq1_id": 27288,
+      "eq2_id": 24683,
+      "equation1": "x = (((y \u25c7 z) \u25c7 (z \u25c7 x)) \u25c7 (z \u25c7 y))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 z) \u25c7 ((z \u25c7 x) \u25c7 y))",
+      "content_sha256": "4ffc3c916d96bc177a9e20b567c1c01a7237e7f4428984ae1200fb99a9879ec1",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_4cd122808efe71817b52",
+      "eq1_id": 4916,
+      "eq2_id": 37431,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (((y \u25c7 (x \u25c7 (z \u25c7 x))) \u25c7 z) \u25c7 z)",
+      "content_sha256": "50d42edc34084c15b42c9a567d47521c40f3b8e0427240379b305500c5e3af1c",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_5249cf403bfa514e0353",
+      "eq1_id": 20034,
+      "eq2_id": 15900,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 y))",
+      "content_sha256": "6c2c3eb3e15a10bc7aaf8de1bc142f2e99be16ee826bbee48127457b9a7fdd70",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c88dc00d89dbaea29f4d",
+      "eq1_id": 14779,
+      "eq2_id": 19908,
+      "equation1": "x = (y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((z \u25c7 (y \u25c7 z)) \u25c7 z))",
+      "content_sha256": "06eaf18140415f9f767bfb3a7cb50ef72b2ef5d46d3f5574d226bd5a8466f13a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_2256d782efd6ad8e5445",
+      "eq1_id": 18395,
+      "eq2_id": 24534,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 x) \u25c7 ((z \u25c7 y) \u25c7 z))",
+      "content_sha256": "8c2a0956acb099daad172ef39e7c02ace4aa502a53f25fc2cd2103f0296bd199",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_fc46a833ac66dc284c48",
+      "eq1_id": 16628,
+      "eq2_id": 37675,
+      "equation1": "x = (y \u25c7 ((((z \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 z))",
+      "equation2": "x = (((y \u25c7 (z \u25c7 (x \u25c7 y))) \u25c7 z) \u25c7 y)",
+      "content_sha256": "7a51be98176e201456ff60fb0caab0a401e451eeb8221b645bbb853c3ef1095a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_5933a0420a862fdf6f13",
+      "eq1_id": 20144,
+      "eq2_id": 35935,
+      "equation1": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 (z \u25c7 x)) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 (z \u25c7 x)) \u25c7 (z \u25c7 y)) \u25c7 z)",
+      "content_sha256": "f3a4b188ed944fb21301ca15ac14147856c23b83f849cc22365f010d25095045",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_5bc72cb630fc4526a0aa",
+      "eq1_id": 41082,
+      "eq2_id": 16547,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((((y \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 z))",
+      "content_sha256": "8159b82c58761cf8228c88eb3271481a6af8acbf5cdd11e68ffc1e18cfc256a5",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_9baae6ce083c1714cb38",
+      "eq1_id": 4916,
+      "eq2_id": 30489,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = ((y \u25c7 (y \u25c7 ((x \u25c7 x) \u25c7 z))) \u25c7 y)",
+      "content_sha256": "389745c4f48a0d2a96fbb95f4125d116ffefcecd9dd0ae9240fde231167d009e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_be590eb7f53338cbbe4d",
+      "eq1_id": 14886,
+      "eq2_id": 14725,
+      "equation1": "x = (y \u25c7 (((z \u25c7 x) \u25c7 (z \u25c7 y)) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (((y \u25c7 x) \u25c7 (z \u25c7 z)) \u25c7 y))",
+      "content_sha256": "16ec0e04045020d58dd12385a67f2ac5c99a1b7ca9a8ade1fb10b35cf076c0e6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_5e8538cd49d2379b7004",
+      "eq1_id": 17522,
+      "eq2_id": 18154,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 (z \u25c7 ((y \u25c7 z) \u25c7 z)))",
+      "content_sha256": "7ed1e1aa94b69c67c7d56cf12c1b96793ed72c1742f53c16a194889123ca2f32",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d9555dd1276bf556bad9",
+      "eq1_id": 15535,
+      "eq2_id": 17747,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (w \u25c7 (y \u25c7 (z \u25c7 z))))",
+      "content_sha256": "1b4c390d3ab605ba03a7de52790b7aff3fe650057218f4a50d55ba285d9b6aa2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_521e6e488670ccb153d6",
+      "eq1_id": 4916,
+      "eq2_id": 6018,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 (y \u25c7 (z \u25c7 ((y \u25c7 x) \u25c7 y))))",
+      "content_sha256": "7bd0444f8a5eaf44f16aece57ea3f791b3befe57ca1ee0843f1f88bf1bb8522a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_758f835f5cb8d3532b94",
+      "eq1_id": 41082,
+      "eq2_id": 41031,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((((y \u25c7 y) \u25c7 x) \u25c7 z) \u25c7 y) \u25c7 y)",
+      "content_sha256": "84c09cdb531658e66d2a05ff26f8653f3ea5be5a14271f7f45c028f88c5c16e0",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_f3b13528e6351e9d7c8a",
+      "eq1_id": 22455,
+      "eq2_id": 8028,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 ((z \u25c7 (z \u25c7 z)) \u25c7 y)))",
+      "content_sha256": "f8ab5e99798f6a4d6214f6aab58c33bd51bb8bb1af13958155988d87a91bd24b",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_6d68bf8c3079a0461bdf",
+      "eq1_id": 22455,
+      "eq2_id": 25488,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (y \u25c7 z))) \u25c7 (y \u25c7 z))",
+      "content_sha256": "df5ce03090e6feced27cb7f975431f4cfb230764d771e37cb8bcab42f4fcc08f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_f0ec2e385000657a2749",
+      "eq1_id": 27298,
+      "eq2_id": 39576,
+      "equation1": "x = (((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 x) \u25c7 z)",
+      "content_sha256": "760945bb2475b1be9dfc668ea1c09fef63c73de17555d152b0b6d103327d93c9",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_bfd6a358e35227512841",
+      "eq1_id": 22455,
+      "eq2_id": 11520,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 z)))",
+      "content_sha256": "95b565670b35e929c716d00569db6df4ac28c6a65c2e8c502ea8cf46dd3ceef6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_128074f14ced110a8854",
+      "eq1_id": 14779,
+      "eq2_id": 19870,
+      "equation1": "x = (y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 z))",
+      "content_sha256": "c32ed0dc76af93e1416fc9155594550a7459c45548a0bb947a86744dcb767110",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ed64ef3f6dcf837bb810",
+      "eq1_id": 41082,
+      "eq2_id": 8490,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (x \u25c7 (((z \u25c7 x) \u25c7 z) \u25c7 z)))",
+      "content_sha256": "8fb70237f56a87e9c6cfb7e2022918f5204aff3aaf96a03ead983ad077d00dea",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_cec797896aea2ee3bc11",
+      "eq1_id": 20128,
+      "eq2_id": 20192,
+      "equation1": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 (y \u25c7 x)) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((y \u25c7 (x \u25c7 y)) \u25c7 z))",
+      "content_sha256": "b4b7640086518cdb86568b8f724c0cd16e538d3a7e72e8960dd58bdefd5510d3",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_8b3fb9f0b06552436ced",
+      "eq1_id": 13769,
+      "eq2_id": 36058,
+      "equation1": "x = (y \u25c7 ((x \u25c7 ((z \u25c7 y) \u25c7 z)) \u25c7 z))",
+      "equation2": "x = (((y \u25c7 (z \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 y)",
+      "content_sha256": "75802835e8416ef682c610b89d11e1af4ab70abd1b6b6220e0c5f9055fb7e0d6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_db82eeee55cea6680a2f",
+      "eq1_id": 18167,
+      "eq2_id": 27298,
+      "equation1": "x = ((y \u25c7 x) \u25c7 (z \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "content_sha256": "3148ee87a661451320a0d98af04109ac46f293b7aa9a4f381aaf2428194c1ce4",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_9e091a63acf7b0a7d071",
+      "eq1_id": 15535,
+      "eq2_id": 22534,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (x \u25c7 z)) \u25c7 ((y \u25c7 y) \u25c7 y))",
+      "content_sha256": "faf966d6a572323b9f43945ea87d8bb8279d80743862e298c73c121ebc625d7d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_3d852156cd88b48959ea",
+      "eq1_id": 30591,
+      "eq2_id": 11049,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z)))",
+      "content_sha256": "b89bf592d8c2ec0ef38e2303e1a3f75b47e7b618865835a8488fe0d1e009077e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_59d4afa614a566870e29",
+      "eq1_id": 30591,
+      "eq2_id": 8689,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (y \u25c7 (((z \u25c7 w) \u25c7 y) \u25c7 z)))",
+      "content_sha256": "8513422072c57d7554421d26ce2f1046139d32a5b2e1869d76ed1e7028d85787",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c01482f280a21644aa1e",
+      "eq1_id": 41082,
+      "eq2_id": 17671,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (z \u25c7 (z \u25c7 (y \u25c7 y))))",
+      "content_sha256": "67cb80e688a7380363d47e916eae69ee2b2a66cb2438e7538bcc6be277c44e61",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_8c3636df888d2601ae29",
+      "eq1_id": 22818,
+      "eq2_id": 16351,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((((x \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 z))",
+      "content_sha256": "1cae8a6854bbfd1dad17f7b208136c6c5022ff09ffab58eb7c01c69917ba8dff",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c796544987d0c7ab3ad8",
+      "eq1_id": 21678,
+      "eq2_id": 19275,
+      "equation1": "x = ((y \u25c7 (x \u25c7 z)) \u25c7 (z \u25c7 (z \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 z) \u25c7 (z \u25c7 y)))",
+      "content_sha256": "33b58792a7924b42a39970bace9c022becfa1039f5e64f7bca7b0fe16cf16f18",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_170bba9f14c5de1be08b",
+      "eq1_id": 29762,
+      "eq2_id": 29852,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (x \u25c7 (x \u25c7 y)))) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (y \u25c7 (y \u25c7 x)))) \u25c7 z)",
+      "content_sha256": "9ace6ef4d0d21e48ec57c38d43e36fd9878d257c0e66fe6e4c04c870714496a0",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_e88962f2839c6dad26e5",
+      "eq1_id": 31622,
+      "eq2_id": 9697,
+      "equation1": "x = ((y \u25c7 ((z \u25c7 y) \u25c7 (z \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((z \u25c7 y) \u25c7 (z \u25c7 (x \u25c7 y))))",
+      "content_sha256": "c47ddfb4ebab242ebb16876f4da65dc4a6b8efb871f8cbe478efe48ea949f492",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_393a683f2a306c05d4f1",
+      "eq1_id": 28770,
+      "eq2_id": 26347,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 y) \u25c7 y)) \u25c7 (y \u25c7 y))",
+      "content_sha256": "9cc4cc48b00a94291aca976dd5bb3627b4b8d2cc495a38926a9b1b54f00fff12",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          5,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_bfeaa557321cf63e7e90",
+      "eq1_id": 14779,
+      "eq2_id": 14886,
+      "equation1": "x = (y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 x) \u25c7 (z \u25c7 y)) \u25c7 y))",
+      "content_sha256": "01a45b5e30fdb903c01ae4adf95e6754ce674199f692776862d38c81b156377c",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_2137b728865f1ea88409",
+      "eq1_id": 41082,
+      "eq2_id": 29473,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 z)))) \u25c7 w)",
+      "content_sha256": "393c0e71dcfc155e25e01424bd600f442d784a96434c2331c81a1a735fa258a3",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_179f0240e8ecec183b72",
+      "eq1_id": 22780,
+      "eq2_id": 32499,
+      "equation1": "x = ((y \u25c7 (z \u25c7 x)) \u25c7 ((z \u25c7 y) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 (y \u25c7 z)) \u25c7 x)) \u25c7 y)",
+      "content_sha256": "09cb511d13f11173064a9313d75a3d11a36e0b6c1ee7144156d8f2b2a78f0bbe",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6abdc541bb69532b769b",
+      "eq1_id": 36570,
+      "eq2_id": 14645,
+      "equation1": "x = ((((y \u25c7 x) \u25c7 z) \u25c7 (y \u25c7 z)) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (((x \u25c7 z) \u25c7 (y \u25c7 z)) \u25c7 y))",
+      "content_sha256": "1a954fec81d7c5091265c44a2539c95bac1edb0e7bf63a2f216af8eab240b4ac",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_0e976262aa930825b992",
+      "eq1_id": 11422,
+      "eq2_id": 10558,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (y \u25c7 x)) \u25c7 (y \u25c7 z)))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 y) \u25c7 ((y \u25c7 x) \u25c7 z)))",
+      "content_sha256": "7a04efc1b0de1c10ed2dc61f89f8684a12c6ce9d09ed02214028b1a77a78ace7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_96a74d6c68b4d1413da9",
+      "eq1_id": 20034,
+      "eq2_id": 29946,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (z \u25c7 (z \u25c7 x)))) \u25c7 z)",
+      "content_sha256": "c4fac042ae9429c442a8439ba741ebf7678a870bd29594f962c098da1d89ae49",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_543c5e1b4ac77fae2d68",
+      "eq1_id": 25152,
+      "eq2_id": 20144,
+      "equation1": "x = ((y \u25c7 (x \u25c7 (z \u25c7 x))) \u25c7 (z \u25c7 y))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 (z \u25c7 x)) \u25c7 y))",
+      "content_sha256": "9ce50a443f42f2e8c055511b514ad4d1f921c48ce774b074dd0fd236a7d7fc4e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_4e00e72d016e8e3edfca",
+      "eq1_id": 29685,
+      "eq2_id": 33283,
+      "equation1": "x = ((y \u25c7 (y \u25c7 (z \u25c7 (x \u25c7 y)))) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 (((z \u25c7 x) \u25c7 y) \u25c7 x)) \u25c7 z)",
+      "content_sha256": "2076db31f880accfd01179c442e1e8e33a69d3319c75f0effe1d1873b89c3e47",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_b011d6cd02d90049680f",
+      "eq1_id": 28770,
+      "eq2_id": 36795,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 z) \u25c7 x) \u25c7 (y \u25c7 y)) \u25c7 z)",
+      "content_sha256": "ae41cd3ad9e3e1318bd34bdf77c102f971bdeb91bc9f59eaae953416aa169fbc",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_73c3a8ac56f782c977af",
+      "eq1_id": 19027,
+      "eq2_id": 6749,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 z)))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 z))))",
+      "content_sha256": "2149a50f299b1563908eb6f54958ef6983ec06bac4ff2bf1c4a7fe0348399f53",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d4099752d86a3825a49b",
+      "eq1_id": 4916,
+      "eq2_id": 16442,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 ((((x \u25c7 z) \u25c7 w) \u25c7 w) \u25c7 w))",
+      "content_sha256": "26391042db53b4c14884f391ec24751e4031cd2ed430d8eaa34512e493d6a3cd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_b317811678dfa0df888e",
+      "eq1_id": 37736,
+      "eq2_id": 15657,
+      "equation1": "x = (((y \u25c7 (z \u25c7 (y \u25c7 x))) \u25c7 z) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((y \u25c7 (z \u25c7 x)) \u25c7 z) \u25c7 z))",
+      "content_sha256": "b9de8ad291e826d9779134c36e0f5bd2c02dff4725f6190f251d1fb415f33460",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_bfc535f2bd75702c200c",
+      "eq1_id": 4916,
+      "eq2_id": 17582,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (y \u25c7 (y \u25c7 (z \u25c7 z))))",
+      "content_sha256": "9562b222318e7f9de794b2434038defe8d012638ab1c5a2c3a411f9a676bff74",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_6f60d2206f1683187967",
+      "eq1_id": 28098,
+      "eq2_id": 40376,
+      "equation1": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 x) \u25c7 z)",
+      "content_sha256": "45b3c82780021a199657ab2a9939967c416b268db239b76adf456d9eecd0df5a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_55dbe848a32d7262c40c",
+      "eq1_id": 31536,
+      "eq2_id": 13133,
+      "equation1": "x = ((y \u25c7 ((z \u25c7 x) \u25c7 (y \u25c7 z))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((z \u25c7 (x \u25c7 (z \u25c7 y))) \u25c7 z))",
+      "content_sha256": "da008bbac5daed05d231cde92629faa56384bb431fb057468b470cff362e5987",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_93db22fe1a3fa999ea40",
+      "eq1_id": 38291,
+      "eq2_id": 16607,
+      "equation1": "x = (((y \u25c7 ((x \u25c7 y) \u25c7 z)) \u25c7 z) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((((z \u25c7 x) \u25c7 x) \u25c7 y) \u25c7 z))",
+      "content_sha256": "7cb137e71dbc15185a2059bf00b0ad30b0a986dd0a8223dd26f398d3593c5c44",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_b9be861e1eec8df5b7d6",
+      "eq1_id": 17591,
+      "eq2_id": 34254,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (y \u25c7 (z \u25c7 (x \u25c7 z))))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 (y \u25c7 (z \u25c7 x))) \u25c7 z)",
+      "content_sha256": "0a3713dbbec08b2a1172524e861309681a120c3c5a382db307d066786fffcccd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d4945f9dbc9f846a8ee7",
+      "eq1_id": 22648,
+      "eq2_id": 32576,
+      "equation1": "x = ((y \u25c7 (y \u25c7 y)) \u25c7 ((z \u25c7 x) \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 (z \u25c7 z)) \u25c7 x)) \u25c7 y)",
+      "content_sha256": "8ecd510419927d39bcf4da9d813157e5365a9fd4175f7d803cd4486c77213845",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_110044caeaa1a5bcdee0",
+      "eq1_id": 21946,
+      "eq2_id": 6749,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 (y \u25c7 z)))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 z))))",
+      "content_sha256": "394293d357a2cde338a36f34d5672437c1a4dfd8d8faf6e3a8575d2cc53c8004",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_f376ec3eaa91842f14c4",
+      "eq1_id": 17641,
+      "eq2_id": 27288,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (z \u25c7 (x \u25c7 (z \u25c7 y))))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 (z \u25c7 x)) \u25c7 (z \u25c7 y))",
+      "content_sha256": "cd23773e7f684737120cc59f475692bb3b6b5bc70dd6bf1c30ba839a2de61af7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_24c6be06c0e6a5917b05",
+      "eq1_id": 15884,
+      "eq2_id": 8867,
+      "equation1": "x = (y \u25c7 (((z \u25c7 (z \u25c7 x)) \u25c7 y) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (((z \u25c7 x) \u25c7 y) \u25c7 y)))",
+      "content_sha256": "97ade8d06bc8e609c1a6eb2e8cc8cbad9f4c8e994d07d8166a64caa5953333e6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_7a95869f8205fb8db808",
+      "eq1_id": 4916,
+      "eq2_id": 20000,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = ((y \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 y)) \u25c7 z))",
+      "content_sha256": "b90f670d84a7192596f6d909d0bb65c6b52ba22042fe478dbb54ef599dfcc3ce",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_091b8109b957736c5cab",
+      "eq1_id": 41082,
+      "eq2_id": 37537,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 (y \u25c7 (y \u25c7 x))) \u25c7 x) \u25c7 z)",
+      "content_sha256": "763c6415e14f96d64be42336e11b1893a16400d8e0cb7e6e9264b36a5056b33f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_fbbe5e1473e27c3a1577",
+      "eq1_id": 17522,
+      "eq2_id": 25108,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 (x \u25c7 (y \u25c7 x))) \u25c7 (x \u25c7 z))",
+      "content_sha256": "1d980013d042d7401d72b5c38ff0482eb62a2a2ab0b4115fe5501f90bb6f832c",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_4476276f221f08be55ed",
+      "eq1_id": 13785,
+      "eq2_id": 34833,
+      "equation1": "x = (y \u25c7 ((x \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 y)",
+      "content_sha256": "f825e45a012168680b764f2d0a4aeae14cd4552d2a3b1e795fe36fab2aaf8735",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d3a410f3905545efa100",
+      "eq1_id": 17522,
+      "eq2_id": 23851,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 w) \u25c7 (x \u25c7 (x \u25c7 w)))",
+      "content_sha256": "0ebf56534c7626e839424932e26809500fa5b9c02adc2e950563bb4df12b9ad7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_ec5039fbf839e11306a9",
+      "eq1_id": 7588,
+      "eq2_id": 30712,
+      "equation1": "x = (y \u25c7 (x \u25c7 ((y \u25c7 (z \u25c7 x)) \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 ((y \u25c7 x) \u25c7 x))) \u25c7 z)",
+      "content_sha256": "71adb634a03ed4d0fa78c37831e24c14c75020a68bc6ab8390a493d5329dd15e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_146dc2c1d30771260d3b",
+      "eq1_id": 15535,
+      "eq2_id": 7274,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 ((w \u25c7 w) \u25c7 (z \u25c7 y))))",
+      "content_sha256": "18af93e78075e734a341850cab16c2980512f60c64ad3473ec19b779a0439236",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_1203a318dd18095470a2",
+      "eq1_id": 16628,
+      "eq2_id": 7577,
+      "equation1": "x = (y \u25c7 ((((z \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((y \u25c7 (y \u25c7 x)) \u25c7 y)))",
+      "content_sha256": "01c133af0f7e569d976a79aa3db1cc48d6f0a159c95ed2158c5c7ec074e7af8c",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 2,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "id": "demod_404e0643f789c3f76a7a",
+      "eq1_id": 7739,
+      "eq2_id": 29762,
+      "equation1": "x = (y \u25c7 (y \u25c7 ((y \u25c7 (z \u25c7 x)) \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (x \u25c7 (x \u25c7 y)))) \u25c7 z)",
+      "content_sha256": "c34323b173a00c241365ef0fc5bb9e56518906c3d3f734c8c09380c2efc8cd2e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_070e587c081b1cb778be",
+      "eq1_id": 37675,
+      "eq2_id": 40319,
+      "equation1": "x = (((y \u25c7 (z \u25c7 (x \u25c7 y))) \u25c7 z) \u25c7 y)",
+      "equation2": "x = ((((y \u25c7 (z \u25c7 x)) \u25c7 z) \u25c7 y) \u25c7 y)",
+      "content_sha256": "7c0b04889f11a7e04681df07ca47af25b3a27b83b3197c08beb850888ef0394f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_0fb56e691335f434180e",
+      "eq1_id": 19873,
+      "eq2_id": 7595,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 y)))",
+      "content_sha256": "7beddd65fed797f36560776751786d74d69e9588ec63c41cf5bdb14034a6d232",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d45b54eef345f35fb4b1",
+      "eq1_id": 28770,
+      "eq2_id": 40303,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 (z \u25c7 x)) \u25c7 y) \u25c7 y) \u25c7 z)",
+      "content_sha256": "0c27572f41b0b612e0ea73bbe24438b6ce1dc57c95ee8460cee1540d059eb3ff",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_7cb0d34e43e713f345dd",
+      "eq1_id": 31301,
+      "eq2_id": 8867,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 z) \u25c7 (y \u25c7 x))) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (z \u25c7 (((z \u25c7 x) \u25c7 y) \u25c7 y)))",
+      "content_sha256": "37301701bf5d28f43f9bab016c88f15012cfdda966b7a9675fd1767898cb4a2d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_33d53bb2aa391ae60be4",
+      "eq1_id": 4916,
+      "eq2_id": 38548,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (((y \u25c7 ((z \u25c7 x) \u25c7 y)) \u25c7 y) \u25c7 y)",
+      "content_sha256": "b6a658a54441131600378df7de607b280ffbaa1297c3120266565324b2040677",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c9fa86e576f4cc3fe10a",
+      "eq1_id": 32182,
+      "eq2_id": 27766,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 (z \u25c7 y)) \u25c7 y)) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 (z \u25c7 y))",
+      "content_sha256": "2cf543b6e19420d8913a48872a1950d084f48a91fc87900cbe52663a653d79fa",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ceee520bf5acf9dc85c6",
+      "eq1_id": 22827,
+      "eq2_id": 40367,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 z) \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 (z \u25c7 y)) \u25c7 x) \u25c7 z) \u25c7 z)",
+      "content_sha256": "954b1e2e1abc9204a1ccd44ab92f666b961931fa54b5d23365bcbc163d75f8d6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_de43e3e5b641ac37fdd5",
+      "eq1_id": 40155,
+      "eq2_id": 30500,
+      "equation1": "x = ((((y \u25c7 (y \u25c7 x)) \u25c7 z) \u25c7 y) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 z))) \u25c7 z)",
+      "content_sha256": "42061990b81dbc813b58b8af54e260de1278fb8bf952b45cee72ac46a4d9b5f7",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_0c1b8164a5a662bbee8c",
+      "eq1_id": 20034,
+      "eq2_id": 7853,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (z \u25c7 ((x \u25c7 (y \u25c7 y)) \u25c7 y)))",
+      "content_sha256": "e403c5f053af925e4b1a058aec03e2d332efcd2f575aa96f236f98a8dcd8a804",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_34b4eb2f8851df17902e",
+      "eq1_id": 30591,
+      "eq2_id": 22641,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 (y \u25c7 y)) \u25c7 ((y \u25c7 y) \u25c7 z))",
+      "content_sha256": "63f1c1f4e3eab0d89e3fb3ed1925ac14661e9a1d13fd7bd535c7aab15c41ce64",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          5,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_8afce2cc69c7f905235b",
+      "eq1_id": 41082,
+      "eq2_id": 5000,
+      "equation1": "x = (((((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (x \u25c7 (z \u25c7 (y \u25c7 (z \u25c7 w)))))",
+      "content_sha256": "00083839910b1633fa768d5690f5ceeccd95d4708bf9ed58669c70690c59d987",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_d1869f24c7ba57c1c490",
+      "eq1_id": 28770,
+      "eq2_id": 19327,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((y \u25c7 y) \u25c7 (x \u25c7 y)))",
+      "content_sha256": "1207830e598ea3a4064be53e6a5f9910b180db52a13b80b741467270c29e97df",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_d872baba99828417654f",
+      "eq1_id": 22818,
+      "eq2_id": 21004,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 y))",
+      "content_sha256": "8bc374ace7328545c9115ec0a8781f85d04b86c4efd2ccef2a3e73b31b648ab2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_48bf4e55d98838c87140",
+      "eq1_id": 28770,
+      "eq2_id": 28743,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 y) \u25c7 x) \u25c7 y) \u25c7 (y \u25c7 z))",
+      "content_sha256": "2f08b791b4377019e91b0a8b6c7b9020db6bf353bb6080ad844a40b23f345271",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_b58ac8f2e4819a654346",
+      "eq1_id": 28770,
+      "eq2_id": 18256,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((y \u25c7 y) \u25c7 (y \u25c7 ((y \u25c7 y) \u25c7 z)))",
+      "content_sha256": "ce84d6a839ad35a040eb58a7584aa1b7fa0e2e810880cc26137d7b75aa46a877",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          5,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_7924056ebe829e822cde",
+      "eq1_id": 8523,
+      "eq2_id": 38715,
+      "equation1": "x = (y \u25c7 (x \u25c7 (((z \u25c7 z) \u25c7 z) \u25c7 y)))",
+      "equation2": "x = (((y \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 x) \u25c7 y)",
+      "content_sha256": "26a74f923e1ba3194aafcedd09877655ea1dfae422f3fc6fda9192d24e835ae2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_621944c52ccc9a774030",
+      "eq1_id": 4916,
+      "eq2_id": 12987,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 (y \u25c7 (x \u25c7 z))) \u25c7 z))",
+      "content_sha256": "2d9a8b6ecd220d430fc0795788a124e56c5f2e8493bb3df9be75172a46efe61f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_697b2b669a8fbad1e946",
+      "eq1_id": 22818,
+      "eq2_id": 12887,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (z \u25c7 (y \u25c7 y))) \u25c7 y))",
+      "content_sha256": "d8485294b797a74a443366fb7c8c9debdfd4b8de3c6969e347cd67512b77acc0",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_7f01700136d7eefb6b3c",
+      "eq1_id": 25964,
+      "eq2_id": 34774,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 ((y \u25c7 z) \u25c7 x)) \u25c7 y)",
+      "content_sha256": "cf604c07d065a59156b90649620d5c12c9a73efc8b842c004694ee6e2c1db9d0",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_7b63da56e65533ec0a9a",
+      "eq1_id": 28770,
+      "eq2_id": 41379,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (((((y \u25c7 z) \u25c7 z) \u25c7 w) \u25c7 w) \u25c7 z)",
+      "content_sha256": "04c238cef27054842ba931d9cd0927d4dad463502eede11c6ab88a90b04a992a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_018aa8cccf2c252c7647",
+      "eq1_id": 40376,
+      "eq2_id": 28085,
+      "equation1": "x = ((((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "content_sha256": "27f1479c31a3a0766fef0f8f64690ce57ab01ea97a464231090f1258e615acee",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_dbf5abf3a0baaad6d190",
+      "eq1_id": 15535,
+      "eq2_id": 38725,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 z) \u25c7 w)",
+      "content_sha256": "237334768bc24b95e36e4fd13a5dec83d07cbf8110ac069e9051a8b07b90c712",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_ede230eecf69e92abe09",
+      "eq1_id": 4916,
+      "eq2_id": 23481,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (((y \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 (y \u25c7 z)))",
+      "content_sha256": "31579faedd545198a7f264acd59be852f7c9b6d378305093ae69f1ea4fff7e74",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_12e7857153a96390d3ca",
+      "eq1_id": 30500,
+      "eq2_id": 8583,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 z))) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (y \u25c7 (((x \u25c7 z) \u25c7 y) \u25c7 z)))",
+      "content_sha256": "5f1dc1f928fb527ab47039b72088e1fee44f139928bc9c967c6464cce4e2c772",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ae3b6d3da0a30ce2aa5a",
+      "eq1_id": 12312,
+      "eq2_id": 33360,
+      "equation1": "x = (y \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 x)) \u25c7 z)",
+      "content_sha256": "95abf06b5a5d378fd811dbd6febe33211ab6f74310126611fe0495665556280d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6b2b89aa538c6c56ebcc",
+      "eq1_id": 6749,
+      "eq2_id": 21946,
+      "equation1": "x = (y \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 (y \u25c7 z)))",
+      "content_sha256": "0b00b9ae7e6ced51acf6ef96068d76dc294c8028052fcc20640bb463b58c8377",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6230db04cb312f5517b3",
+      "eq1_id": 7858,
+      "eq2_id": 19873,
+      "equation1": "x = (y \u25c7 (z \u25c7 ((x \u25c7 (y \u25c7 z)) \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 y))",
+      "content_sha256": "6c1873cc9ce4b87b432c2359157945c6ca6d6861da388129eb0b8883562e2571",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_372441e1e7baad9136f9",
+      "eq1_id": 21149,
+      "eq2_id": 31536,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (((z \u25c7 x) \u25c7 z) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 x) \u25c7 (y \u25c7 z))) \u25c7 y)",
+      "content_sha256": "f61fcbe48cf083e00261ed21ba33f134bb3c47cc3945613b642ed782334497da",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_64f3ade5e9d82ebc60fd",
+      "eq1_id": 28770,
+      "eq2_id": 29861,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (y \u25c7 (y \u25c7 z)))) \u25c7 w)",
+      "content_sha256": "0a220d8cfc14cf33eba34c6d4b46ad96d4e6d59895f1a0b5ee39d7ee3d5f244a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_4e633f0c7dd9bd06e8bd",
+      "eq1_id": 28037,
+      "eq2_id": 8747,
+      "equation1": "x = (((y \u25c7 (z \u25c7 x)) \u25c7 z) \u25c7 (x \u25c7 y))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (((x \u25c7 z) \u25c7 y) \u25c7 y)))",
+      "content_sha256": "98f056798ec8a397066be6d3ef1d336a2e464cbd3cd0e2668896e181d5864f6d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_96d44c242c58cdc36a45",
+      "eq1_id": 40440,
+      "eq2_id": 34817,
+      "equation1": "x = ((((y \u25c7 (z \u25c7 z)) \u25c7 x) \u25c7 y) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 x) \u25c7 ((z \u25c7 y) \u25c7 z)) \u25c7 z)",
+      "content_sha256": "324ef0ea3cbdec3ef184fe69094c5954aac9301d273ab2a2cec67adfff6c404e",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_599cfcdc4cd3548d2ab3",
+      "eq1_id": 39576,
+      "eq2_id": 18167,
+      "equation1": "x = ((((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 x) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 x) \u25c7 (z \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "content_sha256": "de55ba3daa071b1e23b4595f0f0dfd880c7f53c4c2f85d0af27e81140d574519",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_30a8e4bd88cbb9fb803c",
+      "eq1_id": 22818,
+      "eq2_id": 30398,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (x \u25c7 ((y \u25c7 z) \u25c7 z))) \u25c7 z)",
+      "content_sha256": "dba1f6af1b0517ec84cea7fbe2d442f499e0f69bed0c1327fa36b0b945c91a2c",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6d11f587f3bb30c3c96c",
+      "eq1_id": 22818,
+      "eq2_id": 13980,
+      "equation1": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 ((x \u25c7 x) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 ((x \u25c7 x) \u25c7 z)) \u25c7 z))",
+      "content_sha256": "5bbb803e17ae2a76b046d80fae6064aea15e849b7b6d38bde030d31f4102f9f1",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          3,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_3b71b0dab3038b8f883b",
+      "eq1_id": 14886,
+      "eq2_id": 34951,
+      "equation1": "x = (y \u25c7 (((z \u25c7 x) \u25c7 (z \u25c7 y)) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 y) \u25c7 ((z \u25c7 x) \u25c7 z)) \u25c7 z)",
+      "content_sha256": "7affd2cdc0a9e91a617815bb205e3d32f5d3f47a1530b7533847e4a44fea588f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_802165a1bc5eea74d993",
+      "eq1_id": 28770,
+      "eq2_id": 11251,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 (y \u25c7 z)) \u25c7 (y \u25c7 z)))",
+      "content_sha256": "326a9f4c50161ea66d759f825a7d54d00463fc89b9c187b5f13ebd7bd379895a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_8b82d51494dad7103480",
+      "eq1_id": 25964,
+      "eq2_id": 27781,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (((y \u25c7 (x \u25c7 z)) \u25c7 x) \u25c7 (y \u25c7 w))",
+      "content_sha256": "404c440aacbc9b5b2f60cdc1e4a81e5f445b44590a9388a5ac337c4710f3e779",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_5128b5f04a1aaf03bf1f",
+      "eq1_id": 34181,
+      "eq2_id": 28922,
+      "equation1": "x = (((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 y))) \u25c7 z)",
+      "equation2": "x = ((((y \u25c7 z) \u25c7 x) \u25c7 z) \u25c7 (z \u25c7 y))",
+      "content_sha256": "1df1e0542a876e065e3a478af8f1f735e315b635870863bfbb0f235530a665bb",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_e124d0dafd6cd868d3f0",
+      "eq1_id": 15535,
+      "eq2_id": 9702,
+      "equation1": "x = (y \u25c7 (((x \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 y) \u25c7 (z \u25c7 (y \u25c7 z))))",
+      "content_sha256": "40c0bda605d10c1f78dbe4e6fc5b91c8b8405ea8a1fa4fe605f5da8ddcbb7fdd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_841a69a993cbc9894416",
+      "eq1_id": 28770,
+      "eq2_id": 35689,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (((y \u25c7 (x \u25c7 z)) \u25c7 (y \u25c7 y)) \u25c7 y)",
+      "content_sha256": "687864123901c8cff8539379fc7b64da90d1a5ef566ca4c465655a443fe3db59",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_f00eb7dbfe4a68a16948",
+      "eq1_id": 20144,
+      "eq2_id": 11362,
+      "equation1": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 (z \u25c7 x)) \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 (x \u25c7 y)) \u25c7 (y \u25c7 z)))",
+      "content_sha256": "93967c33649de5003ed44776a05274e84f81a16f7641098f8c0ea0716287ba92",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_b29376630c8c5f0deb19",
+      "eq1_id": 6117,
+      "eq2_id": 22780,
+      "equation1": "x = (y \u25c7 (z \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 x)) \u25c7 ((z \u25c7 y) \u25c7 z))",
+      "content_sha256": "977de8fc6002649f90e06e91ae26f999d60a1d58a384b96bd169e9b88a22a9b4",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_304931d5592db31ec332",
+      "eq1_id": 28011,
+      "eq2_id": 16628,
+      "equation1": "x = (((y \u25c7 (z \u25c7 x)) \u25c7 x) \u25c7 (z \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((((z \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 z))",
+      "content_sha256": "f1f963cc9e19289013a397b4928a6790d483b5ab2f0818d56b10226451f7f76d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_a62cabfe966030ec1444",
+      "eq1_id": 7555,
+      "eq2_id": 7543,
+      "equation1": "x = (y \u25c7 (x \u25c7 ((x \u25c7 (z \u25c7 y)) \u25c7 z)))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((x \u25c7 (y \u25c7 y)) \u25c7 y)))",
+      "content_sha256": "c4a59070abfbbc1931fb69503c8394011a15e09f3e44fec93a839db642c6b227",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 2,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "id": "demod_2cb4b033c8d8b2e5a85c",
+      "eq1_id": 25964,
+      "eq2_id": 25393,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 (x \u25c7 y))) \u25c7 (y \u25c7 y))",
+      "content_sha256": "3984a6182464bd567295906bfffc7794dc6b9f114cae96cd7b3b1c5711a0123a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_26ee7311885425024165",
+      "eq1_id": 17522,
+      "eq2_id": 34325,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 (z \u25c7 (y \u25c7 w))) \u25c7 y)",
+      "content_sha256": "3768939ad090bce735871a41bf0099dc11b686839169ba308f81969feaf8b42a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_59ac015a8c215779d90d",
+      "eq1_id": 17522,
+      "eq2_id": 12260,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 x) \u25c7 z) \u25c7 (z \u25c7 z)))",
+      "content_sha256": "56aeb6719831ba251fdf11a993f9fcf944a46d93043960b0e34a7c0cea640a38",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_7f08da73106d9a18aed3",
+      "eq1_id": 30591,
+      "eq2_id": 38801,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (((y \u25c7 ((z \u25c7 w) \u25c7 y)) \u25c7 w) \u25c7 w)",
+      "content_sha256": "21da635d093822c06d27697a00b5565835981e90da91f0267fdd2308ac63d035",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_778cf36c3cee8d54899b",
+      "eq1_id": 25964,
+      "eq2_id": 31314,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 (z \u25c7 z))",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 z) \u25c7 (y \u25c7 w))) \u25c7 w)",
+      "content_sha256": "3d9561a256942cc16ecd5768196773cf32a06bee1acc68eea7249ee95a36d614",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_159c12e6862445765fd6",
+      "eq1_id": 20034,
+      "eq2_id": 10239,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 z) \u25c7 ((x \u25c7 y) \u25c7 y)))",
+      "content_sha256": "5e04a96c0d4a84a1209713fe64d17615adb3da5b26d43b2edf54ecfba47c212d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_ce9b06bca702a3bc6932",
+      "eq1_id": 33063,
+      "eq2_id": 40969,
+      "equation1": "x = ((y \u25c7 (((x \u25c7 z) \u25c7 y) \u25c7 z)) \u25c7 z)",
+      "equation2": "x = (((((y \u25c7 x) \u25c7 z) \u25c7 z) \u25c7 y) \u25c7 z)",
+      "content_sha256": "7c937167fa0f6e31477bab8c61982a75694a1e72214b8f0b06f1d7f634b48dba",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_b55b6f14e36b5d7e24ec",
+      "eq1_id": 27298,
+      "eq2_id": 18167,
+      "equation1": "x = (((y \u25c7 z) \u25c7 (z \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 (z \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "content_sha256": "24ab91fbca7be0f97123393c112632518e9cfb02b41ab9facff1ede76e3886e1",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 3,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_909358cf0be0f0f435a3",
+      "eq1_id": 30591,
+      "eq2_id": 19157,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 x) \u25c7 (x \u25c7 z)))",
+      "content_sha256": "cb26cd2ab25219243a377efca894140193686ad467614c6c9e15b6dcf0bcb311",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 3,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_42ecda6797b00156d76d",
+      "eq1_id": 13928,
+      "eq2_id": 18314,
+      "equation1": "x = (y \u25c7 ((y \u25c7 ((z \u25c7 z) \u25c7 x)) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 y) \u25c7 (z \u25c7 ((z \u25c7 x) \u25c7 z)))",
+      "content_sha256": "2bee7731aec13f1c07b4a790ffbda97f42a5a216052b366fd6989907683760c8",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_e25506566d85568715e0",
+      "eq1_id": 30591,
+      "eq2_id": 15639,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (((y \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 y))",
+      "content_sha256": "15e7ed5a57b58fc408fa9da57abd0c571a752b32b2b878cd4298f2a28afcf0aa",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_b608bf7d05197b584a25",
+      "eq1_id": 20034,
+      "eq2_id": 40397,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = ((((y \u25c7 (z \u25c7 y)) \u25c7 z) \u25c7 y) \u25c7 z)",
+      "content_sha256": "8f68c7dc5e742c7fc33de5080bb12ab4164af328d0403ced2c765bc69a053bc2",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_fd29d985ee4eef839d7b",
+      "eq1_id": 20034,
+      "eq2_id": 13689,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 ((x \u25c7 z) \u25c7 x)) \u25c7 y))",
+      "content_sha256": "46393cd601f8958a879c17cd661326069d26828b4283ccfe1ea9d45d75aa51bb",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_f909c2b04b6e17811b94",
+      "eq1_id": 8666,
+      "eq2_id": 17437,
+      "equation1": "x = (y \u25c7 (y \u25c7 (((z \u25c7 z) \u25c7 x) \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 y) \u25c7 (z \u25c7 (z \u25c7 (x \u25c7 z))))",
+      "content_sha256": "fa16303b940e6f6286b575d1d42ee27a639ac5d3265b9b5daf592aeada897196",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_d64e13bbc5e92e42ce79",
+      "eq1_id": 30591,
+      "eq2_id": 16727,
+      "equation1": "x = ((y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 x))) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((((z \u25c7 y) \u25c7 z) \u25c7 w) \u25c7 w))",
+      "content_sha256": "39432201cdb32e0ef7627dc051988d189035dba5afed2071d4f448c654dd91ca",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          2,
+          2,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_b16076c27fa9516f8d32",
+      "eq1_id": 30712,
+      "eq2_id": 28037,
+      "equation1": "x = ((y \u25c7 (z \u25c7 ((y \u25c7 x) \u25c7 x))) \u25c7 z)",
+      "equation2": "x = (((y \u25c7 (z \u25c7 x)) \u25c7 z) \u25c7 (x \u25c7 y))",
+      "content_sha256": "5d3ab18ae7070f9145b1816294d4b2f2c76af780d1415b9d7e0b38b387dcf318",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_584e738b0a3a4c377de6",
+      "eq1_id": 4916,
+      "eq2_id": 4900,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 (x \u25c7 (x \u25c7 (x \u25c7 (x \u25c7 z)))))",
+      "content_sha256": "a83a36a0fff8ef7de7938f906daf494aade90cd5caee9d0249ab8c430f1d5489",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          5,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_3e045ef3970d81eb44d6",
+      "eq1_id": 32198,
+      "eq2_id": 27755,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 (z \u25c7 z)) \u25c7 y)) \u25c7 y)",
+      "equation2": "x = (((y \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 (z \u25c7 z))",
+      "content_sha256": "9f7efd9f266dd69e211634d31ac0c4a73ead2fbae8a5dc3082d637a6851d4fcf",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_364d5fd274f36ed16b40",
+      "eq1_id": 14886,
+      "eq2_id": 35922,
+      "equation1": "x = (y \u25c7 (((z \u25c7 x) \u25c7 (z \u25c7 y)) \u25c7 y))",
+      "equation2": "x = (((y \u25c7 (z \u25c7 x)) \u25c7 (y \u25c7 z)) \u25c7 z)",
+      "content_sha256": "85174b964da9264b7a08d4db2135b1be58c5b50dd2228e950bbbef125da66077",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_1d19999940b2c4ce1455",
+      "eq1_id": 31267,
+      "eq2_id": 15448,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 y) \u25c7 (z \u25c7 x))) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((x \u25c7 (x \u25c7 z)) \u25c7 y) \u25c7 z))",
+      "content_sha256": "b50727892a6ce3ce416f6fe5f28136102d31cb898b8a6bee7b7f4b9897d31f6d",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ded8421cc55d7afa544a",
+      "eq1_id": 4916,
+      "eq2_id": 9518,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 z))))",
+      "content_sha256": "062d8f6c5cfb002d10b8da80d7aee3a023c54d2cd00f7a551b9cb1eae067760f",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_368afd08d8df7a9bee55",
+      "eq1_id": 33193,
+      "eq2_id": 14779,
+      "equation1": "x = ((y \u25c7 (((y \u25c7 z) \u25c7 x) \u25c7 y)) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 y))",
+      "content_sha256": "f5d0d71aaffdb1d548d79f2fe930ad62b7d90ac1087b2368720728fe9c7879ab",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_ed46afc3a0709b537d46",
+      "eq1_id": 9664,
+      "eq2_id": 29685,
+      "equation1": "x = (y \u25c7 ((z \u25c7 y) \u25c7 (x \u25c7 (x \u25c7 z))))",
+      "equation2": "x = ((y \u25c7 (y \u25c7 (z \u25c7 (x \u25c7 y)))) \u25c7 z)",
+      "content_sha256": "004fb9402d48600ea0c99a0a049b73b7a77e517d0d7742a97cbaad9241d3f7b4",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_3f18eb789ff11085e808",
+      "eq1_id": 20034,
+      "eq2_id": 35795,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (((y \u25c7 (y \u25c7 y)) \u25c7 (y \u25c7 y)) \u25c7 y)",
+      "content_sha256": "3f6b62372b955492083788e171a9c2fc53711ca969bb21abdccf5cf56bd98195",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 2,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          6,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_c60c9f5d202cc8c311c9",
+      "eq1_id": 4916,
+      "eq2_id": 14067,
+      "equation1": "x = (y \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 (z \u25c7 z)))))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 ((y \u25c7 y) \u25c7 x)) \u25c7 w))",
+      "content_sha256": "28084c8e5cce9fa2c6584886a2e4cb8141ddc8d1095206882d968dcd7f99782a",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 4,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_5f79b2ddf9558df5c920",
+      "eq1_id": 28770,
+      "eq2_id": 14703,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((y \u25c7 x) \u25c7 (x \u25c7 z)) \u25c7 y))",
+      "content_sha256": "060314cbef2aebf53b25f206f0b87c34bc9f520db2dcd7492182e4f4c33df417",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          3,
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_23319f6d057114c9e854",
+      "eq1_id": 30656,
+      "eq2_id": 14604,
+      "equation1": "x = ((y \u25c7 (z \u25c7 ((x \u25c7 y) \u25c7 y))) \u25c7 z)",
+      "equation2": "x = (y \u25c7 (((x \u25c7 y) \u25c7 (z \u25c7 x)) \u25c7 z))",
+      "content_sha256": "03862f6efa2008aa2424478d8a0fdd8f1f12cc60b1a98d619a17a4865eacec4b",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_094ec673af729fef23e2",
+      "eq1_id": 32499,
+      "eq2_id": 5855,
+      "equation1": "x = ((y \u25c7 ((z \u25c7 (y \u25c7 z)) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = (y \u25c7 (x \u25c7 (z \u25c7 ((x \u25c7 y) \u25c7 z))))",
+      "content_sha256": "4a03e9e00075a6cdbaa41f9fc8f31cfd0ee84454b3761c75b1be1251247e0de6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_7f3c97213995be56984b",
+      "eq1_id": 33953,
+      "eq2_id": 12905,
+      "equation1": "x = (((y \u25c7 x) \u25c7 (z \u25c7 (z \u25c7 y))) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (z \u25c7 (z \u25c7 y))) \u25c7 z))",
+      "content_sha256": "c6a033ff9bf2e8ad898c548f9fd89dafa458fbc5c8c4b74ef1a7868753184e55",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "demod_6cfc4c10a07671f0cf87",
+      "eq1_id": 17522,
+      "eq2_id": 28631,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 (z \u25c7 (z \u25c7 z))))",
+      "equation2": "x = ((((y \u25c7 x) \u25c7 y) \u25c7 y) \u25c7 (z \u25c7 y))",
+      "content_sha256": "52f34817ae05ab4ee06d08a856f36e76338f2e25db768f2547c65a0f32942ecd",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 4,
+        "source_repetition": [
+          4,
+          2,
+          1
+        ],
+        "target_repetition": [
+          4,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "demod_47453769d90f7e57e3e3",
+      "eq1_id": 29685,
+      "eq2_id": 18208,
+      "equation1": "x = ((y \u25c7 (y \u25c7 (z \u25c7 (x \u25c7 y)))) \u25c7 z)",
+      "equation2": "x = ((y \u25c7 y) \u25c7 (x \u25c7 ((x \u25c7 y) \u25c7 y)))",
+      "content_sha256": "260f695561c8493842d9410fae8a81318504771876b1d75c17e1a00c8b239f51",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 2,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 5,
+        "target_depth": 4,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "id": "demod_9f50356b9d91fde2613c",
+      "eq1_id": 18468,
+      "eq2_id": 14083,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (y \u25c7 ((z \u25c7 x) \u25c7 z)))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 ((y \u25c7 z) \u25c7 x)) \u25c7 z))",
+      "content_sha256": "e66cf4b79113feab1ca49bec76f51b2a5339660f79ed43c626238160955898e6",
+      "matching_features": {
+        "source_variables": 3,
+        "target_variables": 3,
+        "source_size": 12,
+        "target_size": 12,
+        "source_depth": 4,
+        "target_depth": 5,
+        "source_repetition": [
+          3,
+          2,
+          2
+        ],
+        "target_repetition": [
+          3,
+          2,
+          2
+        ]
+      }
+    }
+  ]
+}

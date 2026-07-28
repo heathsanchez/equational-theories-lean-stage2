@@ -1,0 +1,67 @@
+{
+  "schema": "mathgraph.scheduler-local-demodulation-transfer-results.v1",
+  "status": "complete",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "frozen_solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "implementation_sha256": "52df5180c1b7c477e535eec7f6af25a8e201da4acec85a58a746c30d5d45b683",
+  "configuration_sha256": "941a871c07c97b7ee9de64f923bdb71196a578b8155d86946b544371ed16b556",
+  "sealed_protocol": {
+    "previous_audit_rows_excluded_by_content_hash": 200,
+    "selected_true": 100,
+    "selected_false": 100,
+    "inputs_sha256": "53b5690c597932c391ed34d228838f44985694ae764cb92c882ac88f666881e1",
+    "labels_sha256": "f18248f5aff0aa778bc6b1e15811c003b39187c36c398860fd8fb0a3a7741063",
+    "outputs_closed_utc": "2026-07-28T09:51:39Z",
+    "outputs_sha256": "4eee9050040f1aa862fc2e877a6265dd0f92ed996b2c53e570e53aa13c186723",
+    "outputs_bytes": 446875,
+    "labels_loaded_only_after_output_hash": true
+  },
+  "six_residual_gate": {
+    "S_official_accepted": 0,
+    "FS_official_accepted": 3,
+    "FS_ids": [
+      "evaluation_hard_0196",
+      "evaluation_normal_0040",
+      "evaluation_normal_0158"
+    ],
+    "replay_failures": 0,
+    "lean_rejections": 0
+  },
+  "external_audit": {
+    "S": {
+      "accepted_true": 41,
+      "false_control_proofs": 0,
+      "source_families": 38,
+      "generated": 181054,
+      "processed": 20030,
+      "forward_demodulations": 0,
+      "engine_seconds": 174.445,
+      "judge_seconds": 386.020,
+      "largest_certificate_bytes": 6805
+    },
+    "FS": {
+      "accepted_true": 15,
+      "false_control_proofs": 0,
+      "source_families": 15,
+      "generated": 177485,
+      "processed": 1370,
+      "forward_demodulations": 121281,
+      "engine_seconds": 241.697,
+      "judge_seconds": 185.833,
+      "largest_certificate_bytes": 4319
+    },
+    "FS_minus_S_true": 2,
+    "FS_minus_S_source_families": 2,
+    "S_minus_FS_true": 28,
+    "S_minus_FS_source_families": 27,
+    "replay_failures": 0,
+    "lean_rejections": 0
+  },
+  "promotion_rule": {
+    "minimum_new_true": 5,
+    "minimum_source_families": 3,
+    "passed": false
+  },
+  "conclusion": "The deterministic scheduler is a strong safe comparator but does not solve the motivating six. Adding four-step per-clause local demodulation recovers three motivating rows but still creates aggregate rewrite flooding, adds only two external proofs beyond S, and loses 28 S proofs. Neither condition is promoted."
+}

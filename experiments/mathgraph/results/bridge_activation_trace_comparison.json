@@ -1,0 +1,625 @@
+{
+  "activated_rows": 9,
+  "failed_leading_counterfactual_kinds": {
+    "DECOMPOSITION": 4,
+    "INVARIANT": 2,
+    "SCHEMA": 1
+  },
+  "failed_profile": {
+    "depths": {
+      "1": 4,
+      "2": 3
+    },
+    "directions": {
+      "reverse": 7
+    }
+  },
+  "frozen_fast_completions": 2,
+  "frozen_fast_failures": 7,
+  "independence_note": "Metamorphic presentations are excluded from support counts.",
+  "records": [
+    {
+      "activated_rule_families": [
+        "(a \u25c7 ((a \u25c7 (a \u25c7 b)) \u25c7 a))->a"
+      ],
+      "bridge_depth": 2,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": true,
+      "content_sha256": "9712f341d621053c229ef5253ba4ff3fd1ca67ab0d97b1c54d21ddcfb29e4d89",
+      "context_depth": 2,
+      "context_path": [
+        "L",
+        "L"
+      ],
+      "divergence_frontier": {
+        "candidate_case_split": null,
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 1,
+          "observations": [
+            "x",
+            "x"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "x",
+        "left_frontier_size": 1,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "x",
+        "right_frontier_size": 1,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 0,
+        "variable_overlap": 1
+      },
+      "equality_source_type": "equational-normalization-source-instance",
+      "failure_reason": null,
+      "final_normal_forms": {
+        "best_activation_terminal": "x",
+        "left": "x",
+        "right": "((((x \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 x)"
+      },
+      "introduced_term_shape": "((((a \u25c7 a) \u25c7 b) \u25c7 c) \u25c7 a) = (((c \u25c7 ((c \u25c7 (c \u25c7 a)) \u25c7 c)) \u25c7 c) \u25c7 a)",
+      "normalization_suffix": [
+        {
+          "after": "((z \u25c7 z) \u25c7 x)",
+          "before": "(((z \u25c7 ((z \u25c7 (z \u25c7 x)) \u25c7 z)) \u25c7 z) \u25c7 x)",
+          "path": [
+            "L",
+            "L"
+          ],
+          "rule_provenance": "(a \u25c7 ((a \u25c7 (a \u25c7 b)) \u25c7 a))->a"
+        }
+      ],
+      "productive_activations": 22,
+      "source_family": "b24e5b65dc993869bd19756cc6def15c07ef37dd0b878fbd7f14f981d1c4e7c4",
+      "syntactic_activations": 20,
+      "term_growth": 4
+    },
+    {
+      "activated_rule_families": [
+        "((a \u25c7 b) \u25c7 (b \u25c7 (b \u25c7 a)))->a"
+      ],
+      "bridge_depth": 1,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "DECOMPOSITION",
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "a064355503ce7e2502f4853b0176defa202786cf9c71582da0118ff0a6bb1917",
+      "context_depth": 0,
+      "context_path": [],
+      "divergence_frontier": {
+        "candidate_case_split": {
+          "conditions": [
+            "repetition-compatible",
+            "repetition-distinct"
+          ],
+          "status": "CANDIDATE"
+        },
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 2,
+          "observations": [
+            "(x \u25c7 y)",
+            "x"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 1,
+        "left_frontier": "(x \u25c7 y)",
+        "left_frontier_size": 3,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": false,
+        "right_frontier": "x",
+        "right_frontier_size": 1,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 2,
+        "variable_overlap": 1
+      },
+      "equality_source_type": "equational-normalization-source-instance",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "x",
+        "left": "(x \u25c7 y)",
+        "right": "((x \u25c7 (y \u25c7 x)) \u25c7 x)"
+      },
+      "introduced_term_shape": "((a \u25c7 (b \u25c7 a)) \u25c7 a) = ((a \u25c7 b) \u25c7 (b \u25c7 (b \u25c7 a)))",
+      "normalization_suffix": [
+        {
+          "after": "x",
+          "before": "((x \u25c7 y) \u25c7 (y \u25c7 (y \u25c7 x)))",
+          "path": [],
+          "rule_provenance": "((a \u25c7 b) \u25c7 (b \u25c7 (b \u25c7 a)))->a"
+        }
+      ],
+      "productive_activations": 9,
+      "source_family": "793aed020a1c05f3454b5085ba5a988b9473febef5239876c55641001d3defa9",
+      "syntactic_activations": 9,
+      "term_growth": 2
+    },
+    {
+      "activated_rule_families": [
+        "(a \u25c7 ((a \u25c7 b) \u25c7 c))->(b \u25c7 a)"
+      ],
+      "bridge_depth": 1,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "INVARIANT",
+        "SCHEMA"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "5676f368ee9d460386bdf719dc3993beeafc11dd4f734b77d057ca3ef2c77553",
+      "context_depth": 2,
+      "context_path": [
+        "L",
+        "R"
+      ],
+      "divergence_frontier": {
+        "candidate_case_split": null,
+        "candidate_equality_anti_unifier": {
+          "generalization": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+          "left_substitution": {},
+          "right_substitution": {},
+          "variables": []
+        },
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 3,
+          "observations": [
+            "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+            "((x \u25c7 (x \u25c7 y)) \u25c7 z)"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "left_frontier_size": 7,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "right_frontier_size": 7,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 0,
+        "variable_overlap": 3
+      },
+      "equality_source_type": "equational-normalization-variable-identification",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "left": "(x \u25c7 x)",
+        "right": "((x \u25c7 (x \u25c7 y)) \u25c7 z)"
+      },
+      "introduced_term_shape": "((a \u25c7 (a \u25c7 b)) \u25c7 c) = ((a \u25c7 (b \u25c7 ((b \u25c7 a) \u25c7 b))) \u25c7 c)",
+      "normalization_suffix": [
+        {
+          "after": "((x \u25c7 (x \u25c7 y)) \u25c7 z)",
+          "before": "((x \u25c7 (y \u25c7 ((y \u25c7 x) \u25c7 y))) \u25c7 z)",
+          "path": [
+            "L",
+            "R"
+          ],
+          "rule_provenance": "(a \u25c7 ((a \u25c7 b) \u25c7 c))->(b \u25c7 a)"
+        }
+      ],
+      "productive_activations": 40,
+      "source_family": "713705b9c75c6769487f44114df511bc07e0aa2b03f72ae83efc100a25143bb8",
+      "syntactic_activations": 40,
+      "term_growth": 4
+    },
+    {
+      "activated_rule_families": [
+        "(a \u25c7 (((b \u25c7 a) \u25c7 a) \u25c7 b))->a"
+      ],
+      "bridge_depth": 1,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "DECOMPOSITION",
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "8047af655452cb2ef62c0f7a3da0959905d3b618bf2d20c1cca6727714523752",
+      "context_depth": 0,
+      "context_path": [],
+      "divergence_frontier": {
+        "candidate_case_split": {
+          "conditions": [
+            "repetition-compatible",
+            "repetition-distinct"
+          ],
+          "status": "CANDIDATE"
+        },
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 3,
+          "observations": [
+            "(x \u25c7 (y \u25c7 z))",
+            "x"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 2,
+        "left_frontier": "(x \u25c7 (y \u25c7 z))",
+        "left_frontier_size": 5,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": false,
+        "right_frontier": "x",
+        "right_frontier_size": 1,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 4,
+        "variable_overlap": 1
+      },
+      "equality_source_type": "equational-normalization-source-instance",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "x",
+        "left": "(x \u25c7 (y \u25c7 z))",
+        "right": "((z \u25c7 x) \u25c7 w)"
+      },
+      "introduced_term_shape": "(a \u25c7 (b \u25c7 c)) = (a \u25c7 (((d \u25c7 a) \u25c7 a) \u25c7 d))",
+      "normalization_suffix": [
+        {
+          "after": "x",
+          "before": "(x \u25c7 (((w \u25c7 x) \u25c7 x) \u25c7 w))",
+          "path": [],
+          "rule_provenance": "(a \u25c7 (((b \u25c7 a) \u25c7 a) \u25c7 b))->a"
+        }
+      ],
+      "productive_activations": 8,
+      "source_family": "a450a9b8a7c399080c150943725e423b9a51fa494fbe6960dec7809a18959be5",
+      "syntactic_activations": 8,
+      "term_growth": 4
+    },
+    {
+      "activated_rule_families": [
+        "((a \u25c7 a) \u25c7 (b \u25c7 a))->(a \u25c7 b)"
+      ],
+      "bridge_depth": 2,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "SCHEMA",
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "058d371a33c1901bd2ee25964ecef596cdce60f0b1fabe06384383db6032c21e",
+      "context_depth": 0,
+      "context_path": [],
+      "divergence_frontier": {
+        "candidate_case_split": null,
+        "candidate_equality_anti_unifier": {
+          "generalization": "(x \u25c7 (x \u25c7 y))",
+          "left_substitution": {},
+          "right_substitution": {},
+          "variables": []
+        },
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 2,
+          "observations": [
+            "(x \u25c7 (x \u25c7 y))",
+            "(x \u25c7 (x \u25c7 y))"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "(x \u25c7 (x \u25c7 y))",
+        "left_frontier_size": 5,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "(x \u25c7 (x \u25c7 y))",
+        "right_frontier_size": 5,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 0,
+        "variable_overlap": 2
+      },
+      "equality_source_type": "equational-normalization-variable-identification",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "(x \u25c7 (x \u25c7 y))",
+        "left": "(x \u25c7 (x \u25c7 y))",
+        "right": "(x \u25c7 (y \u25c7 x))"
+      },
+      "introduced_term_shape": "(a \u25c7 (a \u25c7 b)) = ((a \u25c7 a) \u25c7 ((a \u25c7 b) \u25c7 a))",
+      "normalization_suffix": [
+        {
+          "after": "(x \u25c7 (x \u25c7 y))",
+          "before": "((x \u25c7 x) \u25c7 ((x \u25c7 y) \u25c7 x))",
+          "path": [],
+          "rule_provenance": "((a \u25c7 a) \u25c7 (b \u25c7 a))->(a \u25c7 b)"
+        }
+      ],
+      "productive_activations": 102,
+      "source_family": "0f6060cde9c1c4396cf742928b42d2362030f18345b1371a90de0b8b73a58bf9",
+      "syntactic_activations": 68,
+      "term_growth": 4
+    },
+    {
+      "activated_rule_families": [
+        "(a \u25c7 (b \u25c7 (a \u25c7 (a \u25c7 b))))->a"
+      ],
+      "bridge_depth": 1,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "DECOMPOSITION",
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "8d07a016bfa73fcca27d7141328bc1a776c514668017ade4e1955fdb3ca59f4f",
+      "context_depth": 1,
+      "context_path": [
+        "R"
+      ],
+      "divergence_frontier": {
+        "candidate_case_split": {
+          "conditions": [
+            "repetition-compatible",
+            "repetition-distinct"
+          ],
+          "status": "CANDIDATE"
+        },
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 2,
+          "observations": [
+            "x",
+            "(y \u25c7 x)"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 1,
+        "left_frontier": "x",
+        "left_frontier_size": 1,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": false,
+        "right_frontier": "(y \u25c7 x)",
+        "right_frontier_size": 3,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 2,
+        "variable_overlap": 1
+      },
+      "equality_source_type": "equational-normalization-source-instance",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "(y \u25c7 x)",
+        "left": "x",
+        "right": "(y \u25c7 (((x \u25c7 x) \u25c7 x) \u25c7 y))"
+      },
+      "introduced_term_shape": "(a \u25c7 (((b \u25c7 b) \u25c7 b) \u25c7 a)) = (a \u25c7 (b \u25c7 (a \u25c7 (b \u25c7 (b \u25c7 a)))))",
+      "normalization_suffix": [
+        {
+          "after": "(y \u25c7 x)",
+          "before": "(y \u25c7 (x \u25c7 (y \u25c7 (x \u25c7 (x \u25c7 y)))))",
+          "path": [
+            "R"
+          ],
+          "rule_provenance": "(a \u25c7 (b \u25c7 (a \u25c7 (a \u25c7 b))))->a"
+        }
+      ],
+      "productive_activations": 20,
+      "source_family": "04a290a22f7bb640aa70057cc213a744246821b379e8dfe84467a3502078b93a",
+      "syntactic_activations": 20,
+      "term_growth": 2
+    },
+    {
+      "activated_rule_families": [
+        "(a \u25c7 (b \u25c7 (c \u25c7 b)))->(b \u25c7 b)"
+      ],
+      "bridge_depth": 2,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "DECOMPOSITION",
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "ebc23ea3cd613ff688031226c0dd42bee6e16042af5115d6faba23a653fa9a9c",
+      "context_depth": 1,
+      "context_path": [
+        "L"
+      ],
+      "divergence_frontier": {
+        "candidate_case_split": {
+          "conditions": [
+            "repetition-compatible",
+            "repetition-distinct"
+          ],
+          "status": "CANDIDATE"
+        },
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 2,
+          "observations": [
+            "y",
+            "x"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "y",
+        "left_frontier_size": 1,
+        "one_side_instance_or_subterm": false,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "x",
+        "right_frontier_size": 1,
+        "shared_context_path": [
+          "L",
+          "R"
+        ],
+        "shared_outer_context_depth": 2,
+        "size_difference": 0,
+        "variable_overlap": 0
+      },
+      "equality_source_type": "equational-normalization-variable-identification",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "((x \u25c7 x) \u25c7 x)",
+        "left": "((x \u25c7 y) \u25c7 x)",
+        "right": "((z \u25c7 w) \u25c7 x)"
+      },
+      "introduced_term_shape": "((a \u25c7 b) \u25c7 a) = ((a \u25c7 (a \u25c7 (b \u25c7 a))) \u25c7 a)",
+      "normalization_suffix": [
+        {
+          "after": "((x \u25c7 x) \u25c7 x)",
+          "before": "((x \u25c7 (x \u25c7 (y \u25c7 x))) \u25c7 x)",
+          "path": [
+            "L"
+          ],
+          "rule_provenance": "(a \u25c7 (b \u25c7 (c \u25c7 b)))->(b \u25c7 b)"
+        }
+      ],
+      "productive_activations": 193,
+      "source_family": "e3f13ef507978516bac89f0097d21f8330c0a3c41d73a76ae2a795c4c76913d5",
+      "syntactic_activations": 113,
+      "term_growth": 4
+    },
+    {
+      "activated_rule_families": [
+        "((a \u25c7 (b \u25c7 (a \u25c7 a))) \u25c7 a)->a"
+      ],
+      "bridge_depth": 1,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "INVARIANT"
+      ],
+      "completed_under_frozen_fast": true,
+      "content_sha256": "5894cabbdc9d152045b2ef4eb20aa7913521da29ccb6640d252c2a34810d8b42",
+      "context_depth": 0,
+      "context_path": [],
+      "divergence_frontier": {
+        "candidate_case_split": null,
+        "candidate_equality_anti_unifier": null,
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 1,
+          "observations": [
+            "x",
+            "x"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "x",
+        "left_frontier_size": 1,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "x",
+        "right_frontier_size": 1,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 0,
+        "variable_overlap": 1
+      },
+      "equality_source_type": "equational-normalization-source-instance",
+      "failure_reason": null,
+      "final_normal_forms": {
+        "best_activation_terminal": "x",
+        "left": "x",
+        "right": "(y \u25c7 ((x \u25c7 z) \u25c7 x))"
+      },
+      "introduced_term_shape": "(a \u25c7 ((b \u25c7 c) \u25c7 b)) = ((b \u25c7 (b \u25c7 (b \u25c7 b))) \u25c7 b)",
+      "normalization_suffix": [
+        {
+          "after": "x",
+          "before": "((x \u25c7 (x \u25c7 (x \u25c7 x))) \u25c7 x)",
+          "path": [],
+          "rule_provenance": "((a \u25c7 (b \u25c7 (a \u25c7 a))) \u25c7 a)->a"
+        }
+      ],
+      "productive_activations": 18,
+      "source_family": "a370ab72620909917f0172c19dc59ce150fd5f978e8b6367c02ca340ea2ffb1b",
+      "syntactic_activations": 18,
+      "term_growth": 2
+    },
+    {
+      "activated_rule_families": [
+        "(a \u25c7 (b \u25c7 (a \u25c7 c)))->(a \u25c7 a)"
+      ],
+      "bridge_depth": 2,
+      "bridge_direction": "reverse",
+      "candidate_object_kinds": [
+        "INVARIANT",
+        "SCHEMA"
+      ],
+      "completed_under_frozen_fast": false,
+      "content_sha256": "c668686f7d08524f4cc59909aac961131441e177c9dcbb357565cd1a81d056cf",
+      "context_depth": 0,
+      "context_path": [],
+      "divergence_frontier": {
+        "candidate_case_split": null,
+        "candidate_equality_anti_unifier": {
+          "generalization": "(x \u25c7 (x \u25c7 (z \u25c7 z)))",
+          "left_substitution": {},
+          "right_substitution": {},
+          "variables": []
+        },
+        "candidate_operation_signature": null,
+        "candidate_relation_signature": {
+          "arity": 2,
+          "observations": [
+            "(x \u25c7 (x \u25c7 (z \u25c7 z)))",
+            "(x \u25c7 (x \u25c7 (z \u25c7 z)))"
+          ],
+          "status": "CANDIDATE"
+        },
+        "depth_difference": 0,
+        "left_frontier": "(x \u25c7 (x \u25c7 (z \u25c7 z)))",
+        "left_frontier_size": 7,
+        "one_side_instance_or_subterm": true,
+        "repeated_variable_correspondence": true,
+        "right_frontier": "(x \u25c7 (x \u25c7 (z \u25c7 z)))",
+        "right_frontier_size": 7,
+        "shared_context_path": [],
+        "shared_outer_context_depth": 0,
+        "size_difference": 0,
+        "variable_overlap": 2
+      },
+      "equality_source_type": "equational-normalization-variable-identification",
+      "failure_reason": "ACTIVATED_DISTINCT_NORMAL_FORMS",
+      "final_normal_forms": {
+        "best_activation_terminal": "(x \u25c7 (x \u25c7 x))",
+        "left": "(x \u25c7 y)",
+        "right": "(x \u25c7 (x \u25c7 (z \u25c7 z)))"
+      },
+      "introduced_term_shape": "(a \u25c7 (a \u25c7 (b \u25c7 b))) = (a \u25c7 (a \u25c7 (a \u25c7 (a \u25c7 (b \u25c7 b)))))",
+      "normalization_suffix": [
+        {
+          "after": "(x \u25c7 (x \u25c7 x))",
+          "before": "(x \u25c7 (x \u25c7 (x \u25c7 (x \u25c7 (z \u25c7 z)))))",
+          "path": [
+            "R"
+          ],
+          "rule_provenance": "(a \u25c7 (b \u25c7 (a \u25c7 c)))->(a \u25c7 a)"
+        }
+      ],
+      "productive_activations": 140,
+      "source_family": "8722e1531f73a697ec3d8e3029438129a061522917bdb89e0f2c55663beeb606",
+      "syntactic_activations": 100,
+      "term_growth": 4
+    }
+  ],
+  "schema_version": "mathgraph.bridge-activation-comparison.v1",
+  "successful_profile": {
+    "depths": {
+      "1": 1,
+      "2": 1
+    },
+    "directions": {
+      "reverse": 2
+    }
+  }
+}

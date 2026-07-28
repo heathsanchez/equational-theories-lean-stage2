@@ -1,0 +1,56 @@
+{
+  "schema": "mathgraph.continuation-effect-preregistration.v1",
+  "diagnostic_only": true,
+  "production_must_remain_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "hypothesis": "The theorem-equivalent raw and demodulated forms of a clause are not interchangeable search states because they preserve different continuation opportunities.",
+  "conditions": {
+    "S": "frozen 1:4 age/weight scheduler with goal quota and no forward demodulation",
+    "FS": "the same scheduler plus at most four local demodulations using the last eight eligible rules"
+  },
+  "trace_alignment": {
+    "selection_identity": [
+      "polarity",
+      "alpha-normalized clause",
+      "weight",
+      "goal score"
+    ],
+    "earliest_divergence": "first selection index at which aligned selection identities differ",
+    "rewrite_identity": [
+      "demodulator clause",
+      "input clause",
+      "orientation",
+      "target side",
+      "context path",
+      "output clause"
+    ],
+    "rewrite_identity_hash": "SHA-256 of deterministic canonical JSON"
+  },
+  "counterfactual_protocol": {
+    "scope": "each demodulation in the accepted FS proof ancestry",
+    "intervention": "block exactly one stable rewrite identity and rerun the same deterministic FS configuration",
+    "fixed_limits": {
+      "maximum_clauses": 8000,
+      "maximum_processed": 8000,
+      "maximum_clause_weight": 36,
+      "maximum_term_size": 30,
+      "pair_budget_per_given_clause": 300,
+      "wall_time_seconds": 2.0
+    },
+    "necessary": "the verified proof no longer closes after deleting the rewrite",
+    "replaceable": "a verified proof closes through a different ancestry",
+    "incidental": "the verified proof closes with the same remaining ancestry signatures",
+    "harmful": "FS loses a proof found by S after the earliest rewrite-driven selection divergence"
+  },
+  "frozen_clausestate_fields_under_test": [
+    "raw representation",
+    "reduced representation",
+    "goal-facing representation",
+    "proof paths between representations",
+    "shared age",
+    "operation-specific superposition sites",
+    "goal ancestry",
+    "rewrite cost",
+    "observed continuation delta"
+  ],
+  "decision_rule": "Recommend only fields whose values explain a proof gain, proof loss, or necessary counterfactual rewrite in the paired traces. Do not modify production."
+}

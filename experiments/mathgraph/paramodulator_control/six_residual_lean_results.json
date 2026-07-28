@@ -1,0 +1,33 @@
+{
+  "schema": "mathgraph.six-residual-lean-results.v1",
+  "judge": "official local Stage 2 Lean judge",
+  "attempted": 3,
+  "accepted": 3,
+  "rejected": 0,
+  "rows": [
+    {
+      "id": "evaluation_hard_0196",
+      "status": "accepted",
+      "independent_replay": true,
+      "external_plan_replay": true,
+      "certificate_bytes": 6284,
+      "judge_seconds": 14.547267
+    },
+    {
+      "id": "evaluation_normal_0040",
+      "status": "accepted",
+      "independent_replay": true,
+      "external_plan_replay": true,
+      "certificate_bytes": 3917,
+      "judge_seconds": 8.675269
+    },
+    {
+      "id": "evaluation_normal_0158",
+      "status": "accepted",
+      "independent_replay": true,
+      "external_plan_replay": true,
+      "certificate_bytes": 2127,
+      "judge_seconds": 3.729812
+    }
+  ]
+}

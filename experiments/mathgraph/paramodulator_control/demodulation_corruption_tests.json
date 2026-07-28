@@ -1,0 +1,18 @@
+{
+  "schema": "mathgraph.demodulation-corruption-tests.v1",
+  "control": {
+    "id": "evaluation_normal_0158",
+    "replayed": true,
+    "forward_demodulations": 575
+  },
+  "cases": {
+    "altered_demodulator": true,
+    "reverse_orientation": true,
+    "altered_path": true,
+    "altered_substitution": true,
+    "missing_intermediate": true,
+    "changed_final_target": true,
+    "altered_parent_clause": true
+  },
+  "passed": true
+}

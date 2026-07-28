@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mathgraph.residual-characterization.v1",
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity_set": {"type": "array", "items": {"type": "string"}},
+    "bridge_trace": {"type": "object"},
+    "closest_replayed_bridge": {"type": ["object", "null"]},
+    "cluster_assignment": {"type": ["object", "null"]},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "counterfactual_objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["status", "kind", "proof_claim"],
+        "properties": {
+          "kind": {
+            "enum": [
+              "EQUALITY",
+              "SCHEMA",
+              "DERIVED_OPERATION",
+              "INVARIANT",
+              "QUOTIENT",
+              "DECOMPOSITION",
+              "MULTISTEP_BRIDGE"
+            ]
+          },
+          "proof_claim": {"const": false},
+          "status": {"const": "CANDIDATE"}
+        }
+      }
+    },
+    "diagnostic_seconds": {"type": "number"},
+    "divergence_frontier": {"type": "object"},
+    "earliest_failure": {"type": "object"},
+    "equation_structure": {"type": "object"},
+    "identity": {"type": "object"},
+    "limitations": {"type": "array", "items": {"type": "string"}},
+    "normalization_trace": {"type": "object"},
+    "primary_obstruction": {
+      "enum": ["O1", "O2", "O3", "O4", "O5", "O6", "O7", "O8", "O9", "O10"]
+    },
+    "proof_graph_frontier": {"type": ["object", "null"]},
+    "provenance": {"type": "object"},
+    "quotient_match_trace": {"type": "object"},
+    "schema_version": {"const": "mathgraph.residual-characterization.v1"},
+    "secondary_tags": {"type": "array", "items": {"type": "string"}},
+    "structural_features": {"type": "object"},
+    "verified_consequences": {"type": "object"}
+  },
+  "required": [
+    "schema_version",
+    "identity",
+    "provenance",
+    "equation_structure",
+    "verified_consequences",
+    "normalization_trace",
+    "bridge_trace",
+    "earliest_failure",
+    "closest_replayed_bridge",
+    "divergence_frontier",
+    "proof_graph_frontier",
+    "quotient_match_trace",
+    "counterfactual_objects",
+    "primary_obstruction",
+    "secondary_tags",
+    "confidence",
+    "ambiguity_set",
+    "structural_features",
+    "cluster_assignment",
+    "limitations",
+    "diagnostic_seconds"
+  ],
+  "title": "MathGraph residual characterization record",
+  "type": "object"
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "mathgraph.continuation-novelty-summary.v1",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "decision": "REJECT_CN1_AND_CN2",
+  "external_audit_warranted": false,
+  "six_row_scheduler_S_processed_baseline": 382,
+  "six_row_FS_demodulation_baseline": 5721,
+  "CN1": {
+    "official_hits": [
+      "evaluation_normal_0036",
+      "evaluation_normal_0158"
+    ],
+    "accepted_count": 2,
+    "processed": 119,
+    "processed_throughput_fraction_of_S": 0.3115,
+    "candidate_contractions_checked": 334,
+    "contractions_rejected_without_strict_operational_novelty": 236,
+    "materializations": 43,
+    "demodulation_fraction_of_FS": 0.0075,
+    "proof_ancestral_materializations": 1,
+    "counterfactually_necessary_materializations": 0,
+    "strict_causal_precision": 0.0,
+    "replay_failures": 0,
+    "Lean_rejections": 0
+  },
+  "CN2": {
+    "official_hits": [
+      "evaluation_normal_0158"
+    ],
+    "accepted_count": 1,
+    "processed": 131,
+    "processed_throughput_fraction_of_S": 0.3429,
+    "candidate_contractions_checked": 100,
+    "corridor_candidates_checked": 62,
+    "corridor_materializations": 0,
+    "materializations": 38,
+    "demodulation_fraction_of_FS": 0.0066,
+    "proof_ancestral_materializations": 0,
+    "replay_failures": 0,
+    "Lean_rejections": 0
+  },
+  "counterfactual": {
+    "row_id": "evaluation_normal_0158",
+    "deleted_signature": "09ec7addf78d5e814777e4a7d9b7c31c03997618a1db56b68a74bc2596fbff3d",
+    "classification": "replaceable",
+    "replacement_proof_independent_replay": true,
+    "replacement_proof_external_replay": true,
+    "replacement_proof_Lean_status": "accepted"
+  },
+  "gate_failures": [
+    "CN1 accepted 2/6, below 3/6",
+    "CN2 accepted 1/6, below 3/6",
+    "CN2 did not preserve evaluation_normal_0036",
+    "neither condition recovered evaluation_normal_0040",
+    "CN1 throughput was 31.2% of S, below 80%",
+    "CN2 throughput was 34.3% of S, below 80%",
+    "CN1 causal precision was 0%, below 40%",
+    "CN2 found no qualifying bounded corridor"
+  ],
+  "scientific_conclusion": "Current-frontier continuation novelty is still too broad and expensive, while one-contraction/one-inference lookahead is too shallow to identify the necessary connected corridor. Do not widen this forward search post hoc.",
+  "next_recommendation": "Infer a small backward continuation requirement from the denied goal and schedule only representations that satisfy an indexed missing-interface request. Validate the request language on the three necessary normal_0040 transitions without using their concrete equations as production rules."
+}

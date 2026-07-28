@@ -1,0 +1,40 @@
+{
+  "schema": "mathgraph.six-residual-factorial-results.v1",
+  "phase_completed": "B versus F",
+  "frozen_limits_preserved": true,
+  "production_changed": false,
+  "conditions": {
+    "B": {
+      "forward_demodulation": false,
+      "official_accepted": 0,
+      "solved_ids": []
+    },
+    "F": {
+      "forward_demodulation": true,
+      "official_accepted": 3,
+      "solved_ids": [
+        "evaluation_hard_0196",
+        "evaluation_normal_0040",
+        "evaluation_normal_0158"
+      ]
+    },
+    "D": "not run: forward-only result evaluated first",
+    "S": "not run: forward-only result evaluated first",
+    "I": "not run: forward-only result evaluated first",
+    "FD": "not run",
+    "FS": "not run",
+    "FI": "not run",
+    "SI": "not run",
+    "FSI": "not run",
+    "FDSI": "not run"
+  },
+  "gate": {
+    "minimum_acceptances": 3,
+    "observed_acceptances": 3,
+    "passed": true,
+    "interpretation": "Forward demodulation alone meets the causal gate; simplification is a primary missing capability."
+  },
+  "full_results": "six_residual_forward_demodulation_results.json",
+  "full_results_sha256": "a173881930edf386f412ccf1a453e3ca244173288975877e2d5bd61a3332edd4",
+  "implementation_sha256": "75c6c78a57c26c028ca99b50923f5484db446b4143c2ea5093cf11a1c90b23f5"
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "mathgraph.forward-demodulation-transfer-manifest.v1",
+  "created_utc": "2026-07-28T08:57:21.253167+00:00",
+  "seed_sha256": "bb227bdbce974bc2a5ed6c7f2e5ca5a48875240800d0ce8ef969ddb97edc7e73",
+  "corpus": "/Users/heath/Desktop/LOGOS Papers/Maths Derivations/hard5.jsonl",
+  "corpus_sha256": "2ff3fc3209f08b222a0a0bfce1680a35b3bcdb2c10651a1fd9060bfadd2f7b87",
+  "candidate_rows": 654,
+  "excluded": {},
+  "selected_true": 100,
+  "selected_false": 100,
+  "matching": {
+    "mean_distance": 1.66,
+    "maximum_distance": 8
+  },
+  "inputs_sha256": "a33f57a1d8d555efe1ef24142caa6f4d39396947b8928019fc89dcefe0132c61",
+  "labels_sha256": "e37da172a6ead69683bcecdd67c9a79a3d216994525ca389b8b5611e8a1bf9eb",
+  "labels_not_for_runner": true,
+  "outputs_closed_utc": "2026-07-28T09:10:49Z",
+  "outputs_sha256": "c930bc8850305b263b3fcbd3b480fe251ea3c75dc69fd444e5b9dfbdf4b364c2",
+  "outputs_bytes": 299501,
+  "labels_loaded_only_after_output_hash": true
+}

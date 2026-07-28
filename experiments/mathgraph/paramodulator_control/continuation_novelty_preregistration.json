@@ -1,0 +1,65 @@
+{
+  "schema": "mathgraph.continuation-novelty-preregistration.v1",
+  "diagnostic_only": true,
+  "production_must_remain_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "hypothesis": "A contraction is worth materializing only when it exposes a concrete frontier-relative inference unavailable from every retained representation.",
+  "common_limits": {
+    "maximum_clauses": 8000,
+    "maximum_processed": 8000,
+    "maximum_clause_weight": 36,
+    "maximum_term_size": 30,
+    "pair_budget_per_given_clause": 300,
+    "wall_time_seconds": 2.0,
+    "demodulator_window": 8,
+    "candidate_contractions_per_selected_state": 16,
+    "continuation_operations_per_representation": 512,
+    "retained_contracted_representations_per_state": 1,
+    "global_materialization_budget": 256
+  },
+  "continuation_record": [
+    "frontier version",
+    "role",
+    "partner clause alpha identity",
+    "representation alpha identity",
+    "literal side",
+    "term path",
+    "orientation",
+    "resulting clause alpha identity"
+  ],
+  "novelty_types": {
+    "syntactic": "new subterm or overlap position; never sufficient",
+    "operational": "new legal concrete inference against the current frontier; required for materialization",
+    "causal": "proof contribution under single-materialization deletion; measured only after search"
+  },
+  "CN1": {
+    "lookahead": "immediate frontier-relative continuation difference only",
+    "selection_order": [
+      "denied-goal closure created",
+      "goal-descended partner created",
+      "unique new frontier partners",
+      "number of new concrete continuations",
+      "smaller proof cost",
+      "smaller term size",
+      "canonical rendering"
+    ]
+  },
+  "CN2": {
+    "run_only_if_CN1_misses_gate": true,
+    "lookahead": "one contraction, one newly enabled inference, then the child's immediate continuation difference",
+    "candidate_contractions_per_state": 1,
+    "new_inference_partners_examined_per_candidate": 1,
+    "recursive_beam_search": false,
+    "speculative_children_enter_passive_queue": false
+  },
+  "six_row_gate": {
+    "minimum_officially_accepted_proofs": 3,
+    "normal_0036_must_be_preserved": true,
+    "normal_0040_corridor_must_be_preserved_or_rediscovered": true,
+    "materializations_used_by_novel_inference_minimum_fraction": 0.7,
+    "counterfactually_necessary_or_scheduling_necessary_minimum_fraction": 0.4,
+    "demodulations_below_fraction_of_FS": 0.05,
+    "processed_clause_throughput_fraction_of_S": 0.8,
+    "replay_failures": 0,
+    "Lean_rejections": 0
+  }
+}

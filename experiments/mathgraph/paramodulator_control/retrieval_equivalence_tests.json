@@ -1,0 +1,6 @@
+{
+  "schema": "mathgraph.retrieval-equivalence-tests.v1",
+  "status": "not_run",
+  "reason": "Indexing was intentionally not implemented before the first forward-demodulation ablation result.",
+  "claim": "No retrieval equivalence claim is made."
+}

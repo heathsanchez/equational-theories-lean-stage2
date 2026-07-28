@@ -1,0 +1,52 @@
+{
+  "schema": "mathgraph.demodulation-proof-ancestry.v1",
+  "classification": "simplification-enabled",
+  "reason": "B proves 0/6 and F proves 3/6 under identical inference, scheduler, retrieval, and resource bounds. Every accepted F proof contains demodulation nodes on its final ancestry.",
+  "rows": [
+    {
+      "id": "evaluation_hard_0196",
+      "baseline_generated": 8000,
+      "forward_generated": 1649,
+      "baseline_processed": 180,
+      "forward_processed": 6,
+      "ancestry_nodes": 18,
+      "ancestry_superpositions": 5,
+      "ancestry_demodulations": 11,
+      "all_generated_demodulations": 1218,
+      "off_ancestry_demodulations": 1207,
+      "causal_feature": "forward demodulation"
+    },
+    {
+      "id": "evaluation_normal_0040",
+      "baseline_generated": 4419,
+      "forward_generated": 471,
+      "baseline_processed": 327,
+      "forward_processed": 6,
+      "ancestry_nodes": 14,
+      "ancestry_superpositions": 6,
+      "ancestry_demodulations": 6,
+      "all_generated_demodulations": 288,
+      "off_ancestry_demodulations": 282,
+      "causal_feature": "forward demodulation"
+    },
+    {
+      "id": "evaluation_normal_0158",
+      "baseline_generated": 8000,
+      "forward_generated": 865,
+      "baseline_processed": 243,
+      "forward_processed": 4,
+      "ancestry_nodes": 11,
+      "ancestry_superpositions": 4,
+      "ancestry_demodulations": 5,
+      "all_generated_demodulations": 575,
+      "off_ancestry_demodulations": 570,
+      "causal_feature": "forward demodulation"
+    }
+  ],
+  "unsolved_under_forward_only": [
+    "evaluation_normal_0036",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "limits": "No conclusion about scheduler, indexing, or backward demodulation is drawn from the remaining three."
+}

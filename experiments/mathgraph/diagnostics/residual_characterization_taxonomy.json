@@ -1,0 +1,98 @@
+{
+  "candidate_trust_status": "CANDIDATE",
+  "classes": {
+    "O1": {
+      "earliest_stages": ["F0", "F1"],
+      "name": "No replayable bridge schema",
+      "rule": "No relevant replayed schema, legal match, or latent match."
+    },
+    "O2": {
+      "earliest_stages": ["F2"],
+      "name": "Schema exists but cannot match target vocabulary",
+      "rule": "Skeleton distance <= 2, with neither a legal nor latent exact match."
+    },
+    "O3": {
+      "earliest_stages": ["F2"],
+      "name": "Match requires an unbound or latent term",
+      "rule": "An exact matched side leaves replacement variables unbound and no legal match exists."
+    },
+    "O4": {
+      "earliest_stages": ["F5"],
+      "name": "Activation occurs but normal forms diverge locally",
+      "rule": "Productive activation; shared context depth >= 1; paired frontier size <= 12."
+    },
+    "O5": {
+      "earliest_stages": ["F7"],
+      "name": "Divergence requires a derived operation",
+      "rule": "Nonlocal activated divergence with a non-root anti-unified multi-input shape."
+    },
+    "O6": {
+      "earliest_stages": ["F7"],
+      "name": "Divergence suggests an invariant or quotient",
+      "rule": "Reserved for recurrent relation-like candidate objects; single-row evidence is secondary only."
+    },
+    "O7": {
+      "earliest_stages": ["F7"],
+      "name": "Divergence suggests decomposition or cases",
+      "rule": "Reserved for recurrent finite split signatures; single-row evidence is secondary only."
+    },
+    "O8": {
+      "earliest_stages": ["F3"],
+      "name": "More than two representation changes appear necessary",
+      "rule": "Legal bridge states exist and reduce a frontier, but no activation survives the two-step frozen search."
+    },
+    "O9": {
+      "earliest_stages": ["F6"],
+      "name": "Proof DAG nearly connects but lacks a reusable schematic consequence",
+      "rule": "At least two verified components and closest target frontier distance <= 2."
+    },
+    "O10": {
+      "earliest_stages": ["F8"],
+      "name": "Unclassified",
+      "rule": "No frozen rule applies with confidence >= 0.60."
+    }
+  },
+  "earliest_failure_stages": {
+    "F0": "no replayed consequence",
+    "F1": "consequences exist, no target-relevant schema",
+    "F2": "target-relevant schema, no concrete legal match",
+    "F3": "legal bridge match, no activation",
+    "F4": "syntactic activation, no productive rewrite",
+    "F5": "productive activation, normalization diverges",
+    "F6": "near-connected proof DAG, missing schematic consequence",
+    "F7": "candidate abstraction required",
+    "F8": "unclassified"
+  },
+  "primary_class_count": 10,
+  "schema_version": "mathgraph.residual-obstruction-taxonomy.v1",
+  "secondary_tags": [
+    "NO_TARGET_MATCH",
+    "UNBOUND_REPLACEMENT_VARIABLE",
+    "LATENT_TERM_REQUIRED",
+    "PRODUCTIVE_ACTIVATION",
+    "DISTINCT_NORMAL_FORMS",
+    "LOCAL_DIVERGENCE",
+    "NONLOCAL_DIVERGENCE",
+    "REPEATED_OPERATOR_SHAPE",
+    "RELATIONAL_CONNECTOR",
+    "CASE_SPLIT_PATTERN",
+    "DEPTH_EXHAUSTED",
+    "GROWTH_CAP",
+    "PROOF_COMPONENT_GAP",
+    "QUOTIENT_SOURCE_MATCH",
+    "ECLASS_REPEATED_VARIABLE_MATCH",
+    "CROSS_COMPONENT_SOURCE_INSTANCE",
+    "MULTIPLE_PLAUSIBLE_CLASSES",
+    "LOW_CONFIDENCE"
+  ],
+  "trust_boundary": {
+    "accepted_statuses": ["CANDIDATE"],
+    "forbidden_statuses": [
+      "VERIFIED",
+      "VERIFIED_PROOF",
+      "DERIVED_LEMMA",
+      "ACCEPTED"
+    ],
+    "terminal_claim": false
+  }
+}

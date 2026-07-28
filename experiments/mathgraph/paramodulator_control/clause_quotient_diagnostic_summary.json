@@ -1,0 +1,55 @@
+{
+  "schema": "mathgraph.proof-carrying-clause-quotient-diagnostic.v1",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "frozen_solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "representation": {
+    "class_age": "minimum/shared creation age",
+    "representatives": [
+      "canonical raw",
+      "cheapest replay-connected",
+      "most goal-relevant replay-connected"
+    ],
+    "maximum_representatives": 3,
+    "proof_evidence": "ordinary explicit paramodulation nodes outside the scheduling frontier",
+    "passive_merge_rule": "merge only unselected classes whose replay-connected representatives have identical canonical clauses"
+  },
+  "conditions": {
+    "Q": {
+      "policy": "expose one dominant representative",
+      "accepted_residuals": ["evaluation_normal_0158"],
+      "accepted_count": 1,
+      "generated": 19168,
+      "processed_classes": 458,
+      "demodulations": 1176,
+      "classes_created": 18004,
+      "representative_updates": 93
+    },
+    "QA": {
+      "policy": "expose all distinct strategic representatives under one class event and shared pair budget",
+      "accepted_residuals": ["evaluation_normal_0158"],
+      "accepted_count": 1,
+      "generated": 19515,
+      "processed_classes": 434,
+      "demodulations": 1157,
+      "classes_created": 18370,
+      "representative_updates": 94
+    },
+    "QM": {
+      "policy": "one dominant representative plus proof-carrying passive cross-class union",
+      "accepted_residuals": ["evaluation_normal_0158"],
+      "accepted_count": 1,
+      "classes_created": 18104,
+      "passive_classes_merged": 73,
+      "merge_fraction": 0.004032,
+      "concrete_merge_opportunities": 482
+    }
+  },
+  "gate": {
+    "minimum_residual_proofs": 3,
+    "best": 1,
+    "passed": false,
+    "sealed_transfer_audit_run": false
+  },
+  "interpretation": "The quotient invariant and replay path are viable, but current bounded demodulation discovers too few shared representatives. More than 99 percent of generated classes remain singletons, so class scheduling cannot materially compress the frontier. This does not falsify clause quotients in principle; it shows that semantics-preserving indexed retrieval or stronger replayed canonicalization is a prerequisite."
+}

@@ -1,0 +1,245 @@
+{
+  "schema": "mathgraph.sair-bucket-residual-evidence-ledger.v1",
+  "created_utc": "2026-07-28T00:00:00Z",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "frozen_solver": {
+    "head": "9ea235dc3a55ac01b42033db656f9d82e6083345",
+    "sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+    "bytes": 313240,
+    "projected_true": 394,
+    "projected_false": 400,
+    "projected_total": 794
+  },
+  "method": {
+    "purpose": "Use the public SAIR collaboration buckets as an obstruction atlas, not as a solver dependency.",
+    "row_matching": [
+      "exact released-evaluation row ID",
+      "normalized source and target equation text"
+    ],
+    "trust_order": [
+      "official Lean acceptance",
+      "independent MathGraph proof-plan replay",
+      "external ATP refutation trace",
+      "candidate-only or mock-runner output"
+    ],
+    "important_scope_limit": "The direct-instance, two-step, TWEE-521, and public completion corpora predate the released 800-row evaluation and contain no row-level claim for these six rows. They are comparison corpora, not evidence that a residual is solved."
+  },
+  "systems": {
+    "mathgraph_frozen": "All existing deterministic TRUE routes abstain on all six.",
+    "stair_paramodulation": "The production portfolio exhausts without a proof on all six.",
+    "stair_completion": "No candidate on all six.",
+    "flagship_deep_constancy": "Emits a candidate on all six, but every candidate is rejected by Lean because lem1 contains an unsynthesizable placeholder.",
+    "context_reconstruction": "Only evaluation_normal_0036 has one explicit replayable prefix; that prefix does not complete the target. The other five advertised contractions have no exact matching subterm.",
+    "vampire_5_0_1": "Proves all six from the source law and negated target in under 0.1 seconds each."
+  },
+  "rows": [
+    {
+      "id": "evaluation_hard_0196",
+      "source": "x = (y * x) * ((x * z) * z)",
+      "target": "x = (y * (z * (y * z))) * z",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 8000,
+        "seen": 8002,
+        "processed": 180,
+        "elapsed_seconds": 1.329,
+        "exit": "maximum_clauses"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "no valid prefix",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.085272,
+        "proof_nodes": 77,
+        "superposition_steps": 38,
+        "forward_demodulation_steps": 25,
+        "closing_step": "forward_subsumption_resolution"
+      },
+      "last_independently_valid_mathgraph_step": "existing verified equality frontier",
+      "first_external_step_beyond_mathgraph": "goal-grounded superposition followed by repeated forward demodulation",
+      "classification": "SEARCH_CONTROL_AND_DEMODULATION"
+    },
+    {
+      "id": "evaluation_normal_0036",
+      "source": "x = ((x * y) * (x * z)) * y",
+      "target": "x = ((x * y) * y) * (x * z)",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 7484,
+        "seen": 7486,
+        "processed": 292,
+        "elapsed_seconds": 2.005,
+        "exit": "timeout"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "one replayable compound-source prefix; target still open",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.021808,
+        "proof_nodes": 28,
+        "superposition_steps": 13,
+        "forward_demodulation_steps": 1,
+        "closing_step": "forward_subsumption_resolution"
+      },
+      "last_independently_valid_mathgraph_step": "explicit compound-source prefix accepted by Lean",
+      "first_external_step_beyond_mathgraph": "goal-grounded clause selection reaches a short 13-superposition refutation",
+      "classification": "GIVEN_CLAUSE_SELECTION"
+    },
+    {
+      "id": "evaluation_normal_0040",
+      "source": "x = (((x * y) * x) * x) * z",
+      "target": "x = (((x * y) * y) * z) * y",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 3819,
+        "seen": 3821,
+        "processed": 295,
+        "elapsed_seconds": 2.001,
+        "exit": "timeout"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "no valid prefix",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.017505,
+        "proof_nodes": 36,
+        "superposition_steps": 18,
+        "forward_demodulation_steps": 4,
+        "closing_step": "forward_subsumption_resolution"
+      },
+      "last_independently_valid_mathgraph_step": "existing verified equality frontier",
+      "first_external_step_beyond_mathgraph": "goal-grounded superposition with interleaved demodulation",
+      "classification": "SEARCH_CONTROL_AND_DEMODULATION"
+    },
+    {
+      "id": "evaluation_normal_0158",
+      "source": "x = (x * (y * y)) * (x * z)",
+      "target": "x = (x * (x * y)) * y",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 8000,
+        "seen": 8002,
+        "processed": 243,
+        "elapsed_seconds": 1.777,
+        "exit": "maximum_clauses"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "no valid prefix",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.015034,
+        "proof_nodes": 21,
+        "superposition_steps": 7,
+        "forward_demodulation_steps": 1,
+        "closing_step": "forward_subsumption_resolution"
+      },
+      "last_independently_valid_mathgraph_step": "existing verified equality frontier",
+      "first_external_step_beyond_mathgraph": "short goal-grounded refutation selected before clause explosion",
+      "classification": "GIVEN_CLAUSE_SELECTION"
+    },
+    {
+      "id": "evaluation_order5_0014",
+      "source": "x = y * (x * (((z * y) * y) * y))",
+      "target": "x = ((y * z) * (x * y)) * (x * z)",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 383,
+        "seen": 385,
+        "processed": 202,
+        "elapsed_seconds": 2.004,
+        "exit": "timeout"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "no valid prefix",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.02939,
+        "proof_nodes": 59,
+        "superposition_steps": 28,
+        "forward_demodulation_steps": 16,
+        "closing_step": "trivial_inequality_removal"
+      },
+      "last_independently_valid_mathgraph_step": "existing verified equality frontier",
+      "first_external_step_beyond_mathgraph": "goal-grounded superposition with extensive forward demodulation",
+      "classification": "SEARCH_CONTROL_AND_DEMODULATION"
+    },
+    {
+      "id": "evaluation_order5_0042",
+      "source": "x = (y * z) * ((x * (x * y)) * z)",
+      "target": "x = (x * (x * y)) * (z * (z * w))",
+      "mathgraph_paramodulation": {
+        "status": "unproved",
+        "strategy": "tight_default:primary",
+        "generated": 2276,
+        "seen": 2278,
+        "processed": 272,
+        "elapsed_seconds": 2.003,
+        "exit": "timeout"
+      },
+      "completion": "no candidate",
+      "deep_constancy": "invalid placeholder candidate",
+      "context_reconstruction": "no valid prefix",
+      "vampire": {
+        "status": "theorem",
+        "elapsed_seconds_observed": 0.046868,
+        "proof_nodes": 116,
+        "superposition_steps": 60,
+        "forward_demodulation_steps": 41,
+        "closing_step": "forward_subsumption_resolution"
+      },
+      "last_independently_valid_mathgraph_step": "existing verified equality frontier",
+      "first_external_step_beyond_mathgraph": "longer goal-grounded superposition chain kept tractable by repeated demodulation",
+      "classification": "SEARCH_CONTROL_AND_DEMODULATION"
+    }
+  ],
+  "aggregate": {
+    "vampire_theorems": 6,
+    "vampire_failures": 0,
+    "vampire_elapsed_seconds_range": [
+      0.015034,
+      0.085272
+    ],
+    "vampire_superposition_steps_range": [
+      7,
+      60
+    ],
+    "vampire_forward_demodulation_steps_range": [
+      1,
+      41
+    ],
+    "mathgraph_paramodulation_proofs": 0,
+    "valid_deep_constancy_proofs": 0,
+    "replayable_context_prefixes": 1,
+    "completed_context_proofs": 0,
+    "dominant_obstruction": "The production paramodulator already has goal denial and superposition, but lacks demodulation and uses a coarse weight-plus-depth given-clause schedule. It expands or times out before selecting the compact goal-grounded refutations found by Vampire.",
+    "ruled_out": [
+      "the six require six unrelated mathematical constructors",
+      "the six are beyond ordinary first-order equational ATP",
+      "the rejected deep-constancy candidates establish a shared valid lemma",
+      "larger forward completion budgets are the primary next step"
+    ]
+  },
+  "recommended_next_experiment": {
+    "name": "proof-carrying demodulating given-clause differential",
+    "scope": "diagnostic fork of the existing paramodulator; production remains frozen",
+    "changes_tested_separately": [
+      "forward demodulation of newly generated clauses by selected positive unit equalities",
+      "backward demodulation of retained clauses when a stronger demodulator is selected",
+      "Vampire-like age/weight alternation with explicit goal-clause quota",
+      "indexed retrieval for subterms and demodulators"
+    ],
+    "primary_gate": "Recover at least three of six with independently replayed plans and official Lean acceptance, then demonstrate gain on unused label-hidden TRUE opportunities.",
+    "anti_overfitting": "No row IDs, equation hashes, proof lookup, imported Vampire traces, or residual-specific schedules in production."
+  }
+}

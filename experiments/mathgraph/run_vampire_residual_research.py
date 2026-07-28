@@ -72,7 +72,13 @@ def main():
     results = []
     rows = current_residuals()
     if args.input:
-        payload = json.loads(args.input.read_text())
+        text = args.input.read_text()
+        if args.input.suffix == ".jsonl":
+            payload = [
+                json.loads(line) for line in text.splitlines() if line.strip()
+            ]
+        else:
+            payload = json.loads(text)
         rows = payload["rows"] if isinstance(payload, dict) else payload
     for index, row in enumerate(rows, 1):
         source = module.parse_equation(row["equation1"])

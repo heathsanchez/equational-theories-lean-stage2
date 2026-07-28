@@ -1,0 +1,94 @@
+{
+  "schema": "mathgraph.saturation-control-preregistration.v1",
+  "frozen_before_ablation": true,
+  "research_branch": "mathgraph/context-calculus-research",
+  "starting_commit": "69112a31f1e2500b82362c63da4cd0c9719265de",
+  "production_solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "production_solver_bytes": 313240,
+  "production_score": {
+    "true": 394,
+    "false": 400,
+    "total": 794
+  },
+  "phase_one_conditions": {
+    "B": {
+      "forward_demodulation": false,
+      "backward_demodulation": false,
+      "new_scheduler": false,
+      "indexing": false
+    },
+    "F": {
+      "forward_demodulation": true,
+      "backward_demodulation": false,
+      "new_scheduler": false,
+      "indexing": false
+    }
+  },
+  "phase_two_conditions": {
+    "frozen_before_execution": true,
+    "S": {
+      "forward_demodulation": false,
+      "backward_demodulation": false,
+      "new_scheduler": true,
+      "indexing": false
+    },
+    "FS": {
+      "forward_demodulation": true,
+      "forward_demodulation_scope": "bounded local",
+      "backward_demodulation": false,
+      "new_scheduler": true,
+      "indexing": false
+    }
+  },
+  "limits": {
+    "wall_seconds_per_row": 2.0,
+    "maximum_generated_clauses": 8000,
+    "maximum_processed_clauses": 8000,
+    "maximum_clause_weight": 36,
+    "maximum_term_size": 30,
+    "pair_budget_per_selected_clause": 300,
+    "maximum_forward_demodulation_steps_per_clause": 64,
+    "unordered_superposition": false,
+    "random_seed": null
+  },
+  "selection": {
+    "baseline": "frozen weight-plus-depth heap with deterministic insertion sequence",
+    "forward_ablation": "the same frozen weight-plus-depth heap; no scheduler experiment is enabled in phase one",
+    "phase_two_age_weight_ratio": "1 age : 4 weight",
+    "phase_two_goal_quota": "one structural goal-priority selection opportunity per four selections",
+    "goal_relevance": "negative polarity plus exact subterm overlap with the denied goal",
+    "tie_breaking": "deterministic generation order"
+  },
+  "forward_demodulation": {
+    "eligible_facts": "processed positive unit equalities only",
+    "orientation": "strict decrease by (term size, rendered term)",
+    "candidate_order": "demodulator activation order, side, literal side, shallow path then lexical path",
+    "proof_representation": "ordinary recorded para step for every rewrite",
+    "silent_normalization": false,
+    "phase_two_local_maximum_steps_per_clause": 4,
+    "phase_two_local_demodulator_window": 8,
+    "phase_two_relevance_guard": "a local rewrite may not reduce exact denied-goal subterm overlap"
+  },
+  "six_inputs": [
+    "evaluation_hard_0196",
+    "evaluation_normal_0036",
+    "evaluation_normal_0040",
+    "evaluation_normal_0158",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "environment": {
+    "os": "Darwin 25.4.0 arm64",
+    "python": "3.11.14",
+    "lean": "4.30.0-rc2 3dc1a088b6d2d8eafe25a7cd7ec7b58d731bd7cc",
+    "lake": "5.0.0-src+3dc1a08",
+    "free_disk_before": "4.4 GiB"
+  },
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/heath/Desktop/Aristotle/venv/bin/python experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py --input /tmp/mathgraph-six-residuals.json --max-clauses 8000 --max-processed 8000 --max-weight 36 --max-term-size 30 --pair-budget 300 --timeout 2.0",
+  "gate": {
+    "minimum_official_lean_acceptances": 3,
+    "independent_replay_required": true,
+    "per_row_tuning_permitted": false,
+    "production_change_permitted": false
+  }
+}

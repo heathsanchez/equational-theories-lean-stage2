@@ -1,0 +1,92 @@
+{
+  "schema": "mathgraph.global-budget-demodulation-development.v1",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "frozen_solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "track_a_scheduler": {
+    "sealed_external_gain_over_B": 10,
+    "full_800_unresolved_proofs": 0,
+    "production_qualification": false,
+    "reason": "The current production solver already accepts 794 rows and S proves none of its six unresolved rows, so an appended S route cannot satisfy the required one-new-TRUE promotion condition."
+  },
+  "track_b_configuration": {
+    "raw_simplified_dual_retention": true,
+    "scheduler": "frozen S",
+    "demodulator_pool": "newest 8",
+    "child_gate": "negative child or nondecreasing exact denied-goal subterm overlap",
+    "per_given_budgets": [1, 2, 4],
+    "global_budgets": [64, 128, 256],
+    "unchanged_limits": {
+      "wall_seconds": 2.0,
+      "maximum_generated": 8000,
+      "maximum_processed": 8000,
+      "maximum_weight": 36,
+      "maximum_term_size": 30,
+      "pair_budget": 300
+    }
+  },
+  "six_residual_results": {
+    "S": {
+      "accepted": 0,
+      "demodulations": 0,
+      "processed": 993,
+      "generated": 17270
+    },
+    "K1": {
+      "accepted": 2,
+      "ids": ["evaluation_normal_0040", "evaluation_normal_0158"],
+      "demodulations": 575,
+      "processed": 679,
+      "generated": 13222
+    },
+    "K2": {
+      "accepted": 2,
+      "ids": ["evaluation_hard_0196", "evaluation_normal_0158"],
+      "demodulations": 847,
+      "processed": 512,
+      "generated": 10701
+    },
+    "K4": {
+      "accepted": 2,
+      "ids": ["evaluation_hard_0196", "evaluation_normal_0158"],
+      "demodulations": 971,
+      "processed": 379,
+      "generated": 9121
+    },
+    "K2G64": {
+      "accepted": 1,
+      "ids": ["evaluation_normal_0158"],
+      "demodulations": 330,
+      "processed": 614,
+      "generated": 11374
+    },
+    "K2G128": {
+      "accepted": 2,
+      "ids": ["evaluation_hard_0196", "evaluation_normal_0158"],
+      "demodulations": 595,
+      "processed": 488,
+      "generated": 10486
+    },
+    "K4G128": {
+      "accepted": 1,
+      "ids": ["evaluation_normal_0158"],
+      "demodulations": 645,
+      "processed": 582,
+      "generated": 14678
+    },
+    "K4G256": {
+      "accepted": 2,
+      "ids": ["evaluation_hard_0196", "evaluation_normal_0158"],
+      "demodulations": 1003,
+      "processed": 373,
+      "generated": 8766
+    }
+  },
+  "development_gate": {
+    "minimum_residual_proofs": 3,
+    "best_single_condition_residual_proofs": 2,
+    "passed": false,
+    "third_sealed_audit_run": false
+  },
+  "interpretation": "Global and per-given budgets successfully bound rewrite volume and dual retention prevents destructive replacement, but a single fixed allocation does not preserve all three known demodulation proof shapes. K1 favors normal_0040 while K2 and K4 favor hard_0196. The remaining obstruction is allocation timing and demodulator retrieval, not the numerical rewrite ceiling alone."
+}

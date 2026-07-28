@@ -57,7 +57,25 @@ class QuotientMatcher:
             "right": {target[1]},
         }
         target_variables = set(self.target[2])
-        for node_id, node in enumerate(self.nodes[:self.edge_cap]):
+        target_subterms = list(self.m.walk_subterms(target[0]))
+        target_subterms.extend(self.m.walk_subterms(target[1]))
+        ranked_node_ids = list(range(len(self.nodes)))
+        ranked_node_ids.sort(key=lambda node_id: (
+            min(
+                self.m.structural_distance(term, target_term)
+                for term in (
+                    self.nodes[node_id].lhs, self.nodes[node_id].rhs
+                )
+                for target_term in target_subterms
+            ),
+            max(
+                self.m.term_size(self.nodes[node_id].lhs),
+                self.m.term_size(self.nodes[node_id].rhs),
+            ),
+            node_id,
+        ))
+        for node_id in ranked_node_ids[:self.edge_cap]:
+            node = self.nodes[node_id]
             if (
                 set(self.m.term_variables(node.lhs)) <= target_variables
                 and set(self.m.term_variables(node.rhs)) <= target_variables
@@ -67,6 +85,9 @@ class QuotientMatcher:
             for term in module.walk_subterms(side):
                 self.find(term)
         self.rebuild_members()
+
+    def expired(self):
+        return time.monotonic() >= self.deadline
 
     def find(self, term):
         self.parent.setdefault(term, term)
@@ -83,6 +104,9 @@ class QuotientMatcher:
         self.parent[b] = a
 
     def add_edge(self, left, right, node_id):
+        for root in (left, right):
+            for term in self.m.walk_subterms(root):
+                self.find(term)
         self.adjacency[left].append((right, node_id, False))
         self.adjacency[right].append((left, node_id, True))
         self.union(left, right)
@@ -230,6 +254,78 @@ class QuotientMatcher:
             constructor="quotient-matcher",
         ))
         return root
+
+    def congruence_proof(self, left, right):
+        if left[0] != "op" or right[0] != "op":
+            return None
+        start = len(self.nodes)
+        left_child = self.path_proof(left[1], right[1])
+        right_child = self.path_proof(left[2], right[2])
+        if left_child is None or right_child is None:
+            del self.nodes[start:]
+            return None
+        left_lift = len(self.nodes)
+        self.nodes.append(self.m.EqualityNode(
+            left, ("op", right[1], left[2]),
+            "congruence on left child", parents=(left_child,),
+            context=("left", left[2]), constructor="quotient-congruence",
+        ))
+        right_lift = len(self.nodes)
+        self.nodes.append(self.m.EqualityNode(
+            ("op", right[1], left[2]), right,
+            "congruence on right child", parents=(right_child,),
+            context=("right", right[1]), constructor="quotient-congruence",
+        ))
+        root = len(self.nodes)
+        self.nodes.append(self.m.EqualityNode(
+            left, right, "transitivity", parents=(left_lift, right_lift),
+            constructor="quotient-congruence",
+        ))
+        if not self.m.replay_dag(
+            self.source, self.nodes, root,
+            maximum_term_size=self.maximum_term_size,
+        ):
+            del self.nodes[start:]
+            return None
+        return root
+
+    def close_congruence(self, maximum_edges=32, maximum_rounds=2):
+        added = 0
+        for _ in range(maximum_rounds):
+            if self.expired():
+                break
+            groups = defaultdict(list)
+            relevant = set()
+            for roots in self.frontiers.values():
+                for root in roots:
+                    relevant.update(self.m.walk_subterms(root))
+            operation_terms = [term for term in relevant if term[0] == "op"]
+            operation_terms.sort(
+                key=lambda term: (
+                    self.m.term_size(term), self.m.render_term(term)
+                )
+            )
+            for term in operation_terms:
+                groups[(self.find(term[1]), self.find(term[2]))].append(term)
+            round_added = 0
+            for terms in groups.values():
+                representative = terms[0]
+                for term in terms[1:]:
+                    if self.find(representative) == self.find(term):
+                        continue
+                    node_id = self.congruence_proof(representative, term)
+                    if node_id is None:
+                        continue
+                    self.add_edge(representative, term, node_id)
+                    added += 1
+                    round_added += 1
+                    if added >= maximum_edges or self.expired():
+                        self.rebuild_members()
+                        return added
+            self.rebuild_members()
+            if not round_added:
+                break
+        return added
 
     def target_paths(self):
         for side_name in ("left", "right"):
@@ -389,6 +485,7 @@ class QuotientMatcher:
         for generation in range(generations):
             self.generations = generation + 1
             self.one_generation(maximum_instances)
+            self.close_congruence(maximum_edges=8, maximum_rounds=1)
             if self.find(self.target[0]) == self.find(self.target[1]):
                 root = self.path_proof(self.target[0], self.target[1])
                 if root is not None and self.m.replay_dag(
@@ -427,9 +524,22 @@ def main():
             (ROOT / "experiments/mathgraph/results/"
              "normalization_baseline_manifest.json").read_text()
         )["sample_200_accepted"]
+        promoted = set(
+            json.loads(
+                (ROOT / "experiments/mathgraph/results/"
+                 "quotient_matcher_promotion_summary.json").read_text()
+            )["public_hits"]
+        )
+        promoted.update(
+            json.loads(
+                (ROOT / "experiments/mathgraph/results/"
+                 "variable_omission_collapse_summary.json").read_text()
+            )["sample_200"]["new_hits"]
+        )
         rows = [
             row for row in rows
             if row["id"].startswith("true_") and row["id"] not in baseline
+            and row["id"] not in promoted
             and (args.id is None or row["id"] == args.id)
         ]
     results = []

@@ -48,6 +48,176 @@ def current_residuals():
 
 def make_normalizer(module):
     class SymbolicNormalizer(module.EquationalNormalizer):
+        def clone_proof(self, node_id, variable_mapping, unifier, cache):
+            key = (node_id, tuple(sorted(variable_mapping)))
+            if key in cache:
+                return cache[key]
+
+            def transform(term):
+                renamed = module.substitute(term, variable_mapping)
+                return module.apply_unifier(renamed, unifier)
+
+            node = self.nodes[node_id]
+            parents = tuple(
+                self.clone_proof(
+                    parent, variable_mapping, unifier, cache
+                )
+                for parent in node.parents
+            )
+            context = node.context
+            if context:
+                context = (context[0], transform(context[1]))
+            clone = module.EqualityNode(
+                transform(node.lhs),
+                transform(node.rhs),
+                node.kind,
+                parents=parents,
+                substitution=tuple(
+                    (variable, transform(value))
+                    for variable, value in node.substitution
+                ),
+                orientation=node.orientation,
+                context=context,
+                constructor="symbolic-superposition-generation-2",
+            )
+            result = len(self.nodes)
+            self.nodes.append(clone)
+            cache[key] = result
+            return result
+
+        def generate_second_generation(self, maximum=96):
+            first_rules = sorted(
+                self.rules,
+                key=lambda rule: (
+                    -self.rule_target_occurrences(rule),
+                    rule.proof_cost,
+                    module.term_size(rule.lhs),
+                    rule.provenance,
+                ),
+            )[:48]
+            added = 0
+            signatures = {
+                (node.lhs, node.rhs) for node in self.nodes
+            }
+            for outer_index, outer in enumerate(first_rules):
+                if added >= maximum or self.expired():
+                    break
+                for inner_index, inner in enumerate(first_rules):
+                    if added >= maximum or self.expired():
+                        break
+                    outer_variables = set()
+                    inner_variables = set()
+                    for node_id, destination in (
+                        (outer.node_id, outer_variables),
+                        (inner.node_id, inner_variables),
+                    ):
+                        stack = [node_id]
+                        visited = set()
+                        while stack:
+                            current = stack.pop()
+                            if current in visited:
+                                continue
+                            visited.add(current)
+                            node = self.nodes[current]
+                            destination |= module.term_variables(node.lhs)
+                            destination |= module.term_variables(node.rhs)
+                            stack.extend(node.parents)
+                    outer_map = {
+                        variable: ("var", f"_g2o{outer_index}_{offset}")
+                        for offset, variable in enumerate(
+                            sorted(outer_variables)
+                        )
+                    }
+                    inner_map = {
+                        variable: ("var", f"_g2i{inner_index}_{offset}")
+                        for offset, variable in enumerate(
+                            sorted(inner_variables)
+                        )
+                    }
+                    outer_lhs = module.substitute(outer.lhs, outer_map)
+                    outer_rhs = module.substitute(outer.rhs, outer_map)
+                    inner_lhs = module.substitute(inner.lhs, inner_map)
+                    inner_rhs = module.substitute(inner.rhs, inner_map)
+                    for path in module.nonvariable_positions(
+                        outer_lhs, maximum_depth=6, include_root=True
+                    ):
+                        selected = module.get_subterm(outer_lhs, path)
+                        unifier = module.unify_terms(selected, inner_lhs)
+                        if unifier is None:
+                            continue
+                        concrete_outer_lhs = module.apply_unifier(
+                            outer_lhs, unifier
+                        )
+                        concrete_outer_rhs = module.apply_unifier(
+                            outer_rhs, unifier
+                        )
+                        concrete_inner_rhs = module.apply_unifier(
+                            inner_rhs, unifier
+                        )
+                        changed = module.replace_subterm(
+                            concrete_outer_lhs, path, concrete_inner_rhs
+                        )
+                        if (
+                            concrete_outer_rhs == changed
+                            or max(
+                                module.term_size(concrete_outer_rhs),
+                                module.term_size(changed),
+                            ) > self.configuration["maximum_term_size"]
+                            or (concrete_outer_rhs, changed) in signatures
+                        ):
+                            continue
+                        start = len(self.nodes)
+                        outer_id = self.clone_proof(
+                            outer.node_id, outer_map, unifier, {}
+                        )
+                        inner_id = self.clone_proof(
+                            inner.node_id, inner_map, unifier, {}
+                        )
+                        outer_reverse = len(self.nodes)
+                        self.nodes.append(module.EqualityNode(
+                            self.nodes[outer_id].rhs,
+                            self.nodes[outer_id].lhs,
+                            "symmetry",
+                            parents=(outer_id,),
+                            constructor="symbolic-superposition-generation-2",
+                        ))
+                        try:
+                            lifted = self.lift_context(
+                                self.nodes, inner_id,
+                                concrete_outer_lhs, path,
+                            )
+                        except ValueError:
+                            del self.nodes[start:]
+                            continue
+                        root = len(self.nodes)
+                        self.nodes.append(module.EqualityNode(
+                            concrete_outer_rhs,
+                            changed,
+                            "transitivity",
+                            parents=(outer_reverse, lifted),
+                            constructor="symbolic-superposition-generation-2",
+                        ))
+                        if not module.replay_dag(
+                            self.source, self.nodes, root,
+                            maximum_term_size=self.configuration[
+                                "maximum_term_size"
+                            ],
+                        ):
+                            del self.nodes[start:]
+                            continue
+                        signatures.add((concrete_outer_rhs, changed))
+                        added += 1
+                        if added >= maximum:
+                            break
+            return added
+
+        def generate_consequences(self):
+            result = super().generate_consequences()
+            self.orient()
+            self.generate_second_generation()
+            self.rules = []
+            return result
+
         def orient(self):
             rules = super().orient()
             for rule in rules:
@@ -92,6 +262,7 @@ def make_normalizer(module):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", type=Path)
+    parser.add_argument("--id")
     parser.add_argument("--output", type=Path, default=Path(
         "/tmp/mathgraph-symbolic-superposition.json"
     ))
@@ -103,6 +274,8 @@ def main():
     if args.input:
         payload = json.loads(args.input.read_text())
         rows = payload["rows"] if isinstance(payload, dict) else payload
+    if args.id:
+        rows = [row for row in rows if row["id"] == args.id]
     for index, row in enumerate(rows, 1):
         source = module.parse_equation(row["equation1"])
         target = module.parse_equation(row["equation2"])

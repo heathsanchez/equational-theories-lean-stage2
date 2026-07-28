@@ -1,0 +1,95 @@
+{
+  "authoritative_head": "c1e23ab86f24ed1105b5c3157e7859d77178e298",
+  "bridge_ir_implementation_commit": "f243df7c118e9cedd606c341c057e4c244cd4f42",
+  "candidate_status": "CANDIDATE",
+  "clustering": {
+    "bootstrap_replicates": 1000,
+    "distance": "robust-scaled Manhattan",
+    "hierarchical_linkage": "average",
+    "k_medoids_k": [2, 3, 4, 5, 6],
+    "maximum_non_outlier_clusters": 8,
+    "minimum_cluster_size": 4,
+    "selection": ["minimum cluster size", "silhouette", "smaller k"]
+  },
+  "counterfactual_limits": {
+    "maximum_depth": 3,
+    "maximum_generated_per_row": 128,
+    "maximum_generalized_variables": 6,
+    "maximum_retained_per_row": 16
+  },
+  "created_before_sealed_validation": true,
+  "decision_rules": {
+    "derived_operation": {
+      "class": "O5",
+      "independent_source_families": 5,
+      "requires_stable_arity": true,
+      "requires_validation_recurrence": true
+    },
+    "dominant_schema": {
+      "classes": ["O9"],
+      "discovery_share": 0.30,
+      "independent_source_families": 5,
+      "maximum_single_family_share": 0.333333,
+      "validation_share": 0.25
+    },
+    "heterogeneous": {
+      "dominant_validation_share_below": 0.25,
+      "poor_mean_bootstrap_ari_below": 0.60,
+      "unclassified_validation_share_above": 0.30
+    },
+    "invariant_or_quotient": {
+      "class": "O6",
+      "requires_relational_predictive_value": true,
+      "requires_validation_recurrence": true
+    },
+    "decomposition": {
+      "class": "O7",
+      "independent_source_families": 4,
+      "requires_repeated_finite_split": true
+    }
+  },
+  "diagnostic_only": {
+    "emits_lean": false,
+    "judge_calls": false,
+    "modifies_production": false,
+    "solves_rows": false,
+    "terminal_forms": []
+  },
+  "discovery_sources": [
+    "34 unresolved sample_200 TRUE rows",
+    "prior normalization external TRUE failures",
+    "nine prior BridgeIR probe/fast activations",
+    "one medium-only BridgeIR completion",
+    "synthetic controls for calibration only"
+  ],
+  "feature_groups": [
+    "equation",
+    "consequence",
+    "bridge",
+    "divergence",
+    "proof_graph",
+    "counterfactual"
+  ],
+  "frozen_bridge_configuration": "bridge-fast",
+  "frozen_normalizer_configuration": "norm-fast",
+  "production_solver_bytes": 211218,
+  "production_solver_sha256": "68729dde1e27c544e5d3e12504ea5878d57ad0af70cf16c80bb238433976dcf8",
+  "runtime_caps_seconds": {
+    "bridge_trace": 0.75,
+    "counterfactual_construction": 3.0,
+    "normalization_trace": 0.75,
+    "total_per_row": 3.0
+  },
+  "schema_version": "mathgraph.residual-characterization.v1",
+  "sealed_seed_expression": "SHA256(c1e23ab86f24ed1105b5c3157e7859d77178e298 || residual-characterization-sealed-validation-v1)",
+  "stability_thresholds": {
+    "counterfactual_source_families": 5,
+    "discovery_dominant_share": 0.30,
+    "mean_bootstrap_ari": 0.60,
+    "minimum_assignment_confidence": 0.70,
+    "unclassified_share_maximum": 0.30,
+    "validation_dominant_share": 0.25,
+    "within_distance_reduction": 0.25
+  },
+  "taxonomy_version": "mathgraph.residual-obstruction-taxonomy.v1"
+}

@@ -1,0 +1,1572 @@
+{
+  "schema": "mathgraph.continuation-effect-summary.v1",
+  "diagnostic_only": true,
+  "production_changed": false,
+  "solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+  "preregistration_sha256": "4f6f762c01e51293f2f58edbfd39db9e4751b59113c8ab1af978a264cc56a15a",
+  "limits": {
+    "max_clauses": 8000,
+    "max_processed": 8000,
+    "max_weight": 36,
+    "max_term_size": 30,
+    "pair_budget": 300,
+    "timeout_seconds": 2.0
+  },
+  "counterfactual_classification_counts": {
+    "replaceable": 16,
+    "necessary_under_frozen_search": 3
+  },
+  "rows": [
+    {
+      "id": "evaluation_hard_0196",
+      "equation_content_hash": "d215bad5c248942e50629d69014178c80771707468d10b3f0872f3fd341d6cc2",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 1804,
+        "retained": 1763,
+        "processed": 53,
+        "seen": 1763,
+        "elapsed_s": 2.020654,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 11602,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "proved",
+        "exit": "proof",
+        "generated": 994,
+        "retained": 60,
+        "processed": 5,
+        "seen": 60,
+        "elapsed_s": 0.616283,
+        "forward_demodulations": 702,
+        "demodulation_attempts": 17187,
+        "superposition_candidates": 562,
+        "proof_ancestry_nodes": 16,
+        "proof_ancestry_demodulations": 9,
+        "proof_ancestry_superpositions": 5
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": true,
+        "plan_ok": true,
+        "independent_replay": true,
+        "external_replay": true,
+        "lean_status": "accepted",
+        "judge_seconds": 41.025179
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 2,
+        "earliest_divergence_index": 2,
+        "control_selection_count": 53,
+        "treatment_selection_count": 5
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "79fe34039496e7573741ea2d7641ef3f6909c2824e97681d5a91b26365fedd5b",
+        "treatment_selection_trace_sha256": "eb6c4d0396a75524f42327d426cddb521566e4333d5dcfc125db00cbfd56b982",
+        "control_raw_children_sha256": "2a208a151b64023e5d0e614ee3d8a0eb73c9d25b857f472046bc67cc6fd27071",
+        "treatment_raw_children_sha256": "d6fc4938b2126a6371e3b80eda2aabd2288f283d57a49b51f1abb783573451a3"
+      },
+      "proof_ancestry_demodulation_events": [
+        {
+          "signature": "b73aeda8df9d8f686e7202ba6702d0d132ad50ac3ba82addc95383ad044580e2",
+          "proof_node": "10",
+          "demodulator_id": "3",
+          "target_parent_id": "9",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))), ('var', 'y')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 ((((x \u25c7 y) \u25c7 y) \u25c7 z) \u25c7 z))",
+            "weight": 16,
+            "depth": 1,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('var', 'z')), ('var', 'z')))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R",
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 z)))",
+            "weight": 14,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('var', 'y'), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))))))"
+          }
+        },
+        {
+          "signature": "7b5bfce7fb005902f91dc65a151f1700aec1bfdd76843297224f54e057abc389",
+          "proof_node": "299",
+          "demodulator_id": "10",
+          "target_parent_id": "298",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 z)))",
+            "weight": 14,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('var', 'y'), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 ((u \u25c7 z) \u25c7 (((z \u25c7 (v \u25c7 ((v \u25c7 w) \u25c7 w))) \u25c7 v) \u25c7 v))))",
+            "weight": 26,
+            "depth": 3,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('op', ('op', ('var', 'u'), ('var', 'z')), ('op', ('op', ('op', ('var', 'z'), ('op', ('var', 'v'), ('op', ('op', ('var', 'v'), ('var', 'w')), ('var', 'w')))), ('var', 'v')), ('var', 'v'))))), ('var', 'y')))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R",
+            "R",
+            "R",
+            "L",
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 ((u \u25c7 z) \u25c7 ((((z \u25c7 v) \u25c7 v) \u25c7 v) \u25c7 v))))",
+            "weight": 22,
+            "depth": 4,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('op', ('op', ('var', 'u'), ('var', 'z')), ('op', ('op', ('op', ('op', ('var', 'z'), ('var', 'v')), ('var', 'v')), ('var', 'v')), ('var', 'v'))))), ('var', 'y')))"
+          }
+        },
+        {
+          "signature": "678412164b8a476a8216bd53d2c87bf674dd86bc9a466256218f8df86800cc44",
+          "proof_node": "300",
+          "demodulator_id": "10",
+          "target_parent_id": "299",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 z)))",
+            "weight": 14,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('var', 'y'), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 ((u \u25c7 z) \u25c7 ((((z \u25c7 v) \u25c7 v) \u25c7 v) \u25c7 v))))",
+            "weight": 22,
+            "depth": 4,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('op', ('op', ('var', 'u'), ('var', 'z')), ('op', ('op', ('op', ('op', ('var', 'z'), ('var', 'v')), ('var', 'v')), ('var', 'v')), ('var', 'v'))))), ('var', 'y')))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 (((x \u25c7 z) \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 ((z \u25c7 z) \u25c7 z)))",
+            "weight": 20,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('op', ('var', 'y'), ('var', 'z')), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z'))), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z')))), ('var', 'y')))"
+          }
+        },
+        {
+          "signature": "8c87778249ffb408c69f21ae1f039302ba152f2fc1d71646f6e9205818151ce6",
+          "proof_node": "301",
+          "demodulator_id": "3",
+          "target_parent_id": "300",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))), ('var', 'y')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 (((x \u25c7 z) \u25c7 ((z \u25c7 z) \u25c7 z)) \u25c7 ((z \u25c7 z) \u25c7 z)))",
+            "weight": 20,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('op', ('var', 'y'), ('var', 'z')), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z'))), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z')))), ('var', 'y')))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R",
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 (z \u25c7 ((z \u25c7 z) \u25c7 z)))",
+            "weight": 12,
+            "depth": 6,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('var', 'z'), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z')))), ('var', 'y')))"
+          }
+        },
+        {
+          "signature": "d5a17f91b29ea5a3c09b179c081193934edb6b15b1f2892d67950482feaa0591",
+          "proof_node": "302",
+          "demodulator_id": "10",
+          "target_parent_id": "301",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 z)))",
+            "weight": 14,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('var', 'y'), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 (z \u25c7 ((z \u25c7 z) \u25c7 z)))",
+            "weight": 12,
+            "depth": 6,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('var', 'z'), ('op', ('op', ('var', 'z'), ('var', 'z')), ('var', 'z')))), ('var', 'y')))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "(((y \u25c7 x) \u25c7 z) \u25c7 z)",
+            "weight": 8,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'y')))"
+          }
+        },
+        {
+          "signature": "84aa65c87b5f3b1b67a36d10454924655609c36ce2b657429aa9f3f611f6b9d1",
+          "proof_node": "441",
+          "demodulator_id": "3",
+          "target_parent_id": "440",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((y \u25c7 x) \u25c7 ((x \u25c7 z) \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))), ('var', 'y')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "(((z \u25c7 x) \u25c7 y) \u25c7 ((((((z \u25c7 x) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 u) \u25c7 u))",
+            "weight": 22,
+            "depth": 8,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('op', ('op', ('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'z')), ('var', 'u')), ('var', 'u'))), ('op', ('var', 'y'), ('var', 'z'))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R",
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "(((z \u25c7 x) \u25c7 y) \u25c7 (y \u25c7 ((y \u25c7 u) \u25c7 u)))",
+            "weight": 16,
+            "depth": 9,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('op', ('var', 'z'), ('op', ('op', ('var', 'z'), ('var', 'u')), ('var', 'u')))), ('op', ('var', 'y'), ('var', 'z'))))"
+          }
+        },
+        {
+          "signature": "b5de17f44ee5bc4400f3f110fe3a6da0de67a289cff99a7b6aa42cfcfbafdfdc",
+          "proof_node": "442",
+          "demodulator_id": "10",
+          "target_parent_id": "441",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 y)",
+            "rhs": "(x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 z)))",
+            "weight": 14,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'y')), ('op', ('var', 'x'), ('op', ('var', 'y'), ('op', ('op', ('var', 'y'), ('var', 'z')), ('var', 'z'))))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "(((z \u25c7 x) \u25c7 y) \u25c7 (y \u25c7 ((y \u25c7 u) \u25c7 u)))",
+            "weight": 16,
+            "depth": 9,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('op', ('var', 'z'), ('op', ('op', ('var', 'z'), ('var', 'u')), ('var', 'u')))), ('op', ('var', 'y'), ('var', 'z'))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "((((z \u25c7 x) \u25c7 y) \u25c7 y) \u25c7 y)",
+            "weight": 12,
+            "depth": 10,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'z')), ('op', ('var', 'y'), ('var', 'z'))))"
+          }
+        },
+        {
+          "signature": "91477f28a497c3895665db5f288719c584ac79dac4614960fe4fc72897bb15f0",
+          "proof_node": "443",
+          "demodulator_id": "302",
+          "target_parent_id": "442",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "(((y \u25c7 x) \u25c7 z) \u25c7 z)",
+            "weight": 8,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'y')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "((((z \u25c7 x) \u25c7 y) \u25c7 y) \u25c7 y)",
+            "weight": 12,
+            "depth": 10,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'z')), ('op', ('var', 'y'), ('var', 'z'))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "y",
+            "weight": 4,
+            "depth": 11,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('var', 'y')), ('var', 'y')))"
+          }
+        },
+        {
+          "signature": "8586c1aa3629adc95aeabbab46735b7d9ac4f8043b85223d652f4ef08669960f",
+          "proof_node": "444",
+          "demodulator_id": "302",
+          "target_parent_id": "443",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "(((y \u25c7 x) \u25c7 z) \u25c7 z)",
+            "weight": 8,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'z')), ('var', 'z')), ('var', 'y')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "y",
+            "weight": 4,
+            "depth": 11,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('var', 'y')), ('var', 'y')))"
+          },
+          "from_side": 2,
+          "into_side": 1,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "y",
+            "weight": 2,
+            "depth": 12,
+            "alpha_key": "('pos', (('var', 'x'), ('var', 'y')))"
+          }
+        }
+      ],
+      "counterfactual_deletions": [
+        {
+          "deleted_signature": "b73aeda8df9d8f686e7202ba6702d0d132ad50ac3ba82addc95383ad044580e2",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 30.166329
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1065,
+            "retained": 71,
+            "processed": 5,
+            "seen": 71,
+            "elapsed_s": 1.110177,
+            "forward_demodulations": 754,
+            "demodulation_attempts": 18839,
+            "superposition_candidates": 569,
+            "proof_ancestry_nodes": 17,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 6
+          }
+        },
+        {
+          "deleted_signature": "7b5bfce7fb005902f91dc65a151f1700aec1bfdd76843297224f54e057abc389",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 32.79182
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 995,
+            "retained": 61,
+            "processed": 5,
+            "seen": 61,
+            "elapsed_s": 0.852019,
+            "forward_demodulations": 702,
+            "demodulation_attempts": 17149,
+            "superposition_candidates": 562,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "678412164b8a476a8216bd53d2c87bf674dd86bc9a466256218f8df86800cc44",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 26.386189
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1283,
+            "retained": 75,
+            "processed": 7,
+            "seen": 75,
+            "elapsed_s": 1.251812,
+            "forward_demodulations": 897,
+            "demodulation_attempts": 31418,
+            "superposition_candidates": 1005,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "8c87778249ffb408c69f21ae1f039302ba152f2fc1d71646f6e9205818151ce6",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 36.474269
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1284,
+            "retained": 75,
+            "processed": 7,
+            "seen": 75,
+            "elapsed_s": 1.474324,
+            "forward_demodulations": 898,
+            "demodulation_attempts": 31462,
+            "superposition_candidates": 1005,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "d5a17f91b29ea5a3c09b179c081193934edb6b15b1f2892d67950482feaa0591",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 35.278447
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1285,
+            "retained": 75,
+            "processed": 7,
+            "seen": 75,
+            "elapsed_s": 1.493693,
+            "forward_demodulations": 899,
+            "demodulation_attempts": 31444,
+            "superposition_candidates": 1005,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "84aa65c87b5f3b1b67a36d10454924655609c36ce2b657429aa9f3f611f6b9d1",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 34.935039
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 999,
+            "retained": 61,
+            "processed": 5,
+            "seen": 61,
+            "elapsed_s": 0.797847,
+            "forward_demodulations": 706,
+            "demodulation_attempts": 17213,
+            "superposition_candidates": 562,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "b5de17f44ee5bc4400f3f110fe3a6da0de67a289cff99a7b6aa42cfcfbafdfdc",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 28.090081
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 999,
+            "retained": 61,
+            "processed": 5,
+            "seen": 61,
+            "elapsed_s": 0.673113,
+            "forward_demodulations": 706,
+            "demodulation_attempts": 17203,
+            "superposition_candidates": 562,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "91477f28a497c3895665db5f288719c584ac79dac4614960fe4fc72897bb15f0",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 29.03869
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 998,
+            "retained": 60,
+            "processed": 5,
+            "seen": 60,
+            "elapsed_s": 0.709449,
+            "forward_demodulations": 705,
+            "demodulation_attempts": 17197,
+            "superposition_candidates": 562,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "8586c1aa3629adc95aeabbab46735b7d9ac4f8043b85223d652f4ef08669960f",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 28.541127
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 993,
+            "retained": 60,
+            "processed": 5,
+            "seen": 60,
+            "elapsed_s": 0.675937,
+            "forward_demodulations": 701,
+            "demodulation_attempts": 17190,
+            "superposition_candidates": 562,
+            "proof_ancestry_nodes": 16,
+            "proof_ancestry_demodulations": 9,
+            "proof_ancestry_superpositions": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation_normal_0036",
+      "equation_content_hash": "fb26cc21b58697a58a173b4e516451896bc3ac4d24f84c49ce024b7c67f8a11b",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 2092,
+        "retained": 2059,
+        "processed": 67,
+        "seen": 2059,
+        "elapsed_s": 2.01848,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 15404,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 2598,
+        "retained": 50,
+        "processed": 8,
+        "seen": 50,
+        "elapsed_s": 2.248439,
+        "forward_demodulations": 1850,
+        "demodulation_attempts": 62490,
+        "superposition_candidates": 1423,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 2,
+        "earliest_divergence_index": 2,
+        "control_selection_count": 67,
+        "treatment_selection_count": 8
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "62248a5a0b3ef4fdb6b6ec5ebf7897fefc53076a6d133a53d1d456031d662924",
+        "treatment_selection_trace_sha256": "007465141aa59871b94903d3d061dc34f420b7daee22453d892b68e1bdbfa555",
+        "control_raw_children_sha256": "fc7415e10af71dafa1c1c11b9f453d7de15728368ab707ba4b191f0ff77548f7",
+        "treatment_raw_children_sha256": "e04ef8411feee35786b6c17c4d73e35043a51776a3de1fc3eb5cbc9310125727"
+      },
+      "proof_ancestry_demodulation_events": [],
+      "counterfactual_deletions": []
+    },
+    {
+      "id": "evaluation_normal_0040",
+      "equation_content_hash": "99339c90809013546dca750473d2b2c515da79fcfad28aa244ab500430a7dfc3",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 662,
+        "retained": 533,
+        "processed": 40,
+        "seen": 533,
+        "elapsed_s": 2.021785,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 9068,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "proved",
+        "exit": "proof",
+        "generated": 1043,
+        "retained": 33,
+        "processed": 10,
+        "seen": 33,
+        "elapsed_s": 1.462149,
+        "forward_demodulations": 667,
+        "demodulation_attempts": 36605,
+        "superposition_candidates": 1315,
+        "proof_ancestry_nodes": 14,
+        "proof_ancestry_demodulations": 5,
+        "proof_ancestry_superpositions": 7
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": true,
+        "plan_ok": true,
+        "independent_replay": true,
+        "external_replay": true,
+        "lean_status": "accepted",
+        "judge_seconds": 26.659337
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 3,
+        "earliest_divergence_index": 3,
+        "control_selection_count": 40,
+        "treatment_selection_count": 10
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "983d389d8a957f2b2b6735faf22717991b21b3911befea727f978e1f62f3d45c",
+        "treatment_selection_trace_sha256": "33aa0f3e76003e30f694e410dd8a91e0b2219712e13710f525465105718de99e",
+        "control_raw_children_sha256": "802926f25f466ec4b30ebe222c3c955ad4186f264d5c00ebf46ce9711e85ad03",
+        "treatment_raw_children_sha256": "21dbd40c4994f9e5212de83a1de268ad2597cfe6d102d5a47bb0bb2592160774"
+      },
+      "proof_ancestry_demodulation_events": [
+        {
+          "signature": "4250c2c0e1556606448637dafc47143c9c7640db96d629777e8155556655d142",
+          "proof_node": "80",
+          "demodulator_id": "8",
+          "target_parent_id": "79",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 y) \u25c7 x)",
+            "rhs": "((x \u25c7 ((x \u25c7 y) \u25c7 x)) \u25c7 z)",
+            "weight": 14,
+            "depth": 1,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x'))), ('var', 'z')), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x'))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 ((x \u25c7 y) \u25c7 x)) \u25c7 z) \u25c7 (x \u25c7 ((x \u25c7 y) \u25c7 x)))",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 u)",
+            "weight": 24,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x'))), ('var', 'z')), ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')))), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'u'))))"
+          },
+          "from_side": 2,
+          "into_side": 1,
+          "path": [
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 ((x \u25c7 y) \u25c7 x)))",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "weight": 20,
+            "depth": 3,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')))), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'z'))))"
+          }
+        },
+        {
+          "signature": "afd214f3b0bd347151c55952b04dfe7130fe04723b306267997a356886c492d3",
+          "proof_node": "199",
+          "demodulator_id": "80",
+          "target_parent_id": "198",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 ((x \u25c7 y) \u25c7 x)))",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "weight": 20,
+            "depth": 3,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')))), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'z'))))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 ((x \u25c7 y) \u25c7 x)))",
+            "weight": 20,
+            "depth": 4,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')))), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'z'))))"
+          },
+          "from_side": 1,
+          "into_side": 2,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 u)",
+            "weight": 14,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'z')), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'u'))))"
+          }
+        },
+        {
+          "signature": "c77a4c251285ec66a251d1c84393870132acbfeafe5616f905e4f3594cc92e60",
+          "proof_node": "288",
+          "demodulator_id": "3",
+          "target_parent_id": "287",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 z)",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'x')), ('var', 'z')), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "rhs": "(((x \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 y))) \u25c7 u)",
+            "weight": 22,
+            "depth": 6,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('op', ('var', 'x'), ('var', 'y')))), ('var', 'z')), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'u'))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 ((x \u25c7 y) \u25c7 x)) \u25c7 z)",
+            "rhs": "(x \u25c7 u)",
+            "weight": 18,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'x')), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x'))), ('var', 'z')), ('op', ('var', 'x'), ('var', 'u'))))"
+          }
+        },
+        {
+          "signature": "463999aa8178a0a3c153953fcc2e8a1481c8d1af7823039f8664921838c631be",
+          "proof_node": "289",
+          "demodulator_id": "3",
+          "target_parent_id": "288",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 z)",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'x')), ('var', 'z')), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 ((x \u25c7 y) \u25c7 x)) \u25c7 z)",
+            "rhs": "(x \u25c7 u)",
+            "weight": 18,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'x')), ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x'))), ('var', 'z')), ('op', ('var', 'x'), ('var', 'u'))))"
+          },
+          "from_side": 2,
+          "into_side": 1,
+          "path": [
+            "L"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "(x \u25c7 z)",
+            "weight": 6,
+            "depth": 8,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('var', 'y')), ('op', ('var', 'x'), ('var', 'z'))))"
+          }
+        },
+        {
+          "signature": "e2a86896aaac7960ed5ab7bb88409d593a3692368eb7b6f8e18afa6c2d885c02",
+          "proof_node": "553",
+          "demodulator_id": "199",
+          "target_parent_id": "552",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "(((x \u25c7 y) \u25c7 x) \u25c7 z)",
+            "rhs": "(((x \u25c7 y) \u25c7 x) \u25c7 u)",
+            "weight": 14,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'z')), ('op', ('op', ('op', ('var', 'x'), ('var', 'y')), ('var', 'x')), ('var', 'u'))))"
+          },
+          "before": {
+            "polarity": "neg",
+            "lhs": "c1",
+            "rhs": "((((c1 \u25c7 c2) \u25c7 x) \u25c7 c3) \u25c7 c2)",
+            "weight": 10,
+            "depth": 9,
+            "alpha_key": "('neg', (('op', ('op', ('op', ('op', ('var', 'c1'), ('var', 'c2')), ('var', 'x')), ('var', 'c3')), ('var', 'c2')), ('var', 'c1')))"
+          },
+          "from_side": 1,
+          "into_side": 2,
+          "path": [
+            "L"
+          ],
+          "after": {
+            "polarity": "neg",
+            "lhs": "c1",
+            "rhs": "((((c1 \u25c7 c2) \u25c7 c1) \u25c7 x) \u25c7 c2)",
+            "weight": 10,
+            "depth": 10,
+            "alpha_key": "('neg', (('op', ('op', ('op', ('op', ('var', 'c1'), ('var', 'c2')), ('var', 'c1')), ('var', 'x')), ('var', 'c2')), ('var', 'c1')))"
+          }
+        }
+      ],
+      "counterfactual_deletions": [
+        {
+          "deleted_signature": "4250c2c0e1556606448637dafc47143c9c7640db96d629777e8155556655d142",
+          "classification": "necessary_under_frozen_search",
+          "verification": {
+            "proved": false,
+            "plan_ok": false,
+            "independent_replay": false,
+            "external_replay": false,
+            "lean_status": null
+          },
+          "run": {
+            "status": "unproved",
+            "exit": "timeout",
+            "generated": 1766,
+            "retained": 32,
+            "processed": 10,
+            "seen": 32,
+            "elapsed_s": 2.178008,
+            "forward_demodulations": 1149,
+            "demodulation_attempts": 46194,
+            "superposition_candidates": 1788,
+            "proof_ancestry_nodes": null,
+            "proof_ancestry_demodulations": null,
+            "proof_ancestry_superpositions": null
+          }
+        },
+        {
+          "deleted_signature": "afd214f3b0bd347151c55952b04dfe7130fe04723b306267997a356886c492d3",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 31.31457
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1043,
+            "retained": 33,
+            "processed": 10,
+            "seen": 33,
+            "elapsed_s": 1.391537,
+            "forward_demodulations": 667,
+            "demodulation_attempts": 36455,
+            "superposition_candidates": 1315,
+            "proof_ancestry_nodes": 14,
+            "proof_ancestry_demodulations": 5,
+            "proof_ancestry_superpositions": 7
+          }
+        },
+        {
+          "deleted_signature": "c77a4c251285ec66a251d1c84393870132acbfeafe5616f905e4f3594cc92e60",
+          "classification": "necessary_under_frozen_search",
+          "verification": {
+            "proved": false,
+            "plan_ok": false,
+            "independent_replay": false,
+            "external_replay": false,
+            "lean_status": null
+          },
+          "run": {
+            "status": "unproved",
+            "exit": "timeout",
+            "generated": 1281,
+            "retained": 22,
+            "processed": 8,
+            "seen": 22,
+            "elapsed_s": 2.765974,
+            "forward_demodulations": 826,
+            "demodulation_attempts": 40479,
+            "superposition_candidates": 1468,
+            "proof_ancestry_nodes": null,
+            "proof_ancestry_demodulations": null,
+            "proof_ancestry_superpositions": null
+          }
+        },
+        {
+          "deleted_signature": "463999aa8178a0a3c153953fcc2e8a1481c8d1af7823039f8664921838c631be",
+          "classification": "necessary_under_frozen_search",
+          "verification": {
+            "proved": false,
+            "plan_ok": false,
+            "independent_replay": false,
+            "external_replay": false,
+            "lean_status": null
+          },
+          "run": {
+            "status": "unproved",
+            "exit": "timeout",
+            "generated": 1607,
+            "retained": 25,
+            "processed": 9,
+            "seen": 25,
+            "elapsed_s": 2.269763,
+            "forward_demodulations": 1059,
+            "demodulation_attempts": 46509,
+            "superposition_candidates": 1695,
+            "proof_ancestry_nodes": null,
+            "proof_ancestry_demodulations": null,
+            "proof_ancestry_superpositions": null
+          }
+        },
+        {
+          "deleted_signature": "e2a86896aaac7960ed5ab7bb88409d593a3692368eb7b6f8e18afa6c2d885c02",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 29.645303
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1127,
+            "retained": 41,
+            "processed": 12,
+            "seen": 41,
+            "elapsed_s": 1.95204,
+            "forward_demodulations": 721,
+            "demodulation_attempts": 46978,
+            "superposition_candidates": 1601,
+            "proof_ancestry_nodes": 23,
+            "proof_ancestry_demodulations": 10,
+            "proof_ancestry_superpositions": 11
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation_normal_0158",
+      "equation_content_hash": "5c6ca593302f56785b5a34267a178ca909a47421f4bfdf21ef1aafe08c24ac40",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 3125,
+        "retained": 2980,
+        "processed": 54,
+        "seen": 2980,
+        "elapsed_s": 2.0072,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 13568,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "proved",
+        "exit": "proof",
+        "generated": 844,
+        "retained": 18,
+        "processed": 5,
+        "seen": 18,
+        "elapsed_s": 0.212414,
+        "forward_demodulations": 550,
+        "demodulation_attempts": 4471,
+        "superposition_candidates": 337,
+        "proof_ancestry_nodes": 11,
+        "proof_ancestry_demodulations": 5,
+        "proof_ancestry_superpositions": 4
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": true,
+        "plan_ok": true,
+        "independent_replay": true,
+        "external_replay": true,
+        "lean_status": "accepted",
+        "judge_seconds": 31.17453
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 2,
+        "earliest_divergence_index": 2,
+        "control_selection_count": 54,
+        "treatment_selection_count": 5
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "bda9d5be8955e7fca0b98ce357e332f94ef5d091c2ca4bb760010511fd4cf955",
+        "treatment_selection_trace_sha256": "ba084c1f8be3cdc59dface7e88968a100569f54dd16407e8000e351dd85fa3ff",
+        "control_raw_children_sha256": "18886b688bf04276ad7760326a94b314bb87bbb3bb0ce9350d7c9a7826a69762",
+        "treatment_raw_children_sha256": "675273dfb8dea40650f756dcd32d15be230e13081584ab9827a8ac60159530ed"
+      },
+      "proof_ancestry_demodulation_events": [
+        {
+          "signature": "6268bce65f8d989e7d9a17aa8d6b344498aa172030a941104233b5ccd9c05e49",
+          "proof_node": "10",
+          "demodulator_id": "3",
+          "target_parent_id": "9",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'z'))), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 (y \u25c7 y))",
+            "rhs": "(x \u25c7 ((x \u25c7 (y \u25c7 y)) \u25c7 z))",
+            "weight": 14,
+            "depth": 1,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('var', 'z'))), ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y')))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 (y \u25c7 y))",
+            "rhs": "(x \u25c7 x)",
+            "weight": 8,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'x'))))"
+          }
+        },
+        {
+          "signature": "c4042487fc71ba2bc9de546903714b2ae80706e0b304f821773c3c9a04d0955d",
+          "proof_node": "11",
+          "demodulator_id": "3",
+          "target_parent_id": "10",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'z'))), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 (y \u25c7 y))",
+            "rhs": "(x \u25c7 x)",
+            "weight": 8,
+            "depth": 2,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'x'))))"
+          },
+          "from_side": 2,
+          "into_side": 1,
+          "path": [
+            "R"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "(x \u25c7 y)",
+            "rhs": "(x \u25c7 x)",
+            "weight": 6,
+            "depth": 3,
+            "alpha_key": "('pos', (('op', ('var', 'x'), ('var', 'x')), ('op', ('var', 'x'), ('var', 'y'))))"
+          }
+        },
+        {
+          "signature": "74aebe2371ff63b0def45c523481d9aa16902e3a0361d4b3abe0e9751f0a32c2",
+          "proof_node": "278",
+          "demodulator_id": "3",
+          "target_parent_id": "277",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'z'))), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 (y \u25c7 y))",
+            "rhs": "((x \u25c7 z) \u25c7 (((x \u25c7 z) \u25c7 (y \u25c7 y)) \u25c7 u))",
+            "weight": 20,
+            "depth": 4,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('var', 'y'), ('var', 'y'))), ('var', 'u')))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [
+            "R"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 (y \u25c7 y))",
+            "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 z))",
+            "weight": 14,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('var', 'x'), ('var', 'z')))))"
+          }
+        },
+        {
+          "signature": "cfd4d340db8be7c3ae1b80f0f1e76ef84800878304fb356d4784e13fdce81f86",
+          "proof_node": "279",
+          "demodulator_id": "3",
+          "target_parent_id": "278",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'z'))), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 (y \u25c7 y))",
+            "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 z))",
+            "weight": 14,
+            "depth": 5,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('var', 'x'), ('var', 'z')))))"
+          },
+          "from_side": 2,
+          "into_side": 1,
+          "path": [
+            "R"
+          ],
+          "after": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 y)",
+            "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 z))",
+            "weight": 12,
+            "depth": 6,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('var', 'y')), ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('var', 'x'), ('var', 'z')))))"
+          }
+        },
+        {
+          "signature": "a7475f2edd73e71dbe62f16fdf1550be0963bb3157e5557299ac540a309d71a0",
+          "proof_node": "280",
+          "demodulator_id": "3",
+          "target_parent_id": "279",
+          "demodulator": {
+            "polarity": "pos",
+            "lhs": "x",
+            "rhs": "((x \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 z))",
+            "weight": 10,
+            "depth": 0,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('op', ('var', 'y'), ('var', 'y'))), ('op', ('var', 'x'), ('var', 'z'))), ('var', 'x')))"
+          },
+          "before": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 y)",
+            "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 z))",
+            "weight": 12,
+            "depth": 6,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('var', 'y')), ('op', ('op', ('var', 'x'), ('var', 'z')), ('op', ('var', 'x'), ('var', 'z')))))"
+          },
+          "from_side": 2,
+          "into_side": 2,
+          "path": [],
+          "after": {
+            "polarity": "pos",
+            "lhs": "((x \u25c7 x) \u25c7 y)",
+            "rhs": "x",
+            "weight": 6,
+            "depth": 7,
+            "alpha_key": "('pos', (('op', ('op', ('var', 'x'), ('var', 'x')), ('var', 'y')), ('var', 'x')))"
+          }
+        }
+      ],
+      "counterfactual_deletions": [
+        {
+          "deleted_signature": "6268bce65f8d989e7d9a17aa8d6b344498aa172030a941104233b5ccd9c05e49",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 24.694496
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 918,
+            "retained": 19,
+            "processed": 5,
+            "seen": 19,
+            "elapsed_s": 0.224259,
+            "forward_demodulations": 619,
+            "demodulation_attempts": 4913,
+            "superposition_candidates": 344,
+            "proof_ancestry_nodes": 12,
+            "proof_ancestry_demodulations": 5,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "c4042487fc71ba2bc9de546903714b2ae80706e0b304f821773c3c9a04d0955d",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 24.874892
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 1635,
+            "retained": 20,
+            "processed": 6,
+            "seen": 20,
+            "elapsed_s": 0.454337,
+            "forward_demodulations": 1088,
+            "demodulation_attempts": 9952,
+            "superposition_candidates": 637,
+            "proof_ancestry_nodes": 14,
+            "proof_ancestry_demodulations": 7,
+            "proof_ancestry_superpositions": 5
+          }
+        },
+        {
+          "deleted_signature": "74aebe2371ff63b0def45c523481d9aa16902e3a0361d4b3abe0e9751f0a32c2",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 28.484533
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 848,
+            "retained": 18,
+            "processed": 5,
+            "seen": 18,
+            "elapsed_s": 0.226535,
+            "forward_demodulations": 553,
+            "demodulation_attempts": 4474,
+            "superposition_candidates": 337,
+            "proof_ancestry_nodes": 11,
+            "proof_ancestry_demodulations": 5,
+            "proof_ancestry_superpositions": 4
+          }
+        },
+        {
+          "deleted_signature": "cfd4d340db8be7c3ae1b80f0f1e76ef84800878304fb356d4784e13fdce81f86",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 29.397403
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 848,
+            "retained": 18,
+            "processed": 5,
+            "seen": 18,
+            "elapsed_s": 0.319238,
+            "forward_demodulations": 553,
+            "demodulation_attempts": 4471,
+            "superposition_candidates": 337,
+            "proof_ancestry_nodes": 11,
+            "proof_ancestry_demodulations": 5,
+            "proof_ancestry_superpositions": 4
+          }
+        },
+        {
+          "deleted_signature": "a7475f2edd73e71dbe62f16fdf1550be0963bb3157e5557299ac540a309d71a0",
+          "classification": "replaceable",
+          "verification": {
+            "proved": true,
+            "plan_ok": true,
+            "independent_replay": true,
+            "external_replay": true,
+            "lean_status": "accepted",
+            "judge_seconds": 31.09509
+          },
+          "run": {
+            "status": "proved",
+            "exit": "proof",
+            "generated": 849,
+            "retained": 19,
+            "processed": 5,
+            "seen": 19,
+            "elapsed_s": 0.340035,
+            "forward_demodulations": 554,
+            "demodulation_attempts": 4478,
+            "superposition_candidates": 337,
+            "proof_ancestry_nodes": 11,
+            "proof_ancestry_demodulations": 5,
+            "proof_ancestry_superpositions": 4
+          }
+        }
+      ]
+    },
+    {
+      "id": "evaluation_order5_0014",
+      "equation_content_hash": "d451bf2aaa1a45be2855b155273b4468b76099188f5906c09151548d4f68bde0",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 401,
+        "retained": 293,
+        "processed": 57,
+        "seen": 293,
+        "elapsed_s": 2.009277,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 12382,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 1515,
+        "retained": 16,
+        "processed": 7,
+        "seen": 16,
+        "elapsed_s": 2.203736,
+        "forward_demodulations": 1000,
+        "demodulation_attempts": 30468,
+        "superposition_candidates": 1303,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 3,
+        "earliest_divergence_index": 3,
+        "control_selection_count": 57,
+        "treatment_selection_count": 7
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "7ff49af7e88b2f26c2fd4fc39e3cf2bd1b6f90584adb9b694a4424361714440f",
+        "treatment_selection_trace_sha256": "3524894d6393347e7b73694e761cde958a93be8f647298af5f676504f3beeb3e",
+        "control_raw_children_sha256": "1115cddfeb63175a334678783ef2c9019b0a58e30eb6f5063e7f4f9d2b563196",
+        "treatment_raw_children_sha256": "589cdafa84a074946325d5dcd746723f62c7c6bd26c52ea623567ea42cec0a21"
+      },
+      "proof_ancestry_demodulation_events": [],
+      "counterfactual_deletions": []
+    },
+    {
+      "id": "evaluation_order5_0042",
+      "equation_content_hash": "1d4e49558b6a08de741d584c108fc81d1597d76551ca49ed096908d3bf2ca4e1",
+      "control": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 417,
+        "retained": 403,
+        "processed": 70,
+        "seen": 403,
+        "elapsed_s": 2.010502,
+        "forward_demodulations": 0,
+        "demodulation_attempts": 0,
+        "superposition_candidates": 15855,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "treatment": {
+        "status": "unproved",
+        "exit": "timeout",
+        "generated": 967,
+        "retained": 146,
+        "processed": 7,
+        "seen": 146,
+        "elapsed_s": 2.617654,
+        "forward_demodulations": 564,
+        "demodulation_attempts": 61346,
+        "superposition_candidates": 1209,
+        "proof_ancestry_nodes": null,
+        "proof_ancestry_demodulations": null,
+        "proof_ancestry_superpositions": null
+      },
+      "control_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "treatment_verification": {
+        "proved": false,
+        "plan_ok": false,
+        "independent_replay": false,
+        "external_replay": false,
+        "lean_status": null
+      },
+      "selection_alignment": {
+        "common_prefix_selections": 4,
+        "earliest_divergence_index": 4,
+        "control_selection_count": 70,
+        "treatment_selection_count": 7
+      },
+      "trace_hashes": {
+        "control_selection_trace_sha256": "d837d780a205d9c29947c9dec900c32d93a81d8e60f8150c8361d23a2bdef552",
+        "treatment_selection_trace_sha256": "9c4eb036721ae1d1ca58b016eee27e7263faf47d66226af31b4d5c99fe58b1e9",
+        "control_raw_children_sha256": "7fda024772b9db152686a18b314f98927520034e52289e2bbb5b25634ba97c14",
+        "treatment_raw_children_sha256": "e900df9359698c91df98d83f2ff4ea01199040dd75b5c803752c22dd79005d33"
+      },
+      "proof_ancestry_demodulation_events": [],
+      "counterfactual_deletions": []
+    }
+  ]
+}
