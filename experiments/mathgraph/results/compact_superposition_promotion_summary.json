@@ -1,0 +1,75 @@
+{
+  "constructor": "compact proof-recipe unit superposition",
+  "starting_head": "6a58f5daf67683cc383bda1470eeb30078a97e9e",
+  "starting_solver": {
+    "sha256": "a897a6ec9c8aefe7e3719b65b444ddb61c22b656df25c2567e4d5d2136ab9964",
+    "sample_200": "78 TRUE + 96 FALSE = 174/200"
+  },
+  "candidate_solver": {
+    "sha256": "9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5",
+    "bytes": 249066,
+    "llm_calls": 0
+  },
+  "configuration": {
+    "seconds": 0.2,
+    "maximum_term_size": 35,
+    "maximum_rules": 96,
+    "maximum_rounds": 8,
+    "new_clauses_per_round": 64,
+    "maximum_clauses": 512,
+    "normalization_steps": 64,
+    "maximum_proof_nodes": 8000,
+    "production_certificate_limit_bytes": 50000
+  },
+  "sample_20": {
+    "true": 6,
+    "false": 10,
+    "total": 16,
+    "rejected_judge_calls": 0,
+    "result_sha256": "f56f146d076be3fe8fb271df90e4d043e1fa36c8c83adc10fffd395d8272064c"
+  },
+  "sample_200": {
+    "true": 85,
+    "false": 96,
+    "total": 181,
+    "net_gain": 7,
+    "seconds": 413.8,
+    "rejected_judge_calls": 0,
+    "result_sha256": "e3ad5f0bd76e5612868a7f5a02b7f4d829f72c9d43f51042c85c0dba6c43258b",
+    "new_hits": [
+      "true_1167_2000",
+      "true_2074_2082",
+      "true_2111_1755",
+      "true_2137_1325",
+      "true_3108_4642",
+      "true_428_3725",
+      "true_689_1350"
+    ]
+  },
+  "content_hash_split": {
+    "development": "46 TRUE + 39 FALSE = 85/100",
+    "holdout": "39 TRUE + 57 FALSE = 96/100",
+    "new_development_true": 4,
+    "new_holdout_true": 3
+  },
+  "unseen_diagnostics": {
+    "hard1": {
+      "true_candidates": "17/24",
+      "false_candidates": "0/45",
+      "new_over_frozen_production": 7,
+      "engine_seconds": 5.471
+    },
+    "hard2": {
+      "true_candidates": "23/100",
+      "false_candidates": "0/100",
+      "under_official_100kb_certificate_limit": 20,
+      "engine_seconds": 13.526
+    }
+  },
+  "gates": {
+    "solo": "66/66",
+    "marathon": "25/25",
+    "invalid_outcomes": 0,
+    "independent_replay_required": true
+  }
+}

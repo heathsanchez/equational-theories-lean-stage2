@@ -1931,3 +1931,30 @@ terminal forms.  It does show that goal-directed unit equality superposition
 generalizes far beyond the public residual cluster.  The implementation target
 is a compact internal engine that reconstructs each selected superposition and
 demodulation step into the existing replayed equality DAG.
+
+### Compact proof-recipe superposition promotion
+
+Starting from `6a58f5daf67683cc383bda1470eeb30078a97e9e`, speculative
+superpositions now retain compact immutable proof recipes. Full equality DAGs
+are materialized only after the target sides converge, then independently
+replayed before Lean is called. Proof-only variables introduced while
+standardizing clauses apart are explicitly specialized to an in-scope target
+variable.
+
+The frozen probe uses 0.20 seconds, 96 oriented rules, eight rounds, 64 new
+clauses per round, 512 total clauses, term size 35, and 8,000 compiled proof
+nodes. Production retains the stricter historical 50 KB certificate limit. No
+LLM, external prover, problem ID, expected label, or equation lookup is used.
+
+The clean `sample_200` result is **85 TRUE + 96 FALSE = 181/200**, a gain of
+seven TRUE cases over 174/200. Four gains occur in the fixed development half
+and three in untouched holdout, producing split scores of 46 TRUE / 39 FALSE
+and 39 TRUE / 57 FALSE respectively. `sample_20` remains 6 TRUE + 10 FALSE.
+Both runs had zero rejected judge calls and zero LLM calls.
+
+On unseen hard distributions, the same probe found replayable proofs for 17/24
+`hard1` TRUE rows and 0/45 FALSE rows, and 23/100 `hard2` TRUE rows and 0/100
+FALSE rows. Twenty `hard2` certificates fit the official 100 KB limit. Solo is
+66/66 and Marathon is 25/25. The 249,066-byte candidate has SHA-256
+`9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5`.
+Full metrics are in `compact_superposition_promotion_summary.json`.
