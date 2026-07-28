@@ -5449,6 +5449,9 @@ class CompactSuperposition:
         )
 
     def target_proof(self, rules):
+        collapse = self.collapse_proof()
+        if collapse is not None:
+            return collapse
         left, left_proof = self.normalize(self.target[0], rules)
         right, right_proof = self.normalize(self.target[1], rules)
         if left != right:
@@ -5473,6 +5476,56 @@ class CompactSuperposition:
             "transitivity",
             (left_proof, reverse_right),
         )
+
+    def collapse_proof(self):
+        """Close any goal from a replayed universal bare-variable collapse."""
+        for clause in sorted(self.clauses, key=self.target_score):
+            for variable_side, common_side in (
+                (clause.lhs, clause.rhs),
+                (clause.rhs, clause.lhs),
+            ):
+                if (
+                    variable_side[0] != "var"
+                    or variable_side[1] in self.m.term_variables(common_side)
+                ):
+                    continue
+                distinguished = variable_side[1]
+                variables = sorted(
+                    self.m.term_variables(clause.lhs)
+                    | self.m.term_variables(clause.rhs)
+                )
+                base = {
+                    variable: self.target[0]
+                    for variable in variables
+                }
+                left_mapping = dict(base)
+                right_mapping = dict(base)
+                left_mapping[distinguished] = self.target[0]
+                right_mapping[distinguished] = self.target[1]
+                left = self.instantiate(clause, left_mapping)
+                right = self.instantiate(clause, right_mapping)
+                if variable_side is clause.rhs:
+                    left = Recipe(
+                        left.rhs, left.lhs, "symmetry", (left,)
+                    )
+                    right = Recipe(
+                        right.rhs, right.lhs, "symmetry", (right,)
+                    )
+                reverse_right = Recipe(
+                    right.rhs, right.lhs, "symmetry", (right,)
+                )
+                proof = Recipe(
+                    left.lhs,
+                    reverse_right.rhs,
+                    "transitivity",
+                    (left, reverse_right),
+                )
+                if (
+                    proof.lhs == self.target[0]
+                    and proof.rhs == self.target[1]
+                ):
+                    return proof
+        return None
 
     def solve(self):
         processed = 0

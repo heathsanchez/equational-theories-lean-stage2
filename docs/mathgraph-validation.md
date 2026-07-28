@@ -1988,3 +1988,37 @@ The core Solo harness remains 66/66 and Marathon remains 25/25. Actual
 model-specific hybrid recall is the remaining external gate because no local
 competition-model API key is configured. Portfolio details are recorded in
 `submission_portfolio_readiness.json`.
+# Derived Universal-Collapse Promotion
+
+Starting from `3b2af90`, the compact proof-recipe superposition engine was
+extended with one terminal rule and no additional search budget.  If a
+replayed derived equality has a bare variable on one side that is absent from
+the other side, universal quantification forces the carrier to collapse.
+The compiler instantiates that variable once with each concrete target side,
+keeps every other substitution identical, and composes the two equalities
+using `Eq.symm` and `Eq.trans`.  Search output is not trusted: the complete
+recipe is compiled to the existing proof DAG, independently replayed, emitted
+as Lean, and accepted only by the official judge.
+
+The production solver moved from `85 TRUE + 96 FALSE = 181/200` to
+`87 TRUE + 96 FALSE = 183/200`.  The new public hits are
+`true_1604_1822` and `true_2935_3138`; all previous verdicts were preserved,
+no judge attempt was rejected, and no LLM was called.  `sample_20` improved
+from `16/20` to `18/20` (`8 TRUE + 10 FALSE`).
+
+The two public gains both lie in the historical content-hash development
+half, so that split was not treated as transfer evidence.  On the independent
+`hard1 + hard2` distribution (124 TRUE opportunities and 145 FALSE controls),
+the frozen 0.20-second compact search produced 89 TRUE candidates, of which
+61 independently replayed and were officially accepted.  It produced zero
+FALSE candidates and zero post-replay Lean rejections.  The prior compact
+engine produced 40 candidates on the same distributions, so recognizing
+derived collapse increased bounded candidate coverage by 49 without changing
+the search limits.
+
+Final gates: focused regression `1/1`, Solo `66/66`, Marathon `25/25`.
+The production solver is 251,172 bytes with SHA-256
+`48b516a0e35a3e971756115385a35ccf6e298f10e8db16f9126846bbf0af1beb`.
+The next TRUE-side target is the remaining class of nonorientable universal
+clauses that do not immediately expose a missing bare variable; the preferred
+route is local ATP-skeleton trace repair rather than broader saturation.
