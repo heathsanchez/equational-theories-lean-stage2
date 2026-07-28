@@ -5325,6 +5325,16 @@ class CompactSuperposition:
             oriented = self.orient(clause)
             if oriented is not None:
                 output.append(oriented)
+            else:
+                if clause.lhs[0] != "var":
+                    output.append(clause)
+                if clause.rhs[0] != "var":
+                    output.append(Recipe(
+                        clause.rhs,
+                        clause.lhs,
+                        "symmetry",
+                        (clause,),
+                    ))
         output.sort(key=self.target_score)
         return output[:self.limits["maximum_rules"]]
 

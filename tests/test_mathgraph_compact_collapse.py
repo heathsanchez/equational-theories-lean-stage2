@@ -70,3 +70,28 @@ def test_collapse_replay_allows_large_specialized_proof_terms():
         maximum_term_size=limits["maximum_replay_term_size"],
         maximum_nodes=limits["maximum_proof_nodes"],
     )
+
+
+def test_nonorientable_equalities_remain_available_for_superposition():
+    solver = load_solver()
+    source = solver.parse_equation(
+        "x ◇ (y ◇ z) = (w ◇ x) ◇ u"
+    )
+    target = solver.parse_equation(
+        "x ◇ (y ◇ z) = (w ◇ y) ◇ u"
+    )
+    limits = dict(solver.COMPACT_SUPERPOSITION_PROBE)
+    search = solver.CompactSuperposition(
+        solver, source, target, time.monotonic() + 1.0, limits
+    )
+    recipe = search.solve()
+    assert recipe is not None
+    nodes, root = search.compile(recipe)
+    assert (nodes[root].lhs, nodes[root].rhs) == target[:2]
+    assert solver.replay_dag(
+        source,
+        nodes,
+        root,
+        maximum_term_size=limits["maximum_replay_term_size"],
+        maximum_nodes=limits["maximum_proof_nodes"],
+    )
