@@ -2085,3 +2085,43 @@ also officially accepted. The projected released-evaluation score is
 `367 TRUE + 384 FALSE = 751/800` (93.875%), with 33 TRUE and 16 FALSE rows
 remaining. Full details and artifact hashes are in
 `structured_model_template_summary.json`.
+
+# External Stair-climber Specialist Audit
+
+Starting from `4c0023b`, the public Stair-climber bucket was treated as an
+external component audit. The downloaded flagship-v6 solver was reproduced
+byte-for-byte at 371,057 bytes with SHA-256
+`48a782d566a556e8b9e66ec64d85dab181ce231d01c6663c26c9f553886ee1b8`.
+No artifact-local licence file was present; the parent Stage 2 repository is
+Apache-2.0. Exact source and Xet hashes are recorded in
+`external_flagship_inventory.json`.
+
+The full flagship was not imported. It contains a public equation-ID
+countermodel lookup, and a label-blind first-candidate run on the released 800
+emitted 31 incorrect TRUE attempts on FALSE rows before judge feedback.
+Instead, components were isolated and evaluated on MathGraph's exact 33 TRUE
+and 16 FALSE residual opportunities.
+
+The bounded given-clause paramodulation component found 27/33 TRUE proofs and
+zero candidates on the 16 FALSE controls. All 27 compact equality plans passed
+a separately authored parser and rewrite replayer; the exact 27 Lean
+certificates were officially accepted. The standalone completion component
+found 12/33, all overlapping the paramodulation hits, and was not promoted.
+
+The 139-table external model bank found 15/16 FALSE countermodels and no model
+on the 33 TRUE controls. Every table was checked equation-blindly: full source
+satisfaction, a concrete target violation, serialization replay, and generic
+certificate emission. All 15 certificates were officially accepted. A
+generic affine right-offset magma on `Fin 5` covered the final FALSE residual
+and was also officially accepted. The full external CE engine found 16/16
+diagnostically, but was not imported because it added no coverage beyond the
+smaller replayed portfolio.
+
+The specialist build is 313,240 bytes, contains no LLM path, and imports no
+problem IDs, equation IDs, hashes, labels, or certificate recipes. It projects
+to `394 TRUE + 400 FALSE = 794/800`. The six remaining rows are all TRUE.
+The full flagship's deep-constancy stage emitted candidates for those six,
+but the official judge rejected all six because an inferred lemma type
+contained an unsynthesizable placeholder; they are not counted or promoted.
+Complete ablations, reproduction notes, and the exact integration decision are
+under `experiments/mathgraph/external/stair_climber/`.

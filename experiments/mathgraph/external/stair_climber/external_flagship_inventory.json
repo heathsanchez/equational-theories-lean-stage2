@@ -1,0 +1,239 @@
+{
+  "schema": "mathgraph.external-flagship-inventory.v1",
+  "created_utc": "2026-07-28T07:20:14.355107+00:00",
+  "bucket": "sair-distillation/eq2-main-bucket",
+  "searched_files": 1853,
+  "fetched_files": 21,
+  "license_audit": {
+    "artifact_local_license_found": false,
+    "parent_repository_license": "Apache-2.0",
+    "integration_note": "Only general equation-driven code and table values were considered; no public problem lookup was imported."
+  },
+  "files": [
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/build.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/build.py",
+      "sha256": "e0de1579d372604c9ac21061afc9c64d051b775382692ada114a45cbc64a6ff3",
+      "xet_hash": "3b1d67f1da30dd4322b9a15b4f8ebda429ef325e07dcf3ade58086909c985cb1",
+      "bytes": 44054,
+      "purpose": "build machinery",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "build machinery",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/calc_stage_v2/README.md",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/calc_stage_v2/README.md",
+      "sha256": "612253b387265dca6dc843df5d0a94e57ffa49768533e1d1a26fa11966f69051",
+      "xet_hash": "597ae5aeecf19f659ef6a6af529a069893ca7d1a919b6c2ba105d4475ac041f7",
+      "bytes": 1437,
+      "purpose": "test/result data",
+      "dependencies": "none at runtime",
+      "classification": "test/result data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/calc_stage_v2/solver.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/calc_stage_v2/solver.py",
+      "sha256": "48b590ad4357ade5f31f5b5ab764319dabfb15ad7e1a7288cfcf079d74eba38c",
+      "xet_hash": "04297a27dcd2d18420be02335f0100edfc7f3e69790ff98b7df707d9aeba8ca1",
+      "bytes": 13304,
+      "purpose": "general constructor",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "general constructor",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/ce_engine_v6/README.md",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/ce_engine_v6/README.md",
+      "sha256": "aef3c0385a8a594d0030471261dc2d9ef9a1f46fe17ed9b690f2249afd3329ed",
+      "xet_hash": "af2e5898f6e0a48fbc0ee58489ec19711ef72010296ea4fb3128e1b7c1f272fd",
+      "bytes": 2123,
+      "purpose": "test/result data",
+      "dependencies": "none at runtime",
+      "classification": "test/result data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/ce_engine_v6/solver.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/ce_engine_v6/solver.py",
+      "sha256": "eb5d2b24f00e8f81664cc92239cd3c47a7ab9a628b899f0bd5aecacb0bc28a04",
+      "xet_hash": "e5c6f3bcfb1298cb3d2f6845b249b06a66a43e0038b1a1bf9375b124d790a925",
+      "bytes": 18591,
+      "purpose": "general constructor",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "general constructor",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/completion_stage.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/completion_stage.py",
+      "sha256": "e02400a48c100dfe3cb3b4c9110cad1762b8fba656e19195b365b2de4205e40c",
+      "xet_hash": "8da8c2987c3209d34b2d3a43145ac16120b4eb254324ec3565b9e529248fa62d",
+      "bytes": 78592,
+      "purpose": "general constructor",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "general constructor",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/pm_section5_bundle.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/pm_section5_bundle.py",
+      "sha256": "413043cb44958cae15f8de72c7a84467d3e14ec478dd33d4be3657073ba7ec9a",
+      "xet_hash": "127f58c13b8f92e040dca981fea75ed0d520e35ab339057fedc2268b7cb3370a",
+      "bytes": 60640,
+      "purpose": "general constructor",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "general constructor",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/shard_manifests/stair-climber-certificates-20260727-142610.manifest.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/shard_manifests/stair-climber-certificates-20260727-142610.manifest.json",
+      "sha256": "722e826cd0827ad081c41cc4ae3a446ef87445dc35b8c7896038b17c856f7412",
+      "xet_hash": "e255ade3ce60f2e3b621276942f3aad077a7d7adb0ca0061a0c5917975af1141",
+      "bytes": 239993,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/shard_manifests/stair-climber-certificates-20260727-142828.manifest.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/shard_manifests/stair-climber-certificates-20260727-142828.manifest.json",
+      "sha256": "cf54324eeba2f4e92530a4ede827540ba9e02f9e062c5ccbcb287d9eca441c6f",
+      "xet_hash": "6b2365510fa5974974fc5511afe078868779c96eee9d863a26da87c1718558dd",
+      "bytes": 241120,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/shard_manifests/stair-climber-certificates-20260727-143137.manifest.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/shard_manifests/stair-climber-certificates-20260727-143137.manifest.json",
+      "sha256": "d6707408ecc65edf6145466ad42b6da121263fbb80894c17bc61f0ba561bcca4",
+      "xet_hash": "b3dd63ab839fda76ec3bc327c4387a1905bd862555c6d5f628dc8877ddfe9afe",
+      "bytes": 228529,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/shard_manifests/stair-climber-certificates-20260727-143511.manifest.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/shard_manifests/stair-climber-certificates-20260727-143511.manifest.json",
+      "sha256": "e3e6afc7ceba049afa3cd65bf61f104389d57a1538d2391c2ded43429590fe75",
+      "xet_hash": "104753b7a5a572fd96f82d342cef3391196f22f518a399ccb55007d3cf586a86",
+      "bytes": 229897,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/shard_manifests/stair-climber-certificates-20260727-144654.manifest.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/shard_manifests/stair-climber-certificates-20260727-144654.manifest.json",
+      "sha256": "8bc36168c75e30e5b2c9156c6616a0dc49456b71d01842da7a8d0e89ef01cbb3",
+      "xet_hash": "a26ec212652288a033b65dea3b3201d3a66ac7df9d5c38a6d13df15e7771b270",
+      "bytes": 267082,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/solver.py",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/solver.py",
+      "sha256": "48a782d566a556e8b9e66ec64d85dab181ce231d01c6663c26c9f553886ee1b8",
+      "xet_hash": "006ea01017e93da6ed3528519772d4b8bc307a97a21a4e52ae7ad4c911456644",
+      "bytes": 371057,
+      "purpose": "general constructor",
+      "dependencies": "Python standard library and Stage 2 judge modules",
+      "classification": "general constructor",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/v6_diff_vs_v5.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/v6_diff_vs_v5.json",
+      "sha256": "dc659b8125b6627b4d201b3b164bf0d2c112e8fe9a943bef94c453e57e43d5de",
+      "xet_hash": "7c06f03877ca3c68d5c0295e5c4b0773a3794e27ec57d7de18b6ff362322f272",
+      "bytes": 708,
+      "purpose": "test/result data",
+      "dependencies": "none at runtime",
+      "classification": "test/result data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": "artifacts/flagship-v6-final_stair-climber/v6run_stats.json",
+      "local_audit_path": "/tmp/mathgraph-stair-climber/flagship-v6-final/v6run_stats.json",
+      "sha256": "4876bcb2a4d8f02aa2ab73cf7b586d45e4b1bee653bba5920d9ec4679c3f4aab",
+      "xet_hash": "2b19c007bcfadba7788aab2579ce89021607556af2525323292aff064efd3f3d",
+      "bytes": 338,
+      "purpose": "test/result data",
+      "dependencies": "none at runtime",
+      "classification": "test/result data",
+      "license": "no artifact-local license found; parent Stage 2 repository is Apache-2.0"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/audit_report.md",
+      "sha256": "62d2a0efedeb138c7c2b9d0fb2fdb0353634fc900dd3a45228a0d307e1fe87c2",
+      "bytes": 1696,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/certificate_index.csv",
+      "sha256": "556a4f015ae271d2257ee463a73c6ea25de708b00e117d2ab56444ae55bd09c5",
+      "bytes": 180060,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/exceptional_false_certificates.json",
+      "sha256": "c1ee9a62046d657f1cf24725e1d08d7989bc1a531b035c5d777419369d3d673d",
+      "bytes": 4968,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/finite_model_bank.json",
+      "sha256": "bb7fcfe7b27120d0c3101410157e09561163069c2a03d0fbf5288f3037c4bcb9",
+      "bytes": 45068,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/stair-climber-certificates-20260725-234404.manifest.json",
+      "sha256": "5d7213b104f290bd57ee9e8a46f2db3051f7625bf5939849dc8b08d7e5332c8e",
+      "bytes": 1213013,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    },
+    {
+      "bucket_path": null,
+      "local_audit_path": "/Users/heath/Desktop/HF files/target_grounded_refutation_summary.json",
+      "sha256": "c2f12cc9d9c7ad97027ae9d1b2ff1b4a3bdb27ca0a4adb57b6dcf4eb53b1da61",
+      "bytes": 3004,
+      "purpose": "public certificate data",
+      "dependencies": "none at runtime",
+      "classification": "public certificate data",
+      "license": "not stated in artifact"
+    }
+  ]
+}
