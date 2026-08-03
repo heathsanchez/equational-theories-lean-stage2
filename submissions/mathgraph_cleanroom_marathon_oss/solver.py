@@ -3042,7 +3042,7 @@ def search_finite_model_local(source, target, order, deadline, seed=None):
         table = [random_below(order) for _ in range(order * order)]
         current, source_violations = score(table, witness)
         restarts += 1
-        for _ in range(500):
+        for _ in range(2000):
             if source_violations == 0:
                 actual_witness = replay_engine.target_witness(table, witness)
                 flat = tuple(table)
@@ -5841,16 +5841,16 @@ COMPACT_SUPERPOSITION_PROBE = {
 }
 
 COMPACT_SUPERPOSITION_FAST = {
-    "seconds": 1.5,
-    "maximum_term_size": 55,
-    "maximum_replay_term_size": 240,
-    "maximum_depth": 12,
-    "maximum_rules": 256,
-    "maximum_rounds": 24,
-    "new_clauses_per_round": 256,
-    "maximum_clauses": 5000,
-    "normalization_steps": 160,
-    "maximum_proof_nodes": 30000,
+    "seconds": 5.0,
+    "maximum_term_size": 90,
+    "maximum_replay_term_size": 420,
+    "maximum_depth": 20,
+    "maximum_rules": 900,
+    "maximum_rounds": 96,
+    "new_clauses_per_round": 900,
+    "maximum_clauses": 60000,
+    "normalization_steps": 384,
+    "maximum_proof_nodes": 180000,
 }
 
 
@@ -7293,34 +7293,42 @@ def run_solo():
     ):
         return
 
-    local_seconds = min(4.0, max(0.1, timeout / 30.0))
-    try:
-        local_seed = sum(
-            map(ord, problem.get("equation1", "") + problem.get("equation2", ""))
-        )
-        local_search, local_found, local_metrics = search_finite_model_local(
-            source, target, 5, time.monotonic() + local_seconds, local_seed
-        )
-    except (
-        KeyError, IndexError, MemoryError, RecursionError, TypeError,
-        ValueError,
-    ):
-        local_search, local_found, local_metrics = None, None, {}
-    if local_search is not None:
-        print(
-            "MATHGRAPH_METRICS " + json.dumps({
-                "portfolio": "fin5-local-repair",
-                "found": bool(local_found),
-                "restarts": local_metrics.get("restarts", 0),
-                "steps": local_metrics.get("steps", 0),
-            }, separators=(",", ":")),
-            file=sys.stderr,
-            flush=True,
-        )
-    if local_found is not None and finish_finite_candidate(
-        source, target, local_search, local_found, "fin5-local-repair"
-    ):
-        return
+    local_seconds = min(30.0, max(0.1, timeout / 30.0))
+    base_seed = deterministic_model_seed(source, target, 5)
+    local_seed_salts = (0, 0x94D049BB133111EB)
+    for seed_index, seed_salt in enumerate(local_seed_salts):
+        try:
+            local_search, local_found, local_metrics = search_finite_model_local(
+                source,
+                target,
+                5,
+                time.monotonic() + local_seconds,
+                base_seed ^ seed_salt,
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            local_search, local_found, local_metrics = None, None, {}
+        if local_search is not None:
+            print(
+                "MATHGRAPH_METRICS " + json.dumps({
+                    "portfolio": "fin5-local-repair-" + str(seed_index),
+                    "found": bool(local_found),
+                    "restarts": local_metrics.get("restarts", 0),
+                    "steps": local_metrics.get("steps", 0),
+                }, separators=(",", ":")),
+                file=sys.stderr,
+                flush=True,
+            )
+        if local_found is not None and finish_finite_candidate(
+            source,
+            target,
+            local_search,
+            local_found,
+            "fin5-local-repair-" + str(seed_index),
+        ):
+            return
 
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an
@@ -7439,46 +7447,6 @@ def main():
             run_solo()
         except MarathonCandidateRecorded:
             pass
-
-    try:
-        from marathon_llm import call_llm
-    except ImportError:
-        call_llm = None
-    if call_llm is not None:
-        residuals = [p for p in problems if p.get("id") not in MARATHON_RECORDED]
-        residuals.sort(key=lambda p: (len(p.get("equation1", ""))
-                                      + len(p.get("equation2", "")), p.get("id", "")))
-        config = {"model": os.environ.get("JUDGE_MARATHON_MODEL", "openai/gpt-oss-120b"),
-                  "max_output_tokens": 60000, "temperature": 0.0,
-                  "reasoning_effort": "medium", "use_seed": True, "seed": 0,
-                  "http_timeout_seconds": 600.0}
-        for problem in residuals:
-            if time.monotonic() + 15 >= started + budget:
-                break
-            prompt = ("Prove this implication for every magma in Lean 4.\nSource law: "
-                      + problem["equation1"] + "\nTarget law: " + problem["equation2"]
-                      + "\nReturn only JSON {\"proof\":\"<tactics after intro G _ h>\"}. "
-                        "Do not use sorry, admit, axioms, imports, declarations, or native_decide.")
-            try:
-                response = call_llm(prompt, config=config)
-                payload = json.loads(response.get("response", ""))
-                proof = payload.get("proof")
-            except Exception:
-                continue
-            if not isinstance(proof, str) or any(t in proof for t in
-                    ("sorry", "admit", "axiom", "theorem", "def submission", "import ", "native_decide")):
-                continue
-            body = "\n".join("  " + line if line.strip() else "" for line in proof.splitlines())
-            code = "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n" + body + "\n"
-            if len(code.encode()) > 100000:
-                continue
-            try:
-                with open(MARATHON_OUTPUT, "a", encoding="utf-8") as output:
-                    output.write(json.dumps({"id": problem["id"], "verdict": "true", "code": code}) + "\n")
-                    output.flush()
-                    os.fsync(output.fileno())
-            except OSError:
-                break
     MARATHON_PROBLEM_ID = None
 
 

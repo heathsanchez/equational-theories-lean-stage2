@@ -203,6 +203,39 @@ def solo(base, model):
     return text.replace(marker, fallback, 1)
 
 
+def solo_deterministic(base, model):
+    prompt = GEMMA_PROMPT if model == "gemma" else OSS_PROMPT
+    return base.replace("\n\nclass ParseError", "\n\n" + prompt + "class ParseError", 1)
+
+
+def precision_base(base):
+    replacements = {
+        'COMPACT_SUPERPOSITION_FAST = {\n    "seconds": 5.0,':
+            'COMPACT_SUPERPOSITION_FAST = {\n    "seconds": 1.5,',
+        '    "maximum_term_size": 90,\n    "maximum_replay_term_size": 420,':
+            '    "maximum_term_size": 55,\n    "maximum_replay_term_size": 240,',
+        '    "maximum_depth": 20,\n    "maximum_rules": 900,':
+            '    "maximum_depth": 12,\n    "maximum_rules": 256,',
+        '    "maximum_rounds": 96,\n    "new_clauses_per_round": 900,':
+            '    "maximum_rounds": 24,\n    "new_clauses_per_round": 256,',
+        '    "maximum_clauses": 60000,\n    "normalization_steps": 384,\n'
+        '    "maximum_proof_nodes": 180000,':
+            '    "maximum_clauses": 5000,\n    "normalization_steps": 160,\n'
+            '    "maximum_proof_nodes": 30000,',
+        '        for _ in range(2000):': '        for _ in range(500):',
+        '    local_seconds = min(30.0, max(0.1, timeout / 30.0))':
+            '    local_seconds = min(4.0, max(0.1, timeout / 30.0))',
+        '    local_seed_salts = (0, 0x94D049BB133111EB)':
+            '    local_seed_salts = (0,)',
+    }
+    text = base
+    for old, new in replacements.items():
+        if text.count(old) != 1:
+            raise RuntimeError(f"precision marker mismatch: {old!r}")
+        text = text.replace(old, new, 1)
+    return text
+
+
 def marathon(base, with_llm):
     text = base.replace("import json\n", "import json\nimport os\n", 1)
     text = text.replace("\n\ndef read_message():", "\n\n" + MARATHON_STATE + "def read_message():", 1)
@@ -314,11 +347,12 @@ def marathon(base, with_llm):
 
 def main():
     base = BASE.read_text(encoding="utf-8")
+    precision = precision_base(base)
     outputs = {
-        "solo_gemma": solo(base, "gemma"),
-        "solo_oss": solo(base, "oss"),
-        "marathon_gemma": marathon(base, False),
-        "marathon_oss": marathon(base, True),
+        "solo_gemma": solo_deterministic(precision, "gemma"),
+        "solo_oss": solo_deterministic(base, "oss"),
+        "marathon_gemma": marathon(precision, False),
+        "marathon_oss": marathon(base, False),
     }
     for name, text in outputs.items():
         compile(text, str(DESTINATIONS[name]), "exec")

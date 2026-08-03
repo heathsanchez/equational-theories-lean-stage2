@@ -9,7 +9,6 @@ import json
 import sys
 import time
 import heapq
-import textwrap
 from collections import defaultdict, deque
 from itertools import permutations, product
 
@@ -3196,52 +3195,6 @@ def judge(verdict, code):
     print(json.dumps({"call": "judge", "verdict": verdict, "code": code}), flush=True)
     response = read_message()
     return response if response is not None else {}
-
-
-def call_llm(context):
-    print(json.dumps({"call": "llm", "context": context}), flush=True)
-    response = read_message()
-    return response if response is not None else {}
-
-
-def extract_llm_proof(text):
-    if not isinstance(text, str):
-        return None
-    text = text.strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[-1]
-        if text.endswith("```"):
-            text = text[:-3]
-    try:
-        payload = json.loads(text.strip())
-    except (json.JSONDecodeError, ValueError):
-        left, right = text.find("{"), text.rfind("}")
-        if left < 0 or right <= left:
-            return None
-        try:
-            payload = json.loads(text[left:right + 1])
-        except (json.JSONDecodeError, ValueError):
-            return None
-    proof = payload.get("proof") if isinstance(payload, dict) else None
-    if not isinstance(proof, str):
-        return None
-    proof = proof.strip()
-    if proof.startswith("by\n"):
-        proof = proof[3:].lstrip()
-    forbidden = ("sorry", "admit", "axiom", "theorem", "def submission",
-                 "import ", "native_decide")
-    if (not proof or len(proof.encode()) > 90000
-            or any(token in proof for token in forbidden)):
-        return None
-    return proof
-
-
-def make_llm_true_certificate(proof):
-    proof = textwrap.dedent(proof)
-    body = "\n".join("  " + line if line.strip() else ""
-                       for line in proof.splitlines())
-    return ("import JudgeProblem\n\ndef submission : Goal := by\n"
-            "  intro G _ h\n" + body + "\n")
 
 
 def term_depth(term):
@@ -7342,33 +7295,41 @@ def run_solo():
         return
 
     local_seconds = min(4.0, max(0.1, timeout / 30.0))
-    try:
-        local_seed = sum(
-            map(ord, problem.get("equation1", "") + problem.get("equation2", ""))
-        )
-        local_search, local_found, local_metrics = search_finite_model_local(
-            source, target, 5, time.monotonic() + local_seconds, local_seed
-        )
-    except (
-        KeyError, IndexError, MemoryError, RecursionError, TypeError,
-        ValueError,
-    ):
-        local_search, local_found, local_metrics = None, None, {}
-    if local_search is not None:
-        print(
-            "MATHGRAPH_METRICS " + json.dumps({
-                "portfolio": "fin5-local-repair",
-                "found": bool(local_found),
-                "restarts": local_metrics.get("restarts", 0),
-                "steps": local_metrics.get("steps", 0),
-            }, separators=(",", ":")),
-            file=sys.stderr,
-            flush=True,
-        )
-    if local_found is not None and finish_finite_candidate(
-        source, target, local_search, local_found, "fin5-local-repair"
-    ):
-        return
+    base_seed = deterministic_model_seed(source, target, 5)
+    local_seed_salts = (0,)
+    for seed_index, seed_salt in enumerate(local_seed_salts):
+        try:
+            local_search, local_found, local_metrics = search_finite_model_local(
+                source,
+                target,
+                5,
+                time.monotonic() + local_seconds,
+                base_seed ^ seed_salt,
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            local_search, local_found, local_metrics = None, None, {}
+        if local_search is not None:
+            print(
+                "MATHGRAPH_METRICS " + json.dumps({
+                    "portfolio": "fin5-local-repair-" + str(seed_index),
+                    "found": bool(local_found),
+                    "restarts": local_metrics.get("restarts", 0),
+                    "steps": local_metrics.get("steps", 0),
+                }, separators=(",", ":")),
+                file=sys.stderr,
+                flush=True,
+            )
+        if local_found is not None and finish_finite_candidate(
+            source,
+            target,
+            local_search,
+            local_found,
+            "fin5-local-repair-" + str(seed_index),
+        ):
+            return
 
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an
@@ -7459,18 +7420,7 @@ def run_solo():
     ):
         return
 
-    for round_index in range(3):
-        response = call_llm({"round": round_index})
-        if "error" in response:
-            break
-        proof = extract_llm_proof(response.get("response"))
-        if proof is None:
-            continue
-        code = make_llm_true_certificate(proof)
-        if judge("true", code).get("status") == "accepted":
-            return
-
-    # Unresolved: EOF is intentional. Never guess.
+    # Unresolved: EOF is intentional. Never guess and never ask an LLM.
 
 
 def main():

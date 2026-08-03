@@ -3041,7 +3041,7 @@ def search_finite_model_local(source, target, order, deadline, seed=None):
         table = [random_below(order) for _ in range(order * order)]
         current, source_violations = score(table, witness)
         restarts += 1
-        for _ in range(500):
+        for _ in range(2000):
             if source_violations == 0:
                 actual_witness = replay_engine.target_witness(table, witness)
                 flat = tuple(table)
@@ -5817,16 +5817,16 @@ COMPACT_SUPERPOSITION_PROBE = {
 }
 
 COMPACT_SUPERPOSITION_FAST = {
-    "seconds": 1.5,
-    "maximum_term_size": 55,
-    "maximum_replay_term_size": 240,
-    "maximum_depth": 12,
-    "maximum_rules": 256,
-    "maximum_rounds": 24,
-    "new_clauses_per_round": 256,
-    "maximum_clauses": 5000,
-    "normalization_steps": 160,
-    "maximum_proof_nodes": 30000,
+    "seconds": 5.0,
+    "maximum_term_size": 90,
+    "maximum_replay_term_size": 420,
+    "maximum_depth": 20,
+    "maximum_rules": 900,
+    "maximum_rounds": 96,
+    "new_clauses_per_round": 900,
+    "maximum_clauses": 60000,
+    "normalization_steps": 384,
+    "maximum_proof_nodes": 180000,
 }
 
 
@@ -7269,34 +7269,42 @@ def run_solo():
     ):
         return
 
-    local_seconds = min(4.0, max(0.1, timeout / 30.0))
-    try:
-        local_seed = sum(
-            map(ord, problem.get("equation1", "") + problem.get("equation2", ""))
-        )
-        local_search, local_found, local_metrics = search_finite_model_local(
-            source, target, 5, time.monotonic() + local_seconds, local_seed
-        )
-    except (
-        KeyError, IndexError, MemoryError, RecursionError, TypeError,
-        ValueError,
-    ):
-        local_search, local_found, local_metrics = None, None, {}
-    if local_search is not None:
-        print(
-            "MATHGRAPH_METRICS " + json.dumps({
-                "portfolio": "fin5-local-repair",
-                "found": bool(local_found),
-                "restarts": local_metrics.get("restarts", 0),
-                "steps": local_metrics.get("steps", 0),
-            }, separators=(",", ":")),
-            file=sys.stderr,
-            flush=True,
-        )
-    if local_found is not None and finish_finite_candidate(
-        source, target, local_search, local_found, "fin5-local-repair"
-    ):
-        return
+    local_seconds = min(30.0, max(0.1, timeout / 30.0))
+    base_seed = deterministic_model_seed(source, target, 5)
+    local_seed_salts = (0, 0x94D049BB133111EB)
+    for seed_index, seed_salt in enumerate(local_seed_salts):
+        try:
+            local_search, local_found, local_metrics = search_finite_model_local(
+                source,
+                target,
+                5,
+                time.monotonic() + local_seconds,
+                base_seed ^ seed_salt,
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            local_search, local_found, local_metrics = None, None, {}
+        if local_search is not None:
+            print(
+                "MATHGRAPH_METRICS " + json.dumps({
+                    "portfolio": "fin5-local-repair-" + str(seed_index),
+                    "found": bool(local_found),
+                    "restarts": local_metrics.get("restarts", 0),
+                    "steps": local_metrics.get("steps", 0),
+                }, separators=(",", ":")),
+                file=sys.stderr,
+                flush=True,
+            )
+        if local_found is not None and finish_finite_candidate(
+            source,
+            target,
+            local_search,
+            local_found,
+            "fin5-local-repair-" + str(seed_index),
+        ):
+            return
 
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an

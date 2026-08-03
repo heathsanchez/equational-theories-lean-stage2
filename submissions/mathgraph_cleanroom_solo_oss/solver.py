@@ -9,7 +9,6 @@ import json
 import sys
 import time
 import heapq
-import textwrap
 from collections import defaultdict, deque
 from itertools import permutations, product
 
@@ -3062,7 +3061,7 @@ def search_finite_model_local(source, target, order, deadline, seed=None):
         table = [random_below(order) for _ in range(order * order)]
         current, source_violations = score(table, witness)
         restarts += 1
-        for _ in range(500):
+        for _ in range(2000):
             if source_violations == 0:
                 actual_witness = replay_engine.target_witness(table, witness)
                 flat = tuple(table)
@@ -3191,43 +3190,6 @@ def judge(verdict, code):
     print(json.dumps({"call": "judge", "verdict": verdict, "code": code}), flush=True)
     response = read_message()
     return response if response is not None else {}
-
-
-def call_llm(context):
-    print(json.dumps({"call": "llm", "context": context}), flush=True)
-    response = read_message()
-    return response if response is not None else {}
-
-
-def extract_llm_certificate(text):
-    if not isinstance(text, str):
-        return None
-    text = text.strip()
-    if text.startswith("```"):
-        text = text.split("\n", 1)[-1]
-        if text.endswith("```"):
-            text = text[:-3]
-    try:
-        payload = json.loads(text)
-    except (json.JSONDecodeError, ValueError):
-        left, right = text.find("{"), text.rfind("}")
-        if left < 0 or right <= left:
-            return None
-        try:
-            payload = json.loads(text[left:right + 1])
-        except (json.JSONDecodeError, ValueError):
-            return None
-    if not isinstance(payload, dict):
-        return None
-    verdict, code = payload.get("verdict"), payload.get("code")
-    lowered = code.lower() if isinstance(code, str) else ""
-    if (verdict not in {"true", "false"} or not isinstance(code, str)
-            or not code.strip() or len(code.encode()) > 100000
-            or any(token in lowered for token in
-                   ("sorry", "admit", "native_decide", "axiom "))
-            or "def submission" not in code):
-        return None
-    return verdict, code.strip() + "\n"
 
 
 def term_depth(term):
@@ -5875,16 +5837,16 @@ COMPACT_SUPERPOSITION_PROBE = {
 }
 
 COMPACT_SUPERPOSITION_FAST = {
-    "seconds": 1.5,
-    "maximum_term_size": 55,
-    "maximum_replay_term_size": 240,
-    "maximum_depth": 12,
-    "maximum_rules": 256,
-    "maximum_rounds": 24,
-    "new_clauses_per_round": 256,
-    "maximum_clauses": 5000,
-    "normalization_steps": 160,
-    "maximum_proof_nodes": 30000,
+    "seconds": 5.0,
+    "maximum_term_size": 90,
+    "maximum_replay_term_size": 420,
+    "maximum_depth": 20,
+    "maximum_rules": 900,
+    "maximum_rounds": 96,
+    "new_clauses_per_round": 900,
+    "maximum_clauses": 60000,
+    "normalization_steps": 384,
+    "maximum_proof_nodes": 180000,
 }
 
 
@@ -7327,34 +7289,42 @@ def run_solo():
     ):
         return
 
-    local_seconds = min(4.0, max(0.1, timeout / 30.0))
-    try:
-        local_seed = sum(
-            map(ord, problem.get("equation1", "") + problem.get("equation2", ""))
-        )
-        local_search, local_found, local_metrics = search_finite_model_local(
-            source, target, 5, time.monotonic() + local_seconds, local_seed
-        )
-    except (
-        KeyError, IndexError, MemoryError, RecursionError, TypeError,
-        ValueError,
-    ):
-        local_search, local_found, local_metrics = None, None, {}
-    if local_search is not None:
-        print(
-            "MATHGRAPH_METRICS " + json.dumps({
-                "portfolio": "fin5-local-repair",
-                "found": bool(local_found),
-                "restarts": local_metrics.get("restarts", 0),
-                "steps": local_metrics.get("steps", 0),
-            }, separators=(",", ":")),
-            file=sys.stderr,
-            flush=True,
-        )
-    if local_found is not None and finish_finite_candidate(
-        source, target, local_search, local_found, "fin5-local-repair"
-    ):
-        return
+    local_seconds = min(30.0, max(0.1, timeout / 30.0))
+    base_seed = deterministic_model_seed(source, target, 5)
+    local_seed_salts = (0, 0x94D049BB133111EB)
+    for seed_index, seed_salt in enumerate(local_seed_salts):
+        try:
+            local_search, local_found, local_metrics = search_finite_model_local(
+                source,
+                target,
+                5,
+                time.monotonic() + local_seconds,
+                base_seed ^ seed_salt,
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            local_search, local_found, local_metrics = None, None, {}
+        if local_search is not None:
+            print(
+                "MATHGRAPH_METRICS " + json.dumps({
+                    "portfolio": "fin5-local-repair-" + str(seed_index),
+                    "found": bool(local_found),
+                    "restarts": local_metrics.get("restarts", 0),
+                    "steps": local_metrics.get("steps", 0),
+                }, separators=(",", ":")),
+                file=sys.stderr,
+                flush=True,
+            )
+        if local_found is not None and finish_finite_candidate(
+            source,
+            target,
+            local_search,
+            local_found,
+            "fin5-local-repair-" + str(seed_index),
+        ):
+            return
 
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an
@@ -7445,18 +7415,7 @@ def run_solo():
     ):
         return
 
-    for round_index in range(4):
-        response = call_llm({"round": round_index})
-        if "error" in response:
-            break
-        candidate = extract_llm_certificate(response.get("response"))
-        if candidate is None:
-            continue
-        verdict, code = candidate
-        if judge(verdict, code).get("status") == "accepted":
-            return
-
-    # Unresolved: EOF is intentional. Never guess.
+    # Unresolved: EOF is intentional. Never guess and never ask an LLM.
 
 
 def main():

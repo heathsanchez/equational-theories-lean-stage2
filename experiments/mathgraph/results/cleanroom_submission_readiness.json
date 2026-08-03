@@ -1,7 +1,8 @@
 {
-  "schema": "mathgraph.cleanroom-submission-readiness.v1",
+  "schema": "mathgraph.cleanroom-submission-readiness.v2",
   "date": "2026-08-03",
   "branch": "codex/mathgraph-cleanroom-submission",
+  "model_calls": 0,
   "frozen_historical_solver": {
     "path": "submissions/mathgraph/solver.py",
     "bytes": 313240,
@@ -9,77 +10,88 @@
     "unchanged": true,
     "upload_candidate": false
   },
-  "cleanroom_core": {
+  "cleanroom_coverage_core": {
     "path": "submissions/mathgraph_cleanroom/solver.py",
-    "bytes": 275242,
-    "sha256": "e5a35f5d4126e9b297c3b0a331de95ff06a511086d172d3f0b9354cc179cdca0",
+    "bytes": 275556,
+    "sha256": "27486952d38a3c6383e9be77a5dc0f4ed48b2ec38428118660c3a8be946d1160",
     "independent_base_path": "experiments/mathgraph/regressions/solver_4c0023b.py",
     "independent_base_sha256": "a5a55ffb1e2feb16fcfc983d53d9dad9254f0f209a2585854ca62e6c4a793405"
   },
   "portfolio": [
     {
       "track": "solo",
-      "model": "Google: Gemma 4 31B",
+      "model_slot": "Google: Gemma 4 31B",
+      "role": "precision",
       "path": "submissions/mathgraph_cleanroom_solo_gemma/solver.py",
-      "bytes": 278006,
-      "sha256": "174d9b9bbdc33e1bab9f3fea5d8e8cf0f793d3bdbea0fe7fa5652990bdfa475f"
+      "bytes": 276371,
+      "sha256": "899b496c24f97d3f6eff5b71f3809bb48204f4512d85e8bb7087afcbbae3a986"
     },
     {
       "track": "solo",
-      "model": "OpenAI: gpt-oss-120b",
+      "model_slot": "OpenAI: gpt-oss-120b",
+      "role": "coverage",
       "path": "submissions/mathgraph_cleanroom_solo_oss/solver.py",
-      "bytes": 277473,
-      "sha256": "06aa9b6351cfd2ead1163641dff4106962a8ef0b17e7faad9682f99e34a0ed9a"
+      "bytes": 276110,
+      "sha256": "de3c4e2f8114cb8ca256b33f4c611b279f027152afb4ca1c18b430255306eec1"
     },
     {
       "track": "marathon",
-      "model": "Google: Gemma 4 31B",
+      "model_slot": "Google: Gemma 4 31B",
+      "role": "precision",
       "path": "submissions/mathgraph_cleanroom_marathon_gemma/solver.py",
-      "bytes": 277026,
-      "sha256": "882c1488af3b914fe8c5e6178fd71d835cc747e017a990df32a7018ab538825e"
+      "bytes": 277317,
+      "sha256": "479c44b3badfd4eb7e6cc966826c70be05550383194f160785d889ea45540539"
     },
     {
       "track": "marathon",
-      "model": "OpenAI: gpt-oss-120b",
+      "model_slot": "OpenAI: gpt-oss-120b",
+      "role": "coverage",
       "path": "submissions/mathgraph_cleanroom_marathon_oss/solver.py",
-      "bytes": 279199,
-      "sha256": "48c43864bae6710f5ace11a406cfd8e753e4f9f4ec680f608a6c69886b54b3d1"
+      "bytes": 277340,
+      "sha256": "920996af7f04e34dd9ee07a2a4087ceffc2c9bc36d458d4b982ef2f2f9c17d9a"
     }
   ],
-  "generalization": {
-    "hard3": {
-      "accepted_candidates": 377,
+  "evidence": {
+    "hard3_precision": {
+      "accepted": 377,
       "total": 400,
       "true": 174,
       "false": 203,
-      "abstained": 23,
       "wrong": 0,
-      "marginal_over_exact_base": 16,
-      "marginal_official_judge": "16 accepted, 0 rejected"
+      "aggressive_true_marginal": 0,
+      "aggressive_false_marginal_on_two_residuals": 0,
+      "marginal_certificates_official": "16 accepted, 0 rejected"
     },
-    "strict_order5": {
-      "accepted_candidates_isolated": 46,
-      "total": 48,
-      "true": 14,
-      "false": 32,
+    "released_evaluation_800": {
+      "short_budget": 767,
+      "precision_full_budget": 770,
+      "coverage_full_budget_verified_union": 777,
       "wrong": 0,
-      "new_certificates_official_judge": "14 accepted, 0 rejected",
-      "limitation": "development regression evidence, not sealed transfer"
+      "coverage_incremental_true": 4,
+      "coverage_incremental_false": 3,
+      "coverage_incremental_official": "7 accepted, 0 rejected",
+      "remaining_true": 22,
+      "remaining_false": 1,
+      "limitation": "released regression data used for selection"
+    },
+    "order5_law_parser": {
+      "rows": 62576,
+      "parsed": 62576,
+      "failed": 0
     }
   },
   "validation": {
-    "focused_tests": "17 passed",
     "solo_platform_gate": "66/66 solver cases; all auxiliary checks passed",
     "marathon_platform_gate": "25 passed, 0 failed",
-    "solo_candidate_smoke": "2/2 accepted for each Solo file; zero LLM calls",
-    "marathon_candidate_smoke": "1/1 accepted for each Marathon file",
+    "solo_smoke": "TRUE and FALSE accepted for each file; zero LLM calls",
+    "marathon_smoke": "1/1 accepted for each file at zero token budget",
     "forbidden_external_markers": 0,
     "credentials_embedded": false,
     "all_under_500000_bytes": true
   },
-  "readiness": {
-    "deterministic": "ready",
-    "portfolio_score_out_of_10": 9.8,
-    "remaining_gap": "repeated live fallback validation against exact competition model endpoints and final upload receipts"
+  "decision": {
+    "primary": "precision",
+    "secondary": "coverage hedge",
+    "reason": "coverage adds seven released-evaluation certificates but no hard3 marginal transfer"
   }
 }

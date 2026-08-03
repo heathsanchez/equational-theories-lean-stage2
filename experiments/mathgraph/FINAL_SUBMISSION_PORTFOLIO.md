@@ -1,66 +1,83 @@
-# MathGraph cleanroom Stage 2 portfolio
+# MathGraph deterministic Stage 2 portfolio
 
-This is the recommended four-file submission portfolio. Each entry is built
-from the independently maintained MathGraph solver at
-`submissions/mathgraph_cleanroom/solver.py`. The older
-`submissions/mathgraph_final_*` files are retained research artifacts and are
-not the upload candidates.
+This is the recommended four-file, zero-LLM submission portfolio. Each file is
+built from `submissions/mathgraph_cleanroom/solver.py`; no file calls a model,
+contains a credential, performs a network request, or embeds an external
+specialist payload.
 
 ## Upload map
 
-| Track | Model | Upload file | Role |
+| Track | Model slot | Upload file | Deterministic role |
 |---|---|---|---|
-| Solo | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_solo_gemma/solver.py` | Deterministic core, then bounded TRUE-proof fallback |
-| Solo | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_solo_oss/solver.py` | Deterministic core, then bounded full-certificate fallback |
-| Marathon | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_marathon_gemma/solver.py` | Deterministic manifest pass; no model calls |
-| Marathon | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_marathon_oss/solver.py` | Deterministic manifest pass, then sparse TRUE-proof fallback |
+| Solo | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_solo_gemma/solver.py` | Precision configuration; strongest transfer evidence and lower worst-case cost |
+| Solo | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_solo_oss/solver.py` | Coverage hedge; wider compact superposition and two-seed Fin-5 repair |
+| Marathon | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_marathon_gemma/solver.py` | Precision manifest pass for maximum breadth |
+| Marathon | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_marathon_oss/solver.py` | Coverage manifest pass; aggressive routes scale down automatically with per-row remaining budget |
 
-Every model response is only a candidate. It contributes a verdict only after
-the official judge accepts its Lean certificate. Malformed, unsafe, rejected,
-or timed-out candidates fail closed.
+The selected model name is operationally inert because the files make zero
+model calls. The four slots are used for deterministic search diversity.
 
 ## Provenance boundary
 
-The cleanroom core starts from
-`experiments/mathgraph/regressions/solver_4c0023b.py` and adds independently
-implemented generic finite-model search diversification, deterministic local
-table repair, and a wider bounded compact-superposition route. The core and all
-four generated files are automatically scanned for the known external
-integration identifiers, URLs, and artifact names. None are present.
+The cleanroom line starts from
+`experiments/mathgraph/regressions/solver_4c0023b.py` and contains independently
+implemented generic finite-model search, local table repair, equality search,
+and compact superposition. Tests scan the core and every upload file for known
+external integration identifiers, URLs, artifact names, and credentials. None
+are present.
 
-The frozen historical production solver remains byte-for-byte unchanged at
-313,240 bytes and SHA-256
+The historical 794/800 solver remains byte-for-byte unchanged at 313,240 bytes
+and SHA-256
 `fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1`.
-It is not the cleanroom upload candidate.
+It is not an upload candidate.
 
 ## Evidence
 
-- `hard3`: 377/400 candidates (174 TRUE, 203 FALSE), 23 abstentions, zero
-  wrong; the cleanroom changes add 16 over their exact pre-change base.
-- All 16 marginal `hard3` certificates were officially accepted.
-- Strict order-5 audit: 46/48 in isolated execution (14 TRUE, 32 FALSE), with
-  all 14 newly recovered certificates officially accepted.
-- Solo smoke: TRUE and FALSE both officially accepted for both Solo files;
+### Generalization-oriented precision result
+
+- `hard3`: 377/400 (174 TRUE, 203 FALSE), 23 abstentions, zero wrong.
+- All 16 gains over the exact pre-change base were officially Lean accepted.
+- The aggressive TRUE route produced exactly the same accepted-ID set as the
+  precision compact-superposition route on all 400 `hard3` rows.
+- The aggressive finite repair solved neither of the two precision FALSE
+  residuals. Therefore aggressive search is retained only as slot diversity.
+
+### Released evaluation regression result
+
+Across the four released 200-row strata, a short-budget screen produced
+767/800 with zero wrong. Under full Solo budgets:
+
+- the precision configuration recovers three additional order-5 FALSE rows,
+  for 770/800;
+- wider compact superposition adds four TRUE rows;
+- two deterministic local-repair seeds add three further FALSE rows;
+- the coverage configuration therefore reaches 777/800 by the verified union;
+- all seven incremental certificates were officially Lean accepted;
+- the remaining composition is 22 TRUE and one FALSE.
+
+These rows influenced configuration selection and are regression evidence, not
+fresh transfer evidence.
+
+### Format and platform gates
+
+- All 62,576 organizer-provided `eq_size5.txt` laws parse successfully.
+- Solo platform gate: 66/66 solver cases and all auxiliary checks passed.
+- Marathon platform gate: 25/25.
+- Focused cleanroom/portfolio routes: 18/18 after the order-5 parser test.
+- Both Solo files officially accepted TRUE and FALSE smoke certificates with
   zero model calls.
-- Marathon smoke: 1/1 officially accepted for both Marathon files.
-- Official Solo gate: 66/66 solver cases and every auxiliary check passed.
-- Official Marathon gate: 25/25.
-- Focused cleanroom and portfolio tests: 17/17.
-- All upload files are below 280 KB and contain no credential.
+- Both Marathon files scored 1/1 with a zero-token budget.
+- All upload files are below 278 KB, well under the 500 KB cap.
 
-The strict order-5 audit was used during development and is regression evidence,
-not sealed transfer evidence. `hard3` is broader transfer evidence but is still
-public data. The organizer's private distribution remains unknowable.
+## Decision
 
-## Readiness boundary
+The precision configuration is the primary unseen-evaluation bet. The coverage
+configuration is a deliberate second-slot hedge: it has seven official gains
+on released evaluation data but zero marginal `hard3` transfer. This avoids
+mistaking development-set improvement for general capability while still using
+the legal extra slots to cover search-order variance.
 
-The deterministic portfolio is ready for upload. The remaining evidence gap is
-live, repeated fallback testing against the competition's exact Gemma and
-gpt-oss endpoints. Until that is performed, the honest readiness assessment is
-9.8/10 rather than a guaranteed 10/10. The deterministic Gemma Marathon entry
-provides a no-model-risk hedge.
-
-Rebuild the files with:
+Rebuild and verify with:
 
 ```bash
 python experiments/mathgraph/build_cleanroom_submission_portfolio.py
@@ -68,5 +85,6 @@ python -m pytest -q tests/test_mathgraph_cleanroom_finite_search.py \
   tests/test_mathgraph_final_portfolio.py
 ```
 
-Immediately before upload, compare sizes and hashes with
-`experiments/mathgraph/results/cleanroom_submission_readiness.json`.
+Compare upload hashes with
+`experiments/mathgraph/results/cleanroom_submission_readiness.json` immediately
+before submission.

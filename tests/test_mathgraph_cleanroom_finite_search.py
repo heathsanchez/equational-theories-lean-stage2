@@ -79,3 +79,13 @@ def test_submission_contains_no_external_specialist_payload_markers():
         "sair-distillation",
     )
     assert not any(marker in text for marker in forbidden)
+
+
+def test_all_official_order5_law_strings_parse():
+    solver = load_solver()
+    laws = (ROOT / "examples/problems/eq_size5.txt").read_text(
+        encoding="utf-8"
+    ).splitlines()
+    assert len(laws) == 62_576
+    for law in laws:
+        solver.Parser(law).equation()

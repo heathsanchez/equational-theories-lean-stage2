@@ -58,26 +58,15 @@ def test_track_and_model_roles_are_explicit_and_credentials_are_absent():
     assert "JUDGE_MARATHON_MANIFEST" in texts["marathon_gemma"]
     assert "JUDGE_MARATHON_MANIFEST" in texts["marathon_oss"]
     assert "from marathon_llm import call_llm" not in texts["marathon_gemma"]
-    assert "from marathon_llm import call_llm" in texts["marathon_oss"]
-    assert '"max_output_tokens": 60000' in texts["marathon_oss"]
-    assert '"reasoning_effort": "medium"' in texts["marathon_oss"]
+    assert "from marathon_llm import call_llm" not in texts["marathon_oss"]
 
     for text in texts.values():
         assert "sk-or-v1-" not in text
         assert "OPENROUTER_API_KEY=" not in text
 
 
-def test_model_output_parsers_fail_closed():
-    gemma = load_solver(PORTFOLIO["solo_gemma"], "cleanroom_solo_gemma")
-    oss = load_solver(PORTFOLIO["solo_oss"], "cleanroom_solo_oss")
-
-    assert gemma.extract_llm_proof('{"proof":"intro x\\nexact h x x"}')
-    assert gemma.extract_llm_proof('{"proof":"sorry"}') is None
-    assert gemma.extract_llm_proof('{"proof":"import Mathlib"}') is None
-    assert oss.extract_llm_certificate(
-        '{"verdict":"true","code":"import JudgeProblem\\n\\n'
-        'def submission : Goal := by\\n  intro G _ h\\n  exact h"}'
-    )
-    assert oss.extract_llm_certificate(
-        '{"verdict":"true","code":"def submission : Goal := by sorry"}'
-    ) is None
+def test_portfolio_never_calls_a_model():
+    for path in PORTFOLIO.values():
+        text = path.read_text(encoding="utf-8")
+        assert '"call": "llm"' not in text
+        assert "from marathon_llm import call_llm" not in text

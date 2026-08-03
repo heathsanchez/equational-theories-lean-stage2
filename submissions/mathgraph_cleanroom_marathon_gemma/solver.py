@@ -7294,33 +7294,41 @@ def run_solo():
         return
 
     local_seconds = min(4.0, max(0.1, timeout / 30.0))
-    try:
-        local_seed = sum(
-            map(ord, problem.get("equation1", "") + problem.get("equation2", ""))
-        )
-        local_search, local_found, local_metrics = search_finite_model_local(
-            source, target, 5, time.monotonic() + local_seconds, local_seed
-        )
-    except (
-        KeyError, IndexError, MemoryError, RecursionError, TypeError,
-        ValueError,
-    ):
-        local_search, local_found, local_metrics = None, None, {}
-    if local_search is not None:
-        print(
-            "MATHGRAPH_METRICS " + json.dumps({
-                "portfolio": "fin5-local-repair",
-                "found": bool(local_found),
-                "restarts": local_metrics.get("restarts", 0),
-                "steps": local_metrics.get("steps", 0),
-            }, separators=(",", ":")),
-            file=sys.stderr,
-            flush=True,
-        )
-    if local_found is not None and finish_finite_candidate(
-        source, target, local_search, local_found, "fin5-local-repair"
-    ):
-        return
+    base_seed = deterministic_model_seed(source, target, 5)
+    local_seed_salts = (0,)
+    for seed_index, seed_salt in enumerate(local_seed_salts):
+        try:
+            local_search, local_found, local_metrics = search_finite_model_local(
+                source,
+                target,
+                5,
+                time.monotonic() + local_seconds,
+                base_seed ^ seed_salt,
+            )
+        except (
+            KeyError, IndexError, MemoryError, RecursionError, TypeError,
+            ValueError,
+        ):
+            local_search, local_found, local_metrics = None, None, {}
+        if local_search is not None:
+            print(
+                "MATHGRAPH_METRICS " + json.dumps({
+                    "portfolio": "fin5-local-repair-" + str(seed_index),
+                    "found": bool(local_found),
+                    "restarts": local_metrics.get("restarts", 0),
+                    "steps": local_metrics.get("steps", 0),
+                }, separators=(",", ":")),
+                file=sys.stderr,
+                flush=True,
+            )
+        if local_found is not None and finish_finite_candidate(
+            source,
+            target,
+            local_search,
+            local_found,
+            "fin5-local-repair-" + str(seed_index),
+        ):
+            return
 
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an
