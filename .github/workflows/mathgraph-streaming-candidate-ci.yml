@@ -51,6 +51,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python3 -m pip install -q pytest
           cp submissions/mathgraph/solver.py /tmp/solver_baseline.py
           cp /tmp/solver_streaming.py submissions/mathgraph/solver.py
           python3 -m pytest -q \
