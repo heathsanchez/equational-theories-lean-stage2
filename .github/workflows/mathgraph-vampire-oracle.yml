@@ -9,12 +9,12 @@ permissions:
   contents: read
 
 jobs:
-  f184-divergence:
+  given-clause:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
-      - name: Diagnose first missing Vampire lemma
+      - name: Test incremental proof-carrying saturation
         shell: bash
         run: |
           set -euo pipefail
@@ -22,42 +22,83 @@ jobs:
           import importlib.util,json,sys,time
           from pathlib import Path
           p=Path('submissions/mathgraph/solver.py')
-          spec=importlib.util.spec_from_file_location('mgf184',p)
+          spec=importlib.util.spec_from_file_location('mggiven',p)
           m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
           source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)')
           target=m.parse_equation('x = y')
-          f10=m.parse_equation('x * y = ((((z * (z * x)) * y) * w) * (((x * y) * z) * w))')
-          f29=m.parse_equation('y * (y * x) = ((x * (y * (y * x))) * y) * x')
-          f184=m.parse_equation('(x * x) * x = (x * (x * x)) * ((((x * x) * x) * x) * x)')
-          def sig(search,eq): return search.alpha_signature(eq[0],eq[1])
           limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
-          limits.update({'maximum_term_size':60,'maximum_replay_term_size':240,'maximum_depth':12,'maximum_rules':512,'maximum_rounds':40,'new_clauses_per_round':256,'maximum_clauses':8000,'normalization_steps':160,'maximum_proof_nodes':50000})
-          eng=m.TargetGroundedRefutation(source,target,time.monotonic()+10.0,limits)
-          eng.solve(); s=eng.search
-          def find(eq):
-            wanted={sig(s,eq),sig(s,(eq[1],eq[0],eq[2]))}
-            return [(i,c) for i,c in enumerate(s.clauses) if s.alpha_signature(c.lhs,c.rhs) in wanted]
-          a=find(f10); b=find(f29); c=find(f184)
-          out={'f10_indices':[i for i,_ in a],'f29_indices':[i for i,_ in b],'f184_retained':[i for i,_ in c], 'rules':len(s.rules()),'clauses':len(s.clauses)}
-          probes=[]
-          rules=s.rules()
-          # Search every ordered rule pair/path for a raw critical pair alpha-equivalent to f184.
-          wanted={sig(s,f184),sig(s,(f184[1],f184[0],f184[2]))}
-          for oi,outer in enumerate(rules):
-            for ii,inner in enumerate(rules):
-              for path in m.nonvariable_positions(outer.lhs,maximum_depth=12,include_root=True):
-                try: raw=s.critical_pair(outer,inner,oi,ii,path)
-                except Exception: continue
-                if raw is None: continue
-                rawsig=s.alpha_signature(raw.lhs,raw.rhs)
-                if rawsig not in wanted: continue
-                reduced=s.interreduce(raw,rules)
-                probes.append({'outer':oi,'inner':ii,'path':path,'raw_lhs':m.render_term(raw.lhs),'raw_rhs':m.render_term(raw.rhs),'reduced_lhs':m.render_term(reduced.lhs),'reduced_rhs':m.render_term(reduced.rhs),'reduced_same':s.alpha_signature(reduced.lhs,reduced.rhs) in wanted,'raw_cost':raw.cost,'reduced_cost':reduced.cost,'add_raw_would':s.alpha_signature(raw.lhs,raw.rhs) not in s.signatures and s.alpha_signature(raw.rhs,raw.lhs) not in s.signatures})
-          out['probes']=probes
-          Path('/tmp/f184_divergence.json').write_text(json.dumps(out,indent=2))
-          print(json.dumps(out,indent=2))
+          limits.update({'maximum_term_size':60,'maximum_replay_term_size':240,'maximum_depth':12,'maximum_rules':800,'maximum_rounds':100000,'new_clauses_per_round':100000,'maximum_clauses':12000,'normalization_steps':96,'maximum_proof_nodes':80000})
+          def orientations(s,c):
+            o=s.orient(c)
+            if o is not None:return [o]
+            z=[]
+            if c.lhs[0] != 'var': z.append(c)
+            if c.rhs[0] != 'var': z.append(m.Recipe(c.rhs,c.lhs,'symmetry',(c,)))
+            return z
+          def run(mode,seconds):
+            eng=m.TargetGroundedRefutation(source,target,time.monotonic()+seconds,limits)
+            s=eng.search
+            processed=set(); active=[]; age_tick=0; steps=0; raw_count=0; added_count=0
+            t0=time.monotonic(); found=None
+            while time.monotonic()<s.deadline and len(s.clauses)<limits['maximum_clauses']:
+              candidates=[i for i in range(len(s.clauses)) if i not in processed]
+              if not candidates: break
+              if mode=='fifo': idx=candidates[0]
+              elif mode=='weight': idx=min(candidates,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i))
+              elif mode=='mixed5':
+                age_tick+=1
+                idx=candidates[0] if age_tick%5==0 else min(candidates,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i))
+              else:
+                age_tick+=1
+                idx=candidates[0] if age_tick%2==0 else min(candidates,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i))
+              processed.add(idx); given_rules=orientations(s,s.clauses[idx])
+              # Simplification rules are active only: derived clauses become usable as soon as selected.
+              simplifiers=active+given_rules
+              pending=[]
+              for gr in given_rules:
+                # self overlap is needed for the first generation
+                partners=active+[gr]
+                for pi,ar in enumerate(partners):
+                  for outer,inner,oi,ii in ((gr,ar,steps,pi),(ar,gr,pi,steps)):
+                    for path in m.nonvariable_positions(outer.lhs,maximum_depth=limits['maximum_depth'],include_root=True):
+                      if time.monotonic()>=s.deadline: break
+                      try: q=s.critical_pair(outer,inner,oi,ii,path)
+                      except Exception: q=None
+                      if q is None: continue
+                      raw_count+=1
+                      try:q=s.interreduce(q,simplifiers)
+                      except Exception:continue
+                      pending.append(q)
+                    if time.monotonic()>=s.deadline: break
+                  if time.monotonic()>=s.deadline: break
+                if time.monotonic()>=s.deadline: break
+              pending.sort(key=lambda q:(m.term_size(q.lhs)+m.term_size(q.rhs),q.cost,s.target_score(q)))
+              for q in pending:
+                if s.add_clause(q): added_count+=1
+              active.extend(given_rules); steps+=1
+              if steps%4==0 or pending:
+                found=s.target_proof(s.rules())
+                if found is not None: break
+            if found is None: found=s.target_proof(s.rules())
+            row={'mode':mode,'budget':seconds,'elapsed':round(time.monotonic()-t0,4),'found':found is not None,'clauses':len(s.clauses),'processed':len(processed),'active_rules':len(active),'raw':raw_count,'added':added_count,'reductions':s.reductions,'max_cost':s.maximum_recipe_cost}
+            if found is not None:
+              try:
+                recipe=eng.inline_recipe(found); compiler=m.CompactSuperposition(sys.modules[spec.name],source,target,time.monotonic()+2,limits); nodes,root=compiler.compile(recipe)
+                replay=m.replay_dag(source,nodes,root,maximum_term_size=240,maximum_nodes=80000)
+                code,n=m.make_dag_certificate(target,nodes,root)
+                row.update({'replay':replay,'proof_nodes':n,'certificate_bytes':len(code.encode())})
+                Path(f'/tmp/{mode}_{int(seconds)}.lean').write_text(code)
+              except Exception as e: row['compile_error']=type(e).__name__+':'+str(e)
+            print(json.dumps(row),flush=True); return row
+          out=[]
+          for mode in ('fifo','weight','mixed5','mixed2'):
+            out.append(run(mode,12.0))
+          Path('/tmp/given_clause_results.json').write_text(json.dumps(out,indent=2))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: f184-divergence
-          path: /tmp/f184_divergence.json
+          name: given-clause-results
+          path: |
+            /tmp/given_clause_results.json
+            /tmp/*.lean
