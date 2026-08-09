@@ -9,9 +9,9 @@ permissions:
   contents: read
 
 jobs:
-  vampire-0042:
+  trace-diff:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - name: Install Vampire 5.0.1
@@ -21,96 +21,42 @@ jobs:
           curl -fsSL --retry 3 -o /tmp/vampire.zip https://github.com/vprover/vampire/releases/download/v5.0.1/vampire-Linux-X64.zip
           unzip -j -o /tmp/vampire.zip -d /tmp
           chmod +x /tmp/vampire
-      - name: Prove 0042 and collapse intermediates
+      - name: Generate singleton proof
         shell: bash
         run: |
           set -euo pipefail
-          cat > /tmp/0042.p <<'EOF'
-          fof(source,axiom,(! [V_X,V_Y,V_Z] : V_X = f(f(V_Y,V_Z),f(f(V_X,f(V_X,V_Y)),V_Z)))).
-          fof(target,conjecture,(! [V_X,V_Y,V_Z,V_W] : V_X = f(f(V_X,f(V_X,V_Y)),f(V_Z,f(V_Z,V_W))))).
-          EOF
-          cat > /tmp/right_projection.p <<'EOF'
-          fof(source,axiom,(! [V_X,V_Y,V_Z] : V_X = f(f(V_Y,V_Z),f(f(V_X,f(V_X,V_Y)),V_Z)))).
-          fof(target,conjecture,(! [V_A,V_B] : f(V_A,V_B) = V_B)).
-          EOF
           cat > /tmp/singleton.p <<'EOF'
           fof(source,axiom,(! [V_X,V_Y,V_Z] : V_X = f(f(V_Y,V_Z),f(f(V_X,f(V_X,V_Y)),V_Z)))).
           fof(target,conjecture,(! [V_A,V_B] : V_A = V_B)).
           EOF
-          for stem in 0042 right_projection singleton; do
-            /tmp/vampire --mode casc --time_limit 20 --proof tptp /tmp/${stem}.p | tee /tmp/vampire_${stem}_proof.txt
-            grep -q 'SZS status Theorem' /tmp/vampire_${stem}_proof.txt
-            echo "$stem superpositions=$(grep -c 'inference(superposition' /tmp/vampire_${stem}_proof.txt || true) demods=$(grep -c 'demodulation' /tmp/vampire_${stem}_proof.txt || true) lines=$(grep -c '^fof(' /tmp/vampire_${stem}_proof.txt || true) bytes=$(wc -c < /tmp/vampire_${stem}_proof.txt)"
-          done
-      - name: Set up Lean judge
+          /tmp/vampire --mode casc --time_limit 20 --proof tptp /tmp/singleton.p > /tmp/vampire_singleton_proof.txt
+          grep -q 'SZS status Theorem' /tmp/vampire_singleton_proof.txt
+      - name: Dump MathGraph singleton retained clauses
         shell: bash
         run: |
           set -euo pipefail
-          SKIP_DOCKER=1 bash scripts/setup.sh
-          source .env.judge
-          lean --version
-      - name: Deep grounded-engine diagnostics
-        shell: bash
-        run: |
-          set -euo pipefail
-          source .env.judge
           python3 - <<'PY'
-          import importlib.util, json, sys, time
+          import importlib.util,json,sys,time
           from pathlib import Path
           p=Path('submissions/mathgraph/solver.py')
-          spec=importlib.util.spec_from_file_location('mgdiag',p)
+          spec=importlib.util.spec_from_file_location('mgtrace',p)
           m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
           source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)')
-          targets={
-            '0042':m.parse_equation('x = (x * (x * y)) * (z * (z * w))'),
-            'singleton':m.parse_equation('x = y'),
-            'right_projection':m.parse_equation('x * y = y'),
-          }
-          out=[]
-          for target_name,target in targets.items():
-            for sec in (1.0,3.0,10.0):
-              limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
-              limits.update({
-                'seconds':sec,
-                'maximum_term_size':60,
-                'maximum_replay_term_size':240,
-                'maximum_depth':12,
-                'maximum_rules':512,
-                'maximum_rounds':40,
-                'new_clauses_per_round':256,
-                'maximum_clauses':8000,
-                'normalization_steps':160,
-                'maximum_proof_nodes':50000,
-              })
-              t=time.monotonic()
-              engine=m.TargetGroundedRefutation(source,target,time.monotonic()+sec,limits)
-              try: found=engine.solve()
-              except Exception as e:
-                found=None; err=type(e).__name__+':'+str(e)
-              else: err=None
-              row={
-                'target':target_name,'seconds_budget':sec,'elapsed':round(time.monotonic()-t,4),
-                'found':found is not None,'clauses':len(engine.search.clauses),
-                'rounds':engine.search.rounds,'generated':engine.search.generated,
-                'superpositions':engine.search.superpositions,'reductions':engine.search.reductions,
-                'max_recipe_cost':engine.search.maximum_recipe_cost,'error':err,
-              }
-              if found is not None:
-                nodes,root=found
-                code,n=m.make_dag_certificate(target,nodes,root)
-                row.update({'proof_nodes':n,'certificate_bytes':len(code.encode()),'replay':m.replay_dag(source,nodes,root,maximum_term_size=240,maximum_nodes=50000)})
-                Path(f'/tmp/{target_name}_{int(sec)}s.lean').write_text(code)
-              out.append(row); print(json.dumps(row),flush=True)
-          Path('/tmp/grounded_diagnostics.json').write_text(json.dumps(out,indent=2))
+          target=m.parse_equation('x = y')
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
+          limits.update({'maximum_term_size':60,'maximum_replay_term_size':240,'maximum_depth':12,'maximum_rules':512,'maximum_rounds':40,'new_clauses_per_round':256,'maximum_clauses':8000,'normalization_steps':160,'maximum_proof_nodes':50000})
+          eng=m.TargetGroundedRefutation(source,target,time.monotonic()+10.0,limits)
+          found=eng.solve()
+          rows=[]
+          for i,c in enumerate(eng.search.clauses):
+            rows.append({'i':i,'lhs':m.render_term(eng.inline(c.lhs)),'rhs':m.render_term(eng.inline(c.rhs)),'cost':c.cost,'score':eng.search.target_score(c)[:4]})
+          Path('/tmp/mathgraph_singleton_clauses.json').write_text(json.dumps({'found':found is not None,'rounds':eng.search.rounds,'superpositions':eng.search.superpositions,'reductions':eng.search.reductions,'clauses':rows},indent=2))
+          print('clauses',len(rows),'found',found is not None,'rounds',eng.search.rounds)
           PY
-      - name: Upload oracle artifacts
-        if: always()
+      - name: Upload trace diff inputs
         uses: actions/upload-artifact@v4
         with:
-          name: vampire-collapse-and-grounded-diagnostics
+          name: singleton-trace-diff
           path: |
-            /tmp/vampire_0042_proof.txt
-            /tmp/vampire_right_projection_proof.txt
             /tmp/vampire_singleton_proof.txt
-            /tmp/grounded_diagnostics.json
-            /tmp/*.lean
+            /tmp/mathgraph_singleton_clauses.json
