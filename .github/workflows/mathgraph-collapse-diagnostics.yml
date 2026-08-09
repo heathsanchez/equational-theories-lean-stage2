@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Profile six residuals and locate controls
+      - name: Profile hardest residuals and locate controls
         shell: bash
         run: |
           set -euo pipefail
@@ -23,15 +23,17 @@ jobs:
           hs=Path('experiments/mathgraph/streaming_singleton_certificate.py')
           spec=importlib.util.spec_from_file_location('ssc',hs); ssc=importlib.util.module_from_spec(spec);sys.modules[spec.name]=ssc;spec.loader.exec_module(ssc)
           m=ssc.load_solver('submissions/mathgraph/solver.py')
-          inv=json.loads(Path('experiments/mathgraph/context_calculus/artifacts/phase0_inventory.json').read_text())
-          rows=inv['six_unresolved']
+          rows=[
+            ('evaluation_order5_0014','x = y * (x * (((z * y) * y) * y))'),
+            ('evaluation_order5_0042','x = (y * z) * ((x * (x * y)) * z)'),
+          ]
           results=[]
-          for row in rows:
-              source=m.parse_equation(row['source'])
+          for row_id,text in rows:
+              source=m.parse_equation(text)
               for maxterm in (25,30):
-                  for seconds in (0.05,0.10,0.25,0.50,2.50):
+                  for seconds in (0.05,0.10,0.25,0.50,1.00,2.50):
                       root,stats=ssc.discover_singleton(m,source,seconds,maxterm,2)
-                      results.append({'id':row['id'],'maxterm':maxterm,'seconds':seconds,**stats})
+                      results.append({'id':row_id,'maxterm':maxterm,'seconds':seconds,**stats})
                       if root is not None: break
           Path('/tmp/progress.json').write_text(json.dumps(results,indent=2)+'\n')
           candidates=[]
@@ -41,9 +43,10 @@ jobs:
           Path('/tmp/control_files.txt').write_text('\n'.join(sorted(candidates))+'\n')
           print(json.dumps(results,indent=2))
           print('CONTROL FILES')
-          print('\n'.join(sorted(candidates)[:200]))
+          print('\n'.join(sorted(candidates)[:300]))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: collapse-diagnostics
           path: |
