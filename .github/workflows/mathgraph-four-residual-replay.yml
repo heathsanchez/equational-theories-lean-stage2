@@ -1,0 +1,44 @@
+name: MathGraph Four Residual Replay
+
+on:
+  push:
+    branches:
+      - mathgraph/backward-continuation-research
+
+permissions:
+  contents: read
+
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Run proof-producing controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py \
+            --input colab/data/six_residuals.json \
+            --conditions F,S,QL \
+            --timeout 3 \
+            --max-processed 400 \
+            --output /tmp/four_replay.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open('/tmp/four_replay.json'))
+          for condition,rows in x['conditions'].items():
+              accepted=[r['id'] for r in rows if r.get('status')=='proved' and r.get('lean_status')=='accepted' and r.get('independent_replay') and r.get('external_plan_replay')]
+              print(condition,accepted)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-residual-replay
+          path: /tmp/four_replay.json
