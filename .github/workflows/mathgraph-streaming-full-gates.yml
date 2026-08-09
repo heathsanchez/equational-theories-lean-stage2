@@ -27,11 +27,11 @@ jobs:
           fi
           cp submissions/mathgraph/solver.py /tmp/solver_baseline.py
           cp /tmp/solver_streaming.py submissions/mathgraph/solver.py
-      - name: Python test suite
+      - name: Python test suite and harness dependencies
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m pip install -q pytest
+          python3 -m pip install -q pytest openai
           python3 -m pytest -q tests
       - name: Set up official judge environment
         shell: bash
