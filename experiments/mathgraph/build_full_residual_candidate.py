@@ -154,11 +154,16 @@ def build(baseline, runner, output):
     build_streaming(baseline, stage)
     text = Path(stage).read_text()
     controller = extract_controller(Path(runner).read_text())
+    marker = "import json\n"
+    if marker not in text:
+        raise SystemExit("import marker not found")
+    imports = ""
     if "import hashlib\n" not in text:
-        marker = "import json\n"
-        if marker not in text:
-            raise SystemExit("import marker not found")
-        text = text.replace(marker, marker + "import hashlib\n", 1)
+        imports += "import hashlib\n"
+    if "import re\n" not in text:
+        imports += "import re\n"
+    if imports:
+        text = text.replace(marker, marker + imports, 1)
     helper_marker = "\ndef finish_bridge_ir_candidate(source, target, search, found, portfolio):"
     if helper_marker not in text:
         raise SystemExit("helper marker not found")
