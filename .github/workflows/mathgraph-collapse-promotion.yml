@@ -1,0 +1,69 @@
+name: MathGraph Collapse Promotion
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  judge-order5-collapse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate generic certificates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/mathgraph/streaming_singleton_certificate.py \
+            --source 'x = y * (x * (((z * y) * y) * y))' \
+            --target 'x = ((y * z) * (x * y)) * (x * z)' \
+            --max-term 30 --seconds 4 \
+            --output /tmp/0014.lean --stats /tmp/0014.json
+          python3 experiments/mathgraph/streaming_singleton_certificate.py \
+            --source 'x = (y * z) * ((x * (x * y)) * z)' \
+            --target 'x = (x * (x * y)) * (z * (z * w))' \
+            --max-term 25 --seconds 8 \
+            --output /tmp/0042.lean --stats /tmp/0042.json
+      - name: Set up Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Judge both certificates
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from judge.verify import verify_answer,JudgeConfig
+          rows=[
+            ({'id':'evaluation_order5_0014','eq1_id':8502,'eq2_id':27144,'equation1':'x = y * (x * (((z * y) * y) * y))','equation2':'x = ((y * z) * (x * y)) * (x * z)'},'/tmp/0014.lean'),
+            ({'id':'evaluation_order5_0042','eq1_id':20115,'eq2_id':21404,'equation1':'x = (y * z) * ((x * (x * y)) * z)','equation2':'x = (x * (x * y)) * (z * (z * w))'},'/tmp/0042.lean'),
+          ]
+          out={}
+          for problem,path in rows:
+              code=Path(path).read_text()
+              result=verify_answer(problem,json.dumps({'verdict':'true','code':code}),config=JudgeConfig(lean_timeout_seconds=120))
+              out[problem['id']]={k:result.get(k) for k in ('status','error_code','message','direct_declarations','axioms')}
+              if result.get('status')!='accepted':
+                  Path('/tmp/judge_results.json').write_text(json.dumps(out,indent=2,default=str)+'\n')
+                  raise SystemExit(problem['id']+' rejected')
+          Path('/tmp/judge_results.json').write_text(json.dumps(out,indent=2,default=str)+'\n')
+          print(json.dumps(out,indent=2,default=str))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collapse-promotion
+          path: |
+            /tmp/0014.lean
+            /tmp/0042.lean
+            /tmp/0014.json
+            /tmp/0042.json
+            /tmp/judge_results.json
