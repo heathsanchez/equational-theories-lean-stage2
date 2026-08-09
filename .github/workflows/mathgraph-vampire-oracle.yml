@@ -9,29 +9,12 @@ permissions:
   contents: read
 
 jobs:
-  trace-diff:
+  f184-divergence:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Install Vampire 5.0.1
-        shell: bash
-        run: |
-          set -euo pipefail
-          curl -fsSL --retry 3 -o /tmp/vampire.zip https://github.com/vprover/vampire/releases/download/v5.0.1/vampire-Linux-X64.zip
-          unzip -j -o /tmp/vampire.zip -d /tmp
-          chmod +x /tmp/vampire
-      - name: Generate singleton proof
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat > /tmp/singleton.p <<'EOF'
-          fof(source,axiom,(! [V_X,V_Y,V_Z] : V_X = f(f(V_Y,V_Z),f(f(V_X,f(V_X,V_Y)),V_Z)))).
-          fof(target,conjecture,(! [V_A,V_B] : V_A = V_B)).
-          EOF
-          /tmp/vampire --mode casc --time_limit 20 --proof tptp /tmp/singleton.p > /tmp/vampire_singleton_proof.txt
-          grep -q 'SZS status Theorem' /tmp/vampire_singleton_proof.txt
-      - name: Dump MathGraph singleton retained clauses
+      - name: Diagnose first missing Vampire lemma
         shell: bash
         run: |
           set -euo pipefail
@@ -39,24 +22,42 @@ jobs:
           import importlib.util,json,sys,time
           from pathlib import Path
           p=Path('submissions/mathgraph/solver.py')
-          spec=importlib.util.spec_from_file_location('mgtrace',p)
+          spec=importlib.util.spec_from_file_location('mgf184',p)
           m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
           source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)')
           target=m.parse_equation('x = y')
+          f10=m.parse_equation('x * y = ((((z * (z * x)) * y) * w) * (((x * y) * z) * w))')
+          f29=m.parse_equation('y * (y * x) = ((x * (y * (y * x))) * y) * x')
+          f184=m.parse_equation('(x * x) * x = (x * (x * x)) * ((((x * x) * x) * x) * x)')
+          def sig(search,eq): return search.alpha_signature(eq[0],eq[1])
           limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
           limits.update({'maximum_term_size':60,'maximum_replay_term_size':240,'maximum_depth':12,'maximum_rules':512,'maximum_rounds':40,'new_clauses_per_round':256,'maximum_clauses':8000,'normalization_steps':160,'maximum_proof_nodes':50000})
           eng=m.TargetGroundedRefutation(source,target,time.monotonic()+10.0,limits)
-          found=eng.solve()
-          rows=[]
-          for i,c in enumerate(eng.search.clauses):
-            rows.append({'i':i,'lhs':m.render_term(eng.inline(c.lhs)),'rhs':m.render_term(eng.inline(c.rhs)),'cost':c.cost,'score':eng.search.target_score(c)[:4]})
-          Path('/tmp/mathgraph_singleton_clauses.json').write_text(json.dumps({'found':found is not None,'rounds':eng.search.rounds,'superpositions':eng.search.superpositions,'reductions':eng.search.reductions,'clauses':rows},indent=2))
-          print('clauses',len(rows),'found',found is not None,'rounds',eng.search.rounds)
+          eng.solve(); s=eng.search
+          def find(eq):
+            wanted={sig(s,eq),sig(s,(eq[1],eq[0],eq[2]))}
+            return [(i,c) for i,c in enumerate(s.clauses) if s.alpha_signature(c.lhs,c.rhs) in wanted]
+          a=find(f10); b=find(f29); c=find(f184)
+          out={'f10_indices':[i for i,_ in a],'f29_indices':[i for i,_ in b],'f184_retained':[i for i,_ in c], 'rules':len(s.rules()),'clauses':len(s.clauses)}
+          probes=[]
+          rules=s.rules()
+          # Search every ordered rule pair/path for a raw critical pair alpha-equivalent to f184.
+          wanted={sig(s,f184),sig(s,(f184[1],f184[0],f184[2]))}
+          for oi,outer in enumerate(rules):
+            for ii,inner in enumerate(rules):
+              for path in m.nonvariable_positions(outer.lhs,maximum_depth=12,include_root=True):
+                try: raw=s.critical_pair(outer,inner,oi,ii,path)
+                except Exception: continue
+                if raw is None: continue
+                rawsig=s.alpha_signature(raw.lhs,raw.rhs)
+                if rawsig not in wanted: continue
+                reduced=s.interreduce(raw,rules)
+                probes.append({'outer':oi,'inner':ii,'path':path,'raw_lhs':m.render_term(raw.lhs),'raw_rhs':m.render_term(raw.rhs),'reduced_lhs':m.render_term(reduced.lhs),'reduced_rhs':m.render_term(reduced.rhs),'reduced_same':s.alpha_signature(reduced.lhs,reduced.rhs) in wanted,'raw_cost':raw.cost,'reduced_cost':reduced.cost,'add_raw_would':s.alpha_signature(raw.lhs,raw.rhs) not in s.signatures and s.alpha_signature(raw.rhs,raw.lhs) not in s.signatures})
+          out['probes']=probes
+          Path('/tmp/f184_divergence.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
           PY
-      - name: Upload trace diff inputs
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v4
         with:
-          name: singleton-trace-diff
-          path: |
-            /tmp/vampire_singleton_proof.txt
-            /tmp/mathgraph_singleton_clauses.json
+          name: f184-divergence
+          path: /tmp/f184_divergence.json
