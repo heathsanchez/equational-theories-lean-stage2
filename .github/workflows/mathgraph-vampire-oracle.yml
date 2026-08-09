@@ -11,7 +11,7 @@ permissions:
 jobs:
   vampire-0042:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - name: Install Vampire 5.0.1
@@ -21,7 +21,6 @@ jobs:
           curl -fsSL --retry 3 -o /tmp/vampire.zip https://github.com/vprover/vampire/releases/download/v5.0.1/vampire-Linux-X64.zip
           unzip -j -o /tmp/vampire.zip -d /tmp
           chmod +x /tmp/vampire
-          /tmp/vampire --version || true
       - name: Prove evaluation_order5_0042
         shell: bash
         run: |
@@ -32,18 +31,49 @@ jobs:
           EOF
           /tmp/vampire --mode casc --time_limit 10 --proof tptp /tmp/0042.p | tee /tmp/vampire_0042_proof.txt
           grep -q 'SZS status Theorem' /tmp/vampire_0042_proof.txt
-      - name: Proof summary
-        if: always()
+      - name: Set up Lean judge
         shell: bash
         run: |
-          echo '=== INFERENCE COUNTS ==='
-          grep -c 'inference(superposition' /tmp/vampire_0042_proof.txt || true
-          grep -c 'demodulation' /tmp/vampire_0042_proof.txt || true
-          echo '=== PROOF ==='
-          cat /tmp/vampire_0042_proof.txt || true
-      - name: Upload proof
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+          source .env.judge
+          lean --version
+      - name: Sweep native Lean tactics on 0042
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 - <<'PY' | tee /tmp/lean_0042_tactics.json
+          import json
+          from pathlib import Path
+          from judge.verify import verify_answer, JudgeConfig
+          problem = {
+            'id':'evaluation_order5_0042',
+            'eq1_id':20115,
+            'eq2_id':21404,
+            'equation1':'x = (y * z) * ((x * (x * y)) * z)',
+            'equation2':'x = (x * (x * y)) * (z * (z * w))',
+          }
+          bodies = {
+            'grind': 'grind',
+            'aesop': 'aesop',
+            'simp_all': 'simp_all',
+            'simp_h': 'simp_all only [h]',
+          }
+          cfg = JudgeConfig(lean_timeout_seconds=30)
+          out = {}
+          for name, tactic in bodies.items():
+            code = f'''import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  {tactic}\n'''
+            result = verify_answer(problem, json.dumps({'verdict':'true','code':code}), config=cfg)
+            out[name] = {k:result.get(k) for k in ('status','error_code','message','direct_declarations','axioms')}
+            print(name, json.dumps(out[name]), flush=True)
+          Path('/tmp/lean_0042_tactics.json').write_text(json.dumps(out, indent=2))
+          PY
+      - name: Upload oracle artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vampire-0042-proof
-          path: /tmp/vampire_0042_proof.txt
+          name: vampire-0042-proof-and-lean-sweep
+          path: |
+            /tmp/vampire_0042_proof.txt
+            /tmp/lean_0042_tactics.json
