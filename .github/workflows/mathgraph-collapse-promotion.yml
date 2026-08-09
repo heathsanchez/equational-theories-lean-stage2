@@ -1,9 +1,7 @@
 name: MathGraph Collapse Promotion
 
 on:
-  push:
-    branches:
-      - mathgraph/perfect-solver-oracle-20260810
+  workflow_dispatch:
 
 permissions:
   contents: read
