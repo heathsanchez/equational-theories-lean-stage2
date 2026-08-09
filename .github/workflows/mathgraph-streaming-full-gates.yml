@@ -1,0 +1,65 @@
+name: MathGraph Streaming Full Gates
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  full-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build candidate and static audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/mathgraph/build_streaming_collapse_candidate.py --baseline submissions/mathgraph/solver.py --output /tmp/solver_streaming.py
+          python3 -m py_compile /tmp/solver_streaming.py
+          test "$(wc -c < /tmp/solver_streaming.py)" -le 500000
+          if grep -nE 'evaluation_order5_0014|evaluation_order5_0042|8502|27144|20115|21404' /tmp/solver_streaming.py; then
+            echo 'target-id hostile audit failed' >&2
+            exit 1
+          fi
+          cp submissions/mathgraph/solver.py /tmp/solver_baseline.py
+          cp /tmp/solver_streaming.py submissions/mathgraph/solver.py
+      - name: Python test suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install -q pytest
+          python3 -m pytest -q tests
+      - name: Set up official judge environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Official harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 scripts/run_harness.py | tee /tmp/harness.log
+      - name: Marathon harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 scripts/run_marathon_harness.py | tee /tmp/marathon.log
+      - name: Restore baseline for artifact comparison
+        if: always()
+        shell: bash
+        run: |
+          cp /tmp/solver_baseline.py submissions/mathgraph/solver.py || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: streaming-full-gates
+          path: |
+            /tmp/solver_streaming.py
+            /tmp/harness.log
+            /tmp/marathon.log
