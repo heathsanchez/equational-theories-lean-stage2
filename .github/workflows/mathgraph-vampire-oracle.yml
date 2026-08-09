@@ -1,0 +1,49 @@
+name: MathGraph Vampire Oracle
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  vampire-0042:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vampire 5.0.1
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 -o /tmp/vampire.zip https://github.com/vprover/vampire/releases/download/v5.0.1/vampire-Linux-X64.zip
+          unzip -j -o /tmp/vampire.zip -d /tmp
+          chmod +x /tmp/vampire
+          /tmp/vampire --version || true
+      - name: Prove evaluation_order5_0042
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/0042.p <<'EOF'
+          fof(source,axiom,(! [V_X,V_Y,V_Z] : V_X = f(f(V_Y,V_Z),f(f(V_X,f(V_X,V_Y)),V_Z)))).
+          fof(target,conjecture,(! [V_X,V_Y,V_Z,V_W] : V_X = f(f(V_X,f(V_X,V_Y)),f(V_Z,f(V_Z,V_W))))).
+          EOF
+          /tmp/vampire --mode casc --time_limit 10 --proof tptp /tmp/0042.p | tee /tmp/vampire_0042_proof.txt
+          grep -q 'SZS status Theorem' /tmp/vampire_0042_proof.txt
+      - name: Proof summary
+        if: always()
+        shell: bash
+        run: |
+          echo '=== INFERENCE COUNTS ==='
+          grep -c 'inference(superposition' /tmp/vampire_0042_proof.txt || true
+          grep -c 'demodulation' /tmp/vampire_0042_proof.txt || true
+          echo '=== PROOF ==='
+          cat /tmp/vampire_0042_proof.txt || true
+      - name: Upload proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vampire-0042-proof
+          path: /tmp/vampire_0042_proof.txt
