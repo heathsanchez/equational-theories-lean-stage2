@@ -9,35 +9,34 @@ permissions:
   contents: read
 
 jobs:
-  replay-transport:
+  direct-transport:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Reconstruct bounded collapse and transport to 0042
+      - name: Discover singleton and instantiate proof at actual target
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import importlib.util,json,sys,time
           from pathlib import Path
-          p=Path('submissions/mathgraph/solver.py');spec=importlib.util.spec_from_file_location('mgtransport',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
-          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)'); singleton=m.parse_equation('x = y'); original=m.parse_equation('x = (x * (x * y)) * (z * (z * w))')
-          limits=dict(m.COMPACT_SUPERPOSITION_PROBE);limits.update({'maximum_term_size':25,'maximum_replay_term_size':5000,'maximum_depth':12,'maximum_rules':700,'maximum_rounds':100000,'new_clauses_per_round':100000,'maximum_clauses':7000,'normalization_steps':64,'maximum_proof_nodes':30000})
+          p=Path('submissions/mathgraph/solver.py');spec=importlib.util.spec_from_file_location('mgdt',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)');singleton=m.parse_equation('x = y');actual=m.parse_equation('x = (x * (x * y)) * (z * (z * w))')
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE);limits.update({'maximum_term_size':25,'maximum_replay_term_size':10000,'maximum_depth':12,'maximum_rules':700,'maximum_clauses':7000,'normalization_steps':64,'maximum_proof_nodes':30000})
           eng=m.TargetGroundedRefutation(source,singleton,time.monotonic()+8,limits);s=eng.search
-          def orientations(c):
+          def ors(c):
             o=s.orient(c)
-            if o is not None:return [o]
+            if o is not None:return[o]
             q=[]
             if c.lhs[0]!='var':q.append(c)
             if c.rhs[0]!='var':q.append(m.Recipe(c.rhs,c.lhs,'symmetry',(c,)))
             return q
           processed=set();active=[];tick=0;found=None
           while time.monotonic()<s.deadline:
-            avail=[i for i in range(len(s.clauses)) if i not in processed]
-            if not avail:break
-            tick+=1;idx=avail[0] if tick%2==0 else min(avail,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i));processed.add(idx)
-            grs=orientations(s.clauses[idx]);simp=active+grs;pending=[]
+            av=[i for i in range(len(s.clauses)) if i not in processed]
+            if not av:break
+            tick+=1;idx=av[0] if tick%2==0 else min(av,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i));processed.add(idx);grs=ors(s.clauses[idx]);simp=active+grs;pending=[]
             for gr in grs:
               for pi,ar in enumerate(active+[gr]):
                 for outer,inner,oi,ii in ((gr,ar,tick,pi),(ar,gr,pi,tick)):
@@ -56,19 +55,19 @@ jobs:
             for q in pending:s.add_clause(q)
             active.extend(grs);found=s.target_proof(s.rules())
             if found is not None:break
-          collapses=[c for c in s.clauses if c.lhs[0]=='var' and c.rhs[0]=='var' and c.lhs!=c.rhs]
-          out={'found_singleton':found is not None,'collapse_clauses':len(collapses),'clauses':len(s.clauses)}
+          out={'found':found is not None,'clauses':len(s.clauses)}
           if found is not None:
-            r=eng.inline_recipe(found); comp=m.CompactSuperposition(sys.modules[spec.name],source,singleton,time.monotonic()+2,limits);nodes,root=comp.compile(r)
-            out.update({'singleton_nodes':len(nodes),'singleton_max_term':max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes),'singleton_replay_5000':m.replay_dag(source,nodes,root,maximum_term_size=5000,maximum_nodes=30000),'singleton_replay_unbounded':m.replay_dag(source,nodes,root,maximum_nodes=30000)})
-          if collapses:
-            tc=m.CompactSuperposition(sys.modules[spec.name],source,original,time.monotonic()+2,limits);tc.clauses=[collapses[0]];proof=tc.collapse_proof();nodes2,root2=tc.compile(proof);code,n=m.make_dag_certificate(original,nodes2,root2);Path('/tmp/0042_transported.lean').write_text(code)
-            out.update({'transport_nodes':len(nodes2),'transport_max_term':max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes2),'transport_replay_5000':m.replay_dag(source,nodes2,root2,maximum_term_size=5000,maximum_nodes=30000),'transport_replay_unbounded':m.replay_dag(source,nodes2,root2,maximum_nodes=30000),'certificate_bytes':len(code.encode()),'needed_nodes':n})
-          Path('/tmp/replay_transport.json').write_text(json.dumps(out,indent=2));print(json.dumps(out,indent=2))
+            universal=eng.inline_recipe(found)
+            tc=m.CompactSuperposition(sys.modules[spec.name],source,actual,time.monotonic()+5,limits)
+            transported=tc.instantiate(universal,{'x':actual[0],'y':actual[1]})
+            out['transport_endpoints']=[m.render_term(transported.lhs),m.render_term(transported.rhs)]
+            nodes,root=tc.compile(transported);out['nodes']=len(nodes);out['max_term']=max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes);out['replay']=m.replay_dag(source,nodes,root,maximum_term_size=10000,maximum_nodes=30000)
+            code,n=m.make_dag_certificate(actual,nodes,root);out['certificate_bytes']=len(code.encode());out['needed_nodes']=n;Path('/tmp/0042_direct_transport.lean').write_text(code)
+          Path('/tmp/direct_transport.json').write_text(json.dumps(out,indent=2));print(json.dumps(out,indent=2))
           PY
       - uses: actions/upload-artifact@v4
         with:
-          name: replay-transport
+          name: direct-transport
           path: |
-            /tmp/replay_transport.json
-            /tmp/0042_transported.lean
+            /tmp/direct_transport.json
+            /tmp/0042_direct_transport.lean
