@@ -1,0 +1,142 @@
+name: MathGraph Six Residual Promotion
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Fetch frozen proof-controller source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin mathgraph/backward-continuation-research
+          git show FETCH_HEAD:experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py > /tmp/controller.py
+          git show FETCH_HEAD:colab/data/six_residuals.json > /tmp/six.json
+      - name: Build combined candidate and static audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/mathgraph/build_full_residual_candidate_v2.py \
+            --baseline submissions/mathgraph/solver.py \
+            --runner /tmp/controller.py \
+            --output /tmp/solver_six.py
+          python3 -m py_compile /tmp/solver_six.py
+          bytes=$(wc -c < /tmp/solver_six.py)
+          echo "candidate bytes=$bytes"
+          test "$bytes" -le 500000
+          if grep -nE 'evaluation_(hard_0196|normal_0036|normal_0040|normal_0158|order5_0014|order5_0042)|1689|2391|2666|2062|3067|3082|1859|206|8502|27144|20115|21404' /tmp/solver_six.py; then
+            echo 'residual-id hostile audit failed' >&2
+            exit 1
+          fi
+      - name: Sealed FALSE-control audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import importlib.util,json,sys,time
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('sixfalse','/tmp/solver_six.py');m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          payload=json.loads(Path('experiments/mathgraph/audits/balanced_audit_inputs.json').read_text())
+          rows=payload.get('rows',payload)
+          labels=json.loads(Path('experiments/mathgraph/audits/balanced_audit_labels.sealed.json').read_text())['labels']
+          false_rows=[r for r in rows if labels[r['id']] is False]
+          m.judge=lambda verdict,code:{'status':'accepted'}
+          hits=[];tested=[];started=time.monotonic()
+          for row in false_rows:
+              source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
+              stream_gate=m.streaming_singleton_shape(source,target)
+              sl,sr,sv=source;tl,tr,tv=target
+              control_gate=(sl[0]=='var' and tl[0]=='var' and 7<=m.term_size(sr)<=15 and 7<=m.term_size(tr)<=15 and m.variable_occurrence_count(sr)>len(sv) and m.variable_occurrence_count(tr)>len(tv))
+              if not (stream_gate or control_gate): continue
+              tested.append(row['id'])
+              ok=m.try_streaming_singleton_candidate(source,target,120)
+              if not ok:
+                  ok=m.try_paramodulation_control_candidate(row,source,target,120)
+              if ok:hits.append(row['id'])
+          report={'false_total':len(false_rows),'tested':len(tested),'tested_ids':tested,'false_hits':hits,'elapsed':round(time.monotonic()-started,3)}
+          Path('/tmp/false_controls.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+          if hits: raise SystemExit('FALSE control proof discovered')
+          PY
+      - name: Full Python regression suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install -q pytest openai
+          cp submissions/mathgraph/solver.py /tmp/solver_baseline.py
+          cp /tmp/solver_six.py submissions/mathgraph/solver.py
+          python3 -m pytest -q tests
+      - name: Set up official Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Official Lean judge all six
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 - <<'PY'
+          import importlib.util,json,sys,time
+          from pathlib import Path
+          from judge.verify import verify_answer,JudgeConfig
+          spec=importlib.util.spec_from_file_location('sixlean','/tmp/solver_six.py');m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          rows=json.load(open('/tmp/six.json')); rows=rows.get('rows',rows) if isinstance(rows,dict) else rows
+          report=[]
+          for row in rows:
+              def local_judge(verdict,code,p=row):
+                  result=verify_answer(p,json.dumps({'verdict':verdict,'code':code}),config=JudgeConfig(lean_timeout_seconds=120))
+                  local_judge.last=result
+                  return result
+              local_judge.last=None;m.judge=local_judge
+              source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2']);started=time.monotonic();via='none'
+              ok=m.try_streaming_singleton_candidate(source,target,120)
+              if ok:via='streaming'
+              else:
+                  ok=m.try_paramodulation_control_candidate(row,source,target,120)
+                  if ok:via='control'
+              result=local_judge.last or {}
+              record={'id':row['id'],'ok':bool(ok),'via':via,'elapsed':round(time.monotonic()-started,3),'status':result.get('status'),'error_code':result.get('error_code'),'axioms':result.get('axioms')}
+              report.append(record);print(json.dumps(record))
+              if not ok or result.get('status')!='accepted':
+                  Path('/tmp/six_lean.json').write_text(json.dumps(report,indent=2,default=str)+'\n')
+                  raise SystemExit(row['id']+' failed Lean gate')
+          Path('/tmp/six_lean.json').write_text(json.dumps(report,indent=2,default=str)+'\n')
+          PY
+      - name: Official judge harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 scripts/run_harness.py | tee /tmp/harness.log
+      - name: Marathon harness
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 scripts/run_marathon_harness.py | tee /tmp/marathon.log
+      - name: Restore baseline
+        if: always()
+        shell: bash
+        run: |
+          cp /tmp/solver_baseline.py submissions/mathgraph/solver.py || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: six-residual-promotion
+          path: |
+            /tmp/solver_six.py
+            /tmp/false_controls.json
+            /tmp/six_lean.json
+            /tmp/harness.log
+            /tmp/marathon.log
