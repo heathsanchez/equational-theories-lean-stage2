@@ -1,0 +1,101 @@
+name: MathGraph Streaming Candidate CI
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/mathgraph/build_streaming_collapse_candidate.py \
+            --baseline submissions/mathgraph/solver.py \
+            --output /tmp/solver_streaming.py
+          python3 -m py_compile /tmp/solver_streaming.py
+          bytes=$(wc -c < /tmp/solver_streaming.py)
+          echo "candidate bytes=$bytes"
+          test "$bytes" -le 500000
+      - name: FALSE-control discovery audit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import importlib.util,json,sys,time
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('cand','/tmp/solver_streaming.py');m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          rows=json.loads(Path('experiments/mathgraph/audits/balanced_audit_inputs.json').read_text())['rows']
+          labels=json.loads(Path('experiments/mathgraph/audits/balanced_audit_labels.sealed.json').read_text())['labels']
+          false_rows=[r for r in rows if labels[r['id']] is False]
+          gated=[];hits=[];elapsed=0.0
+          m.judge=lambda verdict,code:{'status':'accepted'}
+          for row in false_rows:
+              source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
+              if not m.streaming_singleton_shape(source,target): continue
+              gated.append(row['id']);started=time.monotonic();ok=m.try_streaming_singleton_candidate(source,target,120);elapsed+=time.monotonic()-started
+              if ok:hits.append(row['id'])
+          report={'false_total':len(false_rows),'shape_gated':len(gated),'gated_ids':gated,'false_singleton_hits':hits,'elapsed':elapsed}
+          Path('/tmp/false_control_report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
+          if hits: raise SystemExit('FALSE control produced singleton proof')
+          PY
+      - name: Candidate regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp submissions/mathgraph/solver.py /tmp/solver_baseline.py
+          cp /tmp/solver_streaming.py submissions/mathgraph/solver.py
+          python3 -m pytest -q \
+            tests/test_mathgraph_target_grounded_refutation.py \
+            tests/test_mathgraph_compact_collapse.py \
+            tests/test_mathgraph_stair_climber_specialist.py \
+            tests/test_mathgraph_fin5_route.py
+          cp /tmp/solver_baseline.py submissions/mathgraph/solver.py
+      - name: Set up Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Official judge integration on both order5 residuals
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 - <<'PY'
+          import importlib.util,json,sys
+          from pathlib import Path
+          from judge.verify import verify_answer,JudgeConfig
+          spec=importlib.util.spec_from_file_location('candjudge','/tmp/solver_streaming.py');m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          problems=[
+            {'id':'evaluation_order5_0014','eq1_id':8502,'eq2_id':27144,'equation1':'x = y * (x * (((z * y) * y) * y))','equation2':'x = ((y * z) * (x * y)) * (x * z)'},
+            {'id':'evaluation_order5_0042','eq1_id':20115,'eq2_id':21404,'equation1':'x = (y * z) * ((x * (x * y)) * z)','equation2':'x = (x * (x * y)) * (z * (z * w))'},
+          ]
+          report={}
+          for problem in problems:
+              def local_judge(verdict,code,p=problem):
+                  result=verify_answer(p,json.dumps({'verdict':verdict,'code':code}),config=JudgeConfig(lean_timeout_seconds=120))
+                  report[p['id']]={k:result.get(k) for k in ('status','error_code','message','direct_declarations','axioms')}
+                  return result
+              m.judge=local_judge
+              source=m.parse_equation(problem['equation1']);target=m.parse_equation(problem['equation2'])
+              if not m.try_streaming_singleton_candidate(source,target,120):
+                  Path('/tmp/judge_integration.json').write_text(json.dumps(report,indent=2,default=str)+'\n')
+                  raise SystemExit(problem['id']+' failed integrated route')
+          Path('/tmp/judge_integration.json').write_text(json.dumps(report,indent=2,default=str)+'\n');print(json.dumps(report,indent=2,default=str))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: streaming-candidate-ci
+          path: |
+            /tmp/solver_streaming.py
+            /tmp/false_control_report.json
+            /tmp/judge_integration.json
