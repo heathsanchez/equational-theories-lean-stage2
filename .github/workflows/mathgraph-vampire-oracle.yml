@@ -9,21 +9,21 @@ permissions:
   contents: read
 
 jobs:
-  direct-transport:
+  universal-certificate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - name: Discover singleton and instantiate proof at actual target
+      - name: Discover compact singleton recipe and emit universal lemma DAG
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import importlib.util,json,sys,time
           from pathlib import Path
-          p=Path('submissions/mathgraph/solver.py');spec=importlib.util.spec_from_file_location('mgdt',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
-          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)');singleton=m.parse_equation('x = y');actual=m.parse_equation('x = (x * (x * y)) * (z * (z * w))')
-          limits=dict(m.COMPACT_SUPERPOSITION_PROBE);limits.update({'maximum_term_size':25,'maximum_replay_term_size':10000,'maximum_depth':12,'maximum_rules':700,'maximum_clauses':7000,'normalization_steps':64,'maximum_proof_nodes':30000})
+          p=Path('submissions/mathgraph/solver.py');spec=importlib.util.spec_from_file_location('mgu',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)'); singleton=m.parse_equation('x = y'); actual=m.parse_equation('x = (x * (x * y)) * (z * (z * w))')
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE);limits.update({'maximum_term_size':25,'maximum_depth':12,'maximum_rules':700,'maximum_clauses':7000,'normalization_steps':64})
           eng=m.TargetGroundedRefutation(source,singleton,time.monotonic()+8,limits);s=eng.search
           def ors(c):
             o=s.orient(c)
@@ -55,19 +55,78 @@ jobs:
             for q in pending:s.add_clause(q)
             active.extend(grs);found=s.target_proof(s.rules())
             if found is not None:break
-          out={'found':found is not None,'clauses':len(s.clauses)}
-          if found is not None:
-            universal=eng.inline_recipe(found)
-            tc=m.CompactSuperposition(sys.modules[spec.name],source,actual,time.monotonic()+5,limits)
-            transported=tc.instantiate(universal,{'x':actual[0],'y':actual[1]})
-            out['transport_endpoints']=[m.render_term(transported.lhs),m.render_term(transported.rhs)]
-            nodes,root=tc.compile(transported);out['nodes']=len(nodes);out['max_term']=max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes);out['replay']=m.replay_dag(source,nodes,root,maximum_term_size=10000,maximum_nodes=30000)
-            code,n=m.make_dag_certificate(actual,nodes,root);out['certificate_bytes']=len(code.encode());out['needed_nodes']=n;Path('/tmp/0042_direct_transport.lean').write_text(code)
-          Path('/tmp/direct_transport.json').write_text(json.dumps(out,indent=2));print(json.dumps(out,indent=2))
+          if found is None:raise SystemExit('no singleton proof')
+          root=eng.inline_recipe(found)
+          # Dependency DAG in topological order.
+          order=[];seen=set()
+          def visit(r):
+            if id(r) in seen:return
+            for p0 in r.parents:visit(p0)
+            seen.add(id(r));order.append(r)
+          visit(root);names={id(r):f'q{i}' for i,r in enumerate(order)}
+          def rvars(r):return sorted(m.term_variables(r.lhs)|m.term_variables(r.rhs))
+          varsets={id(r):rvars(r) for r in order}
+          def subst_partial(t,mp):return m.substitute_partial(t,mp)
+          def render_under(t,curvars,ren,anchor):
+            # Any schematic variable eliminated from the current conclusion is a vacuous
+            # universal parameter; specialize it consistently to an available anchor.
+            mp={v:('var',ren[v]) for v in curvars}
+            for v in m.term_variables(t):
+              if v not in mp:mp[v]=('var',anchor)
+            return m.render_term(subst_partial(t,mp))
+          def parent_app(parent,current,ren,explicit=None):
+            cvs=set(rvars(current)); anchor=ren[rvars(current)[0]] if rvars(current) else 'x'; explicit=dict(explicit or ())
+            args=[]
+            for pv in varsets[id(parent)]:
+              term=explicit.get(pv,('var',pv))
+              args.append(render_under(term,cvs,ren,anchor))
+            return names[id(parent)]+''.join(' ('+a+')' for a in args)
+          lines=['import JudgeProblem','','def submission : Goal := by','  intro G _ h','  intro x y z w']
+          max_formula=0
+          for r in order:
+            vs=rvars(r);ren={v:f'v{i}' for i,v in enumerate(vs)};anchor=ren[vs[0]] if vs else 'x';lhs=render_under(r.lhs,set(vs),ren,anchor);rhs=render_under(r.rhs,set(vs),ren,anchor);max_formula=max(max_formula,len(lhs)+len(rhs))
+            binders=('∀ '+ ' '.join(ren[v] for v in vs)+', ') if vs else ''
+            if r.kind=='source':
+              substitution,reverse=r.data;mp=dict(substitution);args=[render_under(mp[v],set(vs),ren,anchor) for v in source[2]];expr='h'+''.join(' ('+a+')' for a in args);expr=('Eq.symm ('+expr+')') if reverse else expr
+            elif r.kind=='instantiate':expr=parent_app(r.parents[0],r,ren,r.data)
+            elif r.kind=='symmetry':expr='Eq.symm ('+parent_app(r.parents[0],r,ren)+')'
+            elif r.kind=='transitivity':expr='Eq.trans ('+parent_app(r.parents[0],r,ren)+') ('+parent_app(r.parents[1],r,ren)+')'
+            elif r.kind=='congruence':
+              side,sibling=r.data;sib=render_under(sibling,set(vs),ren,anchor);fn=('fun _t => _t ◇ '+sib) if side=='left' else ('fun _t => '+sib+' ◇ _t');expr='congrArg ('+fn+') ('+parent_app(r.parents[0],r,ren)+')'
+            elif r.kind=='reflexivity':expr='rfl'
+            else:raise ValueError('kind '+r.kind)
+            intro=(' by\n    intro '+' '.join(ren[v] for v in vs)+'\n    exact '+expr) if vs else (' := '+expr)
+            if vs: lines.append('  have '+names[id(r)]+' : '+binders+lhs+' = '+rhs+' := '+intro.strip())
+            else: lines.append('  have '+names[id(r)]+' : '+lhs+' = '+rhs+intro)
+          rv=rvars(root);rootargs=[]
+          # root is x=y; instantiate with actual target sides by variable name.
+          amap={'x':actual[0],'y':actual[1]}
+          for v in rv:rootargs.append(m.render_term(amap.get(v,actual[0])))
+          lines.append('  exact '+names[id(root)]+''.join(' ('+a+')' for a in rootargs));code='\n'.join(lines)+'\n';Path('/tmp/0042_universal.lean').write_text(code)
+          stats={'recipe_nodes':len(order),'code_bytes':len(code.encode()),'max_formula_chars':max_formula,'root_vars':rv,'search_clauses':len(s.clauses)};Path('/tmp/universal_stats.json').write_text(json.dumps(stats,indent=2));print(json.dumps(stats,indent=2))
+          PY
+      - name: Set up Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          SKIP_DOCKER=1 bash scripts/setup.sh
+      - name: Verify universal certificate in official judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from judge.verify import verify_answer,JudgeConfig
+          problem={'id':'evaluation_order5_0042','eq1_id':20115,'eq2_id':21404,'equation1':'x = (y * z) * ((x * (x * y)) * z)','equation2':'x = (x * (x * y)) * (z * (z * w))'}
+          code=Path('/tmp/0042_universal.lean').read_text();r=verify_answer(problem,json.dumps({'verdict':'true','code':code}),config=JudgeConfig(lean_timeout_seconds=120));Path('/tmp/judge_result.json').write_text(json.dumps(r,indent=2,default=str));print(json.dumps({k:r.get(k) for k in ('status','error_code','message','direct_declarations','axioms')},default=str))
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: direct-transport
+          name: universal-certificate
           path: |
-            /tmp/direct_transport.json
-            /tmp/0042_direct_transport.lean
+            /tmp/0042_universal.lean
+            /tmp/universal_stats.json
+            /tmp/judge_result.json
