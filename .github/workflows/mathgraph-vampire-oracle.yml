@@ -9,82 +9,66 @@ permissions:
   contents: read
 
 jobs:
-  bounded-given:
+  replay-transport:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Search inside Vampire proof envelope
+      - name: Reconstruct bounded collapse and transport to 0042
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           import importlib.util,json,sys,time
           from pathlib import Path
-          p=Path('submissions/mathgraph/solver.py')
-          spec=importlib.util.spec_from_file_location('mgbounded',p)
-          m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
-          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)')
-          target=m.parse_equation('x = y')
-          def orientations(s,c):
+          p=Path('submissions/mathgraph/solver.py');spec=importlib.util.spec_from_file_location('mgtransport',p);m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          source=m.parse_equation('x = (y * z) * ((x * (x * y)) * z)'); singleton=m.parse_equation('x = y'); original=m.parse_equation('x = (x * (x * y)) * (z * (z * w))')
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE);limits.update({'maximum_term_size':25,'maximum_replay_term_size':5000,'maximum_depth':12,'maximum_rules':700,'maximum_rounds':100000,'new_clauses_per_round':100000,'maximum_clauses':7000,'normalization_steps':64,'maximum_proof_nodes':30000})
+          eng=m.TargetGroundedRefutation(source,singleton,time.monotonic()+8,limits);s=eng.search
+          def orientations(c):
             o=s.orient(c)
             if o is not None:return [o]
-            z=[]
-            if c.lhs[0]!='var':z.append(c)
-            if c.rhs[0]!='var':z.append(m.Recipe(c.rhs,c.lhs,'symmetry',(c,)))
-            return z
-          def run(age_every,seconds=12.0):
-            limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
-            limits.update({'maximum_term_size':25,'maximum_replay_term_size':120,'maximum_depth':12,'maximum_rules':700,'maximum_rounds':100000,'new_clauses_per_round':100000,'maximum_clauses':7000,'normalization_steps':64,'maximum_proof_nodes':30000})
-            eng=m.TargetGroundedRefutation(source,target,time.monotonic()+seconds,limits); s=eng.search
-            processed=set(); active=[]; tick=0; raw=added=0; found=None; t0=time.monotonic()
-            while time.monotonic()<s.deadline and len(s.clauses)<limits['maximum_clauses']:
-              avail=[i for i in range(len(s.clauses)) if i not in processed]
-              if not avail:break
-              tick+=1
-              if tick%age_every==0: idx=avail[0]
-              else: idx=min(avail,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i))
-              processed.add(idx); grs=orientations(s,s.clauses[idx]); simplifiers=active+grs; pending=[]
-              for gr in grs:
-                for pi,ar in enumerate(active+[gr]):
-                  for outer,inner,oi,ii in ((gr,ar,tick,pi),(ar,gr,pi,tick)):
-                    for path in m.nonvariable_positions(outer.lhs,maximum_depth=12,include_root=True):
-                      if time.monotonic()>=s.deadline:break
-                      try:q=s.critical_pair(outer,inner,oi,ii,path)
-                      except Exception:q=None
-                      if q is None:continue
-                      raw+=1
-                      if max(m.term_size(q.lhs),m.term_size(q.rhs))>25:continue
-                      try:q=s.interreduce(q,simplifiers)
-                      except Exception:continue
-                      if max(m.term_size(q.lhs),m.term_size(q.rhs))<=25:pending.append(q)
+            q=[]
+            if c.lhs[0]!='var':q.append(c)
+            if c.rhs[0]!='var':q.append(m.Recipe(c.rhs,c.lhs,'symmetry',(c,)))
+            return q
+          processed=set();active=[];tick=0;found=None
+          while time.monotonic()<s.deadline:
+            avail=[i for i in range(len(s.clauses)) if i not in processed]
+            if not avail:break
+            tick+=1;idx=avail[0] if tick%2==0 else min(avail,key=lambda i:(m.term_size(s.clauses[i].lhs)+m.term_size(s.clauses[i].rhs),s.clauses[i].cost,i));processed.add(idx)
+            grs=orientations(s.clauses[idx]);simp=active+grs;pending=[]
+            for gr in grs:
+              for pi,ar in enumerate(active+[gr]):
+                for outer,inner,oi,ii in ((gr,ar,tick,pi),(ar,gr,pi,tick)):
+                  for path in m.nonvariable_positions(outer.lhs,maximum_depth=12,include_root=True):
                     if time.monotonic()>=s.deadline:break
+                    try:q=s.critical_pair(outer,inner,oi,ii,path)
+                    except Exception:q=None
+                    if q is None or max(m.term_size(q.lhs),m.term_size(q.rhs))>25:continue
+                    try:q=s.interreduce(q,simp)
+                    except Exception:continue
+                    if max(m.term_size(q.lhs),m.term_size(q.rhs))<=25:pending.append(q)
                   if time.monotonic()>=s.deadline:break
                 if time.monotonic()>=s.deadline:break
-              pending.sort(key=lambda q:(m.term_size(q.lhs)+m.term_size(q.rhs),q.cost,s.target_score(q)))
-              for q in pending:
-                if s.add_clause(q):added+=1
-              active.extend(grs)
-              found=s.target_proof(s.rules())
-              if found is not None:break
-            if found is None:found=s.target_proof(s.rules())
-            row={'age_every':age_every,'elapsed':round(time.monotonic()-t0,4),'found':found is not None,'clauses':len(s.clauses),'processed':len(processed),'active':len(active),'raw':raw,'added':added,'reductions':s.reductions,'max_recipe_cost':s.maximum_recipe_cost}
-            if found is not None:
-              try:
-                recipe=eng.inline_recipe(found); compiler=m.CompactSuperposition(sys.modules[spec.name],source,target,time.monotonic()+2,limits); nodes,root=compiler.compile(recipe)
-                row['compiled_nodes']=len(nodes); row['max_compiled_term']=max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes)
-                row['replay']=m.replay_dag(source,nodes,root,maximum_term_size=120,maximum_nodes=30000)
-                code,n=m.make_dag_certificate(target,nodes,root); row['proof_nodes']=n; row['certificate_bytes']=len(code.encode())
-                Path(f'/tmp/age{age_every}.lean').write_text(code)
-              except Exception as e:row['compile_error']=type(e).__name__+':'+str(e)
-            print(json.dumps(row),flush=True);return row
-          out=[run(k) for k in (2,3,4,5,7)]
-          Path('/tmp/bounded_given_results.json').write_text(json.dumps(out,indent=2))
+              if time.monotonic()>=s.deadline:break
+            pending.sort(key=lambda q:(m.term_size(q.lhs)+m.term_size(q.rhs),q.cost,s.target_score(q)))
+            for q in pending:s.add_clause(q)
+            active.extend(grs);found=s.target_proof(s.rules())
+            if found is not None:break
+          collapses=[c for c in s.clauses if c.lhs[0]=='var' and c.rhs[0]=='var' and c.lhs!=c.rhs]
+          out={'found_singleton':found is not None,'collapse_clauses':len(collapses),'clauses':len(s.clauses)}
+          if found is not None:
+            r=eng.inline_recipe(found); comp=m.CompactSuperposition(sys.modules[spec.name],source,singleton,time.monotonic()+2,limits);nodes,root=comp.compile(r)
+            out.update({'singleton_nodes':len(nodes),'singleton_max_term':max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes),'singleton_replay_5000':m.replay_dag(source,nodes,root,maximum_term_size=5000,maximum_nodes=30000),'singleton_replay_unbounded':m.replay_dag(source,nodes,root,maximum_nodes=30000)})
+          if collapses:
+            tc=m.CompactSuperposition(sys.modules[spec.name],source,original,time.monotonic()+2,limits);tc.clauses=[collapses[0]];proof=tc.collapse_proof();nodes2,root2=tc.compile(proof);code,n=m.make_dag_certificate(original,nodes2,root2);Path('/tmp/0042_transported.lean').write_text(code)
+            out.update({'transport_nodes':len(nodes2),'transport_max_term':max(max(m.term_size(n.lhs),m.term_size(n.rhs)) for n in nodes2),'transport_replay_5000':m.replay_dag(source,nodes2,root2,maximum_term_size=5000,maximum_nodes=30000),'transport_replay_unbounded':m.replay_dag(source,nodes2,root2,maximum_nodes=30000),'certificate_bytes':len(code.encode()),'needed_nodes':n})
+          Path('/tmp/replay_transport.json').write_text(json.dumps(out,indent=2));print(json.dumps(out,indent=2))
           PY
       - uses: actions/upload-artifact@v4
-        if: always()
         with:
-          name: bounded-given-results
+          name: replay-transport
           path: |
-            /tmp/bounded_given_results.json
-            /tmp/*.lean
+            /tmp/replay_transport.json
+            /tmp/0042_transported.lean
