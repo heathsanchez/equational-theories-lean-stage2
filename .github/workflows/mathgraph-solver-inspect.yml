@@ -1,0 +1,42 @@
+name: MathGraph Solver Inspect
+
+on:
+  push:
+    branches:
+      - mathgraph/perfect-solver-oracle-20260810
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract integration context
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=submissions/mathgraph/solver.py
+          grep -nE 'class (TargetGroundedRefutation|CompactSuperposition)|COMPACT_SUPERPOSITION_PROBE|TargetGroundedRefutation\(|compact-superposition|def (solve|main|solve_problem|try_)' "$f" > /tmp/grep.txt || true
+          python3 - <<'PY'
+          from pathlib import Path
+          f=Path('submissions/mathgraph/solver.py').read_text().splitlines()
+          needles=['class CompactSuperposition','class TargetGroundedRefutation','COMPACT_SUPERPOSITION_PROBE','TargetGroundedRefutation(']
+          hits=[]
+          for i,line in enumerate(f,1):
+              if any(n in line for n in needles): hits.append(i)
+          out=[]
+          for h in hits:
+              a=max(1,h-80); b=min(len(f),h+180)
+              out.append(f'===== {a}:{b} around {h} =====')
+              out.extend(f'{j:06d}: {f[j-1]}' for j in range(a,b+1))
+          Path('/tmp/context.txt').write_text('\n'.join(out)+'\n')
+          print('hits',hits,'lines',len(f),'bytes',Path('submissions/mathgraph/solver.py').stat().st_size)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: solver-integration-context
+          path: |
+            /tmp/grep.txt
+            /tmp/context.txt
