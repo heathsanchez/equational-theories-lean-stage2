@@ -1,0 +1,116 @@
+name: MathGraph Vampire Six Residual Reproduction
+
+on:
+  push:
+    branches:
+      - mathgraph/vampire-six-repro-20260820
+  workflow_dispatch:
+
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout research branch
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dataset tooling and Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python -m pip install --upgrade pip
+          python -m pip install 'datasets>=3,<5'
+          sudo apt-get update
+          sudo apt-get install -y vampire
+          vampire --version || true
+
+      - name: Extract the six released evaluation residuals
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python - <<'PY'
+          import json
+          from datasets import load_dataset
+
+          wanted = {
+              'evaluation_normal_0036',
+              'evaluation_normal_0040',
+              'evaluation_normal_0158',
+              'evaluation_hard_0196',
+              'evaluation_order5_0014',
+              'evaluation_order5_0042',
+          }
+          configs = ['evaluation_normal', 'evaluation_hard', 'evaluation_order5']
+          found = {}
+          for config in configs:
+              ds = load_dataset('SAIRfoundation/equational-theories-selected-problems', config, split='train')
+              for row in ds:
+                  if row.get('id') in wanted:
+                      found[row['id']] = dict(row)
+
+          missing = sorted(wanted - set(found))
+          if missing:
+              raise SystemExit(f'Missing residual rows: {missing}')
+
+          rows = [found[k] for k in sorted(found)]
+          with open('/tmp/mathgraph-six-residuals.json', 'w') as f:
+              json.dump(rows, f, indent=2)
+          print(json.dumps(rows, indent=2))
+          PY
+
+      - name: Run committed Vampire residual diagnostic
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python experiments/mathgraph/run_vampire_residual_research.py \
+            --input /tmp/mathgraph-six-residuals.json \
+            --output mathgraph-six-vampire.json \
+            --seconds 10
+          python - <<'PY'
+          import json
+          p=json.load(open('mathgraph-six-vampire.json'))
+          rows=p['rows']
+          print('\nSUMMARY')
+          for r in rows:
+              print(r['id'], 'theorem=', r['theorem'], 'seconds=', r['seconds'], 'proof_lines=', r['proof_lines'], 'superposition=', r['superposition_steps'], 'demodulation=', r['demodulation_steps'])
+          solved=sum(bool(r['theorem']) for r in rows)
+          print(f'SOLVED={solved}/{len(rows)}')
+          if solved != len(rows):
+              raise SystemExit(1)
+          PY
+
+      - name: Write compact proof-shape report
+        shell: bash
+        run: |
+          python - <<'PY'
+          import collections, json, re
+          p=json.load(open('mathgraph-six-vampire.json'))
+          out=[]
+          for r in p['rows']:
+              proof=r.get('proof') or ''
+              inf=collections.Counter(re.findall(r'inference\(([^,\]]+)', proof))
+              out.append({
+                  'id': r['id'],
+                  'seconds': r['seconds'],
+                  'proof_lines': r['proof_lines'],
+                  'superposition_steps': r['superposition_steps'],
+                  'demodulation_steps': r['demodulation_steps'],
+                  'inference_histogram': dict(sorted(inf.items())),
+              })
+          json.dump({'rows':out}, open('mathgraph-six-vampire-proof-shapes.json','w'), indent=2)
+          print(json.dumps(out, indent=2))
+          PY
+
+      - name: Upload proof traces
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-vampire-six-residuals
+          path: |
+            mathgraph-six-vampire.json
+            mathgraph-six-vampire-proof-shapes.json
+          if-no-files-found: error
