@@ -26,8 +26,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install 'datasets>=3,<5'
           sudo apt-get update
-          sudo apt-get install -y vampire
-          vampire --version || true
+          sudo apt-get install -y cmake ninja-build g++ git
+          git clone --depth 1 --recurse-submodules https://github.com/vprover/vampire.git /tmp/vampire-src
+          cmake -S /tmp/vampire-src -B /tmp/vampire-src/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_Z3=ON
+          cmake --build /tmp/vampire-src/build --parallel 2
+          sudo install -m 0755 /tmp/vampire-src/build/vampire /usr/local/bin/vampire
+          vampire --show_options on >/dev/null
 
       - name: Extract the six released evaluation residuals
         shell: bash
