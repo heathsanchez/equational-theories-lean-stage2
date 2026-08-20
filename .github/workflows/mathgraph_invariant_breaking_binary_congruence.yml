@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - mathgraph/invariant-breaking-binary-congruence-20260821
+  pull_request:
+    branches:
+      - mathgraph/residual-conditioned-operator-induction-20260821
   workflow_dispatch:
 
 jobs:
