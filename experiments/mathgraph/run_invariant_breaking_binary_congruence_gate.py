@@ -47,8 +47,7 @@ def canon_pair(m,a,b):
 def binary_family(m,source,target,library,missing,limit=1600):
  normalizer=m.EquationalNormalizer(source,target,time.monotonic()+20,dict(m.NORMALIZATION_PORTFOLIO[1]))
  mkeys={m.alpha_canonical_term(t,{}):m.term_size(t) for t in missing}
- raw={}
- pool=library[:72]
+ raw={};pool=library[:72]
  for i,x in enumerate(pool):
   for j,y in enumerate(pool):
    if j<i: continue
@@ -72,7 +71,7 @@ def binary_family(m,source,target,library,missing,limit=1600):
        k=m.alpha_canonical_term(u,{})
        if k in mkeys:hits.add(k)
      activation=selfmod.activation(m,(start,end,tuple(sorted(m.term_variables(start)|m.term_variables(end)))),target)
-     raw[key]={'schema':(start,end,tuple(sorted(m.term_variables(start)|m.term_variables(end)))),'proof':(nodes,root),'hits':len(hits),'weight':sum(mkeys[k] for k in hits),'activation':activation,'parents':(i,j)}
+     raw[key]={'schema':(start,end,tuple(sorted(m.term_variables(start)|m.term_variables(end)))),'proof':(nodes,root),'hits':len(hits),'weight':sum(mkeys[k] for k in hits),'activation':activation,'parents':(i,j),'name':'binary'}
      if len(raw)>=limit:break
     if len(raw)>=limit:break
    if len(raw)>=limit:break
@@ -91,10 +90,13 @@ def main():
   if pr:g1.append({'schema':p['schema'],'proof':pr,'name':'g1','activation':selfmod.activation(m,p['schema'],target)})
  g1.sort(key=lambda x:(-x['activation'],m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
  g2=op.build_gen2(m,source,target,g1,limit=520)
+ for x in g2:x['name']='g2'
  g2.sort(key=lambda x:(-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
  base=g1[:32]+g2[:128]
  diag,_,fterms=missmod.frontier(m,sym,source,target,base,10.0);missing=missmod.target_missing(m,target,fterms)
- g3=op.build_gen2(m,source,target,g2[:28],limit=520);g3.sort(key=lambda x:(-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
+ g3=op.build_gen2(m,source,target,g2[:28],limit=520)
+ for x in g3:x['name']='g3'
+ g3.sort(key=lambda x:(-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
  binary=binary_family(m,source,target,g1[:24]+g2[:48],missing)
  A=missmod.run_arm(m,sym,source,target,base,20.0,'A_frozen')
  B=missmod.run_arm(m,sym,source,target,g1[:24]+g2[:56]+g3[:72],20.0,'B_existing_G3')
