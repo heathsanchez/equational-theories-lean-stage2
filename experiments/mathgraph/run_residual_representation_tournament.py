@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# v2 mechanism-change tournament; trigger-only comment 20260821
 import json,re,random,hashlib,itertools
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]; R=ROOT/'experiments/mathgraph/results'
@@ -31,11 +32,10 @@ def bacc(rows,rule):
 def preds(rows,fs):
  o=[]
  for f in fs:
-  v=sorted({r['x'][f] for r in rows});
+  v=sorted({r['x'][f] for r in rows})
   if len(v)<2: continue
   for q in (.1,.25,.5,.75,.9):
-   t=v[min(len(v)-1,int(q*(len(v)-1)))]
-   o += [(f,'ge',t),(f,'le',t)]
+   t=v[min(len(v)-1,int(q*(len(v)-1)))]; o += [(f,'ge',t),(f,'le',t)]
  return list(dict.fromkeys(o))
 def fmt(rule): return ' AND '.join(f'{f} {">=" if d=="ge" else "<="} {t:.6g}' for f,d,t in rule)
 def sweep(rows,fs,seed):
@@ -61,10 +61,7 @@ def main():
  for target in base[0]['labels']:
   rows=[{'id':r['id'],'x':r['x'],'y':r['labels'][target]} for r in base]; n=sum(r['y'] for r in rows); track={'positives':n,'negatives':len(rows)-n}
   if n>=3 and len(rows)-n>=3:
-   track['prospective_static']=sweep(rows,static,20260821)
-   # response features deliberately exclude direct target labels; these are generic trajectory magnitudes only.
-   track['retrospective_response']=sweep(rows,response,20260822)
-   recur={}
+   track['prospective_static']=sweep(rows,static,20260821); track['retrospective_response']=sweep(rows,response,20260822); recur={}
    for rep in range(12):
     sub=[r for r in rows if int(hashlib.sha256((r['id']+str(rep)).encode()).hexdigest(),16)%2==0]
     if sum(r['y'] for r in sub)<2 or sum(not r['y'] for r in sub)<2: continue
