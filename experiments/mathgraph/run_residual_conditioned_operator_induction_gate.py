@@ -22,7 +22,7 @@ Protocol:
 A positive is only a replay-valid closure; a result file records the cut,
 operator generations, matched arms, and certificate size.
 """
-import importlib.util, json, sys, time, random
+import importlib.util, json, sys, time
 from collections import deque
 from pathlib import Path
 from datasets import load_dataset
@@ -94,8 +94,7 @@ def bridge_score(m,item,left,right):
     This uses only the bounded residual regions, not any external proof trace.
     """
     s=item['schema'];rvals=list(right.values());lvals=list(left.values())
-    rc=set(right);lc=set(left);best=0;exact=False
-    # keep scoring bounded and deterministic
+    rc=set(right);lc=set(left);best=0
     L=lvals[:220];R=rvals[:220]
     def nearest(t,vals):
         if not vals:return 10**9
@@ -108,8 +107,7 @@ def bridge_score(m,item,left,right):
                 if k in oppkeys:return 1000000,True
                 imp=base-nearest(nt,opp)
                 if imp>best:best=imp
-    # retain weak target activation as tie-break only
-    return best*100 + int(item.get('activation',0)),exact
+    return best*100 + int(item.get('activation',0)),False
 
 
 def append_proof(m,dst,proof):
@@ -133,22 +131,22 @@ def run_arm(m,sym,source,target,items,seconds=20.0,tag='arm'):
 
 
 def generation(m,opmod,source,target,parents,limit=420):
-    # Reuse the generic verified operator-closure compiler, but allow the
-    # residual to determine which verified parents become the next language.
     out=opmod.build_gen2(m,source,target,parents,limit=limit)
     out.sort(key=lambda x:(-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
     return out
 
 
+def show_eq(m,e):
+    return m.render_term(e[0])+' = '+m.render_term(e[1])
+
+
 def main():
     global selfmod
     m=load(SOLVER,'mg_residual_induction');sym=load(SYM,'sym_residual_induction');selfmod=load(SELF,'self_residual_induction');op=load(OPC,'op_residual_induction')
-    # op module expects its global selfmod to be populated.
     op.selfmod=selfmod
     rows={r['id']:dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train') if r['id']==RID}
     row=rows[RID];source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
 
-    # Current verified language G1.
     g1=[]
     for p in selfmod.proposals(m,source):
         pr=selfmod.compile_proposal(m,source,target,p)
@@ -165,18 +163,14 @@ def main():
     intersection=set(left).intersection(right)
     cut={'left_states':len(left),'right_states':len(right),'intersection':len(intersection),'depth':2,'cap':1400,'frozen_operators':len(frozen)}
 
-    # Arm A: frozen supplied/current operator closure only.
     arm_a=run_arm(m,sym,source,target,frozen,20.0,'A_frozen_g1_g2')
 
-    # Unconstrained arm B: ordinary activation-ranked recursive G3.
     bparents=g2[:24]
     g3b=generation(m,op,source,target,bparents,limit=420)
     for x in g3b:x['name']='g3_unconstrained'
     bins=(g1[:24]+g2[:48]+g3b[:64])
     arm_b=run_arm(m,sym,source,target,bins,20.0,'B_unconstrained_g3')
 
-    # Residual-conditioned arm C. Score G2 against the frozen cut; use the
-    # highest bridge-pressure parents to define the next operator language.
     scored=[]
     for x in g2:
         sc,ex=bridge_score(m,x,left,right);x=dict(x);x['bridge_score']=sc;x['exact_bridge']=ex;scored.append(x)
@@ -188,8 +182,6 @@ def main():
         sc,ex=bridge_score(m,x,left,right);x=dict(x);x['name']='g3_conditioned';x['bridge_score']=sc;x['exact_bridge']=ex;g3sc.append(x)
     g3sc.sort(key=lambda x:(-x['bridge_score'],-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
 
-    # If the residual persists, escalate the meta-language one generation using
-    # only the best verified G3 cut-pressure operators as parents.
     g4c=[]
     if g3sc:
         g4c=generation(m,op,source,target,g3sc[:20],limit=420)
@@ -199,21 +191,17 @@ def main():
         g4c=sorted(tmp,key=lambda x:(-x['bridge_score'],-x.get('activation',0),m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
 
     c_new=(g3sc[:44]+g4c[:44])
-    # Matched installation count with B as closely as possible.
     nnew=min(64,len(c_new));cins=g1[:24]+g2[:48]+c_new[:nnew]
     arm_c=run_arm(m,sym,source,target,cins,20.0,'C_residual_conditioned_g3_g4')
-
-    # Ablation is meaningful only on a positive C result: remove new induced
-    # operators while keeping the same base language and budget.
     ablation=run_arm(m,sym,source,target,g1[:24]+g2[:48],20.0,'C_ablation_remove_induced') if arm_c['closure'] else None
 
     def show(xs,n=12):
-        return [{'lhs':m.render_term(x['schema'][0]),'rhs':m.render_term(x['schema'][1]),'activation':x.get('activation',0),'bridge_score':x.get('bridge_score'), 'exact_bridge':x.get('exact_bridge',False),'name':x.get('name')} for x in xs[:n]]
+        return [{'lhs':m.render_term(x['schema'][0]),'rhs':m.render_term(x['schema'][1]),'activation':x.get('activation',0),'bridge_score':x.get('bridge_score'),'exact_bridge':x.get('exact_bridge',False),'name':x.get('name')} for x in xs[:n]]
     out={
       'schema':'mathgraph.residual-conditioned-operator-induction.v1',
       'id':RID,
       'protocol':{'no_external_proof_trace':True,'no_answer_label_in_generator':True,'no_target_specific_identity':True,'all_macros_replay_to_source':True,'matched_arm_seconds':20.0},
-      'source':m.render_equation(source),'target':m.render_equation(target),
+      'source':show_eq(m,source),'target':show_eq(m,target),
       'cut':cut,
       'counts':{'g1':len(g1),'g2':len(g2),'g3_unconstrained':len(g3b),'g3_conditioned':len(g3sc),'g4_conditioned':len(g4c),'g2_exact_bridges':sum(x.get('exact_bridge',False) for x in scored),'g3_exact_bridges':sum(x.get('exact_bridge',False) for x in g3sc),'g4_exact_bridges':sum(x.get('exact_bridge',False) for x in g4c)},
       'arms':{'A':arm_a,'B':arm_b,'C':arm_c,'C_ablation':ablation},
