@@ -17,9 +17,12 @@ jobs:
         run: python experiments/mathgraph/run_residual_factorization_optimum.py
       - name: Adaptive split-merge closure gate
         run: python experiments/mathgraph/run_adaptive_residual_factorization_closure.py
+      - name: All-archive adaptive closure transfer
+        run: python experiments/mathgraph/run_adaptive_residual_archive_closure.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual-factorization-optimum
           path: |
             experiments/mathgraph/results/residual-factorization-optimum.json
             experiments/mathgraph/results/adaptive-residual-factorization-closure.json
+            experiments/mathgraph/results/adaptive-residual-archive-closure.json
