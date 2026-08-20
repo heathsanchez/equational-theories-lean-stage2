@@ -1,2 +1,2 @@
-Trigger: Given Clause Saturation Gate
-Head: b8418c4eea742c11703ccf7a62e65af0f246f783
+Trigger: Given Clause Official Lean Stable
+Purpose: verify replay-valid hard0196 scheduling gain through the official Lean judge.
