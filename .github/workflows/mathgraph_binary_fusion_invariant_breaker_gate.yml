@@ -8,7 +8,7 @@ on:
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
-    timeout-minutes: 48
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,6 +31,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_cut_congruence_completion_gate.py
       - name: Run residual-induced inverse bridge depth
         run: python experiments/mathgraph/run_post_development_inverse_bridge_depth_gate.py
+      - name: Run residual-induced contextual inverse bridge
+        run: python experiments/mathgraph/run_post_development_contextual_inverse_bridge_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -43,5 +45,6 @@ jobs:
             experiments/mathgraph/results/post-development-component-bridge-gate.json
             experiments/mathgraph/results/residual-cut-congruence-completion-gate.json
             experiments/mathgraph/results/post-development-inverse-bridge-depth-gate.json
+            experiments/mathgraph/results/post-development-contextual-inverse-bridge-gate.json
           if-no-files-found: warn
           retention-days: 30
