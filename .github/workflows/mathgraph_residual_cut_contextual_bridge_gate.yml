@@ -16,6 +16,10 @@ jobs:
         run: python experiments/mathgraph/run_residual_representation_tournament.py
       - name: Replicate tournament on FIN3 lineage
         run: python experiments/mathgraph/run_residual_representation_fin3_replication.py
+      - name: Run leakage-free structural/operational ablation
+        run: python experiments/mathgraph/run_residual_representation_leakage_ablation.py
+      - name: Inventory representation-change events
+        run: python experiments/mathgraph/run_residual_event_inventory.py
       - name: Run frozen-threshold external validation
         run: python experiments/mathgraph/run_residual_atlas_external_validation.py
       - name: Inventory historical residual experiments
@@ -27,6 +31,8 @@ jobs:
           path: |
             experiments/mathgraph/results/residual-representation-tournament.json
             experiments/mathgraph/results/residual-representation-fin3-replication.json
+            experiments/mathgraph/results/residual-representation-leakage-ablation.json
+            experiments/mathgraph/results/residual-event-inventory.json
             experiments/mathgraph/results/residual-atlas-external-validation.json
             experiments/mathgraph/results/residual-atlas-inventory.json
           if-no-files-found: error
