@@ -1,15 +1,6 @@
 name: MathGraph Residual Unified Multisubstitution Gate
 
 on:
-  push:
-    branches:
-      - mathgraph/invariant-breaking-binary-congruence-20260821
-    paths-ignore:
-      - experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
-  pull_request:
-    branches:
-      - mathgraph/residual-conditioned-operator-induction-20260821
-    types: [opened, reopened, synchronize, edited]
   workflow_dispatch:
 
 permissions:
@@ -39,6 +30,7 @@ jobs:
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
             git add experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
             git commit -m 'research: persist residual multisubstitution result [skip ci]' || true
+            git pull --rebase origin mathgraph/invariant-breaking-binary-congruence-20260821 || true
             git push origin HEAD:mathgraph/invariant-breaking-binary-congruence-20260821 || true
           fi
       - uses: actions/upload-artifact@v4
