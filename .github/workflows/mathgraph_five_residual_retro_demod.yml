@@ -1,0 +1,159 @@
+name: MathGraph Five Residual Retro Demodulation
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  retro-demod:
+    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Handoff Probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout frozen 795/800 research baseline
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+
+      - name: Run matched restart versus retro-demodulated restart
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p experiments/mathgraph/results
+          python - <<'PY'
+          import importlib.util, json, sys, time
+          from pathlib import Path
+          from datasets import load_dataset
+
+          IDS={
+            'evaluation_normal_0036','evaluation_normal_0040','evaluation_hard_0196',
+            'evaluation_order5_0014','evaluation_order5_0042',
+          }
+          CONFIGS=['evaluation_normal','evaluation_hard','evaluation_order5']
+          spec=importlib.util.spec_from_file_location('mg_retro','submissions/mathgraph/solver.py')
+          m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
+          rows=[]
+          for cfg in CONFIGS:
+            rows += [dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train') if r.get('id') in IDS]
+          if {r['id'] for r in rows} != IDS: raise RuntimeError('dataset mismatch')
+
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
+          limits.update({
+            'maximum_term_size':65,'maximum_replay_term_size':260,'maximum_depth':12,
+            'maximum_rules':768,'maximum_rounds':64,'new_clauses_per_round':512,
+            'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':50000,
+          })
+
+          def finish(engine, recipe):
+            if recipe is None: return {'found':False,'replay_ok':False}
+            try:
+              recipe=engine.inline_recipe(recipe)
+              compiler=m.CompactSuperposition(m,engine.source,engine.target,time.monotonic()+2.0,engine.search.limits)
+              nodes,root=compiler.compile(recipe)
+              ok=((nodes[root].lhs,nodes[root].rhs)==engine.target[:2] and m.replay_dag(
+                engine.source,nodes,root,
+                maximum_term_size=engine.search.limits['maximum_replay_term_size'],
+                maximum_nodes=engine.search.limits['maximum_proof_nodes']))
+              return {'found':True,'replay_ok':bool(ok),'proof_nodes':len(m.proof_node_ids(nodes,root)),'nodes':nodes,'root':root}
+            except Exception as e:
+              return {'found':True,'replay_ok':False,'error':type(e).__name__+': '+str(e)}
+
+          def initial_engine(src,tgt,seconds=5.0):
+            return m.TargetGroundedRefutation(src,tgt,time.monotonic()+seconds,dict(limits))
+
+          def run_restart(src,tgt):
+            eng=initial_engine(src,tgt,5.0)
+            first=eng.search.solve()
+            if first is not None: return eng,finish(eng,first),{'initial_hit':True,'retro_added':0}
+            eng.search.deadline=time.monotonic()+5.0
+            second=eng.search.solve()
+            return eng,finish(eng,second),{'initial_hit':False,'retro_added':0}
+
+          def retro_fixed_point(search,seconds=2.0,max_passes=6,max_add=1000):
+            deadline=time.monotonic()+seconds
+            total=0; passes=[]
+            for phase in range(max_passes):
+              if time.monotonic()>=deadline: break
+              rules=list(search.rules())
+              snapshot=list(search.clauses)
+              proposals=[]
+              for c in snapshot:
+                if time.monotonic()>=deadline: break
+                # Naming reflexivities are infrastructure, not learned laws.
+                if getattr(c,'kind',None)=='reflexivity': continue
+                q=search.interreduce(c,rules)
+                if q is None or (q.lhs,q.rhs)==(c.lhs,c.rhs): continue
+                try:
+                  if m.term_size(q.lhs)>limits['maximum_term_size'] or m.term_size(q.rhs)>limits['maximum_term_size']: continue
+                except Exception: continue
+                proposals.append((search.target_score(q),q))
+              proposals.sort(key=lambda z:z[0])
+              added=0
+              for _,q in proposals:
+                if search.add_clause(q):
+                  total+=1; added+=1
+                  if total>=max_add: break
+              passes.append({'phase':phase+1,'rules':len(rules),'proposals':len(proposals),'added':added,'clauses':len(search.clauses)})
+              if added==0 or total>=max_add: break
+            return total,passes
+
+          def run_retro(src,tgt):
+            eng=initial_engine(src,tgt,5.0)
+            first=eng.search.solve()
+            if first is not None: return eng,finish(eng,first),{'initial_hit':True,'retro_added':0,'passes':[]}
+            # New developmental handoff: later simplifiers revisit earlier consequences.
+            eng.search.deadline=time.monotonic()+2.0
+            added,passes=retro_fixed_point(eng.search,seconds=2.0)
+            direct=eng.search.target_proof(eng.search.rules())
+            if direct is not None:
+              return eng,finish(eng,direct),{'initial_hit':False,'retro_added':added,'passes':passes,'hit_stage':'retro_only'}
+            # Matched second-generation continuation after representation compression.
+            eng.search.deadline=time.monotonic()+3.0
+            second=eng.search.solve()
+            return eng,finish(eng,second),{'initial_hit':False,'retro_added':added,'passes':passes,'hit_stage':'restart'}
+
+          out={'schema':'mathgraph.five-residual-retro-demod.v1','time_budget_seconds':10.0,'rows':[]}
+          for row in sorted(rows,key=lambda r:r['id']):
+            src=m.parse_equation(row['equation1']); tgt=m.parse_equation(row['equation2'])
+            ceng,cres,cmeta=run_restart(src,tgt)
+            reng,rres,rmeta=run_retro(src,tgt)
+            rec={
+              'id':row['id'],
+              'restart_control':{k:v for k,v in cres.items() if k not in ('nodes','root')},
+              'restart_control_meta':cmeta,
+              'retro_candidate':{k:v for k,v in rres.items() if k not in ('nodes','root')},
+              'retro_meta':rmeta,
+              'control_stats':{'clauses':len(ceng.search.clauses),'rounds':ceng.search.rounds,'superpositions':ceng.search.superpositions,'reductions':ceng.search.reductions},
+              'retro_stats':{'clauses':len(reng.search.clauses),'rounds':reng.search.rounds,'superpositions':reng.search.superpositions,'reductions':reng.search.reductions},
+            }
+            out['rows'].append(rec)
+            print(json.dumps(rec,sort_keys=True),flush=True)
+          out['summary']={
+            'control_hits':[r['id'] for r in out['rows'] if r['restart_control'].get('replay_ok')],
+            'retro_hits':[r['id'] for r in out['rows'] if r['retro_candidate'].get('replay_ok')],
+            'retro_marginal_hits':[r['id'] for r in out['rows'] if r['retro_candidate'].get('replay_ok') and not r['restart_control'].get('replay_ok')],
+          }
+          Path('experiments/mathgraph/results/five-residual-retro-demod.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out['summary'],indent=2,sort_keys=True))
+          PY
+
+      - name: Upload retro-demodulation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-five-residual-retro-demod
+          path: experiments/mathgraph/results/five-residual-retro-demod.json
+          if-no-files-found: error
+          retention-days: 30
