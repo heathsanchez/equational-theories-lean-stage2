@@ -1,1 +1,1 @@
-Trigger O5 residual multisub ratchet after workflow installation.
+Trigger O5 residual multisub cross-ratchet after workflow installation.
