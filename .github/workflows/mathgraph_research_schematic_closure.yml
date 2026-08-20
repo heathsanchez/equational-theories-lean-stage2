@@ -16,16 +16,19 @@ on:
       - main
     paths:
       - .github/research-triggers/schematic-closure-gate.json
+  issues:
+    types: [opened]
 
 permissions:
   contents: write
 
 concurrency:
-  group: mathgraph-schematic-closure-${{ github.ref }}
+  group: mathgraph-schematic-closure-${{ github.run_id }}
   cancel-in-progress: false
 
 jobs:
   gate:
+    if: github.event_name != 'issues' || github.event.issue.title == '[MathGraph Trigger] Schematic Closure Gate'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -39,11 +42,24 @@ jobs:
       - name: Resolve exact tested commit and result branch
         id: cfg
         shell: bash
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
           set -euo pipefail
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             tested='${{ inputs.tested_commit }}'
             result_branch='${{ inputs.result_branch }}'
+          elif [[ "${{ github.event_name }}" == "issues" ]]; then
+            tested=$(python - <<'PY'
+          import json, os
+          print(json.loads(os.environ['ISSUE_BODY'])['tested_commit'])
+          PY
+          )
+            result_branch=$(python - <<'PY'
+          import json, os
+          print(json.loads(os.environ['ISSUE_BODY'])['result_branch'])
+          PY
+          )
           else
             tested=$(python - <<'PY'
           import json
