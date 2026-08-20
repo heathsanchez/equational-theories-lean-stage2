@@ -1,0 +1,28 @@
+name: MathGraph Cross Cone Binary Congruence Gate
+on:
+  push:
+    branches: [mathgraph/fast-gate-20260821]
+    paths:
+      - 'experiments/mathgraph/run_cross_cone_binary_congruence_gate.py'
+      - '.github/workflows/mathgraph_cross_cone_binary_congruence.yml'
+  workflow_dispatch:
+jobs:
+  cross-cone-binary:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    concurrency:
+      group: mathgraph-cross-cone-binary-fast
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run cross-cone binary congruence gate
+        run: python experiments/mathgraph/run_cross_cone_binary_congruence_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-cross-cone-binary-congruence-fast
+          path: experiments/mathgraph/results/cross-cone-binary-congruence-gate.json
