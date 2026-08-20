@@ -6,12 +6,16 @@ on:
     branches: [main]
     paths:
       - .github/research-triggers/five-residual-handoff.json
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: read
 
 jobs:
   probe:
+    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Handoff Probe'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -105,8 +109,6 @@ jobs:
                 if callable(getattr(eng.search,n,None))
               },
             }
-            # The prior closure-handoff audit accidentally omitted the rule argument.
-            # Test the actual final-rule normal forms without adding any inference primitive.
             handoff={}
             try:
               tl,tr=eng.search.target[:2]
@@ -123,7 +125,6 @@ jobs:
               handoff={'error':type(e).__name__+': '+str(e)}
             rec['final_rule_handoff']=handoff
 
-            # Characterize the smallest derived structural laws available for a second pass.
             candidates=[]
             for i,c in enumerate(eng.search.clauses):
               lhs,rhs=c.lhs,c.rhs
