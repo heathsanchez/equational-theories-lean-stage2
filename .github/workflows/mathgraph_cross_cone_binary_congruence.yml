@@ -5,6 +5,11 @@ on:
     paths:
       - 'experiments/mathgraph/run_cross_cone_binary_congruence_gate.py'
       - '.github/workflows/mathgraph_cross_cone_binary_congruence.yml'
+  pull_request:
+    branches: [mathgraph/isolated-actions-base-20260821]
+    paths:
+      - 'experiments/mathgraph/run_cross_cone_binary_congruence_gate.py'
+      - '.github/workflows/mathgraph_cross_cone_binary_congruence.yml'
   workflow_dispatch:
 jobs:
   cross-cone-binary:
