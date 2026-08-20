@@ -1,0 +1,172 @@
+name: MathGraph Schematic Closure Transfer Audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  transfer:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.title == '[MathGraph Trigger] Schematic Closure Gate'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout baseline
+        uses: actions/checkout@v4
+        with:
+          ref: cedc5c3c7eb720f266dda682e57453b2495f72e8
+          path: baseline
+          fetch-depth: 1
+
+      - name: Checkout candidate research branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          path: candidate
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+
+      - name: Run all-regime transfer comparison
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util, json, sys, time
+          from collections import Counter
+          from datasets import load_dataset
+          from pathlib import Path
+
+          def load(path,name):
+              spec=importlib.util.spec_from_file_location(name,path)
+              m=importlib.util.module_from_spec(spec); sys.modules[name]=m; spec.loader.exec_module(m); return m
+
+          base=load('baseline/submissions/mathgraph/solver.py','mg_base_transfer')
+          cand=load('candidate/submissions/mathgraph/solver.py','mg_cand_transfer')
+
+          configs=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
+          rows=[]
+          for cfg in configs:
+              for r in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train'):
+                  q=dict(r); q['_config']=cfg; rows.append(q)
+
+          def truth(row):
+              keys=['label','answer','is_true','truth','verdict','target']
+              for k in keys:
+                  if k not in row: continue
+                  v=row[k]
+                  if isinstance(v,bool): return v
+                  if isinstance(v,int) and v in (0,1): return bool(v)
+                  if isinstance(v,str):
+                      s=v.strip().lower()
+                      if s in ('true','1','yes','entailed','implied'): return True
+                      if s in ('false','0','no','not_entailed','not implied'): return False
+              return None
+
+          labels=[truth(r) for r in rows]
+          if any(x is None for x in labels):
+              sample={k:rows[0].get(k) for k in rows[0]}
+              raise RuntimeError('Could not infer truth label; first row='+repr(sample))
+
+          limits={
+            'seconds':0.5,
+            'maximum_term_size':45,
+            'maximum_replay_term_size':160,
+            'maximum_depth':10,
+            'maximum_rules':192,
+            'maximum_rounds':16,
+            'new_clauses_per_round':128,
+            'maximum_clauses':2000,
+            'normalization_steps':96,
+            'maximum_proof_nodes':20000,
+          }
+          for m in (base,cand):
+              z=dict(m.COMPACT_SUPERPOSITION_PROBE); z.update(limits); m._TRANSFER_LIMITS=z
+
+          def run(m,row,seconds=0.5):
+              src=m.parse_equation(row['equation1']); tgt=m.parse_equation(row['equation2'])
+              eng=m.TargetGroundedRefutation(src,tgt,time.monotonic()+seconds,m._TRANSFER_LIMITS)
+              found=eng.solve(); ok=False
+              if found is not None:
+                  nodes,root=found
+                  ok=(nodes[root].lhs,nodes[root].rhs)==tgt[:2] and m.replay_dag(
+                    src,nodes,root,
+                    maximum_term_size=m._TRANSFER_LIMITS['maximum_replay_term_size'],
+                    maximum_nodes=m._TRANSFER_LIMITS['maximum_proof_nodes'])
+              return bool(found),bool(ok),len(eng.search.clauses),eng.search.superpositions
+
+          out=[]; started=time.monotonic()
+          for i,(row,y) in enumerate(zip(rows,labels),1):
+              # TRUE: compare old/new recall. FALSE: candidate only is enough for a soundness control;
+              # baseline FALSE cannot legitimately produce a replay-valid TRUE proof either.
+              if y:
+                  bf,bo,bc,bs=run(base,row)
+                  cf,co,cc,cs=run(cand,row)
+              else:
+                  bf=bo=False; bc=bs=0
+                  cf,co,cc,cs=run(cand,row)
+              out.append({
+                'id':row['id'],'config':row['_config'],'truth':y,
+                'baseline_found':bf,'baseline_replay_ok':bo,
+                'candidate_found':cf,'candidate_replay_ok':co,
+                'baseline_clauses':bc,'candidate_clauses':cc,
+                'baseline_superpositions':bs,'candidate_superpositions':cs,
+              })
+              if i%25==0: print('progress',i,'/',len(rows),flush=True)
+
+          true_rows=[r for r in out if r['truth']]
+          false_rows=[r for r in out if not r['truth']]
+          gained=[r['id'] for r in true_rows if r['candidate_replay_ok'] and not r['baseline_replay_ok']]
+          lost=[r['id'] for r in true_rows if r['baseline_replay_ok'] and not r['candidate_replay_ok']]
+          false_true=[r['id'] for r in false_rows if r['candidate_replay_ok']]
+          by_cfg={}
+          for cfg in configs:
+              t=[r for r in true_rows if r['config']==cfg]
+              f=[r for r in false_rows if r['config']==cfg]
+              by_cfg[cfg]={
+                'true_cases':len(t),
+                'baseline_true_replay':sum(r['baseline_replay_ok'] for r in t),
+                'candidate_true_replay':sum(r['candidate_replay_ok'] for r in t),
+                'gained':[r['id'] for r in t if r['candidate_replay_ok'] and not r['baseline_replay_ok']],
+                'lost':[r['id'] for r in t if r['baseline_replay_ok'] and not r['candidate_replay_ok']],
+                'false_cases':len(f),
+                'candidate_false_true_proofs':[r['id'] for r in f if r['candidate_replay_ok']],
+              }
+          result={
+            'schema':'mathgraph.schematic-closure-transfer.v1',
+            'baseline_commit':'cedc5c3c7eb720f266dda682e57453b2495f72e8',
+            'candidate_branch':'mathgraph/superposition-selector-tournament-20260820',
+            'total_cases':len(out),
+            'true_cases':len(true_rows),
+            'false_cases':len(false_rows),
+            'baseline_true_replay':sum(r['baseline_replay_ok'] for r in true_rows),
+            'candidate_true_replay':sum(r['candidate_replay_ok'] for r in true_rows),
+            'gained':gained,
+            'lost':lost,
+            'candidate_false_true_proofs':false_true,
+            'by_config':by_cfg,
+            'elapsed_seconds':round(time.monotonic()-started,3),
+            'rows':out,
+          }
+          Path('candidate/experiments/mathgraph/results/schematic-closure-transfer-all-regimes.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:result[k] for k in ['total_cases','true_cases','false_cases','baseline_true_replay','candidate_true_replay','gained','lost','candidate_false_true_proofs','by_config','elapsed_seconds']},indent=2))
+          if lost or false_true:
+              raise SystemExit(1)
+          PY
+
+      - name: Upload immutable transfer result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: schematic-closure-transfer-all-regimes
+          path: candidate/experiments/mathgraph/results/schematic-closure-transfer-all-regimes.json
+          if-no-files-found: error
+          retention-days: 30
