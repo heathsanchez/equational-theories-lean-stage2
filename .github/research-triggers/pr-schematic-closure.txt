@@ -1,2 +1,2 @@
 This branch exists only to trigger the stable schematic closure research workflow.
-transfer-audit-trigger=2026-08-20T02:35Z
+trigger: stability-0138
