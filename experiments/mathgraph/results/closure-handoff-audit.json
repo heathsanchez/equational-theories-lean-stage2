@@ -55,7 +55,7 @@
           "name_target",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c751c0050>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7fee5935bf90>>",
         "search:target": [
           [
             "var",
@@ -96,7 +96,7 @@
         "normalize:target_lhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'",
         "normalize:target_rhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'"
       },
-      "reductions": 3706,
+      "reductions": 3764,
       "rounds": 3,
       "solve_found": false,
       "solve_repr": null,
@@ -157,7 +157,7 @@
           "name_target",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c7429bb10>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7fee584d0ed0>>",
         "search:target": [
           [
             "var",
@@ -251,7 +251,7 @@
           "name_target",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c74d94ed0>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7fee58fbcc50>>",
         "search:target": [
           [
             "var",
