@@ -1,0 +1,35 @@
+{
+  "gate": {
+    "0036_extra_stays_open": true,
+    "0036_normal_stays_open": true,
+    "0143_closed": true,
+    "pass": true
+  },
+  "rows": [
+    {
+      "clauses": 17,
+      "found": false,
+      "id": "evaluation_extra_hard_0036",
+      "replay_ok": false,
+      "rounds": 4,
+      "superpositions": 6
+    },
+    {
+      "clauses": 25,
+      "found": true,
+      "id": "evaluation_extra_hard_0143",
+      "replay_ok": true,
+      "rounds": 5,
+      "superpositions": 18
+    },
+    {
+      "clauses": 100,
+      "found": false,
+      "id": "evaluation_normal_0036",
+      "replay_ok": false,
+      "rounds": 3,
+      "superpositions": 89
+    }
+  ],
+  "tested_commit": "cedc5c3c7eb720f266dda682e57453b2495f72e8"
+}
