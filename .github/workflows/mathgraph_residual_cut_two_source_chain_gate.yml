@@ -1,0 +1,28 @@
+name: MathGraph Residual Cut Two Source Chain Gate
+on:
+  push:
+    branches: [mathgraph/binary-fusion-isolated-20260821]
+  pull_request:
+    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
+  workflow_dispatch:
+jobs:
+  two-source-chain:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual-derived two-source chain bridge
+        run: python experiments/mathgraph/run_residual_cut_two_source_chain_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-cut-two-source-chain
+          path: experiments/mathgraph/results/residual-cut-two-source-chain-gate.json
+          if-no-files-found: warn
+          retention-days: 30
