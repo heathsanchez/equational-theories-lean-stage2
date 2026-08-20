@@ -17,6 +17,8 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual representation tournament
+        run: python experiments/mathgraph/run_residual_representation_tournament.py
       - name: Run residual-cut contextual bridge
         run: python experiments/mathgraph/run_residual_cut_contextual_bridge_gate.py
       - name: Run schematic target closure
@@ -40,6 +42,7 @@ jobs:
         with:
           name: mathgraph-residual-cut-contextual-bridge
           path: |
+            experiments/mathgraph/results/residual-representation-tournament.json
             experiments/mathgraph/results/residual-cut-contextual-bridge-gate.json
             experiments/mathgraph/results/schematic-target-closure-gate.json
             experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
