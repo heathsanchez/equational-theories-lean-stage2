@@ -22,8 +22,9 @@ jobs:
       - run: python -m pip install 'datasets>=3,<5'
       - name: Run residual-unified multisubstitution
         run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
-      - name: Run multisubstitution ratchet
-        run: python experiments/mathgraph/run_residual_multisub_ratchet_gate.py
+      - name: Run multisubstitution ratchet fail-loud
+        continue-on-error: true
+        run: python experiments/mathgraph/run_residual_multisub_ratchet_safe.py
       - name: Persist decisive results to head branch
         if: always()
         shell: bash
