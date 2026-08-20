@@ -3,6 +3,7 @@ on:
   push:
     branches: [mathgraph/residual-conditioned-operator-induction-20260821]
   workflow_dispatch:
+# Trigger refresh: no experimental protocol change.
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
