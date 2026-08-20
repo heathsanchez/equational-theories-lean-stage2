@@ -1,0 +1,286 @@
+{
+  "arms": {
+    "A": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 151,
+      "nodes": 6277,
+      "overlaps": 82114,
+      "proof_nodes": null,
+      "rules": 431,
+      "seconds": 20.0,
+      "tag": "A_frozen"
+    },
+    "B": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 175,
+      "nodes": 7933,
+      "overlaps": 44281,
+      "proof_nodes": null,
+      "rules": 363,
+      "seconds": 30.0,
+      "tag": "B_raw_binary"
+    },
+    "C": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 175,
+      "nodes": 6432,
+      "overlaps": 241034,
+      "proof_nodes": null,
+      "rules": 558,
+      "seconds": 30.0,
+      "tag": "C_residual_unified"
+    },
+    "C_ablation": null
+  },
+  "constructor": "independent residual-side matching + proof substitution + binary congruence",
+  "counts": {
+    "g1": 23,
+    "g2": 520,
+    "raw_binary_hits": 0,
+    "raw_binary_verified": 1200,
+    "residual_unified_hits": 1200,
+    "residual_unified_verified": 1200
+  },
+  "decision": "PARTIAL_CONSTRAINT_ESCAPE",
+  "id": "evaluation_order5_0014",
+  "inferred_invariant": "existing derived-operator composition does not jointly instantiate independent verified laws to the child obligations of an absent residual term",
+  "missing_target_subterms": [
+    "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+    "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+  ],
+  "protocol": {
+    "all_candidates_replay_to_source": true,
+    "no_answer_label_in_generator": true,
+    "no_external_proof_trace": true,
+    "no_target_specific_identity": true,
+    "residual_used_only_as_structural_obligation": true
+  },
+  "schema": "mathgraph.residual-unified-congruence.v1",
+  "source": "x = y * (x * (((z * y) * y) * y))",
+  "target": "x = ((y * z) * (x * y)) * (x * z)",
+  "top_residual_unified": [
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((y \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((z \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 z) \u25c7 z))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((z \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 z) \u25c7 z))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((z \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 z) \u25c7 z))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 39
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((x \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((x \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((x \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((y \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((y \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((y \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((y \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((y \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((y \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((z \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((z \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (x \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 x) \u25c7 x) \u25c7 x))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((z \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((z \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 y))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        1,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 ((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((z \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((((z \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 (z \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 z) \u25c7 z) \u25c7 z))))",
+      "size": 45
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((x \u25c7 y) \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)))))",
+      "size": 47
+    },
+    {
+      "activation": 1,
+      "lhs": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "parents": [
+        0,
+        0
+      ],
+      "residual": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "rhs": "((x \u25c7 (((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 x) \u25c7 x))) \u25c7 ((x \u25c7 z) \u25c7 ((x \u25c7 z) \u25c7 ((((x \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)))))",
+      "size": 47
+    }
+  ]
+}
