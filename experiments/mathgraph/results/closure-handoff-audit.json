@@ -56,7 +56,7 @@
           "schematic_target_closure",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f291ecbc050>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f044b490050>>",
         "search:target": [
           [
             "var",
@@ -97,7 +97,7 @@
         "normalize:target_lhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'",
         "normalize:target_rhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'"
       },
-      "reductions": 3854,
+      "reductions": 3706,
       "rounds": 3,
       "solve_found": false,
       "solve_repr": null,
@@ -159,7 +159,7 @@
           "schematic_target_closure",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f291de69d90>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f044a513b10>>",
         "search:target": [
           [
             "var",
@@ -254,7 +254,7 @@
           "schematic_target_closure",
           "solve"
         ],
-        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f291e8e4a50>>",
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f044b010c50>>",
         "search:target": [
           [
             "var",
@@ -298,16 +298,16 @@
       "solve_found": true,
       "solve_repr": [
         [
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec11630>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec135b0>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec109d0>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec11360>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec13490>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec13b50>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec10dc0>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec11ab0>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec136d0>",
-          "<mg_closure_solver.EqualityNode object at 0x7f291ec11750>"
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e5ab0>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e7250>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e7520>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e5120>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e75b0>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e5750>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e7c70>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e4b80>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e7d90>",
+          "<mg_closure_solver.EqualityNode object at 0x7f044b3e7490>"
         ],
         9
       ],
