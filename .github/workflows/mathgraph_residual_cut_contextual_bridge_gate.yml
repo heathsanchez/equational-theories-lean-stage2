@@ -8,7 +8,7 @@ on:
 jobs:
   contextual-cut:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,6 +32,9 @@ jobs:
       - name: Scan normalizer for derived universal collapse
         if: always()
         run: python experiments/mathgraph/run_order5_0014_derived_collapse_scan.py
+      - name: Run bidirectional contextual BFS across residual cut
+        if: always()
+        run: python experiments/mathgraph/run_residual_cut_bidirectional_context_bfs_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -43,5 +46,6 @@ jobs:
             experiments/mathgraph/results/order5-0014-recursive-collapse-directed-gate.json
             experiments/mathgraph/results/order5-0014-compact-collapse-activation-gate.json
             experiments/mathgraph/results/order5-0014-derived-collapse-scan.json
+            experiments/mathgraph/results/residual-cut-bidirectional-context-bfs-gate.json
           if-no-files-found: warn
           retention-days: 30
