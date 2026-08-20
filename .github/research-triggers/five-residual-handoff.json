@@ -3,5 +3,5 @@
   "precommit_sha256": "0a41861173d8f90b88aa815784bde0d773ee9495db6cd2137ebb76f015c4517c",
   "baseline_branch": "mathgraph/superposition-selector-tournament-20260820",
   "purpose": "Probe final derived-rule normalization handoff on the frozen five residuals without Vampire derivation access.",
-  "trigger_nonce": 4
+  "trigger_nonce": 5
 }
