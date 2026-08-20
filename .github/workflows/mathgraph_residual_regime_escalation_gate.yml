@@ -17,12 +17,12 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install 'datasets>=3,<5'
-      - name: Run variable-overlap language gate
-        run: python experiments/mathgraph/run_variable_overlap_language_gate.py
+      - name: Run dormant target narrowing escalation
+        run: python experiments/mathgraph/run_dormant_target_narrowing_escalation.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-variable-overlap-language-gate
-          path: experiments/mathgraph/results/variable-overlap-language-gate.json
+          name: mathgraph-dormant-target-narrowing-escalation
+          path: experiments/mathgraph/results/dormant-target-narrowing-escalation.json
           if-no-files-found: warn
           retention-days: 30
