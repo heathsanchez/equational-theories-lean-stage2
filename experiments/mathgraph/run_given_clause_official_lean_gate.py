@@ -18,24 +18,27 @@ def load_module(path,name):
 
 
 def elide_inferable_have_types(code):
- """Erase only generated `have hN : T := proof` type annotations.
+ """Erase only generated `have NAME : T := proof` type annotations.
 
  The proof expression, dependency DAG, and theorem-search result are unchanged;
- Lean must infer exactly the same intermediate equality types.  Lines not in the
+ Lean must infer exactly the same intermediate equality types. Lines not in the
  generated have form are preserved byte-for-byte.
  """
  out=[]
  changed=0
+ samples=[]
  for line in code.splitlines():
   stripped=line.lstrip()
-  if stripped.startswith('have h') and ' : ' in line and ' := ' in line:
+  if stripped.startswith('have ') and ' : ' in line and ' := ' in line:
    left,expr=line.split(' := ',1)
    name,type_text=left.split(' : ',1)
-   if name.strip().startswith('have h') and type_text:
+   if name.strip().startswith('have ') and type_text:
+    if len(samples)<3:
+     samples.append({'before_chars':len(line),'name':name.strip()})
     line=name+' := '+expr
     changed+=1
   out.append(line)
- return '\n'.join(out)+'\n',changed
+ return '\n'.join(out)+'\n',changed,samples
 
 
 def main():
@@ -57,9 +60,9 @@ def main():
   nodes,root=cc.compile(rr)
   replay=bool(nodes[root].lhs==target[0] and nodes[root].rhs==target[1] and m.replay_dag(source,nodes,root,maximum_term_size=eng.search.limits['maximum_replay_term_size'],maximum_nodes=eng.search.limits['maximum_proof_nodes']))
   raw_code,proof_nodes=m.make_dag_certificate(target,nodes,root)
-  compact_code,elided=elide_inferable_have_types(raw_code)
+  compact_code,elided,samples=elide_inferable_have_types(raw_code)
   judged=verify_answer(row,json.dumps({'verdict':'true','code':compact_code}))
-  result={'id':RID,'closure':replay,'proof_nodes':proof_nodes,'raw_certificate_bytes':len(raw_code.encode()),'certificate_bytes':len(compact_code.encode()),'type_annotations_elided':elided,'compression_ratio':round(len(compact_code.encode())/len(raw_code.encode()),6),'official_status':judged.get('status'),'official_error_code':judged.get('error_code'),'official_message':judged.get('message'),'direct_declarations':judged.get('direct_declarations',[]),'axioms':judged.get('axioms',[]),'stats':stats}
+  result={'id':RID,'closure':replay,'proof_nodes':proof_nodes,'raw_certificate_bytes':len(raw_code.encode()),'certificate_bytes':len(compact_code.encode()),'type_annotations_elided':elided,'elision_samples':samples,'compression_ratio':round(len(compact_code.encode())/len(raw_code.encode()),6),'official_status':judged.get('status'),'official_error_code':judged.get('error_code'),'official_message':judged.get('message'),'direct_declarations':judged.get('direct_declarations',[]),'axioms':judged.get('axioms',[]),'stats':stats}
  OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
  print(json.dumps(result,indent=2,sort_keys=True))
  if not (result.get('closure') and result.get('official_status')=='accepted'):
