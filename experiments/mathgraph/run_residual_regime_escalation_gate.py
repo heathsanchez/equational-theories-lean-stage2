@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Frozen follow-up: selector sweep for live-frontier residual and bidirectional-clause escalation for exhausted residuals."""
+"""Frozen follow-up: selector sweep for live-frontier residual and bidirectional-overlap escalation for exhausted residuals."""
 import importlib.util,json,sys,time
 from pathlib import Path
 from datasets import load_dataset
@@ -30,14 +30,13 @@ def engine(m,row):
 def symmetry(m,c):
  return m.Recipe(c.rhs,c.lhs,'symmetry',parents=(c,))
 
-def dir_key(m,c):
- names={};return (m.alpha_canonical_term(c.lhs,names),m.alpha_canonical_term(c.rhs,names))
+def orientations(m,c):
+ return (c,symmetry(m,c)) if c.lhs!=c.rhs else (c,)
 
 def solve_bidirectional(m,gate,search):
- passive=[]
- for c in search.clauses:
-  passive.append(c);passive.append(symmetry(m,c))
- active=[];age={id(c):i for i,c in enumerate(passive)};next_age=len(passive)
+ # Stored state remains canonical. Both orientations exist only as overlap views,
+ # so simplification cannot erase the extra inference language before it is used.
+ passive=list(search.clauses);active=[];age={id(c):i for i,c in enumerate(passive)};next_age=len(passive)
  given=generated=backward_replaced=pair_attempts=0
  while passive and given<384 and not search.expired():
   rules=gate.active_rules(search,active);goal=search.target_proof(rules)
@@ -50,24 +49,26 @@ def solve_bidirectional(m,gate,search):
   if goal is not None:return goal,dict(given=given,generated=generated,backward_replaced=backward_replaced,pair_attempts=pair_attempts,active=len(active),passive=len(passive))
   proposals=[]
   for oi,other in enumerate(active):
-   for outer,inner,a,b in ((selected,other,given,oi),(other,selected,oi,given)):
-    for path in m.nonvariable_positions(outer.lhs,maximum_depth=search.limits['maximum_depth'],include_root=True):
-     if search.expired():break
-     pair_attempts+=1;q=search.critical_pair(outer,inner,a,b,path)
-     if q is None:continue
-     q=search.interreduce(q,rules);proposals.append((search.target_score(q),q))
+   # Complete the current representation by allowing either side of either
+   # equality to serve as the oriented overlap source. No new identity is added.
+   for sview in orientations(m,selected):
+    for oview in orientations(m,other):
+     for outer,inner,a,b in ((sview,oview,given,oi),(oview,sview,oi,given)):
+      for path in m.nonvariable_positions(outer.lhs,maximum_depth=search.limits['maximum_depth'],include_root=True):
+       if search.expired():break
+       pair_attempts+=1;q=search.critical_pair(outer,inner,a,b,path)
+       if q is None:continue
+       q=search.interreduce(q,rules);proposals.append((search.target_score(q),q))
   proposals.sort(key=lambda x:x[0])
   for _,q in proposals[:search.limits['new_clauses_per_round']]:
    if search.add_clause(q):
-    search.superpositions+=1;generated+=1
-    for z in (q,symmetry(m,q)):
-     passive.append(z);age[id(z)]=next_age;next_age+=1
+    search.superpositions+=1;generated+=1;passive.append(q);age[id(q)]=next_age;next_age+=1
   new=[];seen=set()
   for c in passive:
    if search.expired():break
    r=search.interreduce(c,rules)
    if r.lhs!=c.lhs or r.rhs!=c.rhs:backward_replaced+=1;c=r
-   k=dir_key(m,c)
+   k=gate.key_clause(m,c)
    if k in seen:continue
    seen.add(k);new.append(c)
   passive=new
@@ -87,8 +88,8 @@ def main():
   if ok:break
  for rid in ['evaluation_normal_0040','evaluation_order5_0014','evaluation_order5_0042']:
   e=engine(m,rows[rid]);t=time.monotonic();recipe,stats=solve_bidirectional(m,gate,e.search);ok=replay(m,e,recipe)
-  rec={'id':rid,'mode':'bidirectional-language','closure':ok,'seconds':round(time.monotonic()-t,6),'stats':stats};records.append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
- out={'schema':'mathgraph.residual-regime-escalation.v1','seconds':SECONDS,'records':records,'gains':[r['id'] for r in records if r['closure']]}
+  rec={'id':rid,'mode':'bidirectional-overlap-language','closure':ok,'seconds':round(time.monotonic()-t,6),'stats':stats};records.append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
+ out={'schema':'mathgraph.residual-regime-escalation.v2','seconds':SECONDS,'records':records,'gains':[r['id'] for r in records if r['closure']]}
  OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps({'gains':out['gains']},indent=2))
 
 if __name__=='__main__':main()
