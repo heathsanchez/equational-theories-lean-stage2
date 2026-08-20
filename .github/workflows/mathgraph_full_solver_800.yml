@@ -1,0 +1,126 @@
+name: MathGraph Full Solver 800 Official Audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  full-audit:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.title == '[MathGraph Trigger] Schematic Closure Gate'
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Checkout candidate research branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: mathgraph-lean-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Setup official Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+
+      - name: Install evaluation dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+
+      - name: Run candidate full solver through official proxy and Lean judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          mkdir -p experiments/mathgraph/results
+          python - <<'PY'
+          import json, time
+          from collections import Counter
+          from pathlib import Path
+          from datasets import load_dataset
+          from pipeline.proxy import load_config, run_solver
+
+          CONFIGS=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
+          OUT=Path('experiments/mathgraph/results/full-solver-800-official-audit.json')
+          cfg=load_config()
+          # This is a development audit, not the competition budget: long enough
+          # for the existing deterministic portfolio while keeping 800 cases bounded.
+          cfg['solver']['timeout_seconds']=12
+          cfg['judge']['lean_timeout_seconds']=90
+          cfg['sandbox']['mode']='none'
+          submission=Path('submissions/mathgraph')
+
+          rows=[]
+          started=time.monotonic()
+          for ds_cfg in CONFIGS:
+              ds=load_dataset('SAIRfoundation/equational-theories-selected-problems',ds_cfg,split='train')
+              for raw in ds:
+                  r=dict(raw)
+                  # The official proxy/judge consumes the public problem fields;
+                  # retaining id is useful for diagnostics and ignored by the judge.
+                  problem={k:r[k] for k in r if k not in ('truth','label','is_true')}
+                  result=run_solver(submission,problem,cfg)
+                  truth=r.get('truth', r.get('label', r.get('is_true')))
+                  rows.append({
+                      'config':ds_cfg,
+                      'id':r.get('id'),
+                      'truth':truth,
+                      'solved':bool(result.get('solved')),
+                      'verdict':result.get('verdict'),
+                      'judge_calls':result.get('judge_calls',0),
+                      'llm_calls':result.get('llm_calls',0),
+                      'last_log':(result.get('log') or [])[-1] if result.get('log') else None,
+                  })
+                  print(ds_cfg,r.get('id'),'solved=',result.get('solved'),'verdict=',result.get('verdict'),'judge=',result.get('judge_calls'),'llm=',result.get('llm_calls'),flush=True)
+
+          solved=[r for r in rows if r['solved']]
+          unsolved=[r for r in rows if not r['solved']]
+          by_cfg={}
+          for c in CONFIGS:
+              rr=[r for r in rows if r['config']==c]
+              by_cfg[c]={
+                  'total':len(rr),
+                  'solved':sum(r['solved'] for r in rr),
+                  'true_verdicts':sum(r['verdict']=='true' for r in rr),
+                  'false_verdicts':sum(r['verdict']=='false' for r in rr),
+                  'unsolved_ids':[r['id'] for r in rr if not r['solved']],
+              }
+          out={
+              'schema':'mathgraph.full-solver-800-official-audit.v1',
+              'candidate_branch':'mathgraph/superposition-selector-tournament-20260820',
+              'total':len(rows),
+              'solved':len(solved),
+              'unsolved_count':len(unsolved),
+              'unsolved_ids':[r['id'] for r in unsolved],
+              'verdict_counts':dict(Counter(r['verdict'] for r in solved)),
+              'llm_calls':sum(r['llm_calls'] for r in rows),
+              'judge_calls':sum(r['judge_calls'] for r in rows),
+              'elapsed_seconds':round(time.monotonic()-started,3),
+              'by_config':by_cfg,
+              'rows':rows,
+          }
+          OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({k:out[k] for k in ('total','solved','unsolved_count','unsolved_ids','verdict_counts','llm_calls','judge_calls','elapsed_seconds')},indent=2))
+          PY
+
+      - name: Upload immutable official audit result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-full-solver-800-official-audit
+          path: experiments/mathgraph/results/full-solver-800-official-audit.json
+          if-no-files-found: error
+          retention-days: 30
