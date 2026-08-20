@@ -1,2 +1,2 @@
 This branch exists only to trigger the stable schematic closure research workflow.
-trigger: stability-0138
+trigger: stability-0138-refresh
