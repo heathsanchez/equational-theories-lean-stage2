@@ -1,14 +1,16 @@
 {
   "audited_steps": 43,
   "clauses": 58,
+  "exact_steps": 5,
   "first_missing": {
-    "id": "f36",
+    "exact": false,
+    "id": "f196",
     "inference": "superposition",
-    "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
-    "lhs_size": 7,
+    "lhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X0 \u25c7 (@y \u25c7 (@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))))",
+    "lhs_size": 23,
     "present": false,
-    "rhs": "((((@x \u25c7 @y) \u25c7 @y) \u25c7 @y) \u25c7 @y)",
-    "rhs_size": 9
+    "rhs": "X0",
+    "rhs_size": 1
   },
   "parse_failures": [
     {
@@ -16,12 +18,13 @@
       "id": "f3"
     }
   ],
-  "present_steps": 5,
+  "present_steps": 8,
   "reductions": 4687,
   "rounds": 3,
   "solver_found": false,
   "steps": [
     {
+      "exact": true,
       "id": "f20",
       "inference": "superposition",
       "lhs": "(@y \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))",
@@ -31,6 +34,7 @@
       "rhs_size": 1
     },
     {
+      "exact": true,
       "id": "f25",
       "inference": "superposition",
       "lhs": "((((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2) \u25c7 ((X0 \u25c7 (((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2)) \u25c7 (((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2)))",
@@ -40,6 +44,7 @@
       "rhs_size": 1
     },
     {
+      "exact": true,
       "id": "f26",
       "inference": "superposition",
       "lhs": "@y",
@@ -49,6 +54,7 @@
       "rhs_size": 25
     },
     {
+      "exact": true,
       "id": "f27",
       "inference": "superposition",
       "lhs": "((X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X1 \u25c7 ((X0 \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))) \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))))",
@@ -58,15 +64,17 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f36",
       "inference": "superposition",
       "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
       "lhs_size": 7,
-      "present": false,
+      "present": true,
       "rhs": "((((@x \u25c7 @y) \u25c7 @y) \u25c7 @y) \u25c7 @y)",
       "rhs_size": 9
     },
     {
+      "exact": true,
       "id": "f110",
       "inference": "superposition",
       "lhs": "(((X1 \u25c7 X0) \u25c7 X0) \u25c7 X0)",
@@ -76,6 +84,7 @@
       "rhs_size": 9
     },
     {
+      "exact": false,
       "id": "f196",
       "inference": "superposition",
       "lhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X0 \u25c7 (@y \u25c7 (@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))))",
@@ -85,15 +94,17 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f208",
       "inference": "forward_demodulation",
       "lhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X0 \u25c7 @y))",
       "lhs_size": 13,
-      "present": false,
+      "present": true,
       "rhs": "X0",
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f210",
       "inference": "superposition",
       "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
@@ -103,15 +114,17 @@
       "rhs_size": 17
     },
     {
+      "exact": false,
       "id": "f211",
       "inference": "superposition",
       "lhs": "@x",
       "lhs_size": 1,
-      "present": false,
+      "present": true,
       "rhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
       "rhs_size": 13
     },
     {
+      "exact": false,
       "id": "f218",
       "inference": "superposition",
       "lhs": "(@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))",
@@ -121,6 +134,7 @@
       "rhs_size": 7
     },
     {
+      "exact": false,
       "id": "f225",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -130,6 +144,7 @@
       "rhs_size": 11
     },
     {
+      "exact": false,
       "id": "f226",
       "inference": "forward_demodulation",
       "lhs": "((@x \u25c7 @y) \u25c7 @y)",
@@ -139,6 +154,7 @@
       "rhs_size": 7
     },
     {
+      "exact": false,
       "id": "f235",
       "inference": "superposition",
       "lhs": "(@y \u25c7 (X0 \u25c7 ((@x \u25c7 @y) \u25c7 @y)))",
@@ -148,6 +164,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f244",
       "inference": "superposition",
       "lhs": "(@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))",
@@ -157,6 +174,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f250",
       "inference": "forward_demodulation",
       "lhs": "(@y \u25c7 ((@x \u25c7 @y) \u25c7 @y))",
@@ -166,6 +184,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f252",
       "inference": "superposition",
       "lhs": "@x",
@@ -175,6 +194,7 @@
       "rhs_size": 9
     },
     {
+      "exact": false,
       "id": "f253",
       "inference": "superposition",
       "lhs": "@y",
@@ -184,6 +204,7 @@
       "rhs_size": 7
     },
     {
+      "exact": false,
       "id": "f257",
       "inference": "superposition",
       "lhs": "(@x \u25c7 (@x \u25c7 @y))",
@@ -193,6 +214,7 @@
       "rhs_size": 9
     },
     {
+      "exact": false,
       "id": "f259",
       "inference": "superposition",
       "lhs": "((@x \u25c7 @y) \u25c7 (X0 \u25c7 (@x \u25c7 (@x \u25c7 @y))))",
@@ -202,6 +224,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f265",
       "inference": "superposition",
       "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 ((@y \u25c7 (@y \u25c7 (@x \u25c7 @y))) \u25c7 (@y \u25c7 (@x \u25c7 @y)))))",
@@ -211,6 +234,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f266",
       "inference": "forward_demodulation",
       "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 (@y \u25c7 (@y \u25c7 (@x \u25c7 @y)))))",
@@ -220,6 +244,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f269",
       "inference": "forward_demodulation",
       "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 @y))",
@@ -229,6 +254,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f402",
       "inference": "superposition",
       "lhs": "((@x \u25c7 @y) \u25c7 @y)",
@@ -238,6 +264,7 @@
       "rhs_size": 11
     },
     {
+      "exact": false,
       "id": "f415",
       "inference": "forward_demodulation",
       "lhs": "(@x \u25c7 @y)",
@@ -247,6 +274,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f425",
       "inference": "superposition",
       "lhs": "(@y \u25c7 (X0 \u25c7 (@x \u25c7 @y)))",
@@ -256,6 +284,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f427",
       "inference": "superposition",
       "lhs": "(@x \u25c7 @y)",
@@ -265,6 +294,7 @@
       "rhs_size": 11
     },
     {
+      "exact": false,
       "id": "f432",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -274,6 +304,7 @@
       "rhs_size": 3
     },
     {
+      "exact": false,
       "id": "f447",
       "inference": "superposition",
       "lhs": "@x",
@@ -283,6 +314,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f483",
       "inference": "superposition",
       "lhs": "(@x \u25c7 (@x \u25c7 @y))",
@@ -292,6 +324,7 @@
       "rhs_size": 7
     },
     {
+      "exact": false,
       "id": "f492",
       "inference": "superposition",
       "lhs": "@y",
@@ -301,6 +334,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f501",
       "inference": "forward_demodulation",
       "lhs": "@y",
@@ -310,6 +344,7 @@
       "rhs_size": 3
     },
     {
+      "exact": false,
       "id": "f508",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -319,6 +354,7 @@
       "rhs_size": 5
     },
     {
+      "exact": false,
       "id": "f512",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -328,6 +364,7 @@
       "rhs_size": 3
     },
     {
+      "exact": false,
       "id": "f521",
       "inference": "superposition",
       "lhs": "@x",
@@ -337,6 +374,7 @@
       "rhs_size": 19
     },
     {
+      "exact": false,
       "id": "f522",
       "inference": "superposition",
       "lhs": "(@x \u25c7 (X0 \u25c7 ((@y \u25c7 @x) \u25c7 @x)))",
@@ -346,6 +384,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f523",
       "inference": "forward_demodulation",
       "lhs": "(@x \u25c7 (X0 \u25c7 @x))",
@@ -355,6 +394,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f524",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -364,6 +404,7 @@
       "rhs_size": 7
     },
     {
+      "exact": false,
       "id": "f526",
       "inference": "forward_demodulation",
       "lhs": "@x",
@@ -373,6 +414,7 @@
       "rhs_size": 3
     },
     {
+      "exact": false,
       "id": "f528",
       "inference": "superposition",
       "lhs": "@x",
@@ -382,6 +424,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f550",
       "inference": "superposition",
       "lhs": "((@x \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 @x))",
@@ -391,6 +434,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f557",
       "inference": "forward_demodulation",
       "lhs": "((@x \u25c7 (@x \u25c7 @y)) \u25c7 @x)",
@@ -400,6 +444,7 @@
       "rhs_size": 1
     },
     {
+      "exact": false,
       "id": "f569",
       "inference": "forward_demodulation",
       "lhs": "@x",
