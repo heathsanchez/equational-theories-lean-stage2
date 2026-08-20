@@ -26,11 +26,43 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install 'datasets>=3,<5'
           sudo apt-get update
-          sudo apt-get install -y cmake ninja-build g++ git
-          git clone --depth 1 --recurse-submodules https://github.com/vprover/vampire.git /tmp/vampire-src
-          cmake -S /tmp/vampire-src -B /tmp/vampire-src/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_DISABLE_FIND_PACKAGE_Z3=ON
-          cmake --build /tmp/vampire-src/build --parallel 2
-          sudo install -m 0755 /tmp/vampire-src/build/vampire /usr/local/bin/vampire
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          jq -r '.tag_name, (.assets[] | .name)' /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json'))
+          assets=r.get('assets',[])
+          ranked=[]
+          for a in assets:
+              n=a['name'].lower()
+              score=0
+              if 'linux' in n: score += 10
+              if 'x86_64' in n or 'amd64' in n or 'x64' in n: score += 6
+              if 'z3' in n: score += 2
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): score -= 20
+              ranked.append((score,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10:
+              raise SystemExit('No suitable Linux Vampire release asset found: '+repr([a['name'] for a in assets]))
+          print(ranked[0][1])
+          print('selected:', ranked[0][2], file=__import__('sys').stderr)
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          echo "$kind"
+          if echo "$kind" | grep -qi 'Zip archive'; then
+            unzip -q /tmp/vampire-asset -d /tmp/vampire-bin
+          elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then
+            tar -xf /tmp/vampire-asset -C /tmp/vampire-bin
+          else
+            cp /tmp/vampire-asset /tmp/vampire-bin/vampire
+          fi
+          VAMPIRE_PATH="$(find /tmp/vampire-bin -type f \( -name vampire -o -name 'vampire*' \) | head -1)"
+          test -n "$VAMPIRE_PATH"
+          chmod +x "$VAMPIRE_PATH"
+          sudo install -m 0755 "$VAMPIRE_PATH" /usr/local/bin/vampire
           vampire --show_options on >/dev/null
 
       - name: Extract the six released evaluation residuals
