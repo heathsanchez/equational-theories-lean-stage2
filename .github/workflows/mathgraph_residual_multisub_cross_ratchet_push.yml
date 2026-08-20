@@ -1,0 +1,40 @@
+name: MathGraph O5 Multisub Cross Ratchet Push
+on:
+  push:
+    branches: [mathgraph/invariant-breaking-binary-congruence-20260821]
+    paths-ignore:
+      - experiments/mathgraph/results/residual-multisub-cross-ratchet-gate.json
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  cross-ratchet:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/invariant-breaking-binary-congruence-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual multisub cross-ratchet
+        run: python experiments/mathgraph/run_residual_multisub_cross_ratchet_gate.py
+      - name: Persist cross-ratchet result
+        if: always()
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/mathgraph/results/residual-multisub-cross-ratchet-gate.json 2>/dev/null || true
+          git commit -m 'research: persist O5 multisub cross-ratchet result [skip ci]' || true
+          git pull --rebase origin mathgraph/invariant-breaking-binary-congruence-20260821 || true
+          git push origin HEAD:mathgraph/invariant-breaking-binary-congruence-20260821 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-o5-multisub-cross-ratchet
+          path: experiments/mathgraph/results/residual-multisub-cross-ratchet-gate.json
+          if-no-files-found: warn
