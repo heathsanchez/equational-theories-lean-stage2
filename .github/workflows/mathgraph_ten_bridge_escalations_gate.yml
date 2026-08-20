@@ -1,0 +1,27 @@
+name: MathGraph Ten Bridge Escalations Gate
+on:
+  push:
+    branches: [mathgraph/binary-fusion-isolated-20260821]
+  workflow_dispatch:
+jobs:
+  ten-bridge-escalations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/binary-fusion-isolated-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run ten post-development bridge escalations
+        run: python experiments/mathgraph/run_ten_bridge_escalations_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-ten-bridge-escalations
+          path: experiments/mathgraph/results/ten-bridge-escalations-gate.json
+          if-no-files-found: warn
+          retention-days: 30
