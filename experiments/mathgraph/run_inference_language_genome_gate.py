@@ -4,6 +4,9 @@
 Mutation alphabet predates this gate: quotient matching, source re-entry, and
 contextual overlap. No Vampire proof bodies, target-specific identities, or
 answer labels are used to construct candidates. Every positive must replay.
+
+v2: contextual portfolio selection is by explicit kind, and each genome is
+fail-closed independently so one harness mismatch cannot abort the sweep.
 """
 import importlib.util, json, sys, time
 from pathlib import Path
@@ -37,23 +40,28 @@ def quotient(m,qm,row,seconds,generations,instances,edge_cap):
  except Exception as e:return {'closure':False,'seconds':round(time.monotonic()-t,6),'error':repr(e)}
 
 def reentry(m,row,seconds,cfg_index):
- src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);cfg=m.REENTRY_PORTFOLIO[cfg_index];t=time.monotonic()
- limits=dict(cfg['limits']);s=m.EqualitySearch(src,tgt,t+seconds,limits);base=s.solve()
- if base is not None:return {'closure':replay(m,src,base,limits.get('max_term_size')),'seconds':round(time.monotonic()-t,6),'base_closed':True}
- s.deadline=t+seconds;s.max_term_size=cfg['reentry_term_size'];s.max_derivation_nodes=cfg['reentry_nodes'];s.max_graph_edges=cfg['reentry_edges'];s.exhaustion=None
- found=s.solve_reentry(cfg['generations'],cfg['new_terms'],cfg['instances'],targeted=cfg['targeted']);ok=replay(m,src,found,s.max_term_size)
- return {'closure':ok,'seconds':round(time.monotonic()-t,6),'base_closed':False,'generations_completed':s.generations_completed,'graph_edges':s.graph_edges,'reentry_terms':len(s.reentry_terms_used),'exhaustion':s.exhaustion}
+ try:
+  src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);cfg=m.REENTRY_PORTFOLIO[cfg_index];t=time.monotonic()
+  limits=dict(cfg['limits']);s=m.EqualitySearch(src,tgt,t+seconds,limits);base=s.solve()
+  if base is not None:return {'closure':replay(m,src,base,limits.get('max_term_size')),'seconds':round(time.monotonic()-t,6),'base_closed':True}
+  s.deadline=t+seconds;s.max_term_size=cfg['reentry_term_size'];s.max_derivation_nodes=cfg['reentry_nodes'];s.max_graph_edges=cfg['reentry_edges'];s.exhaustion=None
+  found=s.solve_reentry(cfg['generations'],cfg['new_terms'],cfg['instances'],targeted=cfg['targeted']);ok=replay(m,src,found,s.max_term_size)
+  return {'closure':ok,'seconds':round(time.monotonic()-t,6),'base_closed':False,'generations_completed':s.generations_completed,'graph_edges':s.graph_edges,'reentry_terms':len(s.reentry_terms_used),'exhaustion':s.exhaustion}
+ except Exception as e:return {'closure':False,'error':repr(e)}
 
 def overlap_configs(m):
  return [c for c in m.CONTEXTUAL_PORTFOLIO if c.get('kind')=='contextual-overlap']
 
 def contextual(m,row,seconds,which):
- configs=overlap_configs(m)
- if not configs:return {'closure':False,'seconds':0.0,'error':'no contextual-overlap config'}
- cfg=configs[min(which,len(configs)-1)]
- src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);t=time.monotonic();limits=dict(cfg['limits']);s=m.ContextualSearch(src,tgt,t+seconds,limits)
- found=s.solve_contextual_overlap(cfg['maximum_overlap_depth'],cfg['maximum_context_depth'],cfg['maximum_source_instances'],cfg['maximum_candidates'],cfg['maximum_new_nodes']);ok=replay(m,src,found,limits.get('max_term_size'))
- return {'closure':ok,'seconds':round(time.monotonic()-t,6),'config':cfg.get('name'),'overlap_candidates':s.overlap_candidates,'overlaps_added':s.overlaps_added,'components_joined':s.components_joined,'missing_target_introduced':s.missing_target_introduced,'graph_edges':s.graph_edges,'exhaustion':s.exhaustion}
+ t=time.monotonic()
+ try:
+  configs=overlap_configs(m)
+  if not configs:return {'closure':False,'seconds':0.0,'error':'no contextual-overlap config'}
+  cfg=configs[min(which,len(configs)-1)]
+  src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);limits=dict(cfg['limits']);s=m.ContextualSearch(src,tgt,t+seconds,limits)
+  found=s.solve_contextual_overlap(cfg['maximum_overlap_depth'],cfg['maximum_context_depth'],cfg['maximum_source_instances'],cfg['maximum_candidates'],cfg['maximum_new_nodes']);ok=replay(m,src,found,limits.get('max_term_size'))
+  return {'closure':ok,'seconds':round(time.monotonic()-t,6),'config':cfg.get('name'),'overlap_candidates':s.overlap_candidates,'overlaps_added':s.overlaps_added,'components_joined':s.components_joined,'missing_target_introduced':s.missing_target_introduced,'graph_edges':s.graph_edges,'exhaustion':s.exhaustion}
+ except Exception as e:return {'closure':False,'seconds':round(time.monotonic()-t,6),'error':repr(e)}
 
 def main():
  m=load(SOLVER,'mg_genome');qm=load(QM,'qm_genome');rows={}
@@ -70,7 +78,7 @@ def main():
   ('context_c0',lambda r:contextual(m,r,8.0,0)),
   ('context_c1',lambda r:contextual(m,r,8.0,1)),
  ]
- out={'schema':'mathgraph.inference-language-genome.v1','ids':IDS,'genomes':[g for g,_ in genomes],'records':[]}
+ out={'schema':'mathgraph.inference-language-genome.v2','ids':IDS,'genomes':[g for g,_ in genomes],'records':[]}
  for rid in IDS:
   for name,fn in genomes:
    rec={'id':rid,'genome':name,**fn(rows[rid])};out['records'].append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
