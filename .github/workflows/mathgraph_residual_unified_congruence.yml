@@ -4,7 +4,12 @@ on:
   push:
     branches:
       - mathgraph/invariant-breaking-binary-congruence-20260821
+    paths-ignore:
+      - experiments/mathgraph/results/residual-unified-congruence-gate.json
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   test:
@@ -21,6 +26,17 @@ jobs:
       - run: python -m pip install 'datasets>=3,<5'
       - name: Run residual-unified congruence test
         run: python experiments/mathgraph/run_residual_unified_congruence_gate.py
+      - name: Persist result on experiment branch
+        if: always()
+        shell: bash
+        run: |
+          if [ -f experiments/mathgraph/results/residual-unified-congruence-gate.json ]; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add experiments/mathgraph/results/residual-unified-congruence-gate.json
+            git commit -m 'research: persist residual-unified congruence result [skip ci]' || true
+            git push origin HEAD:mathgraph/invariant-breaking-binary-congruence-20260821 || true
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
