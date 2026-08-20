@@ -1,0 +1,57 @@
+{
+  "schema": "mathgraph.true-component-ablation.v1",
+  "residual_opportunities": 33,
+  "target_grounded": {
+    "prior_unique_gain": 8,
+    "note": "Already production-promoted; these eight precede the current 33."
+  },
+  "paramodulation": {
+    "found": 27,
+    "independent_replay": 27,
+    "official_accepted": 27,
+    "false_control_candidates": 0,
+    "mean_search_seconds": 1.2148152424242424,
+    "hit_ids": [
+      "evaluation_extra_hard_0006",
+      "evaluation_hard_0116",
+      "evaluation_hard_0172",
+      "evaluation_normal_0012",
+      "evaluation_normal_0028",
+      "evaluation_normal_0044",
+      "evaluation_normal_0046",
+      "evaluation_normal_0050",
+      "evaluation_normal_0092",
+      "evaluation_normal_0094",
+      "evaluation_normal_0108",
+      "evaluation_normal_0122",
+      "evaluation_normal_0140",
+      "evaluation_normal_0154",
+      "evaluation_normal_0162",
+      "evaluation_normal_0170",
+      "evaluation_order5_0004",
+      "evaluation_order5_0006",
+      "evaluation_order5_0022",
+      "evaluation_order5_0040",
+      "evaluation_order5_0076",
+      "evaluation_order5_0126",
+      "evaluation_order5_0142",
+      "evaluation_order5_0146",
+      "evaluation_order5_0154",
+      "evaluation_order5_0188",
+      "evaluation_order5_0190"
+    ]
+  },
+  "completion": {
+    "found": 13,
+    "unique_beyond_paramodulation": 0,
+    "mean_seconds": 2.0320175757575756
+  },
+  "ordered_union": {
+    "target_grounded_then_paramodulation_gain_from_old_41": 35,
+    "remaining_true": 6
+  },
+  "seeded_paramodulation": {
+    "status": "not evaluated",
+    "reason": "The audited bundle exposes no replay-preserving external-clause seed interface; adding one would cease to be a frozen component ablation."
+  }
+}

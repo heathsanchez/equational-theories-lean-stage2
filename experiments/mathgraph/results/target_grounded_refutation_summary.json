@@ -1,0 +1,61 @@
+{
+  "schema_version": "mathgraph.target-grounded-refutation.v1",
+  "starting_head": "b08e498146104fa4f606d3564ea6b7cc3717bcfd",
+  "starting_solver_sha256": "500ab048ce5061934102abcbcdc63ae132f21816ba7a3b658e148b1cd458c1c8",
+  "audit": {
+    "source": "SAIRfoundation/equational-theories-selected-problems released Stage 1 evaluation subsets",
+    "sets": {
+      "evaluation_normal": {"rows": 200, "baseline_true": 84, "baseline_false": 98},
+      "evaluation_hard": {"rows": 200, "baseline_true": 94, "baseline_false": 94},
+      "evaluation_extra_hard": {"rows": 200, "baseline_true": 99, "baseline_false": 42},
+      "evaluation_order5": {"rows": 200, "baseline_true": 82, "baseline_false": 86}
+    },
+    "baseline_total": {"true": 359, "false": 320, "accepted": 679, "rows": 800},
+    "unresolved_true_opportunities": 41,
+    "unresolved_false_controls": 80,
+    "labels_loaded_after_frozen_solver_outputs": true
+  },
+  "configuration": {
+    "wall_seconds": 0.5,
+    "maximum_term_size": 45,
+    "maximum_replay_term_size": 160,
+    "maximum_depth": 10,
+    "maximum_rules": 192,
+    "maximum_rounds": 16,
+    "new_clauses_per_round": 128,
+    "maximum_clauses": 2000,
+    "normalization_steps": 96,
+    "maximum_proof_nodes": 20000
+  },
+  "result": {
+    "new_true": 8,
+    "true_opportunity_rate": 0.1951219512,
+    "true_opportunity_wilson_95": [0.1023443739, 0.3401358519],
+    "false_control_true_candidates": 0,
+    "false_control_invalid_rate_one_sided_95_upper": 0.0367541978,
+    "officially_accepted_new_certificates": 8,
+    "projected_released_evaluation_total": {
+      "true": 367,
+      "false": 320,
+      "accepted": 687,
+      "rows": 800
+    },
+    "public_sample_200_gain": 0,
+    "llm_calls": 0
+  },
+  "hits": [
+    {"id": "evaluation_order5_0024", "source": 14730, "target": 7901, "proof_nodes": 44, "certificate_bytes": 11925},
+    {"id": "evaluation_order5_0102", "source": 21890, "target": 37096, "proof_nodes": 50, "certificate_bytes": 11101},
+    {"id": "evaluation_order5_0138", "source": 11963, "target": 15157, "proof_nodes": 30, "certificate_bytes": 10409},
+    {"id": "evaluation_order5_0160", "source": 8408, "target": 29872, "proof_nodes": 86, "certificate_bytes": 18949},
+    {"id": "evaluation_order5_0184", "source": 30415, "target": 33892, "proof_nodes": 16, "certificate_bytes": 4349},
+    {"id": "evaluation_hard_0140", "source": 480, "target": 2478, "proof_nodes": 50, "certificate_bytes": 16155},
+    {"id": "evaluation_hard_0144", "source": 539, "target": 2463, "proof_nodes": 50, "certificate_bytes": 9707},
+    {"id": "evaluation_hard_0174", "source": 946, "target": 4521, "proof_nodes": 48, "certificate_bytes": 6417}
+  ],
+  "integrity": {
+    "true_probe_output_sha256": "4411fbd916374be15a386656c7118153d0c526e32b4e679fb6235f0510401f49",
+    "false_control_output_sha256": "fcb9983fdbf2f400f10f6eb1333f8e7a1a4ee1985722a1a444b319446e0ac43f",
+    "official_smoke_output_sha256": "dbacb4a7be0b073210a1ba50ca7d83e491214ac33ef958e93aa179d7438eb8db"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "starting_head": "fb671c7a6a56cea3fa5bc6273b8cb48daa66f6a8",
+  "selection_split": "existing equation-content SHA-256 development half",
+  "holdout_policy": "run once after code, routing, bounds, and hashes are frozen",
+  "configurations": [
+    {
+      "name": "fin4-probe",
+      "domain_size": 4,
+      "target_witness_limit": 16,
+      "maximum_states": 10000,
+      "seconds": 0.2,
+      "maximum_source_models": 4
+    },
+    {
+      "name": "fin4-fast",
+      "domain_size": 4,
+      "target_witness_limit": 64,
+      "maximum_states": 75000,
+      "seconds": 0.75,
+      "maximum_source_models": 16
+    },
+    {
+      "name": "fin4-medium",
+      "domain_size": 4,
+      "target_witness_limit": 256,
+      "maximum_states": 400000,
+      "seconds": 3.0,
+      "maximum_source_models": 64
+    },
+    {
+      "name": "fin4-deep-diagnostic",
+      "domain_size": 4,
+      "target_witness_limit": 256,
+      "maximum_states": 2000000,
+      "seconds": 15.0,
+      "maximum_source_models": 256,
+      "production_eligible": false
+    }
+  ],
+  "development_comparisons": {
+    "support_propagation": ["nested-support", "legacy-root-only"],
+    "constraint_scanning": ["incremental-queue", "full-scan-control"],
+    "branching": ["support-mrv", "legacy-mrv-activity"],
+    "symmetry": ["enabled", "disabled"],
+    "routing": ["all-unresolved-probe", "fin3-obstruction-fast", "two-stage"],
+    "production_portfolio_candidates": [
+      ["fin4-probe"],
+      ["fin4-fast"],
+      ["fin4-probe", "fin4-fast"]
+    ]
+  },
+  "fixed_safety_rules": {
+    "learn_from_timeout": false,
+    "learn_from_state_exhaustion": false,
+    "complete_table_canonicalization": true,
+    "generic_replay_required": true,
+    "official_acceptance_required": true,
+    "contextual_true_production": false,
+    "id_or_label_features": false
+  }
+}

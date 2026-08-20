@@ -1,0 +1,52 @@
+{
+  "audit_version": "equational-normalization-external-audit-v1",
+  "authoritative_head": "3215158571e2c15dbf8bfaa410c5beb4e84dec61",
+  "created_before_development_execution": true,
+  "frozen_baseline": {
+    "accepted_false": 96,
+    "accepted_true": 66,
+    "solver_bytes": 130752,
+    "solver_sha256": "a5493e0b60b7c92bc5f76381f778c5f17fcb2c43994654da717e013c4e1cbe56"
+  },
+  "development_grid": {
+    "base_orderings": [
+      "size",
+      "depth"
+    ],
+    "configurations": [
+      "norm-probe",
+      "norm-fast",
+      "norm-medium"
+    ],
+    "selectors": [
+      "coverage",
+      "reduction"
+    ]
+  },
+  "external_comparators": [
+    "production-without-normalization",
+    "norm-probe",
+    "norm-probe-plus-fast",
+    "norm-medium-diagnostic",
+    "norm-deep-diagnostic-capped"
+  ],
+  "promotion_rule": {
+    "external_unused_true_minimum": 20,
+    "gain_minimum": "max(3, ceil(0.10 * baseline-unresolved TRUE audit rows))",
+    "bootstrap_lower_bound_above_zero_where_sample_permits": true,
+    "minimum_source_families": 3,
+    "maximum_single_source_fraction": 0.3333333333333333,
+    "invalid_false_control_outcomes_maximum": 0,
+    "all_proofs_must_replay": true,
+    "external_seconds_per_gain_maximum": 20,
+    "production_floor": 162,
+    "full_sample_true_gain_minimum": 1
+  },
+  "seed_derivation": "SHA256(authoritative_head || 'equational-normalization-external-audit-v1')",
+  "selection_policy": "Select one complete ordering/selector/configuration portfolio by aggregate development gain, then runtime, then size; no row-specific exceptions.",
+  "statistical_plan": {
+    "bootstrap": "10000 deterministic source-cluster replicates",
+    "point_interval": "Wilson two-sided 95%",
+    "precision_interval": "one-sided 95% upper bound after zero failures"
+  }
+}

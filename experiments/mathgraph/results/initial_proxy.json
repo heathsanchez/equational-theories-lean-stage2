@@ -1,0 +1,20 @@
+[
+  {
+    "id": "mathgraph_initial_true",
+    "status": "accepted",
+    "verdict": "true",
+    "judge_calls": 1,
+    "llm_calls": 0,
+    "elapsed_seconds": 10.34,
+    "certificate_bytes": 103
+  },
+  {
+    "id": "mathgraph_initial_false",
+    "status": "accepted",
+    "verdict": "false",
+    "judge_calls": 1,
+    "llm_calls": 0,
+    "elapsed_seconds": 1.69,
+    "certificate_bytes": 259
+  }
+]

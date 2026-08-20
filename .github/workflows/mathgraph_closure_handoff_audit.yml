@@ -1,0 +1,65 @@
+name: MathGraph Closure Handoff Audit
+
+on:
+  push:
+    branches:
+      - mathgraph/superposition-selector-tournament-20260820
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run self-diagnosing closure audit
+        shell: bash
+        run: |
+          set +e
+          mkdir -p experiments/mathgraph/results
+          OUT=experiments/mathgraph/results/closure-handoff-audit.json
+          LOG=/tmp/closure-audit.log
+          echo '{"status":"started"}' > "$OUT"
+          python -m pip install 'datasets>=3,<5' >"$LOG" 2>&1
+          RC=$?
+          if [ $RC -eq 0 ]; then
+            python - <<'PY' >>"$LOG" 2>&1
+          import json
+          from datasets import load_dataset
+          wanted={'evaluation_extra_hard_0143','evaluation_extra_hard_0036','evaluation_normal_0036'}
+          rows=[]
+          for cfg in ['evaluation_normal','evaluation_extra_hard']:
+              rows += [dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train') if r.get('id') in wanted]
+          if {r['id'] for r in rows} != wanted:
+              raise SystemExit(f'missing ids: {wanted-{r["id"] for r in rows}}')
+          json.dump(rows,open('/tmp/closure-audit.json','w'),indent=2)
+          PY
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            python experiments/mathgraph/run_closure_handoff_audit.py --input /tmp/closure-audit.json --output "$OUT" >>"$LOG" 2>&1
+            RC=$?
+          fi
+          if [ $RC -ne 0 ]; then
+            python - <<'PY'
+          import json, pathlib
+          p=pathlib.Path('/tmp/closure-audit.log')
+          log=p.read_text(errors='replace')[-12000:] if p.exists() else 'no log file produced'
+          pathlib.Path('experiments/mathgraph/results/closure-handoff-audit.json').write_text(json.dumps({'status':'failed','log_tail':log},indent=2))
+          PY
+          fi
+          cat "$OUT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$OUT"
+          git commit -m 'chore(research): persist closure handoff audit [skip ci]' || true
+          git push origin HEAD:mathgraph/superposition-selector-tournament-20260820 || true
+          exit 0

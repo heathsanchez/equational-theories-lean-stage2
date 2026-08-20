@@ -1,0 +1,1 @@
+Trigger the residual-derived two-source-chain bridge gate after adding its workflow.

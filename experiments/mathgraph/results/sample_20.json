@@ -1,0 +1,19 @@
+{
+  "problem_count": 20,
+  "accepted_true": 0,
+  "accepted_false": 8,
+  "incorrect": 0,
+  "incomplete_proof": 0,
+  "malformed": 0,
+  "unparsed": 0,
+  "unresolved_not_attempted": 12,
+  "deterministic_wins": 8,
+  "llm_assisted_wins": 0,
+  "median_runtime_seconds_all": 0.03,
+  "median_runtime_seconds_accepted": 1.65,
+  "maximum_runtime_seconds": 4.78,
+  "total_runtime_seconds": 16.7,
+  "solver_source_bytes": 8228,
+  "largest_true_certificate_bytes": 0,
+  "largest_false_certificate_bytes": 259
+}

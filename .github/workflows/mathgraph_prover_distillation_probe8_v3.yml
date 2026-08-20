@@ -1,0 +1,101 @@
+name: MathGraph Prover Distillation Probe 8 v3
+
+on:
+  push:
+    branches:
+      - mathgraph/superposition-selector-tournament-20260820
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe8v3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run self-diagnosing probe
+        shell: bash
+        run: |
+          set +e
+          mkdir -p experiments/mathgraph/results
+          OUT=experiments/mathgraph/results/prover-distillation-probe-8-v3.json
+          LOG=/tmp/probe.log
+          echo '{"status":"started"}' > "$OUT"
+          python -m pip install 'datasets>=3,<5' >"$LOG" 2>&1
+          RC=$?
+          if [ $RC -eq 0 ]; then
+            sudo apt-get update >>"$LOG" 2>&1 && sudo apt-get install -y curl jq unzip file >>"$LOG" 2>&1
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json >>"$LOG" 2>&1
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            python - <<'PY' >/tmp/vampire-url.txt 2>>"$LOG"
+          import json
+          r=json.load(open('/tmp/vampire-release.json')); ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); score=0
+              if 'linux' in n: score+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): score+=6
+              if 'z3' in n: score+=2
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): score-=20
+              ranked.append((score,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit('no Vampire Linux asset')
+          print(ranked[0][1])
+          PY
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset >>"$LOG" 2>&1
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            mkdir -p /tmp/vampire-bin
+            kind="$(file -b /tmp/vampire-asset)"
+            if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin;
+            elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin;
+            else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+            V="$(find /tmp/vampire-bin -type f \( -name vampire -o -name 'vampire*' \) | head -1)"
+            chmod +x "$V" && sudo install -m 0755 "$V" /usr/local/bin/vampire
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            python - <<'PY' >>"$LOG" 2>&1
+          import json
+          from datasets import load_dataset
+          rows=[]
+          for cfg in ['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']:
+              true=[dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train') if bool(r.get('answer'))]
+              rows.extend([true[17],true[73]])
+          json.dump(rows,open('/tmp/distill-true-8.json','w'),indent=2)
+          PY
+            RC=$?
+          fi
+          if [ $RC -eq 0 ]; then
+            python experiments/mathgraph/run_prover_distillation_probe.py --input /tmp/distill-true-8.json --output "$OUT" --limit 8 --seconds 0.5 >>"$LOG" 2>&1
+            RC=$?
+          fi
+          if [ $RC -ne 0 ]; then
+            python - <<'PY'
+          import json, pathlib
+          log=pathlib.Path('/tmp/probe.log').read_text(errors='replace')[-12000:]
+          pathlib.Path('experiments/mathgraph/results/prover-distillation-probe-8-v3.json').write_text(json.dumps({'status':'failed','log_tail':log},indent=2))
+          PY
+          fi
+          cat "$OUT"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add "$OUT"
+          git commit -m 'chore(research): persist self-diagnosing prover probe 8 v3 [skip ci]' || true
+          git push origin HEAD:mathgraph/superposition-selector-tournament-20260820 || true
+          exit 0

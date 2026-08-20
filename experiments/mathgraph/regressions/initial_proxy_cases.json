@@ -1,0 +1,16 @@
+[
+  {
+    "id": "mathgraph_initial_true",
+    "eq1_id": 900001,
+    "eq2_id": 900002,
+    "equation1": "x ◇ y = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ y"
+  },
+  {
+    "id": "mathgraph_initial_false",
+    "eq1_id": 4,
+    "eq2_id": 65,
+    "equation1": "x = x ◇ y",
+    "equation2": "x = y ◇ (x ◇ (y ◇ x))"
+  }
+]

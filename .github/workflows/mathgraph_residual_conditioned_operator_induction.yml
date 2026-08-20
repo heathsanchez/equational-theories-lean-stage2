@@ -1,0 +1,35 @@
+name: MathGraph residual-conditioned operator induction gate
+
+on:
+  push:
+    branches:
+      - mathgraph/residual-conditioned-operator-induction-20260821
+  pull_request:
+    branches:
+      - mathgraph/developmental-continuation-20260820
+  workflow_dispatch:
+
+jobs:
+  induce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-conditioned-operator-induction-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run missing-subterm residual constraint induction test
+        run: python experiments/mathgraph/run_missing_subterm_constraint_induction_gate.py
+      - name: Run binary fusion invariant-breaker test
+        run: python experiments/mathgraph/run_binary_fusion_invariant_breaker_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-constraint-and-binary-fusion
+          path: |
+            experiments/mathgraph/results/missing-subterm-constraint-induction-gate.json
+            experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json

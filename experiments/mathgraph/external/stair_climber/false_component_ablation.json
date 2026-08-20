@@ -1,0 +1,42 @@
+{
+  "schema": "mathgraph.false-component-ablation.v1",
+  "residual_opportunities": 16,
+  "static_bank": {
+    "models": 139,
+    "found": 15,
+    "true_control_candidates": 0,
+    "official_accepted": 15,
+    "seconds_49_rows": 0.5495930420001969,
+    "hit_ids": [
+      "evaluation_hard_0145",
+      "evaluation_hard_0181",
+      "evaluation_normal_0011",
+      "evaluation_normal_0017",
+      "evaluation_order5_0003",
+      "evaluation_order5_0009",
+      "evaluation_order5_0049",
+      "evaluation_order5_0051",
+      "evaluation_order5_0071",
+      "evaluation_order5_0073",
+      "evaluation_order5_0077",
+      "evaluation_order5_0087",
+      "evaluation_order5_0103",
+      "evaluation_order5_0105",
+      "evaluation_order5_0151"
+    ]
+  },
+  "exceptional_families": {
+    "infinite_integer": "public pair-specific certificate; not integrated",
+    "affine": "general family retained; right-offset Fin 5 solves the remaining row"
+  },
+  "ce_engine_v6": {
+    "found": 16,
+    "seconds": 0.634637,
+    "note": "All 16 found diagnostically; full engine not imported because the static bank plus one affine table is smaller and fully replayed."
+  },
+  "production_specialist": {
+    "found": 16,
+    "official_accepted": 16,
+    "remaining_false": 0
+  }
+}

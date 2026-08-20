@@ -1,0 +1,83 @@
+{
+  "starting_head": "1ad667b6930274a3ce02a3ceb6dc53a2d6a4627e",
+  "implementation_commit": "c31e9da7a12db87c69b1a219ef7bb2a1785e164f",
+  "baseline_solver": {
+    "path": "experiments/mathgraph/regressions/solver_1ad667b.py",
+    "bytes": 94219,
+    "sha256": "521e078e1233ecec8f6fd688c8a1b676acd5f2b6d0846dbd93e43dd4dc1f8437"
+  },
+  "candidate_solver": {
+    "bytes": 104686,
+    "sha256": "c88b9d78daabde4ab099dffef807a8d5aaac803b5b883275a3b4a0cfd6a31816"
+  },
+  "isolated_benchmarks": {
+    "sample_20": {
+      "accepted_true": 1,
+      "accepted_false": 10,
+      "unresolved": 9,
+      "runtime_seconds": 36.64,
+      "sha256": "19a2432bf7fd2cec5cbe347ff5187462c8696d0a9ea5017f93de29f4b4deebee"
+    },
+    "development": {
+      "accepted_true": 34,
+      "accepted_false": 37,
+      "unresolved": 29,
+      "runtime_seconds": 141.07,
+      "sha256": "5a00bdf1677bae28b146df45761a309521ca61e14daf3ec31670875aff712768"
+    },
+    "holdout": {
+      "accepted_true": 32,
+      "accepted_false": 57,
+      "unresolved": 11,
+      "runtime_seconds": 165.39,
+      "sha256": "01ff017a1aab6b0b022e93300317280932378fc06ba505abdb10158d864ae5a1"
+    },
+    "sample_200": {
+      "accepted_true": 66,
+      "accepted_false": 94,
+      "unresolved": 40,
+      "runtime_seconds": 318.92,
+      "sha256": "920c7aceb2eda43c4ca6c462808686cac1f8e2de9b0b9a34ac9682b3719d3fc5"
+    }
+  },
+  "fin3_fast_aggregate": {
+    "attempts": 50,
+    "hits": 10,
+    "partial_states": 73895,
+    "propagation_rounds": 55157,
+    "domain_reductions": 66065,
+    "mrv_reductions": 3990,
+    "nogoods_learned": 35989,
+    "nogoods_reused": 23079,
+    "symmetry_branch_prunes": 337,
+    "branch_choices": 24523,
+    "branch_values": 73093,
+    "mean_branch_factor": 2.9806,
+    "maximum_depth": 9,
+    "maximum_certificate_bytes": 271,
+    "maximum_replay_seconds": 0.000101
+  },
+  "fin4_prototype_example": {
+    "promoted": false,
+    "found": true,
+    "replay": true,
+    "official_certificate_accepted": true,
+    "partial_states": 19,
+    "propagation_rounds": 21,
+    "domain_reductions": 61,
+    "mrv_reductions": 1,
+    "nogoods_learned": 6,
+    "nogoods_reused": 0,
+    "symmetry_branch_prunes": 0,
+    "branch_choices": 12,
+    "branch_values": 47,
+    "maximum_depth": 12,
+    "certificate_bytes": 287
+  },
+  "official_gates": {
+    "solo": "66/66",
+    "marathon": "25/25",
+    "rejected_judge_attempts": {},
+    "llm_calls": 0
+  }
+}
