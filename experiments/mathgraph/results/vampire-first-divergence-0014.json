@@ -1,18 +1,410 @@
 {
-  "audited_steps": 1,
+  "audited_steps": 43,
   "clauses": 58,
-  "first_missing": null,
-  "present_steps": 1,
-  "reductions": 4329,
+  "first_missing": {
+    "id": "f36",
+    "inference": "superposition",
+    "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+    "lhs_size": 7,
+    "present": false,
+    "rhs": "((((@x \u25c7 @y) \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+    "rhs_size": 9
+  },
+  "parse_failures": [
+    {
+      "error": "ValueError",
+      "id": "f3"
+    }
+  ],
+  "present_steps": 5,
+  "reductions": 4650,
   "rounds": 3,
   "solver_found": false,
   "steps": [
     {
-      "id": "f569",
-      "inference": "forward_demodulation",
-      "lhs": "@sK0",
+      "id": "f20",
+      "inference": "superposition",
+      "lhs": "(@y \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))",
+      "lhs_size": 11,
+      "present": true,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f25",
+      "inference": "superposition",
+      "lhs": "((((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2) \u25c7 ((X0 \u25c7 (((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2)) \u25c7 (((X1 \u25c7 X2) \u25c7 X2) \u25c7 X2)))",
+      "lhs_size": 25,
+      "present": true,
+      "rhs": "X2",
+      "rhs_size": 1
+    },
+    {
+      "id": "f26",
+      "inference": "superposition",
+      "lhs": "@y",
       "lhs_size": 1,
       "present": true,
+      "rhs": "((((@x \u25c7 @y) \u25c7 @y) \u25c7 @y) \u25c7 ((X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))",
+      "rhs_size": 25
+    },
+    {
+      "id": "f27",
+      "inference": "superposition",
+      "lhs": "((X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X1 \u25c7 ((X0 \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))) \u25c7 (X0 \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))))",
+      "lhs_size": 33,
+      "present": true,
+      "rhs": "X1",
+      "rhs_size": 1
+    },
+    {
+      "id": "f36",
+      "inference": "superposition",
+      "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+      "lhs_size": 7,
+      "present": false,
+      "rhs": "((((@x \u25c7 @y) \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+      "rhs_size": 9
+    },
+    {
+      "id": "f110",
+      "inference": "superposition",
+      "lhs": "(((X1 \u25c7 X0) \u25c7 X0) \u25c7 X0)",
+      "lhs_size": 7,
+      "present": true,
+      "rhs": "((((X1 \u25c7 X0) \u25c7 X0) \u25c7 X0) \u25c7 X0)",
+      "rhs_size": 9
+    },
+    {
+      "id": "f196",
+      "inference": "superposition",
+      "lhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X0 \u25c7 (@y \u25c7 (@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)))))",
+      "lhs_size": 23,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f208",
+      "inference": "forward_demodulation",
+      "lhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (X0 \u25c7 @y))",
+      "lhs_size": 13,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f210",
+      "inference": "superposition",
+      "lhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+      "lhs_size": 7,
+      "present": false,
+      "rhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))",
+      "rhs_size": 17
+    },
+    {
+      "id": "f211",
+      "inference": "superposition",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "((@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 13
+    },
+    {
+      "id": "f218",
+      "inference": "superposition",
+      "lhs": "(@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "(@y \u25c7 ((@x \u25c7 @y) \u25c7 @y))",
+      "rhs_size": 7
+    },
+    {
+      "id": "f225",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "((@y \u25c7 ((@x \u25c7 @y) \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 11
+    },
+    {
+      "id": "f226",
+      "inference": "forward_demodulation",
+      "lhs": "((@x \u25c7 @y) \u25c7 @y)",
+      "lhs_size": 5,
+      "present": false,
+      "rhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 @y)",
+      "rhs_size": 7
+    },
+    {
+      "id": "f235",
+      "inference": "superposition",
+      "lhs": "(@y \u25c7 (X0 \u25c7 ((@x \u25c7 @y) \u25c7 @y)))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f244",
+      "inference": "superposition",
+      "lhs": "(@y \u25c7 (((@x \u25c7 @y) \u25c7 @y) \u25c7 @y))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "(@y \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 5
+    },
+    {
+      "id": "f250",
+      "inference": "forward_demodulation",
+      "lhs": "(@y \u25c7 ((@x \u25c7 @y) \u25c7 @y))",
+      "lhs_size": 7,
+      "present": false,
+      "rhs": "(@y \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 5
+    },
+    {
+      "id": "f252",
+      "inference": "superposition",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 9
+    },
+    {
+      "id": "f253",
+      "inference": "superposition",
+      "lhs": "@y",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@y \u25c7 (@y \u25c7 (@x \u25c7 @y)))",
+      "rhs_size": 7
+    },
+    {
+      "id": "f257",
+      "inference": "superposition",
+      "lhs": "(@x \u25c7 (@x \u25c7 @y))",
+      "lhs_size": 5,
+      "present": false,
+      "rhs": "((@x \u25c7 (@x \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 9
+    },
+    {
+      "id": "f259",
+      "inference": "superposition",
+      "lhs": "((@x \u25c7 @y) \u25c7 (X0 \u25c7 (@x \u25c7 (@x \u25c7 @y))))",
+      "lhs_size": 11,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f265",
+      "inference": "superposition",
+      "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 ((@y \u25c7 (@y \u25c7 (@x \u25c7 @y))) \u25c7 (@y \u25c7 (@x \u25c7 @y)))))",
+      "lhs_size": 21,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f266",
+      "inference": "forward_demodulation",
+      "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 (@y \u25c7 (@y \u25c7 (@x \u25c7 @y)))))",
+      "lhs_size": 15,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f269",
+      "inference": "forward_demodulation",
+      "lhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 @y))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f402",
+      "inference": "superposition",
+      "lhs": "((@x \u25c7 @y) \u25c7 @y)",
+      "lhs_size": 5,
+      "present": false,
+      "rhs": "((@y \u25c7 (@x \u25c7 @y)) \u25c7 ((@x \u25c7 @y) \u25c7 @y))",
+      "rhs_size": 11
+    },
+    {
+      "id": "f415",
+      "inference": "forward_demodulation",
+      "lhs": "(@x \u25c7 @y)",
+      "lhs_size": 3,
+      "present": false,
+      "rhs": "((@x \u25c7 @y) \u25c7 @y)",
+      "rhs_size": 5
+    },
+    {
+      "id": "f425",
+      "inference": "superposition",
+      "lhs": "(@y \u25c7 (X0 \u25c7 (@x \u25c7 @y)))",
+      "lhs_size": 7,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f427",
+      "inference": "superposition",
+      "lhs": "(@x \u25c7 @y)",
+      "lhs_size": 3,
+      "present": false,
+      "rhs": "((@y \u25c7 ((@x \u25c7 @y) \u25c7 @y)) \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 11
+    },
+    {
+      "id": "f432",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@x \u25c7 @y)",
+      "rhs_size": 3
+    },
+    {
+      "id": "f447",
+      "inference": "superposition",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "((@y \u25c7 @x) \u25c7 @x)",
+      "rhs_size": 5
+    },
+    {
+      "id": "f483",
+      "inference": "superposition",
+      "lhs": "(@x \u25c7 (@x \u25c7 @y))",
+      "lhs_size": 5,
+      "present": false,
+      "rhs": "(@y \u25c7 (@x \u25c7 (@x \u25c7 @y)))",
+      "rhs_size": 7
+    },
+    {
+      "id": "f492",
+      "inference": "superposition",
+      "lhs": "@y",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "((@x \u25c7 @y) \u25c7 @x)",
+      "rhs_size": 5
+    },
+    {
+      "id": "f501",
+      "inference": "forward_demodulation",
+      "lhs": "@y",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@x \u25c7 @x)",
+      "rhs_size": 3
+    },
+    {
+      "id": "f508",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@x \u25c7 (@x \u25c7 @y))",
+      "rhs_size": 5
+    },
+    {
+      "id": "f512",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@x \u25c7 @x)",
+      "rhs_size": 3
+    },
+    {
+      "id": "f521",
+      "inference": "superposition",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(((@y \u25c7 @x) \u25c7 @x) \u25c7 ((X0 \u25c7 ((@y \u25c7 @x) \u25c7 @x)) \u25c7 ((@y \u25c7 @x) \u25c7 @x)))",
+      "rhs_size": 19
+    },
+    {
+      "id": "f522",
+      "inference": "superposition",
+      "lhs": "(@x \u25c7 (X0 \u25c7 ((@y \u25c7 @x) \u25c7 @x)))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f523",
+      "inference": "forward_demodulation",
+      "lhs": "(@x \u25c7 (X0 \u25c7 @x))",
+      "lhs_size": 5,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f524",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(@x \u25c7 ((X0 \u25c7 @x) \u25c7 @x))",
+      "rhs_size": 7
+    },
+    {
+      "id": "f526",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "(X0 \u25c7 @x)",
+      "rhs_size": 3
+    },
+    {
+      "id": "f528",
+      "inference": "superposition",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
+      "rhs": "@y",
+      "rhs_size": 1
+    },
+    {
+      "id": "f550",
+      "inference": "superposition",
+      "lhs": "((@x \u25c7 (@x \u25c7 @y)) \u25c7 (X0 \u25c7 @x))",
+      "lhs_size": 9,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f557",
+      "inference": "forward_demodulation",
+      "lhs": "((@x \u25c7 (@x \u25c7 @y)) \u25c7 @x)",
+      "lhs_size": 7,
+      "present": false,
+      "rhs": "X0",
+      "rhs_size": 1
+    },
+    {
+      "id": "f569",
+      "inference": "forward_demodulation",
+      "lhs": "@x",
+      "lhs_size": 1,
+      "present": false,
       "rhs": "X0",
       "rhs_size": 1
     }
