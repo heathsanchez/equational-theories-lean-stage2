@@ -6,7 +6,7 @@ on:
 jobs:
   residual-conditioned:
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
+    timeout-minutes: 22
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,6 +20,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate.py
       - name: Run necessary missing-subterm constraint induction
         run: python experiments/mathgraph/run_missing_subterm_constraint_induction_gate.py
+      - name: Run binary fusion invariant breaker
+        run: python experiments/mathgraph/run_binary_fusion_invariant_breaker_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -27,5 +29,6 @@ jobs:
           path: |
             experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
             experiments/mathgraph/results/missing-subterm-constraint-induction-gate.json
+            experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json
           if-no-files-found: warn
           retention-days: 30
