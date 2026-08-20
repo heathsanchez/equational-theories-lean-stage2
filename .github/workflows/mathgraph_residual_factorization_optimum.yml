@@ -1,0 +1,21 @@
+name: MathGraph Residual Factorization Optimum
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+  workflow_dispatch:
+
+jobs:
+  factorization:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Sweep residual factorization process and factor count
+        run: python experiments/mathgraph/run_residual_factorization_optimum.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual-factorization-optimum
+          path: experiments/mathgraph/results/residual-factorization-optimum.json
