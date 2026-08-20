@@ -38,15 +38,17 @@ def all_positions(term,depth,path=()):
 def solve(m,gate,search):
  passive=list(search.clauses);active=[];age={id(c):i for i,c in enumerate(passive)};next_age=len(passive)
  given=generated=backward=attempts=variable_attempts=0
+ def stats():
+  return {'given':given,'generated':generated,'backward_replaced':backward,'pair_attempts':attempts,'variable_attempts':variable_attempts,'active':len(active),'passive':len(passive)}
  while passive and given<384 and not search.expired():
   rules=gate.active_rules(search,active);goal=search.target_proof(rules)
-  if goal is not None:return goal,locals_stats()
+  if goal is not None:return goal,stats()
   idx=min(range(len(passive)),key=lambda i:(search.target_score(passive[i]),age.get(id(passive[i]),10**18)))
   selected=passive.pop(idx);r=search.interreduce(selected,rules)
   if r.lhs!=selected.lhs or r.rhs!=selected.rhs:selected=r
   active.append(selected);given+=1;rules=gate.active_rules(search,active)
   goal=search.target_proof(rules)
-  if goal is not None:return goal,locals_stats()
+  if goal is not None:return goal,stats()
   proposals=[]
   for oi,other in enumerate(active):
    for sv in views(m,selected):
@@ -73,9 +75,7 @@ def solve(m,gate,search):
    if k in seen:continue
    seen.add(k);new.append(c)
   passive=new
- def locals_stats():
-  return {'given':given,'generated':generated,'backward_replaced':backward,'pair_attempts':attempts,'variable_attempts':variable_attempts,'active':len(active),'passive':len(passive)}
- return search.target_proof(gate.active_rules(search,active)),locals_stats()
+ return search.target_proof(gate.active_rules(search,active)),stats()
 
 def main():
  m=load(SOLVER,'mg_var');gate=load(GATE,'gate_var');rows={}
@@ -85,8 +85,8 @@ def main():
    if r['id'] in IDS:rows[r['id']]=r
  recs=[]
  for rid in IDS:
-  e=engine(m,rows[rid]);t=time.monotonic();recipe,stats=solve(m,gate,e.search);ok=replay(m,e,recipe)
-  rec={'id':rid,'mode':'variable-overlap-language','closure':ok,'seconds':round(time.monotonic()-t,6),'stats':stats};recs.append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
+  e=engine(m,rows[rid]);t=time.monotonic();recipe,st=solve(m,gate,e.search);ok=replay(m,e,recipe)
+  rec={'id':rid,'mode':'variable-overlap-language','closure':ok,'seconds':round(time.monotonic()-t,6),'stats':st};recs.append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
  out={'schema':'mathgraph.variable-overlap-language.v1','seconds':SECONDS,'records':recs,'gains':[r['id'] for r in recs if r['closure']]}
  OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps({'gains':out['gains']},indent=2))
 if __name__=='__main__':main()
