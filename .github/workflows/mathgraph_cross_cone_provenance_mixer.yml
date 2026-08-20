@@ -1,12 +1,18 @@
 name: MathGraph Cross Cone Provenance Mixer Gate
 on:
   pull_request:
-    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
+    branches: [mathgraph/isolated-actions-base-20260821]
+    paths:
+      - 'experiments/mathgraph/run_cross_cone_provenance_mixer_gate.py'
+      - '.github/workflows/mathgraph_cross_cone_provenance_mixer.yml'
   workflow_dispatch:
 jobs:
   cross-cone-mixer:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
+    concurrency:
+      group: mathgraph-cross-cone-provenance-mixer
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
         with: {fetch-depth: 0}
