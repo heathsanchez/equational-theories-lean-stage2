@@ -17,12 +17,12 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install 'datasets>=3,<5'
-      - name: Run dormant target narrowing escalation
-        run: python experiments/mathgraph/run_dormant_target_narrowing_escalation.py
+      - name: Run residual derived structure probe
+        run: python experiments/mathgraph/run_residual_derived_structure_probe.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-dormant-target-narrowing-escalation
-          path: experiments/mathgraph/results/dormant-target-narrowing-escalation.json
+          name: mathgraph-residual-derived-structure-probe
+          path: experiments/mathgraph/results/residual-derived-structure-probe.json
           if-no-files-found: warn
           retention-days: 30
