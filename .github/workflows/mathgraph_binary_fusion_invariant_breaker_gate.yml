@@ -33,3 +33,4 @@ jobs:
             experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
           if-no-files-found: warn
           retention-days: 30
+# trigger-only touch; no scientific protocol change
