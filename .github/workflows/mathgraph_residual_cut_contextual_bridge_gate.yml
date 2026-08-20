@@ -2,6 +2,8 @@ name: MathGraph Residual Representation Tournament
 on:
   push:
     branches: [mathgraph/residual-representation-tournament-20260821]
+  pull_request:
+    branches: [mathgraph/residual-tournament-base-20260821]
   workflow_dispatch:
 jobs:
   tournament:
