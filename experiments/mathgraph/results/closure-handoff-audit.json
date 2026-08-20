@@ -1,0 +1,300 @@
+{
+  "rows": [
+    {
+      "clauses": 100,
+      "direct_target_cover": [],
+      "id": "evaluation_normal_0036",
+      "introspection": {
+        "engine:target": [
+          [
+            "var",
+            "x"
+          ],
+          [
+            "op",
+            [
+              "op",
+              [
+                "op",
+                [
+                  "var",
+                  "x"
+                ],
+                [
+                  "var",
+                  "y"
+                ]
+              ],
+              [
+                "var",
+                "y"
+              ]
+            ],
+            [
+              "op",
+              [
+                "var",
+                "x"
+              ],
+              [
+                "var",
+                "z"
+              ]
+            ]
+          ],
+          [
+            "x",
+            "y",
+            "z"
+          ]
+        ],
+        "engine_methods": [
+          "encode_rigid",
+          "inline",
+          "inline_recipe",
+          "name_target",
+          "solve"
+        ],
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c751c0050>>",
+        "search:target": [
+          [
+            "var",
+            "@L0"
+          ],
+          [
+            "var",
+            "@R0"
+          ],
+          [
+            "x",
+            "y",
+            "z"
+          ]
+        ],
+        "search_methods": [
+          "add_clause",
+          "alpha_signature",
+          "collapse_proof",
+          "compile",
+          "critical_pair",
+          "expired",
+          "freshen",
+          "instantiate",
+          "interreduce",
+          "key",
+          "lift",
+          "normalize",
+          "orient",
+          "rewrite_once",
+          "rules",
+          "solve",
+          "target_proof",
+          "target_score"
+        ]
+      },
+      "normalization": {
+        "normalize:target_lhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'",
+        "normalize:target_rhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'"
+      },
+      "reductions": 3706,
+      "rounds": 3,
+      "solve_found": false,
+      "solve_repr": null,
+      "superpositions": 89
+    },
+    {
+      "clauses": 17,
+      "direct_target_cover": [],
+      "id": "evaluation_extra_hard_0036",
+      "introspection": {
+        "engine:target": [
+          [
+            "op",
+            [
+              "op",
+              [
+                "var",
+                "x"
+              ],
+              [
+                "var",
+                "y"
+              ]
+            ],
+            [
+              "var",
+              "z"
+            ]
+          ],
+          [
+            "op",
+            [
+              "op",
+              [
+                "var",
+                "y"
+              ],
+              [
+                "var",
+                "x"
+              ]
+            ],
+            [
+              "var",
+              "z"
+            ]
+          ],
+          [
+            "x",
+            "y",
+            "z"
+          ]
+        ],
+        "engine_methods": [
+          "encode_rigid",
+          "inline",
+          "inline_recipe",
+          "name_target",
+          "solve"
+        ],
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c7429bb10>>",
+        "search:target": [
+          [
+            "var",
+            "@L0"
+          ],
+          [
+            "var",
+            "@R0"
+          ],
+          [
+            "x",
+            "y",
+            "z"
+          ]
+        ],
+        "search_methods": [
+          "add_clause",
+          "alpha_signature",
+          "collapse_proof",
+          "compile",
+          "critical_pair",
+          "expired",
+          "freshen",
+          "instantiate",
+          "interreduce",
+          "key",
+          "lift",
+          "normalize",
+          "orient",
+          "rewrite_once",
+          "rules",
+          "solve",
+          "target_proof",
+          "target_score"
+        ]
+      },
+      "normalization": {
+        "normalize:target_lhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'",
+        "normalize:target_rhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'"
+      },
+      "reductions": 156,
+      "rounds": 4,
+      "solve_found": false,
+      "solve_repr": null,
+      "superpositions": 6
+    },
+    {
+      "clauses": 25,
+      "direct_target_cover": [
+        {
+          "clause": 7,
+          "kind": "symmetry",
+          "lhs": "(_o2_1 \u25c7 (_i2_0 \u25c7 _i2_1))",
+          "proof_id": null,
+          "rhs": "_i2_1"
+        }
+      ],
+      "id": "evaluation_extra_hard_0143",
+      "introspection": {
+        "engine:target": [
+          [
+            "var",
+            "x"
+          ],
+          [
+            "op",
+            [
+              "var",
+              "x"
+            ],
+            [
+              "op",
+              [
+                "var",
+                "x"
+              ],
+              [
+                "var",
+                "x"
+              ]
+            ]
+          ],
+          [
+            "x"
+          ]
+        ],
+        "engine_methods": [
+          "encode_rigid",
+          "inline",
+          "inline_recipe",
+          "name_target",
+          "solve"
+        ],
+        "search:rules": "<bound method CompactSuperposition.rules of <mg_closure_solver.CompactSuperposition object at 0x7f0c74d94ed0>>",
+        "search:target": [
+          [
+            "var",
+            "@L0"
+          ],
+          [
+            "var",
+            "@R0"
+          ],
+          [
+            "x"
+          ]
+        ],
+        "search_methods": [
+          "add_clause",
+          "alpha_signature",
+          "collapse_proof",
+          "compile",
+          "critical_pair",
+          "expired",
+          "freshen",
+          "instantiate",
+          "interreduce",
+          "key",
+          "lift",
+          "normalize",
+          "orient",
+          "rewrite_once",
+          "rules",
+          "solve",
+          "target_proof",
+          "target_score"
+        ]
+      },
+      "normalization": {
+        "normalize:target_lhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'",
+        "normalize:target_rhs": "ERROR TypeError: CompactSuperposition.normalize() missing 1 required positional argument: 'rules'"
+      },
+      "reductions": 3300,
+      "rounds": 5,
+      "solve_found": false,
+      "solve_repr": null,
+      "superpositions": 18
+    }
+  ]
+}
