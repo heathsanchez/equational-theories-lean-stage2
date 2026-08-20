@@ -1,14 +1,14 @@
-name: MathGraph Residual Cut Contextual Bridge Gate
+name: MathGraph O5-0014 Decisive Representation Bridge
 on:
   push:
-    branches: [mathgraph/binary-fusion-isolated-20260821]
+    branches: [mathgraph/o5-0014-decisive-bridge-20260821]
   pull_request:
-    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
+    branches: [mathgraph/binary-fusion-isolated-20260821]
   workflow_dispatch:
 jobs:
-  contextual-cut:
+  decisive-bridge:
     runs-on: ubuntu-24.04
-    timeout-minutes: 55
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,35 +17,17 @@ jobs:
         with:
           python-version: '3.11'
       - run: python -m pip install 'datasets>=3,<5'
-      - name: Run residual-cut contextual bridge
-        run: python experiments/mathgraph/run_residual_cut_contextual_bridge_gate.py
-      - name: Run schematic target closure
-        run: python experiments/mathgraph/run_schematic_target_closure_gate.py
-      - name: Run focused quotient matcher
-        run: python experiments/mathgraph/run_order5_0014_quotient_matcher_gate.py
-      - name: Run recursive-collapse-directed saturation
-        if: always()
-        run: python experiments/mathgraph/run_order5_0014_recursive_collapse_directed_gate.py
-      - name: Run promoted compact collapse activation
-        if: always()
-        run: python experiments/mathgraph/run_order5_0014_compact_collapse_activation_gate.py
-      - name: Scan normalizer for derived universal collapse
-        if: always()
-        run: python experiments/mathgraph/run_order5_0014_derived_collapse_scan.py
       - name: Run bidirectional contextual BFS across residual cut
-        if: always()
         run: python experiments/mathgraph/run_residual_cut_bidirectional_context_bfs_gate.py
+      - name: Run residual-derived contextual critical pairs
+        if: always()
+        run: python experiments/mathgraph/run_residual_cut_critical_pair_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-residual-cut-contextual-bridge
+          name: mathgraph-o5-0014-decisive-bridge
           path: |
-            experiments/mathgraph/results/residual-cut-contextual-bridge-gate.json
-            experiments/mathgraph/results/schematic-target-closure-gate.json
-            experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
-            experiments/mathgraph/results/order5-0014-recursive-collapse-directed-gate.json
-            experiments/mathgraph/results/order5-0014-compact-collapse-activation-gate.json
-            experiments/mathgraph/results/order5-0014-derived-collapse-scan.json
             experiments/mathgraph/results/residual-cut-bidirectional-context-bfs-gate.json
+            experiments/mathgraph/results/residual-cut-critical-pair-gate.json
           if-no-files-found: warn
           retention-days: 30
