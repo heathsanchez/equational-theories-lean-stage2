@@ -1,0 +1,36 @@
+name: MathGraph Five Residual Operator Attribution
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Operator Attribution'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout 795/800 research branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+      - name: Attribute first missing Vampire transitions
+        run: python experiments/mathgraph/run_five_residual_operator_attribution.py
+      - name: Upload attribution atlas
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-five-residual-operator-attribution
+          path: experiments/mathgraph/results/five-residual-operator-attribution.json
+          if-no-files-found: error
+          retention-days: 30
