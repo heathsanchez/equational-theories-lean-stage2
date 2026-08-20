@@ -1,0 +1,28 @@
+name: MathGraph Residual Unified Isolated Gate
+
+on:
+  push:
+    branches:
+      - mathgraph/residual-unified-isolated-20260821
+  workflow_dispatch:
+
+jobs:
+  multisub:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-unified-isolated-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual-unified multisubstitution
+        run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual-unified-isolated
+          path: experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
