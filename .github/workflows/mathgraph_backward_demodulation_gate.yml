@@ -1,0 +1,29 @@
+name: MathGraph Backward Demodulation Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backward-demodulation:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.pull_request.title, '[MathGraph Trigger] Backward Demodulation Gate')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run matched backward-demodulation reactivation gate
+        run: python experiments/mathgraph/run_backward_demodulation_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-backward-demodulation-gate
+          path: experiments/mathgraph/results/backward-demodulation-gate.json
+          if-no-files-found: error
+          retention-days: 30
