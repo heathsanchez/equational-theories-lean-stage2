@@ -2,6 +2,8 @@ name: MathGraph Residual Atom Isolated
 on:
   push:
     branches: [mathgraph/residual-atom-isolated-20260821]
+  pull_request:
+    branches: [mathgraph/binary-fusion-isolated-20260821]
   workflow_dispatch:
 jobs:
   residual-atom:
