@@ -1,9 +1,7 @@
 name: MathGraph Binary Fusion Invariant Breaker Gate
 on:
   push:
-    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
-  pull_request:
-    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
+    branches: [mathgraph/binary-fusion-isolated-20260821]
   workflow_dispatch:
 jobs:
   binary-fusion:
