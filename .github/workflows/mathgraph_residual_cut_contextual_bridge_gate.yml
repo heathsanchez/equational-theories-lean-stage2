@@ -16,6 +16,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_representation_tournament.py
       - name: Run frozen-threshold external validation
         run: python experiments/mathgraph/run_residual_atlas_external_validation.py
+      - name: Inventory historical residual experiments
+        run: python experiments/mathgraph/run_residual_atlas_inventory.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -23,5 +25,6 @@ jobs:
           path: |
             experiments/mathgraph/results/residual-representation-tournament.json
             experiments/mathgraph/results/residual-atlas-external-validation.json
+            experiments/mathgraph/results/residual-atlas-inventory.json
           if-no-files-found: error
           retention-days: 30
