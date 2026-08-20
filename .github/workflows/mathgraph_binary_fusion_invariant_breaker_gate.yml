@@ -8,7 +8,7 @@ on:
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
-    timeout-minutes: 28
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,6 +25,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
       - name: Run post-reification residual tree completion
         run: python experiments/mathgraph/run_post_reification_tree_completion_gate.py
+      - name: Run post-development exact component bridge
+        run: python experiments/mathgraph/run_post_development_component_bridge_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -34,5 +36,6 @@ jobs:
             experiments/mathgraph/results/missing-subterm-reification-gate.json
             experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
             experiments/mathgraph/results/post-reification-tree-completion-gate.json
+            experiments/mathgraph/results/post-development-component-bridge-gate.json
           if-no-files-found: warn
           retention-days: 30
