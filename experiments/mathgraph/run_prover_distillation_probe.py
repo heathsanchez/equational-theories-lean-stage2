@@ -112,10 +112,18 @@ def inline_engine(t,rev,seen=None):
     return t
 def sig(rigid,a,b):
     names={}; x=rigid.alpha_canonical_term(a,names); y=rigid.alpha_canonical_term(b,names); return min((x,y),(y,x))
+def match_instance(pattern,target,mapping):
+    if pattern[0]=='var':
+        name=pattern[1]
+        if name.startswith('@'): return pattern==target
+        if name in mapping: return mapping[name]==target
+        mapping[name]=target; return True
+    if target[0]!='op': return False
+    return match_instance(pattern[1],target[1],mapping) and match_instance(pattern[2],target[2],mapping)
 def covers(rigid,sa,sb,ta,tb):
-    for x,y in ((sa,sb),(sb,sa)):
+    for x,y,u,v in ((sa,sb,ta,tb),(sa,sb,tb,ta),(sb,sa,ta,tb),(sb,sa,tb,ta)):
         mp={}
-        if rigid.match_term(x,ta,mp) and rigid.match_term(y,tb,mp): return True
+        if match_instance(x,u,mp) and match_instance(y,v,mp): return True
     return False
 def teacher_steps(m,proof,target_vars):
     defs={}; out=[]
