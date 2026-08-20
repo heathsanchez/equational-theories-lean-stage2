@@ -1,0 +1,69 @@
+{
+  "schema": "mathgraph.released-800-coverage-diff.v1",
+  "created_utc": "2026-07-28T07:22:15.267906+00:00",
+  "frozen_mathgraph": {
+    "head": "4c0023b6e3ba85c7a37d76118c28303b1834aea8",
+    "true": 367,
+    "false": 384,
+    "total": 751
+  },
+  "flagship_v6_first_candidate_audit": {
+    "solver_sha256": "48a782d566a556e8b9e66ec64d85dab181ce231d01c6663c26c9f553886ee1b8",
+    "true_candidates": 431,
+    "false_candidates": 369,
+    "label_correct_first_candidates": 769,
+    "label_incorrect_first_candidates": 31,
+    "warning": "The candidate harness accepts the first judge call synthetically; 31 FALSE rows first emitted invalid TRUE attempts, so this is not an accepted-score reproduction."
+  },
+  "sets": {
+    "A_count": 751,
+    "B_correct_first_candidate_count": 769,
+    "A_only_count": 31,
+    "B_only_correct_first_candidate_count": 49,
+    "candidate_union_count": 800,
+    "candidate_union_residual_count": 0
+  },
+  "verified_specialist_union": {
+    "true": 394,
+    "false": 400,
+    "total": 794,
+    "residual": 6,
+    "new_true": 27,
+    "new_false": 16,
+    "remaining_ids": [
+      "evaluation_hard_0196",
+      "evaluation_normal_0036",
+      "evaluation_normal_0040",
+      "evaluation_normal_0158",
+      "evaluation_order5_0014",
+      "evaluation_order5_0042"
+    ]
+  },
+  "clean_candidate_run": {
+    "parallel_8_workers": {
+      "true": 393,
+      "false": 399,
+      "abstain": 8
+    },
+    "isolated_rerun": {
+      "evaluation_order5_0065": "false candidate recovered",
+      "evaluation_order5_0142": "true candidate recovered"
+    },
+    "isolated_projection": {
+      "true": 394,
+      "false": 400,
+      "total": 794
+    },
+    "note": "The six other abstentions are the stable remaining TRUE residuals. The two additional parallel misses were CPU-contention timeouts and both recovered with the unchanged solver in isolated runs."
+  },
+  "target_grounded_eight_flagship_candidate_hits": [
+    "evaluation_hard_0140",
+    "evaluation_hard_0144",
+    "evaluation_hard_0174",
+    "evaluation_order5_0024",
+    "evaluation_order5_0102",
+    "evaluation_order5_0138",
+    "evaluation_order5_0160",
+    "evaluation_order5_0184"
+  ]
+}

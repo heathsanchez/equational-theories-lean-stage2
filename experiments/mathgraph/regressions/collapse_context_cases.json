@@ -1,0 +1,34 @@
+[
+  {
+    "id": "omission_true_1595_1593",
+    "eq1_id": 1595,
+    "eq2_id": 1593,
+    "equation1": "x = (y ◇ z) ◇ (z ◇ (z ◇ y))",
+    "equation2": "x = (y ◇ z) ◇ (z ◇ (y ◇ w))",
+    "answer": true
+  },
+  {
+    "id": "omission_true_195_1948",
+    "eq1_id": 195,
+    "eq2_id": 1948,
+    "equation1": "x = (y ◇ z) ◇ (z ◇ y)",
+    "equation2": "x = (y ◇ (y ◇ z)) ◇ (y ◇ w)",
+    "answer": true
+  },
+  {
+    "id": "omission_true_1785_1783",
+    "eq1_id": 1785,
+    "eq2_id": 1783,
+    "equation1": "x = (y ◇ z) ◇ ((y ◇ w) ◇ y)",
+    "equation2": "x = (y ◇ z) ◇ ((y ◇ z) ◇ w)",
+    "answer": true
+  },
+  {
+    "id": "non_omission_false_control",
+    "eq1_id": 907,
+    "eq2_id": 2534,
+    "equation1": "x = y ◇ ((y ◇ x) ◇ (x ◇ y))",
+    "equation2": "x = (y ◇ ((y ◇ x) ◇ y)) ◇ y",
+    "answer": false
+  }
+]

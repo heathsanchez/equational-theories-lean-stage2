@@ -1,0 +1,2 @@
+Trigger: Given Clause Official Lean Stable
+Purpose: verify replay-valid hard0196 scheduling gain through the official Lean judge.

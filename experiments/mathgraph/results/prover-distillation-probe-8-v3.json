@@ -1,0 +1,187 @@
+{
+  "rows": [
+    {
+      "exact_teacher_steps": 6,
+      "first_missing": {
+        "bare_side": 0,
+        "collapse_like": 0,
+        "fid": "f17",
+        "inference": "superposition",
+        "lhs": "(X1 \u25c7 (X0 \u25c7 X0))",
+        "max_size": 7,
+        "rhs": "(((X0 \u25c7 X0) \u25c7 X0) \u25c7 X1)",
+        "size_gap": 2,
+        "variables": 2
+      },
+      "id": "evaluation_extra_hard_0036",
+      "present_teacher_steps": 7,
+      "student_clauses": 17,
+      "student_found": false,
+      "teacher": true,
+      "teacher_steps": 10
+    },
+    {
+      "exact_teacher_steps": 3,
+      "first_missing": null,
+      "id": "evaluation_extra_hard_0143",
+      "present_teacher_steps": 3,
+      "student_clauses": 24,
+      "student_found": false,
+      "teacher": true,
+      "teacher_steps": 3
+    },
+    {
+      "exact_teacher_steps": 0,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 0,
+        "fid": "f26",
+        "inference": "superposition",
+        "lhs": "X0",
+        "max_size": 1,
+        "rhs": "X2",
+        "size_gap": 0,
+        "variables": 2
+      },
+      "id": "evaluation_hard_0036",
+      "present_teacher_steps": 1,
+      "student_clauses": 22,
+      "student_found": true,
+      "teacher": true,
+      "teacher_steps": 2
+    },
+    {
+      "exact_teacher_steps": 0,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 0,
+        "fid": "f32",
+        "inference": "superposition",
+        "lhs": "X0",
+        "max_size": 1,
+        "rhs": "X3",
+        "size_gap": 0,
+        "variables": 2
+      },
+      "id": "evaluation_hard_0148",
+      "present_teacher_steps": 1,
+      "student_clauses": 17,
+      "student_found": true,
+      "teacher": true,
+      "teacher_steps": 2
+    },
+    {
+      "exact_teacher_steps": 7,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 1,
+        "fid": "f101",
+        "inference": "forward_demodulation",
+        "lhs": "@x",
+        "max_size": 11,
+        "rhs": "(((@x \u25c7 @y) \u25c7 @y) \u25c7 ((@x \u25c7 @y) \u25c7 @y))",
+        "size_gap": 10,
+        "variables": 0
+      },
+      "id": "evaluation_normal_0036",
+      "present_teacher_steps": 9,
+      "student_clauses": 100,
+      "student_found": false,
+      "teacher": true,
+      "teacher_steps": 14
+    },
+    {
+      "exact_teacher_steps": 0,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 0,
+        "fid": "f33",
+        "inference": "superposition",
+        "lhs": "X0",
+        "max_size": 1,
+        "rhs": "X2",
+        "size_gap": 0,
+        "variables": 2
+      },
+      "id": "evaluation_normal_0148",
+      "present_teacher_steps": 1,
+      "student_clauses": 21,
+      "student_found": true,
+      "teacher": true,
+      "teacher_steps": 2
+    },
+    {
+      "exact_teacher_steps": 1,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 0,
+        "fid": "f39",
+        "inference": "superposition",
+        "lhs": "X0",
+        "max_size": 1,
+        "rhs": "X2",
+        "size_gap": 0,
+        "variables": 2
+      },
+      "id": "evaluation_order5_0036",
+      "present_teacher_steps": 2,
+      "student_clauses": 34,
+      "student_found": true,
+      "teacher": true,
+      "teacher_steps": 3
+    },
+    {
+      "exact_teacher_steps": 0,
+      "first_missing": {
+        "bare_side": 1,
+        "collapse_like": 0,
+        "fid": "f29",
+        "inference": "superposition",
+        "lhs": "X0",
+        "max_size": 1,
+        "rhs": "X3",
+        "size_gap": 0,
+        "variables": 2
+      },
+      "id": "evaluation_order5_0148",
+      "present_teacher_steps": 0,
+      "student_clauses": 13,
+      "student_found": true,
+      "teacher": true,
+      "teacher_steps": 1
+    }
+  ],
+  "summary": {
+    "first_missing_buckets": [
+      {
+        "bucket": [
+          "superposition",
+          1,
+          0,
+          2
+        ],
+        "count": 5
+      },
+      {
+        "bucket": [
+          "superposition",
+          0,
+          0,
+          2
+        ],
+        "count": 1
+      },
+      {
+        "bucket": [
+          "forward_demodulation",
+          1,
+          1,
+          0
+        ],
+        "count": 1
+      }
+    ],
+    "student_solved": 5,
+    "teacher_solved": 8
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "diagnostic_only": true,
+  "production_solver_unchanged": true,
+  "production_score": "78 TRUE + 96 FALSE = 174/200",
+  "oracle": {
+    "name": "Vampire",
+    "version": "5.0.1",
+    "production_dependency": false,
+    "wall_limit_seconds_per_row": 1
+  },
+  "public_true_residuals_at_start": {
+    "rows": 25,
+    "theorems": 25,
+    "median_proof_lines": 20,
+    "maximum_proof_lines": 75,
+    "maximum_superposition_steps": 45,
+    "maximum_demodulation_steps": 16
+  },
+  "label_hidden_external_audit": {
+    "true_opportunities": 40,
+    "true_theorems": 40,
+    "true_median_seconds": 0.0127185,
+    "false_controls": 40,
+    "false_theorems": 0,
+    "invalid_outcomes": 0,
+    "true_median_proof_lines": 18,
+    "true_maximum_proof_lines": 79,
+    "true_maximum_superposition_steps": 39,
+    "true_maximum_demodulation_steps": 26
+  },
+  "bounded_coverage": {
+    "external_true_superposition_steps_at_most_5": "35/40",
+    "external_true_superposition_steps_at_most_8": "37/40",
+    "external_true_superposition_steps_at_most_15": "39/40",
+    "public_true_superposition_steps_at_most_8": "16/25",
+    "public_true_superposition_steps_at_most_20": "22/25"
+  },
+  "conclusion": "Goal-directed unit equality superposition has complete measured recall on the sealed external TRUE audit and zero measured FALSE-control theorem claims. Promotion still requires an internal replayable implementation; the external prover is only a proof-shape oracle."
+}

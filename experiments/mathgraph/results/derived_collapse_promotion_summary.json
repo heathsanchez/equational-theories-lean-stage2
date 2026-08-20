@@ -1,0 +1,70 @@
+{
+  "constructor": "derived universal bare-variable collapse",
+  "starting_head": "3b2af90",
+  "starting_solver": {
+    "sha256": "9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5",
+    "bytes": 249066,
+    "sample_200": "85 TRUE + 96 FALSE = 181/200"
+  },
+  "candidate_solver": {
+    "sha256": "48b516a0e35a3e971756115385a35ccf6e298f10e8db16f9126846bbf0af1beb",
+    "bytes": 251172,
+    "llm_calls": 0
+  },
+  "algorithm": {
+    "search_budget_changed": false,
+    "rule": "A replayed universal equality with a bare variable absent from the opposite side proves any concrete target equality by two source-derived instantiations, symmetry, and transitivity.",
+    "independent_replay": true,
+    "official_lean_verification": true
+  },
+  "sample_20": {
+    "true": 8,
+    "false": 10,
+    "total": 18,
+    "true_gain": 2,
+    "rejected_judge_calls": 0,
+    "result_sha256": "5e715c9be4286e467382d62f68c01a3bf706c90b4733d1d7fd042dbaecb9a3cf"
+  },
+  "sample_200": {
+    "true": 87,
+    "false": 96,
+    "total": 183,
+    "true_gain": 2,
+    "new_hits": [
+      "true_1604_1822",
+      "true_2935_3138"
+    ],
+    "rejected_judge_calls": 0,
+    "runtime_seconds": 571.3,
+    "result_sha256": "752b45b71e9dcc035c7ccd19d521b8a2ea59dbd9a228b7b7acfc9326be55341f"
+  },
+  "content_hash_split": {
+    "development": "48 TRUE + 39 FALSE = 87/100",
+    "holdout": "39 TRUE + 57 FALSE = 96/100",
+    "new_development_true": 2,
+    "new_holdout_true": 0,
+    "interpretation": "Public split is not transfer evidence for this constructor; use the untouched hard-distribution audit."
+  },
+  "hard_distribution_audit": {
+    "rows": 269,
+    "true_opportunities": 124,
+    "false_controls": 145,
+    "true_candidates": 89,
+    "officially_accepted_true": 61,
+    "false_candidates": 0,
+    "lean_rejections_after_replay": 0,
+    "compile_or_replay_failures": 28,
+    "prior_compact_candidate_count": 40,
+    "candidate_count_gain": 49
+  },
+  "gates": {
+    "focused_unit_test": "1/1",
+    "solo": "66/66",
+    "marathon": "25/25",
+    "invalid_outcomes": 0
+  },
+  "promotion": {
+    "promoted": true,
+    "reason": "Two clean public gains, two independent sample_20 gains, 61 officially accepted hard-distribution TRUE certificates, zero FALSE candidates, and all official gates green."
+  }
+}

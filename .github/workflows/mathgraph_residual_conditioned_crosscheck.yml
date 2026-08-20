@@ -1,0 +1,32 @@
+name: MathGraph Residual Conditioned Crosscheck
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+  workflow_dispatch:
+jobs:
+  crosscheck:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.number == 3)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-conditioned-operator-induction-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run bounded rewrite-cut operator induction
+        run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate.py
+      - name: Run necessary missing-subterm constraint induction
+        run: python experiments/mathgraph/run_missing_subterm_constraint_induction_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-conditioned-crosscheck
+          path: |
+            experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
+            experiments/mathgraph/results/missing-subterm-constraint-induction-gate.json
+          if-no-files-found: warn
+          retention-days: 30

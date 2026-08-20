@@ -1,0 +1,79 @@
+{
+  "exhaustive_no_countermodel_order_le_3": 6,
+  "residual_false": [
+    {
+      "classification": "no countermodel of order <= 3; all Fin 3 source models satisfy target",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3326,
+      "elapsed_seconds": 0.151596,
+      "id": "false_919_872",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 7773,
+      "source_models_found": 4,
+      "target_witnesses_tested": 36
+    },
+    {
+      "classification": "no countermodel of order <= 3; all Fin 3 source models satisfy target",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3329,
+      "elapsed_seconds": 0.149462,
+      "id": "false_907_2534",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 7776,
+      "source_models_found": 1,
+      "target_witnesses_tested": 9
+    },
+    {
+      "classification": "no countermodel of order <= 3; all Fin 3 source models satisfy target",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3329,
+      "elapsed_seconds": 0.150881,
+      "id": "false_1682_411",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 10015,
+      "source_models_found": 1,
+      "target_witnesses_tested": 3
+    },
+    {
+      "classification": "source constraints inconsistent on Fin 3",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3330,
+      "elapsed_seconds": 0.151713,
+      "id": "false_2370_1248",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 8475,
+      "source_models_found": 0,
+      "target_witnesses_tested": 0
+    },
+    {
+      "classification": "no countermodel of order <= 3; all Fin 3 source models satisfy target",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3326,
+      "elapsed_seconds": 0.151544,
+      "id": "false_3145_3481",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 9586,
+      "source_models_found": 4,
+      "target_witnesses_tested": 36
+    },
+    {
+      "classification": "source constraints inconsistent on Fin 3",
+      "complete_tables_tested": 3330,
+      "early_source_prunes": 3330,
+      "elapsed_seconds": 0.153064,
+      "id": "false_1790_1722",
+      "raw_symmetry_duplicates_removed": 16353,
+      "source_assignments_evaluated": 11311,
+      "source_models_found": 0,
+      "target_witnesses_tested": 0
+    }
+  ],
+  "totals": {
+    "complete_tables_tested": 19980,
+    "early_source_prunes": 19970,
+    "raw_symmetry_duplicates_removed": 98118,
+    "source_assignments_evaluated": 54936,
+    "source_models_found": 10,
+    "target_witnesses_tested": 84
+  }
+}

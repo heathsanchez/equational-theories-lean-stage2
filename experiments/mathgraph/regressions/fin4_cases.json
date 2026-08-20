@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fin4_genuine_order_four",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "exhaustive_no_countermodel_order_le_3"
+  },
+  {
+    "id": "fin4_nested_support",
+    "equation1": "x = (y ◇ z) ◇ ((z ◇ x) ◇ y)",
+    "equation2": "x = (y ◇ y) ◇ ((x ◇ y) ◇ y)",
+    "audit": "nested_support_reduces_branching"
+  },
+  {
+    "id": "fin4_source_support_disjoint",
+    "equation1": "x = (((y ◇ y) ◇ x) ◇ z) ◇ x",
+    "equation2": "x ◇ x = y ◇ ((y ◇ x) ◇ x)",
+    "audit": "source_support_disjoint"
+  },
+  {
+    "id": "fin4_target_support_disjoint",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "target_support_disjoint"
+  },
+  {
+    "id": "fin4_target_singleton_direct_cell",
+    "equation1": "x = (y ◇ z) ◇ ((z ◇ x) ◇ y)",
+    "equation2": "x = (y ◇ y) ◇ ((x ◇ y) ◇ y)",
+    "audit": "forced_assignment"
+  },
+  {
+    "id": "fin4_repeated_subterms",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "support_cache"
+  },
+  {
+    "id": "fin4_four_element_witness",
+    "equation1": "x ◇ y = y ◇ x",
+    "equation2": "x ◇ (z ◇ w) = y ◇ (z ◇ w)",
+    "audit": "stored_witness_cardinality_four"
+  },
+  {
+    "id": "fin4_noncommutative_model",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "noncommutative"
+  },
+  {
+    "id": "fin4_nonassociative_model",
+    "equation1": "x = (y ◇ z) ◇ ((z ◇ x) ◇ y)",
+    "equation2": "x = (y ◇ y) ◇ ((x ◇ y) ◇ y)",
+    "audit": "nonassociative"
+  },
+  {
+    "id": "fin4_no_idempotent_normalization",
+    "equation1": "x ◇ y = y ◇ x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ (y ◇ z)",
+    "audit": "constructed_no_idempotent_table"
+  },
+  {
+    "id": "fin4_target_guided_advantage",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "target_guided_vs_source_only"
+  },
+  {
+    "id": "fin4_scoped_target_nogood_reuse",
+    "equation1": "x = (y ◇ z) ◇ ((z ◇ x) ◇ y)",
+    "equation2": "x = (y ◇ y) ◇ ((x ◇ y) ◇ y)",
+    "audit": "target_nogood"
+  },
+  {
+    "id": "fin4_source_nogood_reuse",
+    "equation1": "x = (((y ◇ y) ◇ x) ◇ z) ◇ x",
+    "equation2": "x ◇ x = y ◇ ((y ◇ x) ◇ x)",
+    "audit": "source_nogood"
+  },
+  {
+    "id": "fin4_symmetry_equivalence",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "symmetry_on_off"
+  },
+  {
+    "id": "fin4_corrupted_table",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "replay_rejects_table"
+  },
+  {
+    "id": "fin4_corrupted_serialization",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "replay_rejects_serialization"
+  },
+  {
+    "id": "fin4_completed_before_deadline",
+    "equation1": "x = y ◇ ((y ◇ y) ◇ (y ◇ x))",
+    "equation2": "x = y ◇ ((x ◇ x) ◇ (y ◇ x))",
+    "audit": "expired_prefix_replay"
+  },
+  {
+    "id": "fin4_pathological_abstention",
+    "equation1": "a ◇ (b ◇ (c ◇ (d ◇ (e ◇ (f ◇ g))))) = a",
+    "equation2": "a ◇ b = b ◇ a",
+    "audit": "variable_cap"
+  },
+  {
+    "id": "fin4_true_control",
+    "equation1": "(x ◇ y) ◇ z = x ◇ (y ◇ z)",
+    "equation2": "(a ◇ b) ◇ c = a ◇ (b ◇ c)",
+    "audit": "no_false_certificate"
+  },
+  {
+    "id": "fin2_fin3_compatibility",
+    "equation1": "x ◇ x = x",
+    "equation2": "x ◇ y = y ◇ x",
+    "audit": "unchanged_generic_engine"
+  }
+]
