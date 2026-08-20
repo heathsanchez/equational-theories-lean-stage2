@@ -20,12 +20,19 @@ OUT=ROOT/'experiments/mathgraph/results/cross-cone-binary-congruence-gate.json';
 def load(p,n):
  s=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(s);sys.modules[n]=m;s.loader.exec_module(m);return m
 def touches(n,comps,c): return comps.get(n.lhs)==c or comps.get(n.rhs)==c
+
+def install_symbolic_proof(m,search,proof,tag):
+ ns,root=proof;off=len(search.nodes)
+ for n in ns:
+  search.nodes.append(m.EqualityNode(n.lhs,n.rhs,n.kind,parents=tuple(off+p for p in n.parents),substitution=n.substitution,context=n.context,orientation=n.orientation,generation=n.generation,term_origins=n.term_origins,constructor=n.constructor or tag,derivation_depth=n.derivation_depth,context_record=n.context_record,overlap_record=n.overlap_record))
+ return off+root
+
 def run_search(m,sym,cp,source,target,items,seconds=28):
  started=time.monotonic(); Norm=sym.make_normalizer(m); cfg=dict(m.NORMALIZATION_PORTFOLIO[3]);cfg.update(source_substitutions=0,seconds=seconds,candidate_equalities=8000,overlap_candidates=8000,selected_rules=1200,replayed_rules=5000,maximum_term_size=130,maximum_proof_nodes=120000);s=Norm(source,target,started+seconds,cfg)
- for x in items: cp.copy_proof_into(m,s,x['proof'],x.get('name','installed'))
+ for x in items: install_symbolic_proof(m,s,x['proof'],x.get('name','installed'))
  found=s.solve(); ok=False;cert=None
  if found:
-  ns,root=found;ok=bool(m.replay_dag(source,ns,root,maximum_term_size=150,maximum_nodes=120000));
+  ns,root=found;ok=bool(m.replay_dag(source,ns,root,maximum_term_size=150,maximum_nodes=120000))
   if ok: cert=len(m.make_dag_certificate(target,ns,root)[0].encode())
  return {'closure':ok,'nodes':len(s.nodes),'rules':len(s.rules),'overlaps':s.overlap_candidates,'certificate_bytes':cert}
 def main():
