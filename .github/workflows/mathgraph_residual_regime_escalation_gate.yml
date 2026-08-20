@@ -1,0 +1,28 @@
+name: MathGraph Residual Regime Escalation Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+  workflow_dispatch:
+jobs:
+  residual-regime:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.title == '[MathGraph Trigger] Given Clause Saturation Gate')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual regime escalation gate
+        run: python experiments/mathgraph/run_residual_regime_escalation_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-regime-escalation-gate
+          path: experiments/mathgraph/results/residual-regime-escalation-gate.json
+          if-no-files-found: warn
+          retention-days: 30
