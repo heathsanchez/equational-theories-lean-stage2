@@ -86,7 +86,8 @@ def first_missing(m,proof,tgt,clauses,rev):
   p=split(bl[4:-1]);
   if len(p)<3:continue
   fid,k,f=p[:3];tail=p[3:]
-  e=eq(f)
+  try:e=eq(f)
+  except Exception:continue
   if not e:continue
   a,b=e
   if k=='definition':
@@ -114,11 +115,9 @@ def main():
  lim=dict(m.COMPACT_SUPERPOSITION_PROBE);lim.update({'maximum_term_size':65,'maximum_replay_term_size':260,'maximum_depth':12,'maximum_rules':768,'maximum_rounds':64,'new_clauses_per_round':512,'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':50000})
  for rid in sorted(IDS):
   src=m.parse_equation(rows[rid]['equation1']);tgt=m.parse_equation(rows[rid]['equation2'])
-  # Matched control: 6s then another 6s.
   ce=m.TargetGroundedRefutation(src,tgt,time.monotonic()+6,dict(lim));cr=ce.search.solve();
   if cr is None:ce.search.deadline=time.monotonic()+6;cr=ce.search.solve()
   control=finish(m,ce,cr)
-  # Candidate: 6s; find a MathGraph CP covering teacher's first missing; retain; 6s continuation.
   e=m.TargetGroundedRefutation(src,tgt,time.monotonic()+6,dict(lim));r=e.search.solve();injected=False;meta=None
   if r is None:
    fm=first_missing(m,traces[rid],tgt,e.search.clauses,e.reverse_constants);rules=list(e.search.rules());deadline=time.monotonic()+6
