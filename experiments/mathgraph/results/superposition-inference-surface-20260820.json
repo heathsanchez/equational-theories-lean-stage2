@@ -1,0 +1,222 @@
+{
+  "conditions": {
+    "all_orientations": [
+      {
+        "clauses": 259,
+        "elapsed": 5.003985,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "proof_nodes": null,
+        "reductions": 3419,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 238
+      },
+      {
+        "clauses": 249,
+        "elapsed": 5.005948,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "proof_nodes": null,
+        "reductions": 3859,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 228
+      },
+      {
+        "clauses": 59,
+        "elapsed": 5.014709,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "proof_nodes": null,
+        "reductions": 3916,
+        "replay_ok": false,
+        "rounds": 2,
+        "superpositions": 38
+      },
+      {
+        "clauses": 104,
+        "elapsed": 5.01318,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "proof_nodes": null,
+        "reductions": 4373,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 193,
+        "elapsed": 5.017999,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "proof_nodes": null,
+        "reductions": 1693,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 168
+      },
+      {
+        "clauses": 274,
+        "elapsed": 5.004567,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "proof_nodes": null,
+        "reductions": 2999,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 249
+      }
+    ],
+    "baseline": [
+      {
+        "clauses": 255,
+        "elapsed": 5.005721,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "proof_nodes": null,
+        "reductions": 2500,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 234
+      },
+      {
+        "clauses": 249,
+        "elapsed": 5.006659,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "proof_nodes": null,
+        "reductions": 2119,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 228
+      },
+      {
+        "clauses": 183,
+        "elapsed": 5.003705,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "proof_nodes": null,
+        "reductions": 2604,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 162
+      },
+      {
+        "clauses": 230,
+        "elapsed": 5.011235,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "proof_nodes": null,
+        "reductions": 8125,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 213
+      },
+      {
+        "clauses": 193,
+        "elapsed": 5.017133,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "proof_nodes": null,
+        "reductions": 1731,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 168
+      },
+      {
+        "clauses": 274,
+        "elapsed": 5.011715,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "proof_nodes": null,
+        "reductions": 1516,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 249
+      }
+    ],
+    "both_outer": [
+      {
+        "clauses": 259,
+        "elapsed": 5.009363,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "proof_nodes": null,
+        "reductions": 2662,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 238
+      },
+      {
+        "clauses": 249,
+        "elapsed": 5.014738,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "proof_nodes": null,
+        "reductions": 2533,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 228
+      },
+      {
+        "clauses": 235,
+        "elapsed": 5.041097,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "proof_nodes": null,
+        "reductions": 3064,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 214
+      },
+      {
+        "clauses": 261,
+        "elapsed": 5.006507,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "proof_nodes": null,
+        "reductions": 7790,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 244
+      },
+      {
+        "clauses": 193,
+        "elapsed": 5.008765,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "proof_nodes": null,
+        "reductions": 1734,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 168
+      },
+      {
+        "clauses": 274,
+        "elapsed": 5.020324,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "proof_nodes": null,
+        "reductions": 1965,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 249
+      }
+    ]
+  },
+  "summary": {
+    "all_orientations": {
+      "count": 0,
+      "hits": []
+    },
+    "baseline": {
+      "count": 0,
+      "hits": []
+    },
+    "both_outer": {
+      "count": 0,
+      "hits": []
+    }
+  }
+}
