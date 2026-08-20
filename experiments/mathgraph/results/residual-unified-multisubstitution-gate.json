@@ -1,0 +1,130 @@
+{
+  "arms": {
+    "A": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 151,
+      "nodes": 6650,
+      "overlaps": 82114,
+      "proof_nodes": null,
+      "rules": 470,
+      "seconds": 20.0,
+      "tag": "A_frozen"
+    },
+    "B": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 151,
+      "nodes": 6878,
+      "overlaps": 63644,
+      "proof_nodes": null,
+      "rules": 384,
+      "seconds": 20.0,
+      "tag": "B_existing_G3"
+    },
+    "C": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 83,
+      "nodes": 7644,
+      "overlaps": 98510,
+      "proof_nodes": null,
+      "rules": 284,
+      "seconds": 30.0,
+      "tag": "C_residual_multisub"
+    },
+    "C_ablation": null
+  },
+  "counts": {
+    "g1": 23,
+    "g2": 520,
+    "g3": 520,
+    "multisub_constraint_hits": 4,
+    "multisub_verified": 4
+  },
+  "decision": "NO_CLOSURE",
+  "derived_invariant": "existing operator constructor changes one source variable at a time via self-containing replacement; it does not synthesize simultaneous multi-variable source instances from a residual cut",
+  "escape_constructor": "unify a source subterm pattern with each residual-missing structure, then compile the induced simultaneous substitution as a replay-verified source instance",
+  "id": "evaluation_order5_0014",
+  "missing_target_subterms": [
+    "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+    "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+  ],
+  "protocol": {
+    "all_candidates_are_replay_verified_source_instances": true,
+    "no_answer_label_in_generator": true,
+    "no_external_proof_trace": true,
+    "no_target_specific_identity": true
+  },
+  "schema": "mathgraph.residual-unified-multisubstitution.v1",
+  "top_multisub": [
+    {
+      "activation": 0,
+      "changed": [
+        "y",
+        "z"
+      ],
+      "goal": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "hits": 2,
+      "lhs": "x",
+      "mapping": {
+        "y": "(x \u25c7 z)",
+        "z": "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+      },
+      "pattern": "(z \u25c7 y)",
+      "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z))))",
+      "weight": 18
+    },
+    {
+      "activation": 0,
+      "changed": [
+        "y",
+        "z"
+      ],
+      "goal": "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+      "hits": 2,
+      "lhs": "((x \u25c7 z) \u25c7 (x \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z))))",
+      "mapping": {
+        "y": "(x \u25c7 z)",
+        "z": "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+      },
+      "pattern": "(z \u25c7 y)",
+      "rhs": "x",
+      "weight": 18
+    },
+    {
+      "activation": 0,
+      "changed": [
+        "y",
+        "z"
+      ],
+      "goal": "((y \u25c7 z) \u25c7 (x \u25c7 y))",
+      "hits": 1,
+      "lhs": "x",
+      "mapping": {
+        "y": "(x \u25c7 y)",
+        "z": "(y \u25c7 z)"
+      },
+      "pattern": "(z \u25c7 y)",
+      "rhs": "((x \u25c7 y) \u25c7 (x \u25c7 ((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y))))",
+      "weight": 7
+    },
+    {
+      "activation": 0,
+      "changed": [
+        "y",
+        "z"
+      ],
+      "goal": "((y \u25c7 z) \u25c7 (x \u25c7 y))",
+      "hits": 1,
+      "lhs": "((x \u25c7 y) \u25c7 (x \u25c7 ((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y))))",
+      "mapping": {
+        "y": "(x \u25c7 y)",
+        "z": "(y \u25c7 z)"
+      },
+      "pattern": "(z \u25c7 y)",
+      "rhs": "x",
+      "weight": 7
+    }
+  ]
+}
