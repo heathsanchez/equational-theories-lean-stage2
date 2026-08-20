@@ -2,6 +2,8 @@ name: MathGraph Ten Bridge Escalations Gate
 on:
   push:
     branches: [mathgraph/binary-fusion-isolated-20260821]
+  pull_request:
+    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
   workflow_dispatch:
 jobs:
   ten-bridge-escalations:
@@ -10,7 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: mathgraph/binary-fusion-isolated-20260821
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
