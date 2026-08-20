@@ -23,8 +23,9 @@ jobs:
       - name: Probe compact proof compilation
         run: python experiments/mathgraph/run_hard0196_compilation_probe.py
       - name: Run official Lean gate
-        if: always()
         run: python experiments/mathgraph/run_given_clause_official_lean_gate.py
+      - name: Run source-distinct compiler transfer audit
+        run: python experiments/mathgraph/run_certificate_elision_transfer_audit.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -32,5 +33,6 @@ jobs:
           path: |
             experiments/mathgraph/results/given-clause-official-lean-gate.json
             experiments/mathgraph/results/hard0196-compilation-probe.json
+            experiments/mathgraph/results/certificate-elision-transfer-audit.json
           if-no-files-found: warn
           retention-days: 30
