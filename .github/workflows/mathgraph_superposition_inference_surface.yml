@@ -1,0 +1,47 @@
+name: MathGraph Superposition Inference Surface
+on:
+  push:
+    branches:
+      - mathgraph/superposition-selector-tournament-20260820
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  surface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Extract six residuals
+        run: |
+          python - <<'PY'
+          import json
+          from datasets import load_dataset
+          wanted={'evaluation_normal_0036','evaluation_normal_0040','evaluation_normal_0158','evaluation_hard_0196','evaluation_order5_0014','evaluation_order5_0042'}
+          found={}
+          for cfg in ['evaluation_normal','evaluation_hard','evaluation_order5']:
+              for row in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train'):
+                  if row.get('id') in wanted: found[row['id']]=dict(row)
+          missing=sorted(wanted-set(found))
+          if missing: raise SystemExit(missing)
+          json.dump([found[k] for k in sorted(found)],open('/tmp/six.json','w'),indent=2)
+          PY
+      - name: Run inference-surface tournament
+        run: python experiments/mathgraph/run_superposition_inference_surface.py --input /tmp/six.json --output experiments/mathgraph/results/superposition-inference-surface-20260820.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-superposition-inference-surface
+          path: experiments/mathgraph/results/superposition-inference-surface-20260820.json
+      - name: Persist result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/mathgraph/results/superposition-inference-surface-20260820.json
+          git commit -m 'chore(research): persist inference-surface tournament [skip ci]' || exit 0
+          git push origin HEAD:mathgraph/superposition-selector-tournament-20260820
