@@ -8,7 +8,7 @@ on:
 jobs:
   contextual-cut:
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +23,9 @@ jobs:
         run: python experiments/mathgraph/run_schematic_target_closure_gate.py
       - name: Run focused quotient matcher
         run: python experiments/mathgraph/run_order5_0014_quotient_matcher_gate.py
+      - name: Run recursive-collapse-directed saturation
+        if: always()
+        run: python experiments/mathgraph/run_order5_0014_recursive_collapse_directed_gate.py
       - name: Run promoted compact collapse activation
         if: always()
         run: python experiments/mathgraph/run_order5_0014_compact_collapse_activation_gate.py
@@ -37,6 +40,7 @@ jobs:
             experiments/mathgraph/results/residual-cut-contextual-bridge-gate.json
             experiments/mathgraph/results/schematic-target-closure-gate.json
             experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
+            experiments/mathgraph/results/order5-0014-recursive-collapse-directed-gate.json
             experiments/mathgraph/results/order5-0014-compact-collapse-activation-gate.json
             experiments/mathgraph/results/order5-0014-derived-collapse-scan.json
           if-no-files-found: warn
