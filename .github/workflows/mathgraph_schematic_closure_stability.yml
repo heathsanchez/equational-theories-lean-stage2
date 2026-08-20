@@ -1,0 +1,72 @@
+name: MathGraph Schematic Closure Stability Audit
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  stability:
+    if: github.event.pull_request.title == '[MathGraph Trigger] Schematic Closure Gate'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: cedc5c3c7eb720f266dda682e57453b2495f72e8
+          path: baseline
+          fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          path: candidate
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Repeat paired order5_0138 and budget controls
+        shell: bash
+        run: |
+          python - <<'PY'
+          import importlib.util,json,sys,time
+          from datasets import load_dataset
+          def load(path,name):
+              spec=importlib.util.spec_from_file_location(name,path)
+              m=importlib.util.module_from_spec(spec);sys.modules[name]=m;spec.loader.exec_module(m);return m
+          b=load('baseline/submissions/mathgraph/solver.py','base0138')
+          c=load('candidate/submissions/mathgraph/solver.py','cand0138')
+          rows=list(load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train'))
+          row=next(dict(r) for r in rows if r['id']=='evaluation_order5_0138')
+          def run(m,secs):
+              src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2'])
+              lim=dict(m.COMPACT_SUPERPOSITION_PROBE);lim.update({'seconds':secs,'maximum_term_size':45,'maximum_replay_term_size':160,'maximum_depth':10,'maximum_rules':192,'maximum_rounds':16,'new_clauses_per_round':128,'maximum_clauses':2000,'normalization_steps':96,'maximum_proof_nodes':20000})
+              e=m.TargetGroundedRefutation(src,tgt,time.monotonic()+max(10.0,secs+2),lim);t=time.monotonic();f=e.solve();elapsed=time.monotonic()-t;ok=False
+              if f is not None:
+                  ns,r=f;ok=(ns[r].lhs,ns[r].rhs)==tgt[:2] and m.replay_dag(src,ns,r,maximum_term_size=lim['maximum_replay_term_size'],maximum_nodes=lim['maximum_proof_nodes'])
+              return {'found':bool(f),'ok':bool(ok),'clauses':len(e.search.clauses),'superpositions':e.search.superpositions,'rounds':e.search.rounds,'elapsed':round(elapsed,6)}
+          out={'id':row['id'],'runs':{}}
+          for secs in (0.5,0.75,1.0):
+              arr=[]
+              # alternate order each repetition to remove warm/cache bias
+              for i in range(8):
+                  if i%2==0:
+                      br=run(b,secs); cr=run(c,secs)
+                  else:
+                      cr=run(c,secs); br=run(b,secs)
+                  arr.append({'rep':i,'baseline':br,'candidate':cr})
+              out['runs'][str(secs)]=arr
+          for secs,arr in out['runs'].items():
+              out.setdefault('summary',{})[secs]={
+                  'baseline_ok':sum(x['baseline']['ok'] for x in arr),
+                  'candidate_ok':sum(x['candidate']['ok'] for x in arr),
+                  'baseline_clause_range':[min(x['baseline']['clauses'] for x in arr),max(x['baseline']['clauses'] for x in arr)],
+                  'candidate_clause_range':[min(x['candidate']['clauses'] for x in arr),max(x['candidate']['clauses'] for x in arr)],
+              }
+          open('schematic-closure-stability-0138.json','w').write(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(out['summary'],indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: schematic-closure-stability-0138
+          path: schematic-closure-stability-0138.json
+          retention-days: 30
