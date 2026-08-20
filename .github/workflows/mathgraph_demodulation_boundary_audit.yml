@@ -1,0 +1,29 @@
+name: MathGraph Demodulation Boundary Audit
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  demodulation-boundary:
+    if: github.event_name == 'workflow_dispatch' || startsWith(github.event.pull_request.title, '[MathGraph Trigger] Demodulation Boundary Audit')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run Vampire-MathGraph demodulation boundary audit
+        run: python experiments/mathgraph/run_demodulation_boundary_audit.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-demodulation-boundary-audit
+          path: experiments/mathgraph/results/demodulation-boundary-audit.json
+          if-no-files-found: error
+          retention-days: 30
