@@ -8,7 +8,7 @@ on:
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
-    timeout-minutes: 14
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,10 +19,14 @@ jobs:
       - run: python -m pip install 'datasets>=3,<5'
       - name: Run residual-derived binary fusion invariant breaker
         run: python experiments/mathgraph/run_binary_fusion_invariant_breaker_gate.py
+      - name: Run residual-derived missing-subterm reification
+        run: python experiments/mathgraph/run_missing_subterm_reification_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-binary-fusion-invariant-breaker
-          path: experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json
+          name: mathgraph-residual-invariant-breakers
+          path: |
+            experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json
+            experiments/mathgraph/results/missing-subterm-reification-gate.json
           if-no-files-found: warn
           retention-days: 30
