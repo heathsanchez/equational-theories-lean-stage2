@@ -1,0 +1,29 @@
+name: MathGraph Given Clause Memoization Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [main]
+concurrency:
+  group: mathgraph-given-clause-memoization-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  memoization:
+    if: github.event.pull_request.head.ref == 'mathgraph/developmental-continuation-20260820'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run memoized given-clause gate
+        run: python experiments/mathgraph/run_given_clause_memoization_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-given-clause-memoization-gate
+          path: experiments/mathgraph/results/given-clause-memoization-gate.json
+          if-no-files-found: error
