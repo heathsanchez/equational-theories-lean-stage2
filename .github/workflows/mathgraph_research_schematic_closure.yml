@@ -1,0 +1,235 @@
+name: MathGraph Stable Schematic Closure Runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      tested_commit:
+        description: Exact commit containing solver and patcher to test
+        required: true
+        default: cedc5c3c7eb720f266dda682e57453b2495f72e8
+      result_branch:
+        description: Branch to receive persisted result and passing solver
+        required: true
+        default: mathgraph/superposition-selector-tournament-20260820
+  push:
+    branches:
+      - main
+    paths:
+      - .github/research-triggers/schematic-closure-gate.json
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mathgraph-schematic-closure-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout stable control plane
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: control
+          fetch-depth: 1
+
+      - name: Resolve exact tested commit and result branch
+        id: cfg
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            tested='${{ inputs.tested_commit }}'
+            result_branch='${{ inputs.result_branch }}'
+          else
+            tested=$(python - <<'PY'
+          import json
+          p='control/.github/research-triggers/schematic-closure-gate.json'
+          print(json.load(open(p))['tested_commit'])
+          PY
+          )
+            result_branch=$(python - <<'PY'
+          import json
+          p='control/.github/research-triggers/schematic-closure-gate.json'
+          print(json.load(open(p))['result_branch'])
+          PY
+          )
+          fi
+          [[ "$tested" =~ ^[0-9a-f]{40}$ ]] || { echo "invalid tested_commit: $tested"; exit 2; }
+          [[ -n "$result_branch" ]] || { echo 'empty result_branch'; exit 2; }
+          echo "tested_commit=$tested" >> "$GITHUB_OUTPUT"
+          echo "result_branch=$result_branch" >> "$GITHUB_OUTPUT"
+          echo "Testing $tested; persisting to $result_branch"
+
+      - name: Checkout exact tested tree
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.cfg.outputs.tested_commit }}
+          path: tested
+          fetch-depth: 0
+
+      - name: Checkout result branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.cfg.outputs.result_branch }}
+          path: result
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+
+      - name: Apply schematic closure research patch
+        working-directory: tested
+        run: python experiments/mathgraph/apply_schematic_grounded_closure_patch.py
+
+      - name: Run replay-gated three-case causal test
+        id: gate
+        working-directory: tested
+        shell: bash
+        run: |
+          set +e
+          mkdir -p experiments/mathgraph/results
+          python - <<'PY'
+          import importlib.util, json, sys, time
+          from datasets import load_dataset
+
+          TESTED='${{ steps.cfg.outputs.tested_commit }}'
+          RESULT='experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json'
+          wanted={'evaluation_extra_hard_0143','evaluation_extra_hard_0036','evaluation_normal_0036'}
+
+          spec=importlib.util.spec_from_file_location('mg','submissions/mathgraph/solver.py')
+          m=importlib.util.module_from_spec(spec)
+          sys.modules['mg']=m
+          spec.loader.exec_module(m)
+
+          rows=[]
+          for cfg in ['evaluation_normal','evaluation_extra_hard']:
+              rows += [dict(r) for r in load_dataset(
+                  'SAIRfoundation/equational-theories-selected-problems', cfg, split='train'
+              ) if r.get('id') in wanted]
+          got={r['id'] for r in rows}
+          if got != wanted:
+              raise RuntimeError(f'missing ids: {sorted(wanted-got)}')
+
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
+          limits.update({
+              'seconds':0.5,
+              'maximum_term_size':45,
+              'maximum_replay_term_size':160,
+              'maximum_depth':10,
+              'maximum_rules':192,
+              'maximum_rounds':16,
+              'new_clauses_per_round':128,
+              'maximum_clauses':2000,
+              'normalization_steps':96,
+              'maximum_proof_nodes':20000,
+          })
+
+          out=[]
+          for row in sorted(rows,key=lambda r:r['id']):
+              src=m.parse_equation(row['equation1'])
+              tgt=m.parse_equation(row['equation2'])
+              eng=m.TargetGroundedRefutation(src,tgt,time.monotonic()+10.0,limits)
+              found=eng.solve()
+              ok=False
+              if found is not None:
+                  nodes,root=found
+                  ok=(nodes[root].lhs,nodes[root].rhs)==tgt[:2] and m.replay_dag(
+                      src,nodes,root,
+                      maximum_term_size=limits['maximum_replay_term_size'],
+                      maximum_nodes=limits['maximum_proof_nodes'],
+                  )
+              out.append({
+                  'id':row['id'],
+                  'found':bool(found),
+                  'replay_ok':bool(ok),
+                  'clauses':len(eng.search.clauses),
+                  'rounds':eng.search.rounds,
+                  'superpositions':eng.search.superpositions,
+              })
+
+          summary={x['id']:x for x in out}
+          gate={
+              '0143_closed': summary['evaluation_extra_hard_0143']['replay_ok'],
+              '0036_extra_stays_open': not summary['evaluation_extra_hard_0036']['found'],
+              '0036_normal_stays_open': not summary['evaluation_normal_0036']['found'],
+          }
+          gate['pass']=all(gate.values())
+          result={
+              'schema':'mathgraph.schematic-grounded-closure-gate.v1',
+              'tested_commit':TESTED,
+              'rows':out,
+              'gate':gate,
+          }
+          open(RESULT,'w').write(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(result,indent=2,sort_keys=True))
+          raise SystemExit(0 if gate['pass'] else 1)
+          PY
+          rc=$?
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Persist authoritative result
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          src='tested/experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json'
+          dst='result/experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json'
+          if [[ ! -f "$src" ]]; then
+            mkdir -p "$(dirname "$src")"
+            python - <<'PY'
+          import json
+          p='tested/experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json'
+          json.dump({
+            'schema':'mathgraph.schematic-grounded-closure-gate.v1',
+            'tested_commit':'${{ steps.cfg.outputs.tested_commit }}',
+            'gate':{'pass':False},
+            'status':'harness_failed_before_result'
+          },open(p,'w'),indent=2,sort_keys=True)
+          open(p,'a').write('\n')
+          PY
+          fi
+          mkdir -p "$(dirname "$dst")"
+          cp "$src" "$dst"
+          if [[ "${{ steps.gate.outputs.rc }}" == "0" ]]; then
+            cp tested/submissions/mathgraph/solver.py result/submissions/mathgraph/solver.py
+          fi
+          cd result
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json
+          if [[ "${{ steps.gate.outputs.rc }}" == "0" ]]; then
+            git add submissions/mathgraph/solver.py
+          fi
+          if git diff --cached --quiet; then
+            echo 'No writeback changes.'
+          else
+            git commit -m "research: persist stable schematic closure gate for ${{ steps.cfg.outputs.tested_commit }} [skip ci]"
+            git push origin HEAD:${{ steps.cfg.outputs.result_branch }}
+          fi
+
+      - name: Upload immutable run artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: schematic-grounded-closure-${{ steps.cfg.outputs.tested_commit }}
+          path: |
+            tested/experiments/mathgraph/results/schematic-grounded-closure-gate-stable.json
+            tested/submissions/mathgraph/solver.py
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Enforce scientific gate conclusion
+        if: always()
+        shell: bash
+        run: |
+          rc='${{ steps.gate.outputs.rc }}'
+          [[ "$rc" == '0' ]] || { echo "Scientific gate did not pass (rc=$rc)."; exit 1; }
