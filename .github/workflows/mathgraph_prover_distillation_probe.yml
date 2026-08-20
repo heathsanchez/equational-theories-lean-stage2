@@ -1,0 +1,89 @@
+name: MathGraph Prover Distillation Probe
+
+on:
+  push:
+    branches:
+      - mathgraph/superposition-selector-tournament-20260820
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dataset tooling and Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python -m pip install 'datasets>=3,<5'
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json')); ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); score=0
+              if 'linux' in n: score+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): score+=6
+              if 'z3' in n: score+=2
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): score-=20
+              ranked.append((score,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit('no Vampire Linux asset')
+          print(ranked[0][1])
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin;
+          elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin;
+          else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+          V="$(find /tmp/vampire-bin -type f \( -name vampire -o -name 'vampire*' \) | head -1)"
+          chmod +x "$V"; sudo install -m 0755 "$V" /usr/local/bin/vampire
+          vampire --show_options on >/dev/null
+      - name: Build deterministic source-distinct TRUE sample
+        run: |
+          python - <<'PY'
+          import json
+          from datasets import load_dataset
+          configs=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
+          rows=[]
+          for cfg in configs:
+              ds=load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train')
+              true=[dict(r) for r in ds if bool(r.get('answer'))]
+              # Ten spread across each 100-TRUE config, not the first ten.
+              idx=[0,11,22,33,44,55,66,77,88,99]
+              rows.extend(true[i] for i in idx if i < len(true))
+          # Avoid using the known six residual IDs as the only teacher signal.
+          json.dump(rows,open('/tmp/distill-true-40.json','w'),indent=2)
+          print('sample',len(rows),[r['id'] for r in rows])
+          PY
+      - name: Run teacher-to-student transition probe
+        run: |
+          python experiments/mathgraph/run_prover_distillation_probe.py \
+            --input /tmp/distill-true-40.json \
+            --output experiments/mathgraph/results/prover-distillation-probe-40.json \
+            --limit 40 --seconds 0.25
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-prover-distillation-probe-40
+          path: experiments/mathgraph/results/prover-distillation-probe-40.json
+      - name: Persist result
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/mathgraph/results/prover-distillation-probe-40.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(research): persist prover-distillation probe [skip ci]'
+          git push origin HEAD:mathgraph/superposition-selector-tournament-20260820
