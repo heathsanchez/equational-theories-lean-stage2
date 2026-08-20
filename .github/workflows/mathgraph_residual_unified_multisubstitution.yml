@@ -9,6 +9,7 @@ on:
   pull_request:
     branches:
       - mathgraph/residual-conditioned-operator-induction-20260821
+    types: [opened, reopened, synchronize, edited]
   workflow_dispatch:
 
 permissions:
