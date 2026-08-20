@@ -1,0 +1,21 @@
+{
+  "audited_steps": 1,
+  "clauses": 58,
+  "first_missing": null,
+  "present_steps": 1,
+  "reductions": 4329,
+  "rounds": 3,
+  "solver_found": false,
+  "steps": [
+    {
+      "id": "f569",
+      "inference": "forward_demodulation",
+      "lhs": "@sK0",
+      "lhs_size": 1,
+      "present": true,
+      "rhs": "X0",
+      "rhs_size": 1
+    }
+  ],
+  "superpositions": 45
+}
