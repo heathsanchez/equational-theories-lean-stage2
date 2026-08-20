@@ -1,0 +1,594 @@
+{
+  "conditions": {
+    "P05": [
+      {
+        "clauses": 98,
+        "elapsed": 0.500669,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 589,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 0.505039,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 492,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 0.510419,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 771,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 38,
+        "elapsed": 0.502942,
+        "found": false,
+        "generated": 38,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 65,
+        "proof_nodes": null,
+        "reductions": 1712,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 42,
+        "elapsed": 0.500153,
+        "found": false,
+        "generated": 42,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 559,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 163,
+        "elapsed": 0.501701,
+        "found": false,
+        "generated": 163,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 94,
+        "proof_nodes": null,
+        "reductions": 485,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 150
+      }
+    ],
+    "P1": [
+      {
+        "clauses": 98,
+        "elapsed": 1.00231,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 989,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 1.00148,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 726,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 1.011024,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 931,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 1.00446,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 2875,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 42,
+        "elapsed": 1.003489,
+        "found": false,
+        "generated": 42,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 947,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 163,
+        "elapsed": 1.002706,
+        "found": false,
+        "generated": 163,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 94,
+        "proof_nodes": null,
+        "reductions": 504,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 150
+      }
+    ],
+    "P10": [
+      {
+        "clauses": 98,
+        "elapsed": 10.021097,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 7422,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 10.027766,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 3678,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 10.086585,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 3093,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 10.025633,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 19891,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 42,
+        "elapsed": 10.016381,
+        "found": false,
+        "generated": 42,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 5161,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 163,
+        "elapsed": 10.019672,
+        "found": false,
+        "generated": 163,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 94,
+        "proof_nodes": null,
+        "reductions": 1560,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 150
+      }
+    ],
+    "P2": [
+      {
+        "clauses": 98,
+        "elapsed": 2.00708,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 1749,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 2.010057,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 1506,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 2.002925,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 1405,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 2.007021,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 5176,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 42,
+        "elapsed": 2.01035,
+        "found": false,
+        "generated": 42,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 1588,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 163,
+        "elapsed": 2.002463,
+        "found": false,
+        "generated": 163,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 94,
+        "proof_nodes": null,
+        "reductions": 592,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 150
+      }
+    ],
+    "P5": [
+      {
+        "clauses": 98,
+        "elapsed": 5.009766,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 3871,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.008806,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 2599,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.248987,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2257,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.022331,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 11386,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 42,
+        "elapsed": 5.015775,
+        "found": false,
+        "generated": 42,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 3095,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 29
+      },
+      {
+        "clauses": 163,
+        "elapsed": 5.009388,
+        "found": false,
+        "generated": 163,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 94,
+        "proof_nodes": null,
+        "reductions": 1174,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 150
+      }
+    ],
+    "W10": [
+      {
+        "clauses": 98,
+        "elapsed": 10.02023,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 7468,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 10.007557,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 3678,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 10.040894,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 3093,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 10.027841,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 20050,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 58,
+        "elapsed": 10.023868,
+        "found": false,
+        "generated": 58,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 3800,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 45
+      },
+      {
+        "clauses": 290,
+        "elapsed": 10.00943,
+        "found": false,
+        "generated": 290,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 1213,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ],
+    "W5": [
+      {
+        "clauses": 98,
+        "elapsed": 5.007097,
+        "found": false,
+        "generated": 98,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 3848,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.004275,
+        "found": false,
+        "generated": 100,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 2576,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.238577,
+        "found": false,
+        "generated": 61,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2257,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.009577,
+        "found": false,
+        "generated": 81,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 11260,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.019013,
+        "found": false,
+        "generated": 53,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 2396,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.005795,
+        "found": false,
+        "generated": 290,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 567,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ]
+  },
+  "summary": {
+    "P05": {
+      "count": 0,
+      "hits": []
+    },
+    "P1": {
+      "count": 0,
+      "hits": []
+    },
+    "P10": {
+      "count": 0,
+      "hits": []
+    },
+    "P2": {
+      "count": 0,
+      "hits": []
+    },
+    "P5": {
+      "count": 0,
+      "hits": []
+    },
+    "W10": {
+      "count": 0,
+      "hits": []
+    },
+    "W5": {
+      "count": 0,
+      "hits": []
+    }
+  }
+}
