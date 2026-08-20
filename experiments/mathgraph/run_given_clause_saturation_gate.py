@@ -29,21 +29,19 @@ def active_rules(search,active):
   if rule is not None:out.append(rule)
  return out
 
+def canonical_pair(m,lhs,rhs):
+ names={};return (m.alpha_canonical_term(lhs,names),m.alpha_canonical_term(rhs,names))
+
 def key_clause(m,c):
- a=m.alpha_canonical_equation(c.lhs,c.rhs)
- b=m.alpha_canonical_equation(c.rhs,c.lhs)
- return min(a,b)
+ return min(canonical_pair(m,c.lhs,c.rhs),canonical_pair(m,c.rhs,c.lhs))
 
 def solve_given(m,search):
- # Immutable recipes remain in search.clauses for provenance/dedup.  Only
- # active/passive control which clauses participate in future inference.
  passive=list(search.clauses);active=[];age={id(c):i for i,c in enumerate(passive)};next_age=len(passive)
  given=0;generated=0;backward_replaced=0;pair_attempts=0
  while passive and given<MAX_GIVEN and not search.expired():
   rules=active_rules(search,active)
   goal=search.target_proof(rules)
   if goal is not None:return goal,dict(given=given,generated=generated,backward_replaced=backward_replaced,pair_attempts=pair_attempts,active=len(active),passive=len(passive))
-  # Fairness: 4 focused selections, then oldest passive clause.
   if given%(FOCUS_PER_AGE+1)==FOCUS_PER_AGE:
    idx=min(range(len(passive)),key=lambda i:age.get(id(passive[i]),10**18))
   else:
@@ -51,16 +49,11 @@ def solve_given(m,search):
   selected=passive.pop(idx)
   reduced=search.interreduce(selected,rules)
   if reduced.lhs!=selected.lhs or reduced.rhs!=selected.rhs:
-   if search.add_clause(reduced):
-    selected=reduced
-   else:
-    # Even if globally known already, use the simplified recipe as active view.
-    selected=reduced
+   search.add_clause(reduced);selected=reduced
   active.append(selected);given+=1
   rules=active_rules(search,active)
   goal=search.target_proof(rules)
   if goal is not None:return goal,dict(given=given,generated=generated,backward_replaced=backward_replaced,pair_attempts=pair_attempts,active=len(active),passive=len(passive))
-  # Immediate critical-pair generation involving the newly selected clause.
   proposals=[]
   for other_index,other in enumerate(active):
    for outer,inner,oi,ii in ((selected,other,given,other_index),(other,selected,other_index,given)):
@@ -69,23 +62,18 @@ def solve_given(m,search):
      pair_attempts+=1
      q=search.critical_pair(outer,inner,oi,ii,path)
      if q is None:continue
-     q=search.interreduce(q,rules)
-     proposals.append((search.target_score(q),q))
+     q=search.interreduce(q,rules);proposals.append((search.target_score(q),q))
   proposals.sort(key=lambda x:x[0])
   for _,q in proposals[:search.limits['new_clauses_per_round']]:
    if search.add_clause(q):
     search.superpositions+=1;generated+=1;passive.append(q);age[id(q)]=next_age;next_age+=1
-  # Immediate backward simplification of the passive view only.  Originals stay
-  # in immutable proof storage, but a simplified passive representative replaces
-  # the obsolete one before the next given-clause choice.
   new_passive=[];seen=set()
   for clause in passive:
    if search.expired():break
    reduced=search.interreduce(clause,rules)
    if reduced.lhs!=clause.lhs or reduced.rhs!=clause.rhs:
     backward_replaced+=1
-    if search.add_clause(reduced):
-     age[id(reduced)]=age.get(id(clause),next_age);next_age+=1
+    if search.add_clause(reduced):age[id(reduced)]=age.get(id(clause),next_age);next_age+=1
     clause=reduced
    k=key_clause(m,clause)
    if k in seen:continue
