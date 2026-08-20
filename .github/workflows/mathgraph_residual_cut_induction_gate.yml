@@ -1,0 +1,28 @@
+name: MathGraph Residual Cut Induction Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+  workflow_dispatch:
+jobs:
+  cut:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.number == 3)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual-induced verified cut invention
+        run: python experiments/mathgraph/run_residual_cut_induction_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-cut-induction-gate
+          path: experiments/mathgraph/results/residual-cut-induction-gate.json
+          if-no-files-found: warn
+          retention-days: 30
