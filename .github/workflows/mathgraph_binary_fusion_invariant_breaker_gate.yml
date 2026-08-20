@@ -8,7 +8,7 @@ on:
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
-    timeout-minutes: 18
+    timeout-minutes: 22
     steps:
       - uses: actions/checkout@v4
         with:
@@ -21,6 +21,8 @@ jobs:
         run: python experiments/mathgraph/run_binary_fusion_invariant_breaker_gate.py
       - name: Run residual-derived missing-subterm reification
         run: python experiments/mathgraph/run_missing_subterm_reification_gate.py
+      - name: Run residual-unified simultaneous substitution
+        run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -28,5 +30,6 @@ jobs:
           path: |
             experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json
             experiments/mathgraph/results/missing-subterm-reification-gate.json
+            experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
           if-no-files-found: warn
           retention-days: 30
