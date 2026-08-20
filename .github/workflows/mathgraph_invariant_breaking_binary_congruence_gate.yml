@@ -2,9 +2,12 @@ name: MathGraph O5 Invariant Breaking Gate
 on:
   push:
     branches: [mathgraph/invariant-breaking-binary-congruence-20260821]
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
   workflow_dispatch:
 jobs:
   invariant-breaking:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.pull_request.head.ref == 'mathgraph/invariant-breaking-binary-congruence-20260821'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
