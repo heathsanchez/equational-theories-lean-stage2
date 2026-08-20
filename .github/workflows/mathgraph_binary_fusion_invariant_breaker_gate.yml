@@ -1,4 +1,5 @@
 name: MathGraph Binary Fusion Invariant Breaker Gate
+# retrigger: contextual inverse bridge, protocol unchanged
 on:
   push:
     branches: [mathgraph/binary-fusion-isolated-20260821]
