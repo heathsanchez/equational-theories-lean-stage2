@@ -1,7 +1,7 @@
 name: MathGraph Cross Cone Provenance Mixer Gate
 on:
-  pull_request:
-    branches: [mathgraph/isolated-actions-base-20260821]
+  push:
+    branches: [mathgraph/fast-gate-20260821]
     paths:
       - 'experiments/mathgraph/run_cross_cone_provenance_mixer_gate.py'
       - '.github/workflows/mathgraph_cross_cone_provenance_mixer.yml'
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     concurrency:
-      group: mathgraph-cross-cone-provenance-mixer
+      group: mathgraph-cross-cone-provenance-mixer-fast
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
@@ -24,5 +24,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-cross-cone-provenance-mixer
+          name: mathgraph-cross-cone-provenance-mixer-fast
           path: experiments/mathgraph/results/cross-cone-provenance-mixer-gate.json
