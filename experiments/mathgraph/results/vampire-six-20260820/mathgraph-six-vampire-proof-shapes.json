@@ -1,0 +1,112 @@
+{
+  "rows": [
+    {
+      "id": "evaluation_hard_0196",
+      "seconds": 0.017768,
+      "proof_lines": 80,
+      "superposition_steps": 38,
+      "demodulation_steps": 25,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 25,
+        "forward_subsumption_resolution": 1,
+        "negated_conjecture": 1,
+        "reorient_equations": 4,
+        "skolemize": 1,
+        "superposition": 38
+      }
+    },
+    {
+      "id": "evaluation_normal_0036",
+      "seconds": 0.015801,
+      "proof_lines": 31,
+      "superposition_steps": 13,
+      "demodulation_steps": 1,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 1,
+        "forward_subsumption_resolution": 1,
+        "negated_conjecture": 1,
+        "reorient_equations": 4,
+        "skolemize": 1,
+        "superposition": 13
+      }
+    },
+    {
+      "id": "evaluation_normal_0040",
+      "seconds": 0.011008,
+      "proof_lines": 39,
+      "superposition_steps": 18,
+      "demodulation_steps": 4,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 4,
+        "forward_subsumption_resolution": 1,
+        "negated_conjecture": 1,
+        "reorient_equations": 4,
+        "skolemize": 1,
+        "superposition": 18
+      }
+    },
+    {
+      "id": "evaluation_normal_0158",
+      "seconds": 0.010023,
+      "proof_lines": 23,
+      "superposition_steps": 7,
+      "demodulation_steps": 1,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 1,
+        "forward_subsumption_resolution": 1,
+        "negated_conjecture": 1,
+        "reorient_equations": 3,
+        "skolemize": 1,
+        "superposition": 7
+      }
+    },
+    {
+      "id": "evaluation_order5_0014",
+      "seconds": 0.016204,
+      "proof_lines": 63,
+      "superposition_steps": 28,
+      "demodulation_steps": 16,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 16,
+        "negated_conjecture": 1,
+        "reorient_equations": 5,
+        "skolemize": 1,
+        "superposition": 28,
+        "trivial_inequality_removal": 1
+      }
+    },
+    {
+      "id": "evaluation_order5_0042",
+      "seconds": 0.044871,
+      "proof_lines": 89,
+      "superposition_steps": 43,
+      "demodulation_steps": 27,
+      "inference_histogram": {
+        "cnf_transformation": 2,
+        "definition_folding": 1,
+        "ennf_transformation": 1,
+        "forward_demodulation": 27,
+        "forward_subsumption_resolution": 1,
+        "negated_conjecture": 1,
+        "reorient_equations": 5,
+        "skolemize": 1,
+        "superposition": 43
+      }
+    }
+  ]
+}
