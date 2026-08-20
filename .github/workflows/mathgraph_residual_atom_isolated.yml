@@ -1,0 +1,22 @@
+name: MathGraph Residual Atom Isolated
+on:
+  push:
+    branches: [mathgraph/residual-atom-isolated-20260821]
+  workflow_dispatch:
+jobs:
+  residual-atom:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - run: python experiments/mathgraph/run_residual_atom_source_closure_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-atom-isolated
+          path: experiments/mathgraph/results/residual-atom-source-closure-gate.json
+          if-no-files-found: warn
