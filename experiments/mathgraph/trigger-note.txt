@@ -1,0 +1,2 @@
+Trigger: Given Clause Saturation Gate
+Head: b8418c4eea742c11703ccf7a62e65af0f246f783
