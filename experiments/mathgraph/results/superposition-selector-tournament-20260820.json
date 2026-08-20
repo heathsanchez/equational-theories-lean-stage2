@@ -1,0 +1,396 @@
+{
+  "conditions": {
+    "baseline": [
+      {
+        "clauses": 98,
+        "elapsed": 5.011591,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 4306,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.01163,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 2782,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.155909,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2286,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.020873,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 12201,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.012977,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 2540,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.007821,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 680,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ],
+    "collapse": [
+      {
+        "clauses": 98,
+        "elapsed": 5.011686,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 4151,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.004575,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 1754,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.177249,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 1639,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.089024,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 10328,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.030747,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 1879,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.012581,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 725,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ],
+    "hybrid": [
+      {
+        "clauses": 98,
+        "elapsed": 5.010109,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 4560,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.15833,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 2839,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.113988,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2385,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.017948,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 12002,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.017538,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 2483,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.012648,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 1044,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ],
+    "lowvar": [
+      {
+        "clauses": 98,
+        "elapsed": 5.013499,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 4592,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.019267,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 2784,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.05299,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2031,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.016066,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 11850,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.016816,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 2323,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.006451,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 885,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ],
+    "size": [
+      {
+        "clauses": 98,
+        "elapsed": 5.014792,
+        "found": false,
+        "id": "evaluation_hard_0196",
+        "max_recipe_cost": 127,
+        "proof_nodes": null,
+        "reductions": 5172,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 87
+      },
+      {
+        "clauses": 100,
+        "elapsed": 5.059994,
+        "found": false,
+        "id": "evaluation_normal_0036",
+        "max_recipe_cost": 104,
+        "proof_nodes": null,
+        "reductions": 3592,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 89
+      },
+      {
+        "clauses": 61,
+        "elapsed": 5.052305,
+        "found": false,
+        "id": "evaluation_normal_0040",
+        "max_recipe_cost": 524,
+        "proof_nodes": null,
+        "reductions": 2278,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 50
+      },
+      {
+        "clauses": 81,
+        "elapsed": 5.018926,
+        "found": false,
+        "id": "evaluation_normal_0158",
+        "max_recipe_cost": 226,
+        "proof_nodes": null,
+        "reductions": 11932,
+        "replay_ok": false,
+        "rounds": 4,
+        "superpositions": 72
+      },
+      {
+        "clauses": 53,
+        "elapsed": 5.008958,
+        "found": false,
+        "id": "evaluation_order5_0014",
+        "max_recipe_cost": 142,
+        "proof_nodes": null,
+        "reductions": 2593,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 40
+      },
+      {
+        "clauses": 290,
+        "elapsed": 5.00853,
+        "found": false,
+        "id": "evaluation_order5_0042",
+        "max_recipe_cost": 117,
+        "proof_nodes": null,
+        "reductions": 1126,
+        "replay_ok": false,
+        "rounds": 3,
+        "superpositions": 277
+      }
+    ]
+  },
+  "summary": {
+    "baseline": {
+      "count": 0,
+      "hits": []
+    },
+    "collapse": {
+      "count": 0,
+      "hits": []
+    },
+    "hybrid": {
+      "count": 0,
+      "hits": []
+    },
+    "lowvar": {
+      "count": 0,
+      "hits": []
+    },
+    "size": {
+      "count": 0,
+      "hits": []
+    }
+  }
+}
