@@ -1,0 +1,60 @@
+{
+  "arms": {
+    "A": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 151,
+      "nodes": 7611,
+      "overlaps": 82114,
+      "proof_nodes": null,
+      "rules": 513,
+      "seconds": 25.0,
+      "tag": "A_frozen"
+    },
+    "B": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 83,
+      "nodes": 8254,
+      "overlaps": 98510,
+      "proof_nodes": null,
+      "rules": 285,
+      "seconds": 30.0,
+      "tag": "B_multisub_hits"
+    },
+    "C": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 211,
+      "nodes": 8756,
+      "overlaps": 110287,
+      "proof_nodes": null,
+      "rules": 825,
+      "seconds": 45.0,
+      "tag": "C_multisub_ratchet"
+    },
+    "C_remove_multisub_seed": null
+  },
+  "counts": {
+    "g1": 23,
+    "g2": 520,
+    "multisub_composed_verified": 191,
+    "multisub_constraint_hits": 4,
+    "multisub_verified": 4
+  },
+  "decision": "STRUCTURAL_ESCAPE_ONLY",
+  "id": "evaluation_order5_0014",
+  "missing_target_subterms": [
+    "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+    "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+  ],
+  "protocol": {
+    "all_multisub_candidates_replay_to_source": true,
+    "composition_after_invention_is_generic_existing_machinery": true,
+    "no_answer_label_in_generator": true,
+    "no_external_proof_trace": true,
+    "no_target_specific_identity": true,
+    "residual_condition_fixed_before_constructor": true
+  },
+  "schema": "mathgraph.residual-multisub-ratchet.v1"
+}
