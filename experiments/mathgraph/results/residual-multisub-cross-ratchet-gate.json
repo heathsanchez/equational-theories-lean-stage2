@@ -1,0 +1,362 @@
+{
+  "arms": {
+    "A": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 151,
+      "nodes": 6596,
+      "overlaps": 82114,
+      "proof_nodes": null,
+      "rules": 467,
+      "seconds": 25.0,
+      "tag": "A_frozen"
+    },
+    "B": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 83,
+      "nodes": 7060,
+      "overlaps": 98510,
+      "proof_nodes": null,
+      "rules": 284,
+      "seconds": 30.0,
+      "tag": "B_multisub_direct"
+    },
+    "C": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 243,
+      "nodes": 7912,
+      "overlaps": 78938,
+      "proof_nodes": null,
+      "rules": 728,
+      "seconds": 45.0,
+      "tag": "C_cross1"
+    },
+    "D": {
+      "certificate_bytes": null,
+      "closure": false,
+      "installed": 339,
+      "nodes": 8559,
+      "overlaps": 41540,
+      "proof_nodes": null,
+      "rules": 593,
+      "seconds": 60.0,
+      "tag": "D_cross2"
+    },
+    "ablation": null
+  },
+  "counts": {
+    "cross1_active": 0,
+    "cross1_verified": 1200,
+    "cross2_active": 0,
+    "cross2_verified": 1200,
+    "g1": 23,
+    "g1_active": 0,
+    "g2": 520,
+    "g2_active": 0,
+    "multisub_hits": 4
+  },
+  "decision": "NO_ALIGNMENT_GAIN",
+  "id": "evaluation_order5_0014",
+  "missing_target_subterms": [
+    "(((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z))",
+    "((y \u25c7 z) \u25c7 (x \u25c7 y))"
+  ],
+  "protocol": {
+    "composition_is_existing_generic_machinery": true,
+    "new_family_replay_verified": true,
+    "no_answer_label": true,
+    "no_external_proof_trace": true,
+    "no_target_specific_identity": true,
+    "old_capability_retained": true,
+    "residual_constraint_predeclared": true
+  },
+  "schema": "mathgraph.residual-multisub-cross-ratchet.v1",
+  "source": "x = y * (x * (((z * y) * y) * y))",
+  "target": "x = ((y * z) * (x * y)) * (x * z)",
+  "top_cross1": [
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 (x \u25c7 ((((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "g1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g2",
+      "rhs": "(y \u25c7 (x \u25c7 ((((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "((z \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y))))",
+      "variable": "y"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "((z \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y))))",
+      "variable": "y"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 (x \u25c7 (((((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "g1",
+      "rhs": "(y \u25c7 (x \u25c7 (((((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "g2",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "g2",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "((x \u25c7 y) \u25c7 (x \u25c7 ((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y))))",
+      "parent": "multisub",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "z"
+    }
+  ],
+  "top_cross2": [
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 ((((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "source",
+      "rhs": "((z \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y))))",
+      "variable": "y"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "cross1",
+      "rhs": "((z \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y))))",
+      "variable": "y"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "((x \u25c7 y) \u25c7 (x \u25c7 ((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y))))",
+      "parent": "multisub",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 (x \u25c7 ((((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "((x \u25c7 z) \u25c7 (x \u25c7 (((((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z))))",
+      "parent": "multisub",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "parent": "source",
+      "rhs": "(y \u25c7 (((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "source",
+      "rhs": "((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "(y \u25c7 ((y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 ((((((z \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "parent": "cross1",
+      "rhs": "(y \u25c7 (x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)))",
+      "variable": "x"
+    },
+    {
+      "activation": 0,
+      "lhs": "x",
+      "parent": "cross1",
+      "rhs": "((z \u25c7 y) \u25c7 ((y \u25c7 (x \u25c7 ((((x \u25c7 (((z \u25c7 y) \u25c7 y) \u25c7 y)) \u25c7 y) \u25c7 y) \u25c7 y))) \u25c7 (((z \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y)) \u25c7 (z \u25c7 y))))",
+      "variable": "y"
+    }
+  ]
+}
