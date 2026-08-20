@@ -1,0 +1,6 @@
+{
+  "tested_commit": "cedc5c3c7eb720f266dda682e57453b2495f72e8",
+  "result_branch": "mathgraph/superposition-selector-tournament-20260820",
+  "reason": "stable rerun after branch-local workflow discovery failure",
+  "trigger_version": 1
+}
