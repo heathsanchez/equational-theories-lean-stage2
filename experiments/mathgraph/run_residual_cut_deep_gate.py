@@ -3,8 +3,8 @@
 
 Selection is theorem-agnostic: a cheap replay-gated component expansion is run
 for every frozen residual and the residual with minimum cross-component
-structural distance is selected.  Only then do we spend a serious proof budget
-on the top locally-factored bridge obligations.  Any promoted cut must replay
+structural distance is selected. Only then do we spend a serious proof budget
+on the top locally-factored bridge obligations. Any promoted cut must replay
 from the original source axiom before it is installed into a fresh target
 search. No external proof trace or answer label is used.
 """
@@ -27,11 +27,11 @@ CONFIGS=['evaluation_normal','evaluation_order5']
 def load(path,name):
  s=importlib.util.spec_from_file_location(name,path);m=importlib.util.module_from_spec(s);sys.modules[name]=m;s.loader.exec_module(m);return m
 
-def components(m,b,op,se,source,target,seconds,rounds,cap):
+def components(m,cutmod,b,op,se,source,target,seconds,rounds,cap):
  rules,g1,g2=b.library(m,se,op,source,target);dl=time.monotonic()+seconds
- L,le=cut.expand_component(m,b,rules,source,target,target[0],dl,rounds,cap)
- R,re=cut.expand_component(m,b,rules,source,target,target[1],dl,rounds,cap)
- obs=cut.closest_obligations(m,L,R,target,8)
+ L,le=cutmod.expand_component(m,b,rules,source,target,target[0],dl,rounds,cap)
+ R,re=cutmod.expand_component(m,b,rules,source,target,target[1],dl,rounds,cap)
+ obs=cutmod.closest_obligations(m,L,R,target,8)
  return rules,g1,g2,L,R,le,re,obs
 
 def main():
@@ -43,12 +43,12 @@ def main():
  ranking=[]
  for rid in IDS:
   src=m.parse_equation(rows[rid]['equation1']);tgt=m.parse_equation(rows[rid]['equation2'])
-  _,_,_,L,R,_,_,obs=components(m,b,op,se,src,tgt,4.5,1,120)
+  _,_,_,L,R,_,_,obs=components(m,cut,b,op,se,src,tgt,4.5,1,120)
   d=obs[0][0][0] if obs else 10**9
   ranking.append({'id':rid,'cross_distance':d,'left_states':len(L),'right_states':len(R)})
  ranking.sort(key=lambda x:(x['cross_distance'],x['id']));winner=ranking[0]['id'];row=rows[winner]
  source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2']);started=time.monotonic()
- rules,g1,g2,L,R,le,re,obs=components(m,b,op,se,source,target,22.0,3,420)
+ rules,g1,g2,L,R,le,re,obs=components(m,cut,b,op,se,source,target,22.0,3,420)
  proved=[];screen=[]
  for score,a,bb,path,bridge in obs[:4]:
   proof,st=sc.prove_schema(m,gv,source,bridge,12.0)
