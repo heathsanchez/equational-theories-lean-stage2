@@ -1,0 +1,27 @@
+name: MathGraph O5 Invariant Breaking Gate
+on:
+  push:
+    branches: [mathgraph/invariant-breaking-binary-congruence-20260821]
+  workflow_dispatch:
+jobs:
+  invariant-breaking:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/invariant-breaking-binary-congruence-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run O5 invariant-breaking binary congruence experiment
+        run: python experiments/mathgraph/run_invariant_breaking_binary_congruence_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-o5-invariant-breaking-binary-congruence
+          path: experiments/mathgraph/results/invariant-breaking-binary-congruence-gate.json
+          if-no-files-found: warn
+          retention-days: 30
