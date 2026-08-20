@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 import json
+import sys
 from pathlib import Path
 from datasets import load_dataset
+
+ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT))
+
 from judge.verify import verify_answer
 
 RID='evaluation_hard_0196'
-ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'experiments/mathgraph/results/hard0196-compilation-probe.json'
 row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_hard',split='train') if r.get('id')==RID)
 
