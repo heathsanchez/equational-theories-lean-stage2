@@ -15,7 +15,11 @@ jobs:
           python-version: '3.12'
       - name: Sweep residual factorization process and factor count
         run: python experiments/mathgraph/run_residual_factorization_optimum.py
+      - name: Adaptive split-merge closure gate
+        run: python experiments/mathgraph/run_adaptive_residual_factorization_closure.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual-factorization-optimum
-          path: experiments/mathgraph/results/residual-factorization-optimum.json
+          path: |
+            experiments/mathgraph/results/residual-factorization-optimum.json
+            experiments/mathgraph/results/adaptive-residual-factorization-closure.json
