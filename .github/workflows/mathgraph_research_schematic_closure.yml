@@ -16,8 +16,10 @@ on:
       - main
     paths:
       - .github/research-triggers/schematic-closure-gate.json
-  issues:
-    types: [opened]
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: write
@@ -28,7 +30,7 @@ concurrency:
 
 jobs:
   gate:
-    if: github.event_name != 'issues' || github.event.issue.title == '[MathGraph Trigger] Schematic Closure Gate'
+    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Schematic Closure Gate'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -43,21 +45,21 @@ jobs:
         id: cfg
         shell: bash
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           set -euo pipefail
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             tested='${{ inputs.tested_commit }}'
             result_branch='${{ inputs.result_branch }}'
-          elif [[ "${{ github.event_name }}" == "issues" ]]; then
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
             tested=$(python - <<'PY'
           import json, os
-          print(json.loads(os.environ['ISSUE_BODY'])['tested_commit'])
+          print(json.loads(os.environ['PR_BODY'])['tested_commit'])
           PY
           )
             result_branch=$(python - <<'PY'
           import json, os
-          print(json.loads(os.environ['ISSUE_BODY'])['result_branch'])
+          print(json.loads(os.environ['PR_BODY'])['result_branch'])
           PY
           )
           else
