@@ -1,0 +1,29 @@
+name: MathGraph Active View Replacement Gate
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+  workflow_dispatch:
+
+jobs:
+  active-view-replacement:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.title == '[MathGraph Trigger] Active View Replacement Gate'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/developmental-continuation-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run active-view replacement gate
+        run: python experiments/mathgraph/run_active_view_replacement_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-active-view-replacement-gate
+          path: experiments/mathgraph/results/active-view-replacement-gate.json
+          if-no-files-found: error
+          retention-days: 30
