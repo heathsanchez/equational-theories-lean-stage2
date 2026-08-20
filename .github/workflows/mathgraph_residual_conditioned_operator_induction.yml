@@ -1,0 +1,28 @@
+name: MathGraph residual-conditioned operator induction gate
+
+on:
+  push:
+    branches:
+      - mathgraph/residual-conditioned-operator-induction-20260821
+  workflow_dispatch:
+
+jobs:
+  induce:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-conditioned-operator-induction-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run decisive residual-conditioned induction test
+        run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-conditioned-operator-induction
+          path: experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
