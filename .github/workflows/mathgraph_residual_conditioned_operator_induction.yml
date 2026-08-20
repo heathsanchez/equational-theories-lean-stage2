@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - mathgraph/residual-conditioned-operator-induction-20260821
+  pull_request:
+    branches:
+      - mathgraph/developmental-continuation-20260820
   workflow_dispatch:
 
 jobs:
