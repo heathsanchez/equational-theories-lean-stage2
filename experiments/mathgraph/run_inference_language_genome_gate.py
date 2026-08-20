@@ -44,10 +44,16 @@ def reentry(m,row,seconds,cfg_index):
  found=s.solve_reentry(cfg['generations'],cfg['new_terms'],cfg['instances'],targeted=cfg['targeted']);ok=replay(m,src,found,s.max_term_size)
  return {'closure':ok,'seconds':round(time.monotonic()-t,6),'base_closed':False,'generations_completed':s.generations_completed,'graph_edges':s.graph_edges,'reentry_terms':len(s.reentry_terms_used),'exhaustion':s.exhaustion}
 
-def contextual(m,row,seconds,cfg_index):
- src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);cfg=m.CONTEXTUAL_PORTFOLIO[cfg_index];t=time.monotonic();limits=dict(cfg['limits']);s=m.ContextualSearch(src,tgt,t+seconds,limits)
+def overlap_configs(m):
+ return [c for c in m.CONTEXTUAL_PORTFOLIO if c.get('kind')=='contextual-overlap']
+
+def contextual(m,row,seconds,which):
+ configs=overlap_configs(m)
+ if not configs:return {'closure':False,'seconds':0.0,'error':'no contextual-overlap config'}
+ cfg=configs[min(which,len(configs)-1)]
+ src=m.parse_equation(row['equation1']);tgt=m.parse_equation(row['equation2']);t=time.monotonic();limits=dict(cfg['limits']);s=m.ContextualSearch(src,tgt,t+seconds,limits)
  found=s.solve_contextual_overlap(cfg['maximum_overlap_depth'],cfg['maximum_context_depth'],cfg['maximum_source_instances'],cfg['maximum_candidates'],cfg['maximum_new_nodes']);ok=replay(m,src,found,limits.get('max_term_size'))
- return {'closure':ok,'seconds':round(time.monotonic()-t,6),'overlap_candidates':s.overlap_candidates,'overlaps_added':s.overlaps_added,'components_joined':s.components_joined,'missing_target_introduced':s.missing_target_introduced,'graph_edges':s.graph_edges,'exhaustion':s.exhaustion}
+ return {'closure':ok,'seconds':round(time.monotonic()-t,6),'config':cfg.get('name'),'overlap_candidates':s.overlap_candidates,'overlaps_added':s.overlaps_added,'components_joined':s.components_joined,'missing_target_introduced':s.missing_target_introduced,'graph_edges':s.graph_edges,'exhaustion':s.exhaustion}
 
 def main():
  m=load(SOLVER,'mg_genome');qm=load(QM,'qm_genome');rows={}
@@ -62,7 +68,7 @@ def main():
   ('reentry_r0',lambda r:reentry(m,r,8.0,0)),
   ('reentry_r1',lambda r:reentry(m,r,8.0,min(1,len(m.REENTRY_PORTFOLIO)-1))),
   ('context_c0',lambda r:contextual(m,r,8.0,0)),
-  ('context_c2',lambda r:contextual(m,r,8.0,min(2,len(m.CONTEXTUAL_PORTFOLIO)-1))),
+  ('context_c1',lambda r:contextual(m,r,8.0,1)),
  ]
  out={'schema':'mathgraph.inference-language-genome.v1','ids':IDS,'genomes':[g for g,_ in genomes],'records':[]}
  for rid in IDS:
