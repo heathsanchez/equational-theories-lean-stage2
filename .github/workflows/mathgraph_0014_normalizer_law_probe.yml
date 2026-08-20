@@ -1,0 +1,89 @@
+name: MathGraph 0014 Normalizer Law Probe
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  normalizer-law:
+    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Handoff Probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Search structural laws with proof-producing normalizer
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p experiments/mathgraph/results
+          python - <<'PY'
+          import importlib.util,json,sys,time
+          from pathlib import Path
+          from datasets import load_dataset
+          spec=importlib.util.spec_from_file_location('mgnorm','submissions/mathgraph/solver.py')
+          m=importlib.util.module_from_spec(spec);sys.modules[spec.name]=m;spec.loader.exec_module(m)
+          row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train') if r['id']=='evaluation_order5_0014')
+          source=m.parse_equation(row['equation1'])
+          targets=[('RIGHT_PROJECTION','x * y = y'),('IDEMPOTENCE','x * x = x'),('RIGHT_ABSORPTION','(x * y) * y = y'),('ARBITRARY_COLLAPSE','x = y')]
+          base=dict(m.SYMBOLIC_SUPERPOSITION)
+          # Preserve the same inference language; expand its consequence closure rather than adding target-specific logic.
+          upgrades={
+            'source_substitutions':1200,
+            'candidate_equalities':7000,
+            'overlap_candidates':2400,
+            'composition_candidates':1800,
+            'maximum_term_size':80,
+            'rulebook_rules':1200,
+            'normalization_steps':512,
+          }
+          for k,v in upgrades.items():
+            if k in base: base[k]=v
+          out={'schema':'mathgraph.0014-normalizer-law-probe.v1','base_configuration':dict(m.SYMBOLIC_SUPERPOSITION),'configuration':base,'rows':[]}
+          for name,text in targets:
+            target=m.parse_equation(text)
+            search=m.EquationalNormalizer(source,target,time.monotonic()+25.0,dict(base))
+            try: found=search.solve()
+            except Exception as e:
+              found=None; err=type(e).__name__+': '+str(e)
+            else: err=None
+            replay=False; proof_nodes=None; root_terms=None
+            if found is not None:
+              try:
+                nodes,root=found
+                replay=bool(m.replay_dag(source,nodes,root,maximum_term_size=base['maximum_term_size'],maximum_nodes=base.get('maximum_proof_nodes',20000)))
+                proof_nodes=len(m.proof_node_ids(nodes,root)); root_terms=[m.render_term(nodes[root].lhs),m.render_term(nodes[root].rhs)]
+              except Exception as e:
+                err=(err+'; ' if err else '')+type(e).__name__+': '+str(e)
+            # Also inspect whether the desired law exists anywhere as a replayed consequence even if target normalization did not select it.
+            desired=set(target[:2]); consequence_hits=[]
+            for node_id,node in enumerate(search.nodes):
+              if {node.lhs,node.rhs}==desired:
+                try: ok=search.replay_consequence(node_id)
+                except Exception: ok=False
+                consequence_hits.append({'node_id':node_id,'replay':bool(ok),'kind':node.kind,'constructor':node.constructor})
+            rec={'name':name,'target':text,'found':found is not None,'replay_ok':replay,'proof_nodes':proof_nodes,'root_terms':root_terms,'error':err,'consequence_hits':consequence_hits,'stats':{
+              'nodes':len(search.nodes),'rules':len(search.rules),'selected_rules':len(search.selected_rules),'source_instances':search.source_instances_generated,'overlaps':search.overlap_candidates,'composed':search.composed_consequences,'replayed_candidates':search.replayed_candidates,'replay_failures':search.replay_failures,'decreasing_rules':search.decreasing_rules,'local_critical_pairs':search.local_critical_pairs,'joined_critical_pairs':search.joined_critical_pairs,'unresolved_critical_pairs':search.unresolved_critical_pairs,'exhaustion':search.exhaustion}}
+            out['rows'].append(rec);print(json.dumps(rec,sort_keys=True),flush=True)
+          out['replayable']=[r['name'] for r in out['rows'] if r['replay_ok']]
+          out['derived_as_consequence']=[r['name'] for r in out['rows'] if any(x['replay'] for x in r['consequence_hits'])]
+          Path('experiments/mathgraph/results/0014-normalizer-law-probe.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({'replayable':out['replayable'],'derived_as_consequence':out['derived_as_consequence']},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0014-normalizer-law-probe
+          path: experiments/mathgraph/results/0014-normalizer-law-probe.json
+          if-no-files-found: error
+          retention-days: 30
