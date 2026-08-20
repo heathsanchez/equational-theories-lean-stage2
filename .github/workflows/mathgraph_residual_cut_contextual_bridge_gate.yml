@@ -8,7 +8,7 @@ on:
 jobs:
   contextual-cut:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +23,8 @@ jobs:
         run: python experiments/mathgraph/run_schematic_target_closure_gate.py
       - name: Run focused quotient matcher
         run: python experiments/mathgraph/run_order5_0014_quotient_matcher_gate.py
+      - name: Scan for derived universal collapse
+        run: python experiments/mathgraph/run_order5_0014_derived_collapse_scan.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -31,5 +33,6 @@ jobs:
             experiments/mathgraph/results/residual-cut-contextual-bridge-gate.json
             experiments/mathgraph/results/schematic-target-closure-gate.json
             experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
+            experiments/mathgraph/results/order5-0014-derived-collapse-scan.json
           if-no-files-found: warn
           retention-days: 30
