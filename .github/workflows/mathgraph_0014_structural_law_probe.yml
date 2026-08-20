@@ -1,0 +1,81 @@
+name: MathGraph 0014 Structural Law Probe
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  structural-law:
+    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Handoff Probe'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Derive generic structural laws from 0014 source only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p experiments/mathgraph/results
+          python - <<'PY'
+          import importlib.util, json, sys, time
+          from pathlib import Path
+          from datasets import load_dataset
+
+          spec=importlib.util.spec_from_file_location('mg0014','submissions/mathgraph/solver.py')
+          m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
+          row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train') if r['id']=='evaluation_order5_0014')
+          source=m.parse_equation(row['equation1'])
+          candidates=[
+            ('RIGHT_PROJECTION','x * y = y'),
+            ('IDEMPOTENCE','x * x = x'),
+            ('RIGHT_ABSORPTION','(x * y) * y = y'),
+            ('LEFT_PROJECTION','x * y = x'),
+            ('ARBITRARY_COLLAPSE','x = y'),
+          ]
+          limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
+          limits.update({
+            'maximum_term_size':80,'maximum_replay_term_size':320,'maximum_depth':14,
+            'maximum_rules':1200,'maximum_rounds':96,'new_clauses_per_round':768,
+            'maximum_clauses':20000,'normalization_steps':384,'maximum_proof_nodes':80000,
+          })
+          def finish(eng,recipe):
+            if recipe is None:return {'found':False,'replay_ok':False}
+            try:
+              recipe=eng.inline_recipe(recipe)
+              comp=m.CompactSuperposition(m,eng.source,eng.target,time.monotonic()+5.0,eng.search.limits)
+              nodes,root=comp.compile(recipe)
+              ok=((nodes[root].lhs,nodes[root].rhs)==eng.target[:2] and m.replay_dag(eng.source,nodes,root,maximum_term_size=eng.search.limits['maximum_replay_term_size'],maximum_nodes=eng.search.limits['maximum_proof_nodes']))
+              return {'found':True,'replay_ok':bool(ok),'proof_nodes':len(m.proof_node_ids(nodes,root)),'root_lhs':m.render_term(nodes[root].lhs),'root_rhs':m.render_term(nodes[root].rhs)}
+            except Exception as e:return {'found':True,'replay_ok':False,'error':type(e).__name__+': '+str(e)}
+          out={'schema':'mathgraph.0014-structural-law-probe.v1','source_id':'evaluation_order5_0014','source':row['equation1'],'candidates':[]}
+          for name,text in candidates:
+            target=m.parse_equation(text)
+            eng=m.TargetGroundedRefutation(source,target,time.monotonic()+20.0,dict(limits))
+            recipe=eng.search.solve()
+            if recipe is None: recipe=eng.schematic_target_closure()
+            result=finish(eng,recipe)
+            rec={'name':name,'target':text,'result':result,'stats':{'clauses':len(eng.search.clauses),'rules':len(eng.search.rules()),'rounds':eng.search.rounds,'superpositions':eng.search.superpositions,'reductions':eng.search.reductions}}
+            out['candidates'].append(rec)
+            print(json.dumps(rec,sort_keys=True),flush=True)
+          out['replayable']=[r['name'] for r in out['candidates'] if r['result'].get('replay_ok')]
+          Path('experiments/mathgraph/results/0014-structural-law-probe.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({'replayable':out['replayable']},indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0014-structural-law-probe
+          path: experiments/mathgraph/results/0014-structural-law-probe.json
+          if-no-files-found: error
+          retention-days: 30
