@@ -20,12 +20,17 @@ jobs:
       - run: python -m pip install 'datasets>=3,<5'
       - name: Build judge support
         run: lake build JudgeSupport
+      - name: Probe compact proof compilation
+        run: python experiments/mathgraph/run_hard0196_compilation_probe.py
       - name: Run official Lean gate
+        if: always()
         run: python experiments/mathgraph/run_given_clause_official_lean_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: mathgraph-given-clause-official-lean-gate
-          path: experiments/mathgraph/results/given-clause-official-lean-gate.json
+          path: |
+            experiments/mathgraph/results/given-clause-official-lean-gate.json
+            experiments/mathgraph/results/hard0196-compilation-probe.json
           if-no-files-found: warn
           retention-days: 30
