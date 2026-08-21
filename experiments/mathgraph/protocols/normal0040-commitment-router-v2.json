@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.normal0040-commitment-router.protocol.v2",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_router_run": 32506999040,
+  "falsification_run": 32507840978,
+  "verified_state": {
+    "cross_distance": 2,
+    "lhs_shell": "((((x ◇ y) ◇ x) ◇ x) ◇ y)",
+    "rhs_shell": "((((x ◇ y) ◇ y) ◇ z) ◇ y)",
+    "joint_probe": {"compatible_cross_shell_pairs": 10, "outcome": "YES"},
+    "router_selected_overlap_packages_verified": 490,
+    "router_selected_overlap_packages_isolated": 32,
+    "router_selected_overlap_K_members": 0,
+    "falsified_world_action_models": [
+      "H_joint_substitution -> {joint-unification-constructor, overlap-unification-constructor}",
+      "H_overlap_generation -> {overlap-unification-constructor}"
+    ]
+  },
+  "surviving_obstruction_worlds": {
+    "H_normal_form_identification": "the d=2 shell distinction collapses only after quotient/normal-form identification under the already verified equality regime",
+    "H_deeper_composition": "the needed continuation exists only after more than two replay-valid composition stages"
+  },
+  "lawful_actions": {
+    "H_normal_form_identification": ["quotient-normalization-constructor"],
+    "H_deeper_composition": ["depth3-composition-constructor"]
+  },
+  "probe_policy": {
+    "first": "P_normalize_shells",
+    "first_cost": 1,
+    "if_yes": "DEVELOP_CAPABILITY:quotient-normalization-constructor",
+    "if_no": "PROBE:P_depth3",
+    "second_cost": 3
+  },
+  "P_normalize_shells": {
+    "description": "normalize both exact singleton d=2 shell terms under the current verified rewrite/equality regime only, and test whether canonical representatives become equal or their structural distance contracts below 2",
+    "forbidden": [
+      "new source-law instances",
+      "new overlap packages",
+      "teacher/Vampire traces",
+      "target assertion",
+      "case-id-specific rewrite rules"
+    ]
+  },
+  "router_rule": "Choose minimum cost-to-lawful-commitment, not information gain. If P_normalize_shells is negative, do not invent a constructor; execute P_depth3 next."
+}
