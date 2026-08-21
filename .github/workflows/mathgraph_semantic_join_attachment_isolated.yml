@@ -17,9 +17,13 @@ jobs:
           python-version: '3.12'
       - name: Provision research dependencies
         run: python -m pip install --quiet 'datasets>=3,<5'
-      - name: Run frozen semantic JOIN target-context attachment gate
+      - name: Run original frozen semantic JOIN target-context attachment gate
         run: python experiments/mathgraph/run_residual_target_context_attachment_gate.py
+      - name: Run refined active-continuation attachment gate
+        run: python experiments/mathgraph/run_residual_active_continuation_attachment_gate.py
       - uses: actions/upload-artifact@v4
         with:
           name: semantic-join-attachment-isolated
-          path: experiments/mathgraph/results/residual-target-context-attachment-gate.json
+          path: |
+            experiments/mathgraph/results/residual-target-context-attachment-gate.json
+            experiments/mathgraph/results/residual-active-continuation-attachment-gate.json
