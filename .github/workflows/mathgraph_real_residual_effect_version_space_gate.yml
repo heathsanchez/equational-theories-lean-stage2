@@ -1,0 +1,31 @@
+name: MathGraph Real Residual Effect Version Space Gate
+
+on:
+  pull_request:
+    paths:
+      - 'experiments/mathgraph/REAL_RESIDUAL_EFFECT_VERSION_SPACE_FREEZE_20260821.json'
+      - 'experiments/mathgraph/run_real_residual_effect_version_space_gate.py'
+      - '.github/workflows/mathgraph_real_residual_effect_version_space_gate.yml'
+
+concurrency:
+  group: mathgraph-real-residual-effect-version-space-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  effect-version-space:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run frozen effect-version-space search
+        run: python experiments/mathgraph/run_real_residual_effect_version_space_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-real-residual-effect-version-space
+          path: experiments/mathgraph/results/real-residual-effect-version-space-gate.json
