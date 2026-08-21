@@ -58,7 +58,6 @@ def lifted_item(m,selfm,source,target,shell,path,side_name,mapping,tag):
  nodes=copy_nodes(m,base['proof'][0]);root=base['proof'][1]
  q=nodes[root]
  wanted=m.substitute(source[0] if side_name=='lhs' else source[1],mapping)
- # The router match must remain exact after joint completion.
  sub=shell
  for d in path: sub=sub[1] if d=='L' else sub[2]
  if wanted!=sub:return None
@@ -86,7 +85,6 @@ def main():
  prior=frozen+[step[0]]
  s2,_=epmod.frontier(m,sym,source,target,prior,25.0);_,_,L,R,_,_,d=cut.components(m,target,s2.nodes);assert d==2
  shellL=[t for t in L if md(m,t,R)==2];shellR=[t for t in R if md(m,t,L)==2];assert len(shellL)==len(shellR)==1
- # Recreate exactly the parent router's compatible cross-shell matches.
  matches=[]
  for side_name,pat in [('lhs',source[0]),('rhs',source[1])]:
   for shell_name,shell in [('L',shellL[0]),('R',shellR[0])]:
@@ -113,21 +111,14 @@ def main():
    seen.add(sig)
    score=min(md(m,la['schema'][1],R)+md(m,lb['schema'][1],L),md(m,la['schema'][1],L)+md(m,lb['schema'][1],R))
    packages.append({'pair_index':pi,'mapping':mp,'items':[la,lb],'geom_score':score,'a':a,'b':b})
-packages=packages[:2400]
- # Structural ranking only; no answer/proof trace signal.
+ packages=packages[:2400]
  packages.sort(key=lambda p:(p['geom_score'],-sum(x['activation'] for x in p['items'])))
  baseline=epmod.run_arm(m,sym,source,target,prior,25.0,'A_d2')
  tested=[];admitted=None;ablation=None
  for idx,p in enumerate(packages[:proto['bounds']['maximum_isolation_tests']]):
   arm=epmod.run_arm(m,sym,source,target,prior+p['items'],proto['bounds']['seconds_isolation'],f'pkg_{idx}')
   contract=arm.get('closure') or (arm.get('cross_distance') is not None and arm['cross_distance']<=1)
-  w={
-   'R1_REPLAY_VALID':all(m.replay_dag(source,it['proof'][0],it['proof'][1],maximum_term_size=180,maximum_nodes=25000) for it in p['items']),
-   'R2_ROUTER_PAIR_DERIVED':p['pair_index']<10,
-   'R3_SHELL_TOUCH':True,
-   'R4_DISTANCE_CONTRACT':bool(contract),
-   'F1_NO_TARGET_ASSERTION':True,'F2_NO_TEACHER_TRACE':True,'F3_NO_CASE_ID_DISPATCH':True,'F4_NO_UNVERIFIED_BRIDGE':True
-  }
+  w={'R1_REPLAY_VALID':all(m.replay_dag(source,it['proof'][0],it['proof'][1],maximum_term_size=180,maximum_nodes=25000) for it in p['items']),'R2_ROUTER_PAIR_DERIVED':p['pair_index']<10,'R3_SHELL_TOUCH':True,'R4_DISTANCE_CONTRACT':bool(contract),'F1_NO_TARGET_ASSERTION':True,'F2_NO_TEACHER_TRACE':True,'F3_NO_CASE_ID_DISPATCH':True,'F4_NO_UNVERIFIED_BRIDGE':True}
   tested.append({'index':idx,'pair_index':p['pair_index'],'geom_score':p['geom_score'],'arm':arm,'witnesses':w})
   if contract and all(w.values()):
    abl=epmod.run_arm(m,sym,source,target,prior,20.0,'ablation')
