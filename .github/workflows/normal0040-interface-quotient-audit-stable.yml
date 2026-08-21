@@ -1,0 +1,30 @@
+name: Normal0040 Interface Quotient Audit Stable Gate
+on:
+  pull_request:
+    branches: [mathgraph/residual-factorization-base-20260821]
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify frozen protocol predates executable
+        run: |
+          set -euo pipefail
+          test "$(git rev-list --count dbb928ac91d4b53db1b49fd6b2d4ace447b4f1ed..2796869b50c07dc313ebb5cfb12cbba08776dd64)" -ge 1
+          git show dbb928ac91d4b53db1b49fd6b2d4ace447b4f1ed:experiments/mathgraph/protocols/normal0040-interface-quotient-audit-v1.json >/dev/null
+      - name: Run matched-budget interface quotient audit
+        run: python experiments/mathgraph/run_normal0040_interface_quotient_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-interface-quotient-audit
+          path: experiments/mathgraph/results/normal0040-interface-quotient-audit.json
