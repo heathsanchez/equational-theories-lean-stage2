@@ -1,0 +1,29 @@
+{
+  "schema": "mathgraph.normal0040-endpoint-promotion.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "teacher_trace_used": false,
+  "J": "The target RHS is syntactically represented after RHS-directed reification but is not promoted to a first-class equality endpoint. The next developmental operation should therefore promote the residual-derived RHS structure into a replay-valid source-law consequence endpoint, making it addressable by equality propagation before attempting another bridge.",
+  "K_rho": {
+    "required": [
+      "use only replay-valid instances of the original source law",
+      "place the residual-derived target-RHS structure in the distinguished source substitution position so it becomes an equality endpoint",
+      "preserve proof replay and certificate construction",
+      "compare against an equally complex reachable near-miss endpoint promotion control",
+      "measure endpoint appearance before measuring cross-distance or closure"
+    ],
+    "forbidden": [
+      "Vampire or teacher proof traces",
+      "case-id dispatch inside candidate generation",
+      "answer labels",
+      "memorized target equality as an asserted axiom",
+      "unverified synthetic equality edges"
+    ]
+  },
+  "prediction": {
+    "primary": "The residual-directed endpoint-promotion arm will make the complete target RHS appear as an equality endpoint more often than the matched near-miss control.",
+    "partial_success": "The target RHS becomes an equality endpoint and the post-promotion target cut becomes measurable or strictly smaller, without closure.",
+    "strong_success": "Replay-valid target closure occurs only in the residual-directed endpoint-promotion arm and disappears under ablation.",
+    "falsification": "Residual-directed endpoint promotion fails to create the target RHS as an equality endpoint or performs no better than the matched near-miss control."
+  }
+}
