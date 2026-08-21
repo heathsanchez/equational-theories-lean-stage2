@@ -1,0 +1,29 @@
+name: Normal0040 Endpoint Promotion Stable Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [mathgraph/residual-factorization-base-20260821]
+jobs:
+  gate:
+    if: github.event.pull_request.head.ref == 'mathgraph/residual-factorization-optimum-20260821'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count 2b305beac1675feb42dda6b93dbe60a00672019b..d119f28a7b562e0ce69581c97fa6dc49621f6a29)" -ge 1
+          git show 2b305beac1675feb42dda6b93dbe60a00672019b:experiments/mathgraph/protocols/normal0040-endpoint-promotion-v1.json >/dev/null
+      - name: Run endpoint-promotion gate
+        run: python experiments/mathgraph/run_normal0040_endpoint_promotion_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-endpoint-promotion
+          path: experiments/mathgraph/results/normal0040-endpoint-promotion-gate.json
