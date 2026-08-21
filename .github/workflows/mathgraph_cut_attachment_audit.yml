@@ -1,0 +1,28 @@
+name: MathGraph Cut Attachment Audit
+on:
+  push:
+    branches: [mathgraph/fast-gate-20260821]
+    paths:
+      - 'experiments/mathgraph/run_cut_attachment_audit.py'
+      - '.github/workflows/mathgraph_cut_attachment_audit.yml'
+  workflow_dispatch:
+jobs:
+  cut-attachment:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    concurrency:
+      group: mathgraph-cut-attachment-fast
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run cut attachment audit
+        run: python experiments/mathgraph/run_cut_attachment_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-cut-attachment-audit
+          path: experiments/mathgraph/results/cut-attachment-audit.json
