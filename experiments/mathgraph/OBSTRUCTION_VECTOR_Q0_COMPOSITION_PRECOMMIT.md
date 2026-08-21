@@ -54,13 +54,23 @@ Measure whether replay-valid consequences already latent in the source-law closu
 
 Report addressability evidence independently of Q1/Q2.
 
-## Q4 — atomicity / synergy
+## Q4 — bounded atomicity / synergy
 
-Search bounded ordered pairs of atomic interventions `(d1,d2)` with each individual intervention failing `K3`, but the composition satisfying `K3` when applied sequentially.
+This test is explicitly bounded and must not be interpreted as exhaustive over `H_B × H_B`.
 
-A positive result is `ATOMICITY_OBSTRUCTION_IN_BOUND`: the continuation unit is too small within the frozen bound.
+From the individually non-`K3` interventions in `H_B`, sort by the same frozen atomic proof cost used by the unified refinement experiment. Let `P24` be the first 24 such interventions (or all of them if fewer than 24 exist). Exhaust all ordered distinct pairs in `P24 × P24`, i.e. at most `24 × 23 = 552` ordered compositions.
 
-A negative result is only `NO_BOUNDED_SYNERGY_FOUND`.
+A synergistic pair is `(d1,d2)` such that:
+
+- `K3(E(S2,d1)) = false`,
+- `K3(E(S2,d2)) = false`, and
+- `K3(E(S2 + d1 + d2)) = true` when applied sequentially in that order.
+
+A positive result is `ATOMICITY_OBSTRUCTION_IN_BOUND`: the atomic continuation unit is too small for at least one verified two-step effect within this frozen pair slice.
+
+A negative result is only `NO_BOUNDED_SYNERGY_FOUND_IN_P24xP24`. It must **not** be strengthened to `no synergy in H_B × H_B`, `atomicity is not the obstruction`, or any global claim.
+
+The result artifact must record `|P24|` and the maximum ordered-pair count implied by that bound.
 
 ## Non-exclusive obstruction vector
 
@@ -100,6 +110,18 @@ Classify as one of:
 
 A combined refinement may be treated as one carrier element only in a later experiment after a common carrier and cost for that composite object are prospectively defined.
 
+## Stage-3 causal ablation rule for any later closure experiment
+
+This diagnostic does not itself select a Stage-3 winner or claim Stage-3 theorem closure. If a subsequent Call-3 experiment selects an atomic `d3*` from the accumulated state `S2` and obtains closure, the causal ablation must remove **only** `d3*` while preserving every Stage-1 and Stage-2 intervention:
+
+`closure(S2 + d3*) = true`
+
+and
+
+`closure((S2 + d3*) - d3*) = closure(S2) = false`.
+
+Re-ablating Stage 1, Stage 2, or the whole chain does not count as evidence that Call 3 itself caused closure.
+
 ## Claim boundary
 
-This protocol can establish bounded counterexamples, bounded empty intersections, bounded synergy, and ordering dependence. It cannot establish global necessity, global atomic impossibility, or global commutativity.
+This protocol can establish bounded counterexamples, bounded empty intersections, bounded synergy within the explicitly frozen `P24 × P24` slice, and ordering dependence. It cannot establish global necessity, global atomic impossibility, absence of synergy outside that pair slice, or global commutativity.
