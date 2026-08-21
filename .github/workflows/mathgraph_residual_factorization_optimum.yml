@@ -41,6 +41,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate_v2.py
       - name: Residual reification continuation gate
         run: python experiments/mathgraph/run_reification_continuation_gate.py
+      - name: Semantic JOIN target-context attachment gate
+        run: python experiments/mathgraph/run_residual_target_context_attachment_gate.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual-factorization-optimum
@@ -59,3 +61,4 @@ jobs:
             experiments/mathgraph/results/residual-conditioned-operator-induction-gate-v2.json
             experiments/mathgraph/results/missing-subterm-reification-gate.json
             experiments/mathgraph/results/reification-continuation-gate.json
+            experiments/mathgraph/results/residual-target-context-attachment-gate.json
