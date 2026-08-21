@@ -2,7 +2,7 @@
 """K3 intervention for evaluation_order5_0014: cut-distance reduction.
 
 K1 (opposite provenance mixing) and K2 (anchored opposite-structure insertion)
-were both instantiable but insufficient.  The K2 outputs show that attachment
+were both instantiable but insufficient. The K2 outputs show that attachment
 alone is too weak: many rewrites stay attached while exploding away from the
 opposite residual component.
 
@@ -10,9 +10,9 @@ K3 is therefore derived from the residual geometry itself:
   a useful anchored extension should reduce structural distance from its new
   endpoint to the opposite frozen residual component.
 
-The metric is fixed before candidate selection.  For a term t and frozen
+The metric is fixed before candidate selection. For a term t and frozen
 component C, d(t,C) is the minimum recursive binary-tree edit cost to one of the
-shortest distinct terms in C.  Candidate progress is
+shortest distinct terms in C. Candidate progress is
   delta = d(anchor,C_opp) - d(rewritten,C_opp).
 Positive delta means genuine contraction toward the opposite component.
 
@@ -23,7 +23,7 @@ Matched arms:
 If C closes while A/B fail, C is rerun without K3 for ablation.
 
 No Vampire trace, target-specific identity, answer label, or new trusted axiom is
-used.  Target sides define only the frozen residual components.  Every installed
+used. Target sides define only the frozen residual components. Every installed
 rewrite is produced by the existing context-lift constructor and replayed to the
 original source equation.
 """
@@ -36,6 +36,9 @@ OUT=ROOT/'experiments/mathgraph/results/cut-distance-reduction-gate.json';RID='e
 def load(p,n):
  s=importlib.util.spec_from_file_location(n,p);m=importlib.util.module_from_spec(s);sys.modules[n]=m;s.loader.exec_module(m);return m
 
+def tsize(t):
+ return 1 if t[0]=='var' else 1+tsize(t[1])+tsize(t[2])
+
 def tdist(a,b,memo=None):
  if memo is None:memo={}
  k=(a,b)
@@ -43,7 +46,7 @@ def tdist(a,b,memo=None):
  if a==b:r=0
  elif a[0]=='var' and b[0]=='var':r=1
  elif a[0]=='op' and b[0]=='op':r=tdist(a[1],b[1],memo)+tdist(a[2],b[2],memo)
- else:r=m.term_size(a)+m.term_size(b)
+ else:r=tsize(a)+tsize(b)
  memo[k]=r;return r
 
 def component_distance(m,t,terms):
@@ -99,7 +102,6 @@ def run_arm(m,sym,selfm,op,r,cp,acc,source,target,mode):
  if lc==rc:return {'closure':True,'base_joined':True,'nodes':len(s.nodes)}
  pos=[x for x in cand if x['delta']>0];non=[x for x in cand if x['delta']<=0]
  pos.sort(key=lambda x:(-x['delta'],x['d_after'],x['size']))
- # matched controls favor similar size but explicitly do not contract the cut
  non.sort(key=lambda x:(x['size'],abs(x['delta']),x['d_after']))
  chosen=[]
  if mode=='control':chosen=non[:96]
