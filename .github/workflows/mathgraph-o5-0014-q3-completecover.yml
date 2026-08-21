@@ -1,0 +1,23 @@
+name: MathGraph O5-0014 Q3 CompleteCover
+on:
+  pull_request:
+    branches:
+      - mathgraph/o5-0014-q3-completecover-base-20260821
+jobs:
+  q3-completecover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Exhaust exact live-component source-bridge space
+        run: python experiments/mathgraph/run_obstruction_q3_completecover.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: obstruction-q3-completecover
+          path: experiments/mathgraph/results/obstruction-q3-completecover.json
+          if-no-files-found: warn
