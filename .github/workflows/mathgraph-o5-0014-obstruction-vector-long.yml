@@ -1,0 +1,25 @@
+name: MathGraph O5-0014 Obstruction Vector Long Run
+
+on:
+  pull_request:
+    branches:
+      - mathgraph/obstruction-vector-q0-composition-timeout-base-20260821
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Run unchanged bounded obstruction-vector diagnostic
+        run: python experiments/mathgraph/run_obstruction_vector_q0_composition.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: obstruction-vector-q0-composition-long
+          path: experiments/mathgraph/results/obstruction-vector-q0-composition.json
+          if-no-files-found: warn
