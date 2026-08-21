@@ -24,6 +24,8 @@ jobs:
         run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
       - name: Residual multisub composition ratchet
         run: python experiments/mathgraph/run_residual_multisub_ratchet_gate.py
+      - name: Coordinated residual context transport
+        run: python experiments/mathgraph/run_residual_coordinated_context_transport_gate.py
       - name: Dormant historical target narrowing
         run: python experiments/mathgraph/run_dormant_target_narrowing_escalation.py
       - name: Order5 0014 quotient matcher
@@ -38,6 +40,7 @@ jobs:
           path: |
             experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
             experiments/mathgraph/results/residual-multisub-ratchet-gate.json
+            experiments/mathgraph/results/residual-coordinated-context-transport-gate.json
             experiments/mathgraph/results/dormant-target-narrowing-escalation.json
             experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
             experiments/mathgraph/results/order5-0014-compact-collapse-activation-gate.json
