@@ -1,0 +1,30 @@
+name: Normal0040 Cut Contraction Stable Gate
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+    branches: [mathgraph/residual-factorization-base-20260821]
+jobs:
+  gate:
+    if: github.event.pull_request.head.ref == 'mathgraph/residual-factorization-optimum-20260821'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count dc3c9a056a88f1422c83c116300d71fbcc37a273..cbf1553965b87510326a71d90d5eb4bdb33dec8d)" -ge 1
+          git show dc3c9a056a88f1422c83c116300d71fbcc37a273:experiments/mathgraph/protocols/normal0040-cut-contraction-v1.json >/dev/null
+      - name: Run distance-3 cut contraction gate
+        run: python experiments/mathgraph/run_normal0040_cut_contraction_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-cut-contraction
+          path: experiments/mathgraph/results/normal0040-cut-contraction-gate.json
