@@ -1,0 +1,40 @@
+name: MathGraph O5-0014 Obstruction Vector Fast Q0-Q1
+
+on:
+  pull_request:
+    branches:
+      - mathgraph/obstruction-vector-q0-composition-timeout-base-20260821
+
+jobs:
+  diagnose-fast:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Build stage-gated Q0/Q1 runner from frozen diagnostic
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src = Path('experiments/mathgraph/run_obstruction_vector_q0_composition.py')
+          dst = Path('experiments/mathgraph/run_obstruction_vector_fast_q0_q1.py')
+          text = src.read_text()
+          marker = ' # Q2 family coverage\n'
+          if marker not in text:
+              raise SystemExit('expected Q2 marker not found; refusing to alter protocol implicitly')
+          injection = ''' # FAST STAGE GATE: Q0/Q1 are already fully determined by the atomic probe loop.\n # Stop before Q2/Q3/Q4 so a falsified K3 is not followed by expensive pair search.\n out={'schema':'mathgraph.obstruction-vector-fast-q0-q1.v1','id':RID,\n      'baseline_S2':baseline,\n      'bounds':{'H_B':len(HB),'Phi_B':len(probes)},\n      'Q0':{'decision':'K3_COUNTEREXAMPLE_IN_PHI_B' if q0_counter else 'K3_SURVIVED_PHI_B',\n            'counterexamples':len(q0_counter),\n            'examples':[{'family':x.get('family'),'improved':n,'effect':e} for x,e,n in q0_counter[:8]]},\n      'Q1':{'decision':'K3_INTERSECTION_NONEMPTY_IN_H_B' if admiss else 'K3_INTERSECTION_EMPTY_IN_H_B',\n            'admissible':len(admiss)},\n      'protocol':{'q0_bounded_only':True,'q1_bounded_only':True,\n                  'no_global_nonexistence_claim':True,'no_global_necessity_claim':True,\n                  'stage_gated_before_q2_q3_q4':True},\n      'decision':('STOP_REPAIR_K3' if q0_counter else 'Q0_Q1_COMPLETE_NEXT_STAGE_REQUIRED')}\n OUT.parent.mkdir(parents=True,exist_ok=True)\n OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n')\n print(json.dumps(out,indent=2,sort_keys=True),flush=True)\n return\n'''
+          text = text.replace(marker, injection + marker, 1)
+          dst.write_text(text)
+          print(dst)
+          PY
+      - name: Run fast bounded Q0/Q1 diagnostic
+        run: python experiments/mathgraph/run_obstruction_vector_fast_q0_q1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: obstruction-vector-fast-q0-q1
+          path: experiments/mathgraph/results/obstruction-vector-q0-composition.json
+          if-no-files-found: warn
