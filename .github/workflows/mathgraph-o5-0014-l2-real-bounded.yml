@@ -1,0 +1,22 @@
+name: MathGraph O5-0014 L2 Real Bounded
+on:
+  pull_request:
+    branches:
+      - mathgraph/o5-0014-q3-completecover-run-20260821
+  workflow_dispatch:
+jobs:
+  l2-real-bounded:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Run bounded real-data L2 category construction
+        run: python experiments/mathgraph/run_l2_real_bounded_category.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: l2-real-bounded-category
+          path: experiments/mathgraph/results/l2-real-bounded-category.json
