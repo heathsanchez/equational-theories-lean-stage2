@@ -1,0 +1,28 @@
+name: Normal0040 Commitment Router V2 Stable Gate
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [mathgraph/residual-factorization-base-20260821]
+jobs:
+  gate:
+    if: github.event.pull_request.head.ref == 'mathgraph/residual-factorization-optimum-20260821'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count 64a6a8ccd308b5404440df0f8353eb57fc5d1980..2fa8d81a1a2980b962a9f09b5ddd011d0c51b93a)" -ge 1
+          git show 64a6a8ccd308b5404440df0f8353eb57fc5d1980:experiments/mathgraph/protocols/normal0040-commitment-router-v2.json >/dev/null
+      - name: Run commitment router v2 normalization probe
+        run: python experiments/mathgraph/run_normal0040_commitment_router_v2_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: normal0040-commitment-router-v2
+          path: experiments/mathgraph/results/normal0040-commitment-router-v2-gate.json
