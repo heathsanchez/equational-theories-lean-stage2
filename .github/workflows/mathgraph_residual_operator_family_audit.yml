@@ -1,0 +1,43 @@
+name: MathGraph Residual Operator Family Audit
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+  workflow_dispatch:
+
+jobs:
+  operator-family-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Provision research dependencies
+        run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Fetch historical target-narrowing ref
+        run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
+      - name: Unified residual multisubstitution
+        run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
+      - name: Residual multisub composition ratchet
+        run: python experiments/mathgraph/run_residual_multisub_ratchet_gate.py
+      - name: Dormant historical target narrowing
+        run: python experiments/mathgraph/run_dormant_target_narrowing_escalation.py
+      - name: Order5 0014 quotient matcher
+        run: python experiments/mathgraph/run_order5_0014_quotient_matcher_gate.py
+      - name: Order5 0014 collapse activation
+        run: python experiments/mathgraph/run_order5_0014_compact_collapse_activation_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual-operator-family-audit
+          if-no-files-found: warn
+          path: |
+            experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
+            experiments/mathgraph/results/residual-multisub-ratchet-gate.json
+            experiments/mathgraph/results/dormant-target-narrowing-escalation.json
+            experiments/mathgraph/results/order5-0014-quotient-matcher-gate.json
+            experiments/mathgraph/results/order5-0014-compact-collapse-activation-gate.json
