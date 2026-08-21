@@ -1,0 +1,41 @@
+{
+  "schema": "mathgraph.normal0040-interface-transition.protocol.v2",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "quotient_audit_run": 32531743347,
+    "interface_matrix_run": 32535687975,
+    "frozen_cross_distance": 2,
+    "generation1_lhs_interface_classes": 5,
+    "generation1_rhs_interface_classes": 5,
+    "generation1_compatible_cells": 0
+  },
+  "hypothesis": "the relevant search state is the replay-valid continuation-interface quotient graph, and compatibility may emerge only after quotient transitions even while structural distance remains unchanged",
+  "transition_graph": {
+    "search_from": "all five audited LHS generation-1 interface classes",
+    "target": "compatibility with any of the five audited RHS generation-1 interface classes",
+    "search_depth_from_generation1": 2,
+    "representative_policy": "use bounded retained terms from every class without target-distance selection"
+  },
+  "compatibility": {
+    "require_same_source_side_orientation": true,
+    "require_same_context_path_shape": true,
+    "require_jointly_compatible_substitutions": true,
+    "exclude_literal_term_identity": true,
+    "exclude_target_or_teacher_trace": true
+  },
+  "bounds": {
+    "maximum_terms_per_class": 24,
+    "maximum_interactions_per_term": 96,
+    "maximum_transition_edges": 12000,
+    "maximum_term_size": 150,
+    "maximum_fillers": 6,
+    "seconds_soft": 210
+  },
+  "decision_table": {
+    "INTERFACE_PATH_TO_RHS_COMPATIBILITY": "some replay-valid LHS quotient-transition path reaches a class compatible with at least one audited RHS class",
+    "INTERFACE_TRANSITION_NO_COMPATIBILITY": "the quotient graph grows but no compatible class is reached within frozen depth/bounds",
+    "INTERFACE_QUOTIENT_STALL": "replay-valid syntax grows but produces little or no new continuation-class transition structure"
+  },
+  "scientific_rule": "Do not promote a constructor from this diagnostic alone. If a compatible path is found, freeze its effect-level interface obligations and test a separate causal admission gate."
+}
