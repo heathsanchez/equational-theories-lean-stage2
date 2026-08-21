@@ -1,0 +1,25 @@
+name: MathGraph 0014 Semantic JOIN Endpoint Multisub
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+  workflow_dispatch:
+jobs:
+  join:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Run semantic JOIN endpoint-multisub gate
+        run: python experiments/mathgraph/run_0014_semantic_join_endpoint_multisub_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 0014-semantic-join-endpoint-multisub
+          path: experiments/mathgraph/results/0014-semantic-join-endpoint-multisub-gate.json
