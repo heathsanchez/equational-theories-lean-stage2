@@ -1,0 +1,31 @@
+{
+  "schema": "mathgraph.real-residual-effect-version-space.freeze.v1",
+  "date": "2026-08-21",
+  "problem": "evaluation_order5_0014",
+  "purpose": "Freeze the necessary effect specification before implementing the next constructor search.",
+  "residual_basis": [
+    "the frozen frontier omits proper target structure that must first appear somewhere in any successful derivation",
+    "direct residual reification can introduce missing target structure without closing the theorem",
+    "cross-cone provenance mixing can remain detached from both target components",
+    "single-site anchored opposite-structure rewrites are instantiable but insufficient",
+    "no tested single-site anchored rewrite reduces the frozen cut-distance metric",
+    "the synchronized multisite hypothesis produced no strict synergy candidates"
+  ],
+  "K_effect": {
+    "required": [
+      "replay_valid_under_original_source_law",
+      "first_introduces_at_least_one_proper_target_subterm_absent_from_the_frozen_frontier",
+      "has_at_least_one_equality_endpoint_in_a_pre_intervention_target_component"
+    ],
+    "not_required": [
+      "cross_cone_provenance",
+      "binary_congruence",
+      "single_site_or_multi_site_shape",
+      "tree_distance_reduction",
+      "a_named_constructor_topology"
+    ]
+  },
+  "version_space": "all replay-valid derived equalities whose verified effect satisfies K_effect",
+  "falsification": "If a broad generic closure over the existing proof combinators plus residual reification yields no member of the effect version space, then the next obstruction is at the proof-combinator/constructor-language level rather than candidate ranking.",
+  "freeze_rule": "This file must precede implementation of the effect-version-space search gate."
+}

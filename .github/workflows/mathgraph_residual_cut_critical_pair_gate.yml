@@ -1,0 +1,28 @@
+name: MathGraph Residual Cut Critical Pair Gate
+on:
+  pull_request:
+    paths:
+      - 'experiments/mathgraph/run_residual_cut_critical_pair_gate.py'
+      - '.github/workflows/mathgraph_residual_cut_critical_pair_gate.yml'
+  workflow_dispatch:
+jobs:
+  critical-pair-cut:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual-derived critical-pair cut bridge
+        run: python experiments/mathgraph/run_residual_cut_critical_pair_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-cut-critical-pair
+          path: experiments/mathgraph/results/residual-cut-critical-pair-gate.json
+          if-no-files-found: warn
+          retention-days: 30

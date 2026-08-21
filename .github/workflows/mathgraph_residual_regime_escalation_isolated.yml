@@ -1,0 +1,26 @@
+name: MathGraph Residual Regime Escalation Isolated
+on:
+  push:
+    branches: [mathgraph/binary-fusion-isolated-20260821]
+  workflow_dispatch:
+jobs:
+  regime-escalation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual regime escalation
+        run: python experiments/mathgraph/run_residual_regime_escalation_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-residual-regime-escalation
+          path: experiments/mathgraph/results/residual-regime-escalation-gate.json
+          if-no-files-found: warn
+          retention-days: 30

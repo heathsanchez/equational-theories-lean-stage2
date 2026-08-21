@@ -1,0 +1,25 @@
+name: MathGraph Residual Multisub Ratchet Gate
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-conditioned-operator-induction-20260821
+  workflow_dispatch:
+jobs:
+  ratchet:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run residual multisubstitution ratchet
+        run: python experiments/mathgraph/run_residual_multisub_ratchet_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-residual-multisub-ratchet
+          path: experiments/mathgraph/results/residual-multisub-ratchet-gate.json
+          retention-days: 30

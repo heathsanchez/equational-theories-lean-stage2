@@ -1,14 +1,15 @@
 name: MathGraph Binary Fusion Invariant Breaker Gate
+# developmental residual ladder plus regime escalation
 on:
   push:
-    branches: [mathgraph/residual-conditioned-operator-induction-20260821]
+    branches: [mathgraph/binary-fusion-isolated-20260821]
   pull_request:
     branches: [mathgraph/residual-conditioned-operator-induction-20260821]
   workflow_dispatch:
 jobs:
   binary-fusion:
     runs-on: ubuntu-24.04
-    timeout-minutes: 22
+    timeout-minutes: 65
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +24,18 @@ jobs:
         run: python experiments/mathgraph/run_missing_subterm_reification_gate.py
       - name: Run residual-unified simultaneous substitution
         run: python experiments/mathgraph/run_residual_unified_multisubstitution_gate.py
+      - name: Run post-reification residual tree completion
+        run: python experiments/mathgraph/run_post_reification_tree_completion_gate.py
+      - name: Run post-development exact component bridge
+        run: python experiments/mathgraph/run_post_development_component_bridge_gate.py
+      - name: Run residual-cut congruence completion
+        run: python experiments/mathgraph/run_residual_cut_congruence_completion_gate.py
+      - name: Run residual-induced inverse bridge depth
+        run: python experiments/mathgraph/run_post_development_inverse_bridge_depth_gate.py
+      - name: Run residual-induced contextual inverse bridge
+        run: python experiments/mathgraph/run_post_development_contextual_inverse_bridge_gate.py
+      - name: Run residual regime escalation
+        run: python experiments/mathgraph/run_residual_regime_escalation_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -31,5 +44,11 @@ jobs:
             experiments/mathgraph/results/binary-fusion-invariant-breaker-gate.json
             experiments/mathgraph/results/missing-subterm-reification-gate.json
             experiments/mathgraph/results/residual-unified-multisubstitution-gate.json
+            experiments/mathgraph/results/post-reification-tree-completion-gate.json
+            experiments/mathgraph/results/post-development-component-bridge-gate.json
+            experiments/mathgraph/results/residual-cut-congruence-completion-gate.json
+            experiments/mathgraph/results/post-development-inverse-bridge-depth-gate.json
+            experiments/mathgraph/results/post-development-contextual-inverse-bridge-gate.json
+            experiments/mathgraph/results/residual-regime-escalation-gate.json
           if-no-files-found: warn
           retention-days: 30

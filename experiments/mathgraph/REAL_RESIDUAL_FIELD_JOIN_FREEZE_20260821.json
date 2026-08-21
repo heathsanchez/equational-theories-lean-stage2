@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.real-residual-field.join-freeze.v1",
+  "target_id": "evaluation_order5_0014",
+  "frozen_before_next_intervention": true,
+  "evidence_field": [
+    {
+      "channel": "operator-language generability",
+      "observation": "Across G2/G3/G4 residual-conditioned operator generations, no generated operator could introduce either missing target structure from the sampled frontier; 520 operators per generation yielded zero hits."
+    },
+    {
+      "channel": "cross-cone provenance mixing",
+      "observation": "320 replay-verified cross-cone binary-congruence candidates were instantiable, but none closed the theorem."
+    },
+    {
+      "channel": "cut attachment topology",
+      "observation": "All 320 cross-cone outputs mixed lhs/rhs residual subterms, yet exact lhs-rhs bridges=0, lhs-only attachments=0, rhs-only attachments=0, detached outputs=320."
+    },
+    {
+      "channel": "anchored opposite-structure insertion",
+      "observation": "422 anchored opposite-structure candidates existed; a matched K2 arm installed 96 replay-valid anchored rewrites and remained open."
+    },
+    {
+      "channel": "cut-distance contraction",
+      "observation": "Among 2200 replay-valid anchored candidates, zero reduced recursive tree-edit distance from the rewritten endpoint to the opposite frozen residual component."
+    }
+  ],
+  "semantic_join": {
+    "name": "coordinated multi-site transport",
+    "statement": "The residual is not asking for more local rewriting, provenance mixing, or one-endpoint attachment. The common obstruction is that current constructors transport one verified equality through one context at a time (or combine independently derived equalities without preserving attachment). A successful extension must coordinate two or more linked substitutions/transformations inside a shared anchored context so that relational structure is transported jointly rather than as independent local edits.",
+    "necessary_properties": [
+      "shared anchor: at least one output endpoint remains in an existing residual component or is verifier-equivalent to an anchored endpoint",
+      "multi-site coupling: one operator application changes at least two linked positions/subterms under a common context",
+      "joint provenance: the coupled edits are justified by replay-valid equalities derived from the original source law",
+      "non-factorability test: the useful effect should not be reproducible by the same bounded sequence of independent unary context lifts already exhausted",
+      "cut relevance: the jointly rewritten endpoint must introduce or align structure from the opposite residual side"
+    ],
+    "forbidden_explanations": [
+      "more runtime inside the same unary-context regime",
+      "provenance mixing without output attachment",
+      "single-site anchored rewriting",
+      "selection among existing G1-G4 operator families"
+    ]
+  },
+  "next_family_constraint": "Generate a previously absent anchored synchronized multi-substitution / paired-context constructor satisfying the necessary properties above, then test frozen baseline, factorized-unary control, synchronized intervention, ablation, and source-distinct transfer.",
+  "claim_boundary": "This K(rho) was induced from the accumulated real SAIR residual field before implementing the next operator family. It is a falsifiable specification, not a proof that the proposed family will close the theorem."
+}

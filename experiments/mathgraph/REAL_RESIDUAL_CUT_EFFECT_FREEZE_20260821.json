@@ -1,0 +1,34 @@
+{
+  "schema": "mathgraph.real-residual-cut-effect.freeze.v1",
+  "date": "2026-08-21",
+  "problem": "evaluation_order5_0014",
+  "purpose": "Freeze the surviving component-disconnection residual before implementing the next constructor search.",
+  "residual_basis": [
+    "the stronger frozen frontier already contains the previously missing proper target structures",
+    "the target lhs and rhs nevertheless remain in distinct equality components",
+    "cross-cone provenance mixing can remain detached from the target components",
+    "anchored opposite-structure rewrites can be replay-valid yet fail to close the cut",
+    "no tested anchored rewrite reduced the earlier structural-distance proxy",
+    "the synchronized multisite hypothesis produced no strict synergy candidates"
+  ],
+  "K_cut_effect": {
+    "required": [
+      "replay_valid_under_original_source_law",
+      "new_equality_contracts_the_frozen_component_quotient",
+      "the_contraction_touches_at_least_one_of_the_two_frozen_target_components"
+    ],
+    "formal_reading": "For frozen component map q, a candidate equality u=v is admissible when replay(u=v)=true, q(u) != q(v) after treating any previously unseen endpoint as a fresh singleton component, and q(u) or q(v) is the frozen lhs-target or rhs-target component.",
+    "not_required": [
+      "missing_subterm_introduction",
+      "cross_cone_provenance",
+      "binary_congruence",
+      "single_site_or_multi_site_shape",
+      "tree_distance_reduction",
+      "direct_lhs_to_rhs_bridge",
+      "a_named_constructor_topology"
+    ]
+  },
+  "version_space": "all replay-valid candidate equalities whose verified installation contracts the frozen component quotient while touching a target component",
+  "falsification": "If a broad constructor-program search over replay-valid source-law compositions yields no member of this cut-effect version space, the remaining obstruction is at the constructor-language level rather than residual ranking or target-structure generatability.",
+  "freeze_rule": "This file must precede implementation of the cut-effect search gate."
+}
