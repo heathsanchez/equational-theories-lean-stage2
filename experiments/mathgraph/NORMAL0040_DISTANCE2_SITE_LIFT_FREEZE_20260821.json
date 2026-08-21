@@ -1,0 +1,28 @@
+{
+  "schema": "mathgraph.normal0040.distance2-site-lift.freeze.v1",
+  "date": "2026-08-21",
+  "problem": "evaluation_normal_0040",
+  "residual_basis": [
+    "the retained replay-valid 3-to-2 contractor reproducibly leaves a unique one-term shell on each side at cross-distance 2",
+    "72 replay-valid direct source-law instances touching that shell were enumerated and none reduced the cross-distance below 2",
+    "therefore the direct source-instance family is an exhausted continuation regime for the 2-to-1 step"
+  ],
+  "K_effect": {
+    "required": [
+      "replay_valid_under_original_source_law",
+      "one_endpoint_attached_to_the_post_contractor_distance_2_shell",
+      "the_other_endpoint_strictly_closer_than_2_to_the_opposite_frozen_component"
+    ],
+    "not_required": [
+      "a_target_specific_identity",
+      "a_named_new_axiom",
+      "cross_cone_provenance",
+      "binary_congruence",
+      "multi_site_shape"
+    ]
+  },
+  "next_constructor_family_hypothesis": "Reuse already replay-valid frontier equalities as local transformations, lift them through exact contexts of the unique distance-2 shell terms, and test whether any context-lifted equality realizes K_effect. This changes the constructor family while preserving the original source-law trust base.",
+  "matched_control": "replay-valid context-lifted shell transformations that remain at cross-distance 2",
+  "decision_rule": "If a prospectively classified context-lifted candidate reduces distance 2 to 1 or 0 while matched noncontracting lifts do not, reinstall without the candidate as ablation. If no such lift exists, classify exact context lifting of the current replay-valid frontier as insufficient for the 2-to-1 residual.",
+  "freeze_rule": "This specification and constructor-family hypothesis must be committed before implementation of the site-lift gate."
+}
