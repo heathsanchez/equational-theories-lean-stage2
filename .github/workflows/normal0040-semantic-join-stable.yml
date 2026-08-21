@@ -1,0 +1,31 @@
+name: Normal0040 Semantic JOIN Stable Gate
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+    types: [opened, reopened, synchronize]
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count bf0425766bbeeb8f7695ffa0f5e8a3a16153fd1..80eff3a1ec82413b2fe711f78d1cef618c709db1)" -ge 1
+          git show bf0425766bbeeb8f7695ffa0f5e8a3a16153fd1:experiments/mathgraph/protocols/normal0040-semantic-join-v1.json >/dev/null
+      - name: Run prospective semantic JOIN gate
+        run: python experiments/mathgraph/run_normal0040_semantic_join_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-semantic-join
+          path: experiments/mathgraph/results/normal0040-semantic-join-gate.json
+          if-no-files-found: warn
