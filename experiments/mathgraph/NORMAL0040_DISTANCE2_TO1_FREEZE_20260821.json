@@ -1,0 +1,27 @@
+{
+  "schema": "mathgraph.normal0040.distance2-to1.freeze.v1",
+  "date": "2026-08-21",
+  "problem": "evaluation_normal_0040",
+  "residual_basis": [
+    "a previously replay-verified source-law contractor reduced the frozen cross-distance from 3 to 2",
+    "the matched non-contracting control remained at distance 3",
+    "the theorem remained open after the 3-to-2 contraction"
+  ],
+  "K_effect": {
+    "required": [
+      "replay_valid_under_original_source_law",
+      "touches_the_post_contractor_distance_2_frontier",
+      "strictly_reduces_the_frozen_cross_distance_from_2_to_1_or_0"
+    ],
+    "not_required": [
+      "a_named_constructor_topology",
+      "cross_cone_provenance",
+      "binary_congruence",
+      "multi_site_shape",
+      "target_specific_identity"
+    ]
+  },
+  "control": "matched replay-valid frontier-touching candidates that do not reduce the frozen cross-distance",
+  "decision_rule": "install only prospectively classified contractors; if distance falls below 2, rerun without them as ablation; if distance reaches 0 require replay-valid target closure",
+  "freeze_rule": "This specification must precede implementation of the distance-2-to-1 search gate."
+}
