@@ -1,0 +1,33 @@
+{
+  "schema": "mathgraph.normal0040-constructor-expansion-witness.v1",
+  "frozen_before_execution": true,
+  "id": "evaluation_normal_0040",
+  "residual": {
+    "cross_distance": 2,
+    "lhs_shell": "((((x ◇ y) ◇ x) ◇ x) ◇ y)",
+    "rhs_shell": "((((x ◇ y) ◇ y) ◇ z) ◇ y)",
+    "prior_grammar_result": "GRAMMAR_OBSTRUCTION_K_EMPTY"
+  },
+  "K_rho": "K_{2->1}(rho) = {Delta : Delta is replay-valid, touches at least one exact distance-2 shell term, and after installation lowers d(C_L,C_R) from 2 to <=1}",
+  "constructor_expansion": {
+    "principle": "Expand minimally beyond the exhausted one-step source-instance grammar by permitting a bounded two-stage source-derived composition: first a replay-valid source-law instance anchored at a shell term; then a second replay-valid source-law instance whose distinguished endpoint is instantiated with a term produced by the first stage. No synthetic equality edges are allowed.",
+    "max_stage1": 96,
+    "max_stage2_per_stage1": 96,
+    "selection": "effect-level only; do not privilege named mechanisms before observing a successful member"
+  },
+  "witnesses": [
+    {"id":"R1_REPLAY_VALID","kind":"required","description":"Every installed equality replays to the original source law via explicit substitution."},
+    {"id":"R2_SHELL_TOUCH","kind":"required","description":"The candidate derivation touches at least one exact frozen distance-2 shell term."},
+    {"id":"R3_DISTANCE_CONTRACT","kind":"required","description":"Installation lowers verified cross-distance from 2 to <=1 or closes the target."},
+    {"id":"R4_ABLATION_RESTORES","kind":"required","description":"Removing the acquired candidate restores cross-distance 2 / removes closure."},
+    {"id":"F1_NO_TARGET_ASSERTION","kind":"forbidden","description":"No candidate equality is the target equality inserted synthetically."},
+    {"id":"F2_NO_TEACHER_TRACE","kind":"forbidden","description":"No Vampire/teacher proof trace or answer label participates in generation."},
+    {"id":"F3_NO_CASE_ID_DISPATCH","kind":"forbidden","description":"Candidate generation contains no theorem-id-specific branch beyond loading the frozen residual."},
+    {"id":"F4_NO_UNVERIFIED_BRIDGE","kind":"forbidden","description":"No synthetic bridge edge is admitted without replay to the source law."}
+  ],
+  "admission_rule": "headline contraction/closure is insufficient; admit only if all compiled witnesses pass",
+  "prediction": {
+    "primary": "If constructor expansion rather than more search is the missing operation, the bounded two-stage replay-valid composition closure will contain at least one witness-complete 2->1 candidate even though the one-step closure contained none.",
+    "obstruction": "If zero witness-complete candidates exist, record the two-stage expansion as another explicit grammar obstruction rather than broadening ad hoc."
+  }
+}
