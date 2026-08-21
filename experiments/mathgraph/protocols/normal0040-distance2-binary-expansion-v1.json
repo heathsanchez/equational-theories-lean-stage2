@@ -1,0 +1,21 @@
+{
+  "schema": "mathgraph.normal0040-distance2-binary-expansion.protocol.v1",
+  "frozen_before_execution": true,
+  "id": "evaluation_normal_0040",
+  "residual": "After the verified 3->2 contractor, the exact distance-2 shell is singleton on both sides and exhaustive enumeration of the declared replay-valid one-step source-instance closure produced 0/648 K_{2->1} members.",
+  "K_rho": "Any retained constructor expansion must produce at least one replay-valid continuation whose installation lowers d(C_L,C_R) from 2 to 1 (or 0), with ablation restoring distance 2 / removing closure.",
+  "grammar_obstruction": "The failed closure is unary/single-instance at the shell. The smallest strict grammar enlargement tested next is arity-2 composition of two independently replay-valid equalities under binary congruence and transitivity.",
+  "controls": [
+    "frozen distance-2 state",
+    "matched one-step shell candidates from the already-falsified grammar"
+  ],
+  "forbidden": [
+    "Vampire or teacher proof traces",
+    "answer labels",
+    "asserting the target equality",
+    "case-id dispatch inside candidate generation",
+    "unverified bridge edges",
+    "selecting candidates by a known target proof path"
+  ],
+  "prediction": "If the obstruction is genuinely constructor arity rather than search depth, some binary-composed replay-valid candidate will satisfy K_{2->1} while the matched unary control remains at distance 2. If none do in the declared finite binary closure, record the stronger grammar obstruction and do not widen it post hoc."
+}
