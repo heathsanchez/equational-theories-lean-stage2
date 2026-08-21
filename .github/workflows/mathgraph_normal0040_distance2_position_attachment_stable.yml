@@ -1,0 +1,28 @@
+name: Normal0040 Distance2 Position Attachment Stable Gate
+on:
+  pull_request:
+    branches: [mathgraph/residual-factorization-base-20260821]
+  workflow_dispatch:
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count 26f7badd00d7097ddd849c9863230499cf7b4fca..baa1ca9927b6a302fc04dfd0e0bdc9de92ab3777)" -ge 1
+          git show 26f7badd00d7097ddd849c9863230499cf7b4fca:experiments/mathgraph/protocols/normal0040-distance2-position-attachment-v1.json >/dev/null
+      - name: Run position-sensitive attachment gate
+        run: python experiments/mathgraph/run_normal0040_distance2_position_attachment_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-distance2-position-attachment
+          path: experiments/mathgraph/results/normal0040-distance2-position-attachment-gate.json
