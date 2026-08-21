@@ -1,0 +1,24 @@
+{
+  "schema": "mathgraph.normal0040-interface-quotient-audit.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_runs": {
+    "continuation_interface_depth3": 32528476231,
+    "interface_transition_failed": 32530483413
+  },
+  "diagnosis_to_test": "The prior generation-1 RHS interface count of 1 was caused by a shared replay-valid-edge budget consumed by LHS-first enumeration; a matched per-side budget should reconstruct the quotient symmetrically and deterministically.",
+  "audit_rules": {
+    "same_frozen_d2_state": true,
+    "same_interface_descriptor": true,
+    "same_term_and_interaction_caps_per_term": true,
+    "matched_edge_budget_per_side": 4000,
+    "no_target_or_teacher_trace": true,
+    "report_order_L_then_R_and_R_then_L": true,
+    "require_order_invariant_class_counts": true
+  },
+  "decision_table": {
+    "AUDIT_CONFIRMS_5x5": "Both processing orders with matched per-side budgets yield 5 LHS and 5 RHS generation-1 interface classes.",
+    "AUDIT_OTHER_STABLE_QUOTIENT": "Both orders agree, but on another class count; freeze that quotient before transition testing.",
+    "AUDIT_ORDER_DEPENDENT": "Counts still depend on processing order; interface measurement remains invalid and transition testing must stop."
+  }
+}
