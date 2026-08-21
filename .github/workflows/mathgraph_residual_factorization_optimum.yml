@@ -27,6 +27,8 @@ jobs:
         run: python experiments/mathgraph/run_recursive_residual_refactoring_gate.py
       - name: Enriched L1 recursive residual refactoring gate
         run: python experiments/mathgraph/run_recursive_residual_refactoring_enriched_l1_gate.py
+      - name: Prospective problem-disjoint L1 residual gate
+        run: python experiments/mathgraph/run_recursive_residual_refactoring_prospective_l1_gate.py
       - name: Causal diagnostic response panel closure
         run: python experiments/mathgraph/run_causal_diagnostic_panel_closure.py
       - name: Residual-conditioned operator induction closure
@@ -41,6 +43,7 @@ jobs:
             experiments/mathgraph/results/residual-factorization-id-holdout-closure.json
             experiments/mathgraph/results/recursive-residual-refactoring-gate.json
             experiments/mathgraph/results/recursive-residual-refactoring-enriched-l1-gate.json
+            experiments/mathgraph/results/recursive-residual-refactoring-prospective-l1-gate.json
             experiments/mathgraph/results/causal-diagnostic-panel-closure.json
             experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
             experiments/mathgraph/results/missing-subterm-reification-gate.json
