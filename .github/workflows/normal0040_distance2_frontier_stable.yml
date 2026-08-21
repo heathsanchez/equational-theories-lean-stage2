@@ -1,0 +1,29 @@
+name: Normal0040 Distance2 Frontier Stable Gate
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count 120c99f2a37eb887c768657c380410285634309b..221ea4aae6cd037d1902df7106b09a3594f33856)" -ge 1
+          git show 120c99f2a37eb887c768657c380410285634309b:experiments/mathgraph/protocols/normal0040-distance2-frontier-v1.json >/dev/null
+      - name: Run distance-2 frontier characterization
+        run: python experiments/mathgraph/run_normal0040_distance2_frontier_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-distance2-frontier
+          path: experiments/mathgraph/results/normal0040-distance2-frontier-gate.json
