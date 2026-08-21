@@ -1,0 +1,51 @@
+{
+  "schema": "mathgraph.normal0040-router-overlap-unification.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_router_run": 32506999040,
+  "parent_router_decision": "DEVELOP_CAPABILITY:overlap-unification-constructor",
+  "verified_state": {
+    "cross_distance": 2,
+    "compatible_cross_shell_pairs": 10,
+    "surviving_worlds": ["H_joint_substitution", "H_overlap_generation"],
+    "common_lawful_action": "overlap-unification-constructor"
+  },
+  "K_rho": "K_{2->1}(rho) = { Delta : Delta is replay-valid to the original source-law trust base, is synthesized only from router-identified compatible cross-shell source matches, and lowers d(C_L,C_R) from 2 to <=1 or closes the target }",
+  "constructor": {
+    "name": "router-selected overlap/unification constructor",
+    "allowed_inputs": [
+      "the exact frozen d=2 shell pair",
+      "source-law side matches at proper shell positions",
+      "the compatible cross-shell substitution pairs identified by P_joint_unify",
+      "ordinary replay-valid contextual overlap/congruence/transitivity operations already in the solver trust base"
+    ],
+    "not_allowed": [
+      "Vampire or teacher proof traces",
+      "answer labels",
+      "case-id dispatch in candidate generation",
+      "direct assertion of a bridge equality",
+      "changing the original source-law trust base",
+      "post-hoc broadening to an unrelated constructor family"
+    ]
+  },
+  "witnesses": [
+    "R1_REPLAY_VALID",
+    "R2_ROUTER_PAIR_DERIVED",
+    "R3_SHELL_TOUCH",
+    "R4_DISTANCE_CONTRACT",
+    "R5_ABLATION_RESTORES",
+    "F1_NO_TARGET_ASSERTION",
+    "F2_NO_TEACHER_TRACE",
+    "F3_NO_CASE_ID_DISPATCH",
+    "F4_NO_UNVERIFIED_BRIDGE"
+  ],
+  "decision_rule": "PASS only if an isolated router-derived candidate lowers 2->1 or closes, passes all witnesses, and ablation restores distance 2 / removes closure. If the router-selected family yields no K member under declared bounds, return ROUTER_MODEL_FALSIFIED_NO_K_MEMBER.",
+  "bounds": {
+    "maximum_router_pairs": 10,
+    "maximum_context_depth": 6,
+    "maximum_candidates": 2400,
+    "maximum_isolation_tests": 32,
+    "seconds_batch": 45,
+    "seconds_isolation": 18
+  }
+}
