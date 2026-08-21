@@ -67,7 +67,6 @@ def make_component_family(m,sym,source,target,multi,join_items,bridge,jmod,commo
  eps=jmod.endpoint_vars(source)
  if not eps:return []
  ep=eps[0]
- # Build the live geometry using only already replay-valid common + J proposals.
  s=bridge.state(m,sym,source,target,common+join_items[:48],24)
  _,_,L,R,_,_=bridge.components(m,target,s.nodes)
  maps=[]
@@ -98,7 +97,6 @@ def main():
  bridge=load(BRIDGE,'bridge_minlaw');bridge.selfm=selfm;att=load(ATT,'att_minlaw');att.selfm=selfm
  row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train') if r['id']==RID)
  source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
- # Frozen old grammar/frontier.
  g1=[]
  for p in selfm.proposals(m,source):
   pr=selfm.compile_proposal(m,source,target,p)
@@ -108,15 +106,13 @@ def main():
  g2.sort(key=lambda x:(-x.get('activation',0),tcost(m,x)))
  base=g1[:32]+g2[:128];common=g1[:24]+g2[:56]
  _,_,fterms=miss.frontier(m,sym,source,target,base,10.0)
- missing=miss.target_missing(m,target,fterms);proper=miss.proper_missing(m,target,missing)
+ missing=miss.target_missing(m,target,fterms);proper=reify.proper_missing(m,target,missing)
  required=proper or missing;required_keys={canon(m,t) for t in required}
- # Four prospectively frozen constructor families.
  R=replay_filter(m,source,reify.generate_instances(m,source,target,required,'minimal-R-reification',520),160)
  M=replay_filter(m,source,ms.synthesize(m,source,target,missing),160)
  J=replay_filter(m,source,make_join_family(m,source,target,M,j),160)
  C=replay_filter(m,source,make_component_family(m,sym,source,target,M,J,bridge,j,common),160)
  fam={'R':R,'M':M,'J':J,'C':C}
- # Exhaust the finite regime lattice and choose the coarsest/cheapest K-intersecting regime.
  regimes=[]
  for k in range(1,5):
   for names in itertools.combinations(('R','M','J','C'),k):
@@ -137,9 +133,7 @@ def main():
   OUT.parent.mkdir(parents=True,exist_ok=True);OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print(json.dumps(out,indent=2,sort_keys=True));return
  chosen_items=sorted(chosen['items'],key=lambda x:(0 if contains_required(m,x,required_keys) else 1,-x.get('activation',0),tcost(m,x)))[:96]
  C0=j.run(m,sym,source,target,common+chosen_items,32,'C_refined_no_attachment')
- # Target-context attachment search over the minimum K-satisfying regime.
  attachments=att.attachments(m,source,target,chosen_items,limit=256)
- # Evaluate attachments individually against cut geometry; stop at first closure, otherwise retain best strict progress.
  candidates=[]
  baseline_dist=C0.get('cross_distance')
  for idx,a in enumerate(attachments[:48]):
