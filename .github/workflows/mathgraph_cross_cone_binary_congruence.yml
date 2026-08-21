@@ -4,17 +4,13 @@ on:
     branches: [mathgraph/fast-gate-20260821]
     paths:
       - 'experiments/mathgraph/run_cross_cone_binary_congruence_gate.py'
-      - '.github/workflows/mathgraph_cross_cone_binary_congruence.yml'
-  pull_request:
-    branches: [mathgraph/isolated-actions-base-20260821]
-    paths:
-      - 'experiments/mathgraph/run_cross_cone_binary_congruence_gate.py'
+      - 'experiments/mathgraph/run_cut_attachment_audit.py'
       - '.github/workflows/mathgraph_cross_cone_binary_congruence.yml'
   workflow_dispatch:
 jobs:
   cross-cone-binary:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 14
     concurrency:
       group: mathgraph-cross-cone-binary-fast
       cancel-in-progress: true
@@ -26,8 +22,12 @@ jobs:
       - run: python -m pip install 'datasets>=3,<5'
       - name: Run cross-cone binary congruence gate
         run: python experiments/mathgraph/run_cross_cone_binary_congruence_gate.py
+      - name: Run cut attachment audit
+        run: python experiments/mathgraph/run_cut_attachment_audit.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-cross-cone-binary-congruence-fast
-          path: experiments/mathgraph/results/cross-cone-binary-congruence-gate.json
+          name: mathgraph-cross-cone-fast-bundle
+          path: |
+            experiments/mathgraph/results/cross-cone-binary-congruence-gate.json
+            experiments/mathgraph/results/cut-attachment-audit.json
