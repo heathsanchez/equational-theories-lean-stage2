@@ -1,0 +1,29 @@
+name: Normal0040 Distance2 Binary Expansion Stable Gate
+on:
+  pull_request:
+    branches: [mathgraph/residual-factorization-base-20260821]
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count bd44f89e36fbbeeb8ee6c0556b2ce4b5e8773a58..2544afa9c001f719e24ecf4b4b149003e061822c)" -ge 1
+          git show bd44f89e36fbbeeb8ee6c0556b2ce4b5e8773a58:experiments/mathgraph/protocols/normal0040-distance2-binary-expansion-v1.json >/dev/null
+      - name: Run binary constructor expansion
+        run: python experiments/mathgraph/run_normal0040_distance2_binary_expansion_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-distance2-binary-expansion
+          path: experiments/mathgraph/results/normal0040-distance2-binary-expansion-gate.json
+          if-no-files-found: warn
