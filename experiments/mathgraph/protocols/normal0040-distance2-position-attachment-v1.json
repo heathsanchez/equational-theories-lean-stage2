@@ -1,0 +1,47 @@
+{
+  "schema": "mathgraph.normal0040-distance2-position-attachment.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "residual": {
+    "cross_distance": 2,
+    "lhs_shell": ["((((x ◇ y) ◇ x) ◇ x) ◇ y)"],
+    "rhs_shell": ["((((x ◇ y) ◇ y) ◇ z) ◇ y)"],
+    "prior_obstructions": [
+      "0/648 one-step replay-valid source-instance continuations satisfy K_{2->1}",
+      "0 bounded two-stage source-composition continuations satisfy K_{2->1}",
+      "0/1200 replay-valid binary congruence/transitivity composites satisfy K_{2->1}"
+    ]
+  },
+  "K_rho": "K_{2->1}(rho) = { Delta : Delta is replay-valid, is generated from the frozen distance-2 shell geometry without teacher/answer information, and lowers d(C_L,C_R) from 2 to <=1 or closes the target }",
+  "constructor_expansion": {
+    "name": "finite position-sensitive context-hole composition",
+    "new_expressive_move": "represent an attachment as a replay-valid equality plus an explicit term context/path; permit lifting/rewrite at non-root positions and composing position-aligned lifted equalities before installation",
+    "not_allowed": [
+      "asserting a bridge edge directly",
+      "using a known target proof path",
+      "using Vampire or teacher traces",
+      "case-id dispatch in candidate generation",
+      "answer labels",
+      "changing the original source-law trust base"
+    ],
+    "bounds": {
+      "maximum_context_depth": 4,
+      "maximum_base_equalities_per_side": 96,
+      "maximum_position_lifts": 2400,
+      "maximum_composites_tested": 2400,
+      "maximum_installed_candidates": 64
+    }
+  },
+  "witnesses": [
+    "R1_REPLAY_VALID",
+    "R2_SHELL_TOUCH",
+    "R3_DISTANCE_CONTRACT",
+    "R4_ABLATION_RESTORES",
+    "F1_NO_TARGET_ASSERTION",
+    "F2_NO_TEACHER_TRACE",
+    "F3_NO_CASE_ID_DISPATCH",
+    "F4_NO_UNVERIFIED_BRIDGE"
+  ],
+  "prediction": "If the d=2 obstruction is an attachment-interface failure rather than absence of further term constructors, the position-sensitive context-hole closure contains a replay-valid member satisfying K_{2->1} while the already-tested root/binary controls remain at distance 2. If it contains none under the declared finite bounds, record a stronger attachment-language obstruction and do not widen post hoc.",
+  "strong_success": "An admitted witness-complete candidate lowers 2->1 or closes the theorem, and ablation restores distance 2 / removes closure."
+}
