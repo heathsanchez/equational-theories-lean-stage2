@@ -12,7 +12,6 @@ D: semantic JOIN: direct source-law instances anchored in the established
    target-LHS equality region while carrying the newly reified RHS motif.
 """
 import importlib.util, itertools, json, sys, time
-from collections import defaultdict
 from pathlib import Path
 from datasets import load_dataset
 
@@ -113,14 +112,9 @@ def hit_count(m,item,keys):
  return len(hits)
 
 def generate_cross_region(m,source,target,anchors,motif,tag,limit=360):
- """Direct source instances combining proven-LHS anchors with a motif."""
  vars_=source[2];xvar=vars_[0];others=list(vars_[1:]);fill=source_atoms(m,source)
  raw={};out=[];mkey=canon(m,motif)
- # Put motif in each non-x slot, with remaining slots fed by small source atoms
- # and small LHS-component anchors. Source-x remains a proven LHS-region term.
- extra=[]
- for a in anchors[:10]:extra.append(a)
- pool=[];seen=set()
+ extra=list(anchors[:10]);pool=[];seen=set()
  for t in fill[:7]+extra:
   k=canon(m,t)
   if k not in seen:seen.add(k);pool.append(t)
@@ -134,8 +128,7 @@ def generate_cross_region(m,source,target,anchors,motif,tag,limit=360):
     if not item:continue
     k=eqkey(m,item['schema'][0],item['schema'][1])
     if k in raw:continue
-    raw[k]=item
-    item['motif_hits']=hit_count(m,item,{mkey})
+    raw[k]=item;item['motif_hits']=hit_count(m,item,{mkey})
     item['target_distance']=min(m.structural_distance(item['schema'][0],target[1]),m.structural_distance(item['schema'][1],target[1]))
     out.append(item)
     if len(out)>=limit:return out
@@ -152,9 +145,7 @@ def rhs_missing(m,target,terms):
 
 def connection_metrics(m,target,s):
  uf,terms=graph_state(m,s.nodes);lk=canon(m,target[0]);rk=canon(m,target[1])
- lp=lk in terms;rp=rk in terms
- joined=bool(lp and rp and uf.find(lk)==uf.find(rk))
- lsize=rsize=0;cross=None
+ lp=lk in terms;rp=rk in terms;joined=bool(lp and rp and uf.find(lk)==uf.find(rk));lsize=rsize=0;cross=None
  if lp:
   lr=uf.find(lk);L=[t for k,t in terms.items() if uf.find(k)==lr];lsize=len(L)
  else:L=[]
@@ -162,7 +153,6 @@ def connection_metrics(m,target,s):
   rr=uf.find(rk);R=[t for k,t in terms.items() if uf.find(k)==rr];rsize=len(R)
  else:R=[]
  if L and R and not joined:
-  # bounded deterministic sample: smaller terms are most informative for cut distance
   L=sorted(L,key=lambda t:(m.term_size(t),m.render_term(t)))[:160]
   R=sorted(R,key=lambda t:(m.term_size(t),m.render_term(t)))[:160]
   cross=min(m.structural_distance(a,b) for a in L for b in R)
@@ -185,7 +175,6 @@ def main():
  m=load(SOLVER,'mg_join0040');sym=load(SYM,'sym_join0040');selfm=load(SELF,'self_join0040');op=load(OPC,'op_join0040');op.selfmod=selfm
  row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_normal',split='train') if r['id']==RID)
  source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
- # Shared G1/G2 history.
  g1=[]
  for p in selfm.proposals(m,source):
   pr=selfm.compile_proposal(m,source,target,p)
@@ -206,14 +195,13 @@ def main():
  cR=generate_reification(m,source,target,focus,'join-prior-rhs-reification',520)
  cR.sort(key=lambda x:(-hit_count(m,x,miss_keys),-x['activation'],m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
  reified=g1[:24]+g2[:56]+cR[:72]
- # Freeze a developed reified world and identify established LHS-component anchors.
- _,stateB,_=frontier(m,sym,source,target,reified,12.0)
+ # Harness fix only: frontier returns (search, found, terms).
+ stateB,_,_=frontier(m,sym,source,target,reified,12.0)
  uf,terms=graph_state(m,stateB.nodes);lk=canon(m,target[0]);lr=uf.find(lk)
  anchors=[]
  for k,t in terms.items():
   if uf.find(k)==lr and m.term_size(t)<=17:anchors.append(t)
  anchors=sorted(anchors,key=lambda t:(m.term_size(t),m.render_term(t)))
- # D uses the residual-derived motif; C substitutes the closest reachable near-miss.
  Dall=generate_cross_region(m,source,target,anchors,focus[0],'semantic-join-cross-region',360)
  Call=generate_cross_region(m,source,target,anchors,near,'wrong-join-nearmiss',360)
  Dall.sort(key=lambda x:(-x['motif_hits'],x['target_distance'],-x['activation'],m.term_size(x['schema'][0])+m.term_size(x['schema'][1])))
@@ -223,7 +211,6 @@ def main():
  B,_=run_arm(m,sym,source,target,reified,20.0,'B_full_history_no_join')
  C,_=run_arm(m,sym,source,target,reified+Call[:n],20.0,'C_wrong_join') if n else ({'closure':False,'error':'no_matched_candidates'},None)
  D,_=run_arm(m,sym,source,target,reified+Dall[:n],20.0,'D_semantic_join') if n else ({'closure':False,'error':'no_matched_candidates'},None)
- # Prospective decision exactly follows the frozen prediction.
  strong=bool(D.get('closure') and not B.get('closure') and not C.get('closure'))
  partial=False
  if not strong and not D.get('closure'):
