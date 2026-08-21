@@ -1,0 +1,49 @@
+{
+  "schema": "mathgraph.normal0040-semantic-join.v1",
+  "frozen_before_execution": true,
+  "case": "evaluation_normal_0040",
+  "teacher_trace_used": false,
+  "evidence_channels": {
+    "search": "Current proof portfolios and 20-30s saturation fail to close the target.",
+    "cut_geometry": "Before RHS reification, the developed target-LHS region was populated while the target-RHS component had no frontier.",
+    "representation": "RHS-directed reification causally increased target-RHS structured coverage from 2/4 to 4/4; the matched near-miss control stayed 2/4.",
+    "causal": "Despite complete RHS structured coverage, RHS reification still did not close the theorem.",
+    "scheduling": "Given-clause scheduling solved hard_0196 but not normal_0040, so scheduling alone is insufficient here.",
+    "proof_policy": "All admitted intervention equalities must replay to the original source law; no external proof trace or answer label is admissible."
+  },
+  "J": "The remaining obstruction is a missing cross-region relation, not a missing target term. The current system can now represent the RHS motif but does not preferentially construct source-law consequences that simultaneously anchor in the established x/LHS equality region and carry the newly reified RHS motif. The needed developmental operation is therefore a bridge-producing composition across two previously separate evidence regions.",
+  "K_rho": {
+    "required": [
+      "use only replay-valid instances/consequences of the original source law",
+      "retain the newly reified proper RHS motif as one substitution object",
+      "anchor another substitution object in terms already belonging to the target-LHS equality region",
+      "generate equations that place both regions in one source-law consequence",
+      "preserve normal proof replay and certificate construction"
+    ],
+    "forbidden": [
+      "Vampire or other teacher proof traces",
+      "case-id dispatch inside candidate generation",
+      "answer labels",
+      "memorized target equality",
+      "unverified synthetic bridge axioms"
+    ]
+  },
+  "prediction": {
+    "primary": "A cross-region source-instance arm will reduce the post-reification separation between the target-LHS and target-RHS equality regions, or close the theorem, relative to a matched near-miss bridge arm and full-history/no-JOIN arm.",
+    "strong_success": "Replay-valid target closure unique to the semantic-JOIN arm, with baseline and matched wrong-JOIN controls open.",
+    "partial_success": "No closure, but the semantic-JOIN arm uniquely joins the two target equality components or strictly reduces their measured cross-distance.",
+    "falsification": "The semantic-JOIN arm neither closes nor improves component connection/cross-distance beyond matched controls."
+  },
+  "intervention": {
+    "name": "cross_region_source_instance_bridge",
+    "description": "After causal RHS reification, generate direct source-law instances whose source-x substitution is drawn from the established target-LHS component and whose other substitution slots include the reified proper RHS motif. Compare against equal-count/equal-time instances using the closest reachable near-miss motif instead of the RHS motif.",
+    "matched_candidate_count": true,
+    "matched_runtime": true
+  },
+  "arms": {
+    "A": "latest/base developmental state without RHS reification",
+    "B": "full history through successful RHS reification, no semantic bridge",
+    "C": "full history plus matched near-miss/wrong bridge",
+    "D": "full history plus frozen semantic JOIN cross-region bridge"
+  }
+}
