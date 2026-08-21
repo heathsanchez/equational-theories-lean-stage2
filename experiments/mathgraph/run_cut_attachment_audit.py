@@ -13,6 +13,7 @@ component.  We also record one-sided attachment and subterm-level attachment.
 No search intervention is performed here; target endpoints only define the
 verified residual cut.
 """
+# isolated PR execution: 2026-08-21
 import importlib.util,json,sys,time
 from pathlib import Path
 from datasets import load_dataset
