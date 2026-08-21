@@ -1,0 +1,28 @@
+name: Normal0040 Constructor Expansion Witness Stable Gate
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify protocol predates executable gate
+        run: |
+          test "$(git rev-list --count 4549829842c15982fa77c0c4aba543080ab24073..24b00941213ff1381510a9cd983d00a77ad8b4d7)" -ge 1
+          git show 4549829842c15982fa77c0c4aba543080ab24073:experiments/mathgraph/protocols/normal0040-constructor-expansion-witness-v1.json >/dev/null
+      - name: Run constructor expansion witness gate
+        run: python experiments/mathgraph/run_normal0040_constructor_expansion_witness_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-constructor-expansion-witness
+          path: experiments/mathgraph/results/normal0040-constructor-expansion-witness-gate.json
