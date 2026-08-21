@@ -1,0 +1,30 @@
+name: Normal0040 Interface Matrix Stable Gate
+on:
+  pull_request:
+    branches: [mathgraph/residual-factorization-base-20260821]
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Verify frozen protocol predates executable
+        run: |
+          set -euo pipefail
+          test "$(git rev-list --count 714dd5928ab9469b959af9ae328bf5606be52a6e..bc85e2bd6d7c5b6e4ce2333c88c2059c1469acea)" -ge 1
+          git show 714dd5928ab9469b959af9ae328bf5606be52a6e:experiments/mathgraph/protocols/normal0040-interface-matrix-v1.json >/dev/null
+      - name: Run audited 5x5 interface compatibility matrix
+        run: python experiments/mathgraph/run_normal0040_interface_matrix_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-interface-matrix-v1
+          path: experiments/mathgraph/results/normal0040-interface-matrix-gate.json
