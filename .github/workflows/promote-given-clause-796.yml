@@ -1,0 +1,34 @@
+name: Promote Given Clause 796
+on:
+  push:
+    branches:
+      - mathgraph/general-solver
+    paths:
+      - experiments/mathgraph/patch_given_clause_fallback.py
+      - .github/workflows/promote-given-clause-796.yml
+permissions:
+  contents: write
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/general-solver
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Apply audited fallback
+        run: python experiments/mathgraph/patch_given_clause_fallback.py
+      - name: Syntax check
+        run: python -m py_compile submissions/mathgraph/solver.py
+      - name: Commit promoted solver
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add submissions/mathgraph/solver.py
+          git diff --cached --quiet && exit 0
+          git commit -m 'Promote official-audited given-clause fallback (796/800)'
+          git push origin HEAD:mathgraph/general-solver
