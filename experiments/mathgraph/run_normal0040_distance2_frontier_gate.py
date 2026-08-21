@@ -33,11 +33,7 @@ def mindist(m,t,others):
 
 def finite_basis(m,ep,source,L,R,shellL,shellR,limit=18):
  vals={canon(m,t):t for t in ep.source_atoms(m,source)}
- # The current finite continuation language is allowed to use already-live
- # frontier structure, but nothing from a teacher trace or target proof.
  seeds=list(shellL)+list(shellR)
- # Also expose the closest live terms on either side so the one-step closure is
- # not artificially restricted to source atoms alone.
  for t in sorted(L,key=lambda x:(mindist(m,x,R),m.term_size(x),m.render_term(x)))[:12]:seeds.append(t)
  for t in sorted(R,key=lambda x:(mindist(m,x,L),m.term_size(x),m.render_term(x)))[:12]:seeds.append(t)
  for t in seeds:
@@ -70,7 +66,7 @@ def enumerate_shell(m,selfm,ep,source,target,L,R,shellL,shellR,base_dist=2):
  return rows,basis
 
 def show(m,xs,k=30):
- return [{'lhs':m.render_term(x['schema'][0]),'rhs':m.render_term(x['schema'][1]),'frontier_side':x['frontier_side'],'effect_distance':x['effect_distance'],'activation':x['activation']} for x in xs[:k]]
+ return [{'lhs':m.render_term(x['schema'][0]),'rhs':m.render_term(x['schema'][1]),'frontier_side':x.get('frontier_side',x.get('anchor_side')),'effect_distance':x.get('effect_distance',x.get('cross_distance')),'activation':x.get('activation',0)} for x in xs[:k]]
 
 def main():
  p=json.loads(PROTO.read_text())
@@ -79,29 +75,20 @@ def main():
  rhs=load(RHS,'rhs0040d2');rhs.selfm=selfm;ep=load(EP,'ep0040d2');cut=load(CUT,'cut0040d2')
  row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_normal',split='train') if r['id']==RID)
  source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
-
- # Reconstruct the validated endpoint-addressable distance-3 state.
  frozen=cut.build_frozen(m,sym,selfm,op,rhs,ep,source,target)
  s3,_=ep.frontier(m,sym,source,target,frozen,20.0)
  uf3,terms3,L3,R3,lr3,rr3,d3=cut.components(m,target,s3.nodes)
  if d3!=3:raise SystemExit(f'expected frozen distance 3, got {d3}')
-
- # Recompute the previously discovered lawful 3->2 contractor from geometry,
- # not by theorem/case dispatch, and install only its unique best effect class.
  c3=cut.synthesize(m,selfm,ep,source,target,L3,R3,d3)
  good3=[x for x in c3 if x['cross_distance']<3]
  if not good3:raise SystemExit('validated 3->2 contractor no longer reconstructs')
  bestd=min(x['cross_distance'] for x in good3)
  step3=[x for x in good3 if x['cross_distance']==bestd]
- # The prior experiment found a unique member. Preserve that fact as an
- # invariant; fail loud if the reconstructed geometry changes.
  if bestd!=2 or len(step3)!=1:raise SystemExit(f'expected unique distance-2 contractor, got d={bestd}, n={len(step3)}')
  prior=frozen+[step3[0]]
  s2,_=ep.frontier(m,sym,source,target,prior,25.0)
  uf2,terms2,L2,R2,lr2,rr2,d2=cut.components(m,target,s2.nodes)
  if d2!=2:raise SystemExit(f'expected post-contractor distance 2, got {d2}')
-
- # Exact shell: all live endpoints attaining the verified minimum distance 2.
  shellL=[t for t in L2 if mindist(m,t,R2)==2]
  shellR=[t for t in R2 if mindist(m,t,L2)==2]
  if not shellL and not shellR:raise SystemExit('distance-2 shell unexpectedly empty')
@@ -110,14 +97,12 @@ def main():
  bad=[x for x in rows if not x['satisfies_K']]
  exact=[x for x in rows if x['effect_distance']==0]
  d1=[x for x in rows if x['effect_distance']==1]
-
  A=ep.run_arm(m,sym,source,target,prior,30.0,'A_frozen_distance2')
  B=None;C=None;abl=None
  if good:
   n=min(96,len(good),len(bad)) if bad else min(96,len(good))
   if bad:B=ep.run_arm(m,sym,source,target,prior+bad[:n],30.0,'B_frontier_noncontracting')
   C=ep.run_arm(m,sym,source,target,prior+good[:n],30.0,'C_frontier_K_2to1')
-  # Ablation is an explicit fresh reconstruction without the acquired K member.
   if C.get('closure') or (C.get('cross_distance') is not None and C['cross_distance']<2):
    abl=ep.run_arm(m,sym,source,target,prior,30.0,'C_ablation')
   causal=bool(C and C.get('cross_distance') is not None and C['cross_distance']<2 and abl and abl.get('cross_distance')==2 and (not B or B.get('cross_distance',2)>=2))
@@ -125,9 +110,7 @@ def main():
   decision='PASS_STRONG_CLOSURE' if strong else 'PASS_2_TO_1_CAUSAL' if causal else 'PREDICTED_K_FAILED_INSTALLATION'
  else:
   n=0
-  # No member of the declared finite current continuation closure satisfies K.
   decision='GRAMMAR_OBSTRUCTION_K_EMPTY'
-
  out={
   'schema':'mathgraph.normal0040-distance2-frontier-gate.v1','id':RID,
   'J':p['J'],'K_rho':p['K_rho'],'prediction':p['prediction'],
