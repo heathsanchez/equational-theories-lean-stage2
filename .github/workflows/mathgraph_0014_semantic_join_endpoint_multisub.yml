@@ -7,7 +7,7 @@ on:
 jobs:
   join:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 16
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,8 +18,12 @@ jobs:
       - run: python -m pip install --quiet 'datasets>=3,<5'
       - name: Run semantic JOIN endpoint-multisub gate
         run: python experiments/mathgraph/run_0014_semantic_join_endpoint_multisub_gate.py
+      - name: Run live-component bridge unification gate
+        run: python experiments/mathgraph/run_0014_component_bridge_unification_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: 0014-semantic-join-endpoint-multisub
-          path: experiments/mathgraph/results/0014-semantic-join-endpoint-multisub-gate.json
+          path: |
+            experiments/mathgraph/results/0014-semantic-join-endpoint-multisub-gate.json
+            experiments/mathgraph/results/0014-component-bridge-unification-gate.json
