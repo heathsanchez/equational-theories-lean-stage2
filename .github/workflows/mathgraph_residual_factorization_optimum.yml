@@ -21,8 +21,10 @@ jobs:
         run: python experiments/mathgraph/run_adaptive_residual_archive_closure.py
       - name: Problem-disjoint adaptive closure
         run: python experiments/mathgraph/run_residual_factorization_id_holdout_closure.py
-      - name: Provision causal panel dependency
+      - name: Provision residual research dependencies
         run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Recursive residual refactoring self-application gate
+        run: python experiments/mathgraph/run_recursive_residual_refactoring_gate.py
       - name: Causal diagnostic response panel closure
         run: python experiments/mathgraph/run_causal_diagnostic_panel_closure.py
       - name: Residual-conditioned operator induction closure
@@ -35,5 +37,7 @@ jobs:
             experiments/mathgraph/results/adaptive-residual-factorization-closure.json
             experiments/mathgraph/results/adaptive-residual-archive-closure.json
             experiments/mathgraph/results/residual-factorization-id-holdout-closure.json
+            experiments/mathgraph/results/recursive-residual-refactoring-gate.json
             experiments/mathgraph/results/causal-diagnostic-panel-closure.json
             experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
+            experiments/mathgraph/results/missing-subterm-reification-gate.json
