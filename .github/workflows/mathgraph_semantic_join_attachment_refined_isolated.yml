@@ -1,0 +1,22 @@
+name: MathGraph Semantic JOIN Attachment Refined
+on:
+  pull_request:
+    branches:
+      - mathgraph/semantic-join-attachment-base-20260821
+
+jobs:
+  attachment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Provision research dependencies
+        run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Run refined active-continuation attachment gate
+        run: python experiments/mathgraph/run_residual_active_continuation_attachment_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-join-active-attachment
+          path: experiments/mathgraph/results/residual-active-continuation-attachment-gate.json
