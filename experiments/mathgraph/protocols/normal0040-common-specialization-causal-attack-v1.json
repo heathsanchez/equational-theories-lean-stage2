@@ -1,0 +1,40 @@
+{
+  "schema": "mathgraph.normal0040-common-specialization-causal-attack.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "matrix_run": 32599589158,
+    "decision": "COMMON_SPECIALIZATION_MATRIX_RESCUE",
+    "distance": 2,
+    "lhs_classes": 5,
+    "rhs_classes": 5,
+    "literal_compatible_cells": 0,
+    "common_specialization_compatible_cells": 10
+  },
+  "intervention": "For each common-specialization-compatible class pair, recover a simultaneous first-order unifier of conflicting shared-variable images, apply that specialization to both otherwise matching source-law substitutions, independently construct and replay-check the two existing-law contextual equalities, install only that pair, and recompute closure/cross-distance.",
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_pair_checks_per_cell": 250000,
+    "maximum_candidates_per_cell": 6,
+    "maximum_isolation_tests": 60,
+    "seconds_isolation": 8.0,
+    "seconds_ablation": 20.0,
+    "maximum_term_size": 170
+  },
+  "admission": {
+    "R1_COMMON_SPECIALIZATION_WITNESS": true,
+    "R2_BOTH_ITEMS_REPLAY_VALID": true,
+    "R3_NO_NEW_OPERATOR_FAMILY": true,
+    "R4_DISTANCE_CONTRACTS_TO_AT_MOST_1_OR_CLOSES": true,
+    "R5_ABLATION_RESTORES_DISTANCE_2_OR_REMOVES_CLOSURE": true
+  },
+  "decision_table": {
+    "PASS_CLOSURE": "a specialized existing-law pair closes the theorem and passes ablation",
+    "PASS_2_TO_1_CAUSAL": "a specialized existing-law pair lowers d from 2 to at most 1 and passes ablation",
+    "REPRESENTATION_RESCUE_NO_CAUSAL_ATTACHMENT": "the 10-cell compatibility rescue yields replay-valid specialized pairs but none contracts the real cut under the frozen intervention bounds",
+    "NO_REPLAYABLE_SPECIALIZATION": "matrix compatibility witnesses cannot be compiled into replay-valid specialized source-law interactions"
+  },
+  "scientific_rule": "No new proof operator or operator family may be synthesized. Positive compatibility is attacked by compiling only its common specialization into already-available source-law contextual moves. A causal claim requires theorem-level contraction plus ablation."
+}
