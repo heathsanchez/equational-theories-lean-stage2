@@ -1,0 +1,31 @@
+{
+  "schema": "mathgraph.methodology-0036-local-overlap-bridge.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "activation_condition": "Execute substantively only if the matched size/compression gate shows that the frozen nine z:=T re-entry candidates are admitted under macro compression but target connectivity remains false.",
+  "residual": "The derived target endpoint can be re-entered under a compact search representation, but ordinary re-entry plus one congruence wrap still does not attach the target components.",
+  "rivals": {
+    "R1_CONTEXTUAL_OVERLAP_BRIDGE": "A proper non-root overlap between one newly admitted re-entry/congruence equality and the frozen target-narrowing frontier creates the missing component join or replayable closure.",
+    "R2_LOCAL_OVERLAP_EXISTS_BUT_INSUFFICIENT": "Such overlaps exist and are lawful but none joins the target components; the missing operation is downstream of local superposition.",
+    "R3_NO_LOCAL_OVERLAP": "The new and old equalities have no admissible proper non-variable overlap under the frozen representation; a different composition interface is required."
+  },
+  "decision_rule": [
+    "Reconstruct evaluation_normal_0036 only.",
+    "Use nominal cap 13 with the exact target RHS T counted as one search-state unit, retaining fully expanded terms for replay.",
+    "Add exactly the preregistered nine z:=T source-reentry substitutions and one congruence round with T as the only sibling.",
+    "Let NEW be only the graph-producing nodes added by those two stages; let OLD be only the frozen target-narrowing graph nodes from the parent search.",
+    "Enumerate proper non-variable contextual overlaps NEW→OLD and OLD→NEW with maximum context depth 4 and at most 256 candidates per direction.",
+    "Apply candidates in the frozen solver's own ranking order, checking connectivity and replay after each application.",
+    "Stop at the first replayable closure/component join; otherwise exhaust this local candidate set without expanding node, term, or overlap depth budgets."
+  ],
+  "constraints": {
+    "no_new_constructor_family": true,
+    "uses_existing_contextual_overlap_only": true,
+    "no_root_overlap": true,
+    "maximum_context_depth": 4,
+    "maximum_candidates_per_direction": 256,
+    "no_transfer_cases_loaded": true,
+    "must_replay_any_claimed_closure_with_full_terms": true,
+    "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+  }
+}
