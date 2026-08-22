@@ -1,0 +1,42 @@
+{
+  "schema": "mathgraph.methodology-0036-postcontractor-factorization.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32603381692,
+    "decision": "DYNAMIC_RAW_GOAL_ADVANTAGE",
+    "raw_goal_trajectory": [10, 8, 8],
+    "target_coverage_trajectory": [10, 10],
+    "first_raw_goal_move_contractors": 15,
+    "post_first_move_contractors_under_frozen_family": 0
+  },
+  "question": "Why does the descaffolded raw-goal controller stall immediately after its first causal 10->8 contraction?",
+  "frozen_post_step_state": "Reconstruct target narrowing + 9 reentry edges + exactly the first dynamic raw-goal selected source instance from the parent run.",
+  "rivals": {
+    "H1_POOL_TRUNCATION": "A strict contractor exists at cap 19 using the same direct source-law constructor once anchor/fill truncations are relaxed.",
+    "H2_TERM_CAP": "No strict contractor exists in the relaxed cap-19 pool, but the same direct constructor produces one when only the diagnostic term cap is raised.",
+    "H3_DIRECT_CONSTRUCTOR_EXHAUSTED": "No strict contractor exists even after relaxed anchor/fill enumeration and diagnostic cap expansion; the direct original-source-instance constructor cannot cross the new boundary in one step."
+  },
+  "diagnostic_ladder": {
+    "L0_FROZEN": "original family: anchors live goal-component terms size<=9; fills target vars + live component terms + target proper subterms size<=5; deterministic first 16 fills; cap19",
+    "L1_RELAX_POOL": "all live goal-component anchors size<=19; all distinct target vars + all live goal-component terms + all target subterms size<=9; no fill truncation; cap19",
+    "L2_CAP23": "same exact L1 anchor/fill term pool but permit instantiated sides up to size23 for diagnostic scoring only",
+    "L3_CAP27": "same exact L1 anchor/fill term pool but permit instantiated sides up to size27 for diagnostic scoring only"
+  },
+  "measurements": [
+    "candidate count per ladder level",
+    "strict contractor count per level relative to frozen post-step distance 8",
+    "best counterfactual raw-goal separation",
+    "minimum instantiated max term size among any strict contractors",
+    "whether any strict contractor uses an anchor/fill excluded by L0"
+  ],
+  "decision_order": ["MEASUREMENT_FAILURE", "POOL_TRUNCATION_OBSTRUCTION", "TERM_CAP_OBSTRUCTION", "DIRECT_CONSTRUCTOR_EXHAUSTED"],
+  "decision_table": {
+    "POOL_TRUNCATION_OBSTRUCTION": "L0 has zero strict contractors and L1 has at least one strict contractor at cap19.",
+    "TERM_CAP_OBSTRUCTION": "L0 and L1 have zero strict contractors, while L2 or L3 has at least one using the same relaxed term pool.",
+    "DIRECT_CONSTRUCTOR_EXHAUSTED": "L0/L1/L2/L3 all have zero strict contractors.",
+    "MEASUREMENT_FAILURE": "the post-first-move state cannot be reconstructed exactly as cut8 with the frozen parent first move."
+  },
+  "scientific_rule": "Diagnostic only. Cap23/27 candidates are not installed and do not count as solver progress. If DIRECT_CONSTRUCTOR_EXHAUSTED, zoom out again before introducing a new constructor.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}
