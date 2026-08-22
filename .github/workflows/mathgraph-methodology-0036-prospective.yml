@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - mathgraph/methodology-0036-prospective-20260823
+  pull_request:
+    branches:
+      - mathgraph/methodology-0036-base-20260823
   workflow_dispatch:
 jobs:
   gate:
