@@ -1,0 +1,37 @@
+{
+  "schema": "mathgraph.methodology-0036-variable-interface-gate.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_facts": {
+    "operative_max_term_size": 19,
+    "reentry_edges": 9,
+    "proper_nonvariable_reentry_old_overlap_candidates": 0,
+    "matched_old_old_proper_overlap_applications": 64,
+    "matched_old_old_proper_overlap_connected": false,
+    "solver_explicitly_suppresses_variable_overlap": true
+  },
+  "hypothesis": "The useful re-entry frontier interfaces with the old target-narrowing frontier only through exact equality replacement at bare-variable positions that the frozen overlap heuristic suppresses.",
+  "rivals": {
+    "R1": "Variable-position overlap involving the nine re-entry edges creates a component join or replayable closure while matched old-old variable overlap does not.",
+    "R2": "Variable-position overlap is generically sufficient on the old frontier; re-entry is not causal.",
+    "R3": "Even variable-position overlap produces no bridge; the missing composition object is deeper than the current term-position grammar."
+  },
+  "soundness_boundary": "Only exact endpoint equality replacement is allowed. No unification, no variable instantiation beyond the already replayable equality nodes, and every produced DAG must pass replay_dag before counting as closure.",
+  "constraints": {
+    "maximum_term_size": 19,
+    "maximum_position_depth": 4,
+    "maximum_candidates_per_arm": 256,
+    "matched_application_cap": 64,
+    "include_root": false,
+    "bare_variable_positions_only": true,
+    "no_new_constructor_family": true,
+    "no_budget_increase": true,
+    "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+  },
+  "decision_rule": {
+    "R1_VARIABLE_INTERFACE_CAUSAL": "Re-entry-conditioned variable overlap joins/closes while matched old-old variable overlap does not.",
+    "R2_GENERIC_VARIABLE_OVERLAP_SUFFICIENT": "Matched old-old variable overlap joins/closes.",
+    "R3_VARIABLE_INTERFACE_INSUFFICIENT": "Neither arm joins/closes.",
+    "MEASUREMENT_FAILURE": "Parent facts or replay/soundness checks fail to reproduce."
+  }
+}

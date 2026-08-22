@@ -1,0 +1,42 @@
+{
+  "schema": "mathgraph.methodology-0036-size-compression-threshold.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "motivation": "Static inspection predicts that the generated literal target RHS has raw tree-size 9, while the smallest source instance that re-enters it has raw tree-size 17. If the frozen search cap is 13, the derived endpoint is representationally available but inadmissible for re-entry.",
+  "arms": {
+    "A_FROZEN": "Original frozen max_term_size and literal-target-endpoint re-entry plus one congruence round.",
+    "B_MINIMUM_RAW_CAP": "Raise only max_term_size to 17; all other limits and the constructor family remain frozen.",
+    "C_MACRO_COMPRESSED": "Keep nominal max_term_size at 13, but during re-entry count an exact occurrence of the already-derived target RHS as one search-state unit while retaining the fully expanded term for replay/certificate semantics."
+  },
+  "predictions": {
+    "P1": "If the actual frozen max_term_size is 13, A should admit zero re-entry instances containing the literal target RHS because every such source RHS exceeds 13.",
+    "P2": "B should admit at least one new re-entry instance if 17 is the true minimum raw threshold.",
+    "P3": "If C admits the same logical re-entry opportunity as B while keeping nominal cap 13, then the obstruction is not lack of mathematical capability but lack of compressed search representation.",
+    "P4": "If B and C both fail to add any lawful re-entry edge, the size analysis is incomplete or another gate dominates."
+  },
+  "decision_rule": [
+    "First record the actual frozen max_term_size and raw sizes of target RHS and the minimum source RHS across placements of that target RHS with target variables as fillers.",
+    "If frozen cap is not 13 or predicted minimum is not 17, stop with MEASUREMENT_MISMATCH rather than retuning thresholds.",
+    "Run A, B, and C from independently reconstructed identical parent target-narrowing states.",
+    "Measure new re-entry edges, congruence edges, target-component joins, and replayable closure.",
+    "Classify COMPRESSED_REPRESENTATION_SUFFICIENT if C recovers B's decision-changing effect without increasing nominal cap.",
+    "Classify RAW_BUDGET_ONLY if B changes the result but C does not.",
+    "Classify SIZE_GATE_REAL_BUT_INSUFFICIENT if B and C add the predicted re-entry edges but neither changes target connectivity.",
+    "Classify SIZE_NOT_CAUSAL if A already admits equivalent re-entry progress or neither B nor C changes admissibility."
+  ],
+  "constraints": {
+    "no_new_equational_rule": true,
+    "no_new_constructor_family": true,
+    "only_B_changes_raw_term_cap": true,
+    "C_changes_search_cost_representation_only": true,
+    "one_reentry_generation": true,
+    "one_congruence_round": true,
+    "maximum_reentry_instances": 128,
+    "must_replay_any_claimed_closure_with_full_expanded_terms": true,
+    "sealed_transfer_ids": [
+      "evaluation_hard_0196",
+      "evaluation_order5_0014",
+      "evaluation_order5_0042"
+    ]
+  }
+}

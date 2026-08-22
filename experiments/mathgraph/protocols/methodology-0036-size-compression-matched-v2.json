@@ -1,0 +1,44 @@
+{
+  "schema": "mathgraph.methodology-0036-size-compression-matched.v2",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "supersedes": "mathgraph.methodology-0036-size-compression-threshold.v1",
+  "supersession_reason": "Before observing v1, adversarial review found that generic macro compression could admit more placements than raw cap 17, confounding representation with effective search breadth. v2 gives all arms the identical nine z:=T substitutions and changes only admissibility/cost representation.",
+  "frozen_candidate_set": {
+    "derived_term": "literal target RHS T",
+    "source_slot": "z only",
+    "x_fillers": ["x", "y", "z"],
+    "y_fillers": ["x", "y", "z"],
+    "candidate_count": 9
+  },
+  "arms": {
+    "A_CAP13_RAW": "Original raw term-size accounting, cap 13, exactly the frozen nine candidates.",
+    "B_CAP17_RAW": "Raw term-size accounting, cap 17, exactly the same frozen nine candidates.",
+    "C_CAP13_MACRO": "Nominal cap 13, exact target RHS T counts as one search-state unit only for admissibility; exactly the same frozen nine candidates; fully expanded terms retained for replay."
+  },
+  "predictions": {
+    "P1": "All nine candidates have raw maximum source-instance size 17.",
+    "P2": "A admits zero of nine; B admits the frozen nine subject only to duplicate-edge suppression.",
+    "P3": "C should match B's admissibility on the same frozen candidates if compression is sufficient to remove the gate.",
+    "P4": "Any B-versus-C difference after admission is evidence against simple macro compression equivalence."
+  },
+  "decision_rule": [
+    "Abort as MEASUREMENT_MISMATCH unless frozen cap=13, target RHS raw size=9, and all nine frozen candidates have max raw size=17.",
+    "Reconstruct the same frozen parent target-narrowing state independently for each arm.",
+    "Add only the nine preregistered z:=T source-reentry substitutions, preserving provenance; do not use generic reentry enumeration.",
+    "Apply one congruence round using T as the only sibling in every arm.",
+    "Record admitted source-reentry edges, congruence edges, target-component connectivity, and full-term replay.",
+    "If A admits zero and B/C admit the same candidate signatures, compression causally substitutes for the raw cap increase at the admissibility boundary.",
+    "If B/C additionally produce the same connectivity/closure outcome, classify MACRO_EQUIVALENT_TO_MIN_CAP.",
+    "If admission is recovered but neither changes connectivity, classify SIZE_GATE_CAUSAL_BUT_NOT_SUFFICIENT.",
+    "If B succeeds and C does not under the matched set, classify RAW_SIZE_SEMANTICS_MATTER."
+  ],
+  "constraints": {
+    "identical_candidate_set_across_arms": true,
+    "no_generic_reentry_enumeration": true,
+    "no_new_equational_rule": true,
+    "one_congruence_round": true,
+    "must_replay_any_claimed_closure_with_uncompressed_terms": true,
+    "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+  }
+}

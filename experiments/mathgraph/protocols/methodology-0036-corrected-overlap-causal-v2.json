@@ -1,0 +1,39 @@
+{
+  "schema": "mathgraph.methodology-0036-corrected-overlap-causal.v2",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_facts": {
+    "historical_target_narrowing_edges": 45,
+    "literal_target_rhs_present": true,
+    "raw_reentry_instances": 9,
+    "raw_reentry_edges_added": 9,
+    "operative_max_term_size": 19,
+    "post_reentry_connected": false,
+    "ordinary_congruence_edges_added": 0
+  },
+  "rivals": {
+    "R1": "The nine lawful raw re-entry edges expose a local contextual overlap that bridges the target components.",
+    "R2": "Any comparable amount of additional contextual overlap on the old frontier would work; re-entry is not causal.",
+    "R3": "Neither matched old-frontier overlap nor re-entry-conditioned overlap bridges the residual; a different composition mechanism is missing."
+  },
+  "arms": {
+    "A": "Frozen target-narrowing graph plus a matched number of old-frontier-only overlap applications.",
+    "B": "Same frozen graph plus exactly the nine raw cap-19 z:=target_rhs re-entry substitutions, then overlaps only between new re-entry nodes and old frontier nodes."
+  },
+  "constraints": {
+    "maximum_term_size": 19,
+    "reentry_generation": 1,
+    "maximum_context_depth": 4,
+    "maximum_candidates_per_direction": 128,
+    "matched_overlap_application_cap": 64,
+    "no_new_constructor_family": true,
+    "no_budget_increase": true,
+    "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+  },
+  "decision_rule": {
+    "R1_REENTRY_OVERLAP_CAUSAL": "Arm B obtains a component join or replayable closure and matched Arm A does not.",
+    "R2_GENERIC_OVERLAP_SUFFICIENT": "Arm A obtains a component join or replayable closure.",
+    "R3_OVERLAP_INSUFFICIENT": "Neither arm obtains a component join or replayable closure.",
+    "MEASUREMENT_FAILURE": "The historical reproduction, operative cap, or nine-edge re-entry facts fail to reproduce."
+  }
+}

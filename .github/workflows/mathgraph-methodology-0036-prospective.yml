@@ -1,0 +1,53 @@
+name: MathGraph Methodology 0036 Prospective Gate
+on:
+  push:
+    branches:
+      - mathgraph/methodology-0036-prospective-20260823
+  pull_request:
+    branches:
+      - mathgraph/methodology-0036-base-20260823
+  workflow_dispatch:
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/methodology-0036-prospective-20260823
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Verify protocols predate executables
+        run: |
+          set -euo pipefail
+          test "$(git rev-list --count 583808f7411850897a49ec271cb5adc2d272cec8..fd56588b701b4e610c2c382fe8fd30297ed75611)" -ge 1
+          test "$(git rev-list --count f28ed1f30ff5c036963b08077e5f30958e24170e..cf592a846ba218f1f06924047354e1d6dc79dc16)" -ge 1
+          test "$(git rev-list --count a5e659e251aca75f04ba46b14c0a0baf59a915b5..2faa293dea18722f09309729cf8064e7b19ad558)" -ge 1
+          test "$(git rev-list --count 12daa415740eda7878d0f7fc4e2f30fb42ca2cf8..979abe7ff2ed7fa796f32270c55c83b61bb4424f)" -ge 1
+          git show 583808f7411850897a49ec271cb5adc2d272cec8:experiments/mathgraph/protocols/methodology-0036-sterility-factorization-v1.json >/dev/null
+          git show f28ed1f30ff5c036963b08077e5f30958e24170e:experiments/mathgraph/protocols/methodology-0036-reentry-congruence-gate-v2.json >/dev/null
+          git show a5e659e251aca75f04ba46b14c0a0baf59a915b5:experiments/mathgraph/protocols/methodology-0036-corrected-overlap-causal-v2.json >/dev/null
+          git show 12daa415740eda7878d0f7fc4e2f30fb42ca2cf8:experiments/mathgraph/protocols/methodology-0036-variable-interface-gate-v1.json >/dev/null
+      - name: Fetch frozen historical target-narrowing solver
+        run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
+      - name: Reproduce 0036 sterility factorization
+        run: python experiments/mathgraph/run_methodology_0036_sterility_factorization_gate.py
+      - name: Reproduce 0036 re-entry plus congruence discriminator
+        run: python experiments/mathgraph/run_methodology_0036_reentry_congruence_gate_v2.py
+      - name: Reproduce corrected raw-cap-19 overlap causal discriminator
+        run: python experiments/mathgraph/run_methodology_0036_corrected_overlap_causal_v2.py
+      - name: Run prospective bare-variable interface discriminator
+        run: python experiments/mathgraph/run_methodology_0036_variable_interface_gate_v1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: methodology-0036-prospective-gates-v7
+          path: |
+            experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
+            experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
+            experiments/mathgraph/results/methodology-0036-corrected-overlap-causal-v2.json
+            experiments/mathgraph/results/methodology-0036-variable-interface-gate-v1.json
+          if-no-files-found: warn
