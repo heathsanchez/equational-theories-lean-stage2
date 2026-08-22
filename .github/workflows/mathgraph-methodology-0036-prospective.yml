@@ -28,7 +28,8 @@ jobs:
           test "$(git rev-list --count a5e659e251aca75f04ba46b14c0a0baf59a915b5..2faa293dea18722f09309729cf8064e7b19ad558)" -ge 1
           test "$(git rev-list --count 12daa415740eda7878d0f7fc4e2f30fb42ca2cf8..979abe7ff2ed7fa796f32270c55c83b61bb4424f)" -ge 1
           test "$(git rev-list --count 7b40682483cacde2f3f0380230bb525f8dcd41ff..b723f29b03d2a22760815d6deefa97e6214d2d2e)" -ge 1
-          git show 7b40682483cacde2f3f0380230bb525f8dcd41ff:experiments/mathgraph/protocols/methodology-0036-synchronized-specialization-diagnostic-v1.json >/dev/null
+          test "$(git rev-list --count 339efbfc46a434921c9fcfb4d1ff750f7636473b..bae69e5d2873994c34b63f7bd9b3ca47b8e7452a)" -ge 1
+          git show 339efbfc46a434921c9fcfb4d1ff750f7636473b:experiments/mathgraph/protocols/methodology-0036-component-cut-factorization-v1.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce 0036 sterility factorization
@@ -39,16 +40,19 @@ jobs:
         run: python experiments/mathgraph/run_methodology_0036_corrected_overlap_causal_v2.py
       - name: Reproduce bare-variable interface discriminator
         run: python experiments/mathgraph/run_methodology_0036_variable_interface_gate_v1.py
-      - name: Run synchronized-specialization diagnostic
+      - name: Reproduce synchronized-specialization diagnostic
         run: python experiments/mathgraph/run_methodology_0036_synchronized_specialization_diagnostic_v1.py
+      - name: Run component-cut factorization diagnostic
+        run: python experiments/mathgraph/run_methodology_0036_component_cut_factorization_v1.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates-v8
+          name: methodology-0036-prospective-gates-v9
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
             experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
             experiments/mathgraph/results/methodology-0036-corrected-overlap-causal-v2.json
             experiments/mathgraph/results/methodology-0036-variable-interface-gate-v1.json
             experiments/mathgraph/results/methodology-0036-synchronized-specialization-diagnostic-v1.json
+            experiments/mathgraph/results/methodology-0036-component-cut-factorization-v1.json
           if-no-files-found: warn
