@@ -1,0 +1,45 @@
+{
+  "schema": "mathgraph.normal0040-continuation-interface-depth3.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_state": {
+    "cross_distance": 2,
+    "lhs_shell": "((((x ◇ y) ◇ x) ◇ x) ◇ y)",
+    "rhs_shell": "((((x ◇ y) ◇ y) ◇ z) ◇ y)",
+    "normalization_probe": "NO",
+    "router_next_probe": "P_depth3"
+  },
+  "hypothesis": "structural distance is a lossy projection of proof-continuation state; replay-valid generations may create or rediscover continuation-interface classes before structural contraction",
+  "continuation_interface": {
+    "unit": "a term's set of replay-valid one-step source-law interactions",
+    "descriptor_fields": [
+      "source_side_and_orientation",
+      "context_path_shape",
+      "substitution_equality_pattern",
+      "distance_bucket_to_frozen_lhs_component",
+      "distance_bucket_to_frozen_rhs_component",
+      "opposite_shell_match_exposed"
+    ],
+    "excluded_from_identity": [
+      "literal_term_string",
+      "case_id",
+      "teacher_or_Vampire_trace",
+      "target_assertion"
+    ]
+  },
+  "bounds": {
+    "generations": 3,
+    "maximum_terms_per_side_per_generation": 320,
+    "maximum_replay_valid_edges_per_generation": 4000,
+    "maximum_term_size": 150,
+    "maximum_proof_nodes_per_edge": 20000
+  },
+  "decision_table": {
+    "INTERFACE_PRECEDES_GEOMETRY": "a generation adds continuation-interface classes while minimum structural distance remains 2, and a later generation contracts",
+    "INTERFACE_GROWTH_WITHOUT_GEOMETRY": "new continuation-interface classes appear but no structural contraction occurs by generation 3",
+    "LATE_QUOTIENT_REDISCOVERY": "large syntactic growth occurs with little or no continuation-interface growth and repeated interface classes dominate",
+    "TRUE_CONTINUATION_GRAMMAR_OBSTRUCTION": "neither meaningful syntactic reach nor continuation-interface novelty appears under the declared replay-valid depth-3 closure",
+    "DIRECT_CONTRACTION": "a replay-valid generated consequence reaches structural distance <=1 immediately; retain separately from the interface claim"
+  },
+  "scientific_rule": "P_depth3 is diagnostic. Do not promote a depth3 constructor merely because depth was searched. Use the observed interface-growth pattern to decide whether the next residual is multi-generation attachment, late quotient/access, or continuation-grammar obstruction."
+}

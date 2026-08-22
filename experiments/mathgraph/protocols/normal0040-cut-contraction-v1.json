@@ -1,0 +1,38 @@
+{
+  "schema": "mathgraph.normal0040-cut-contraction.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "teacher_trace_used": false,
+  "prior_verified_residual": {
+    "lhs_component_size": 138,
+    "rhs_component_size": 50,
+    "cross_distance": 3,
+    "closure": false
+  },
+  "J": "After replay-valid RHS reification and endpoint promotion, both target equality components exist and their minimum measured structural separation is 3. The next necessary attachment step need not jump directly across the cut; it must create a replay-valid source-derived equality or contextual consequence anchored in a live component whose opposite endpoint strictly contracts the distance to the other live component.",
+  "K_rho": {
+    "required": [
+      "start from the frozen post-endpoint-promotion state",
+      "use only replay-valid original source-law instances or consequences compiled from already trusted congruence/symmetry/transitivity",
+      "anchor each candidate in an existing target equality component",
+      "measure candidate distance to the opposite live component before installation",
+      "prefer candidates with distance strictly below the frozen distance 3",
+      "compare against a matched non-contracting component-anchored control",
+      "measure post-installation cross-distance and closure",
+      "if closure occurs require replay, certificate construction and ablation"
+    ],
+    "forbidden": [
+      "Vampire or teacher proof traces",
+      "answer labels",
+      "case-id dispatch inside candidate generation",
+      "asserting the target equality",
+      "unverified synthetic bridge edges"
+    ]
+  },
+  "prediction": {
+    "primary": "Residual-directed cut contractors will reduce the post-endpoint-promotion cross-distance below 3 more than matched non-contracting component-anchored candidates.",
+    "partial_success": "The residual-directed arm yields a strictly smaller measurable cut or joins the components without full target closure.",
+    "strong_success": "The residual-directed arm uniquely yields replay-valid target closure and the gain disappears under ablation.",
+    "falsification": "No replay-valid component-anchored candidate contracts the distance below 3, or the residual-directed arm performs no better than matched controls."
+  }
+}

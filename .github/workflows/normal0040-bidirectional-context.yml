@@ -1,0 +1,28 @@
+name: Normal0040 Bidirectional Context Gate
+on:
+  push:
+    branches:
+      - mathgraph/residual-factorization-optimum-20260821
+    paths:
+      - experiments/mathgraph/run_normal0040_bidirectional_context_gate.py
+      - .github/workflows/normal0040-bidirectional-context.yml
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'datasets>=3,<5'
+      - name: Run normal0040 bidirectional contextual cut gate
+        run: python experiments/mathgraph/run_normal0040_bidirectional_context_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: normal0040-bidirectional-context-gate
+          path: experiments/mathgraph/results/normal0040-bidirectional-context-gate.json
+          if-no-files-found: warn

@@ -1,0 +1,51 @@
+{
+  "schema": "mathgraph.normal0040-interface-transition.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "continuation_interface_run": 32528476231,
+    "decision": "INTERFACE_GROWTH_WITHOUT_GEOMETRY",
+    "frozen_cross_distance": 2,
+    "generation1_lhs_interface_classes": 5,
+    "generation1_rhs_interface_classes": 1,
+    "generation1_structural_distance": 4
+  },
+  "hypothesis": "the relevant search state is the quotient transition graph between replay-valid continuation-interface classes, not literal term geometry",
+  "interface_identity": {
+    "unit": "set of replay-valid one-step source-law interaction descriptors",
+    "descriptor_fields": [
+      "source_side",
+      "context_path_shape",
+      "substitution_equality_pattern",
+      "distance_bucket_to_frozen_lhs_component",
+      "distance_bucket_to_frozen_rhs_component",
+      "opposite_shell_match_exposed"
+    ],
+    "excluded": ["literal_term_string", "case_id", "teacher_trace", "target_assertion"]
+  },
+  "compatibility": {
+    "rule": "two interface classes are compatible iff some interaction from each class has the same source side, the same context-role shape, compatible partial substitutions on shared source variables, and neither interaction uses target/teacher information",
+    "note": "distance buckets are diagnostic and are not required to match for compatibility"
+  },
+  "transition_graph": {
+    "source_nodes": "the five generation-1 LHS continuation-interface classes and the single generation-1 RHS class reconstructed under the frozen parent protocol",
+    "edge": "I -> J iff a replay-valid one-step source-law continuation from a term in class I reaches a term whose continuation interface is J",
+    "search_depth_from_generation1": 2,
+    "representative_policy": "use all retained bounded terms in each class up to the frozen per-class cap; do not choose a representative using target distance"
+  },
+  "bounds": {
+    "maximum_terms_per_class": 32,
+    "maximum_interactions_per_term": 96,
+    "maximum_transition_edges": 8000,
+    "maximum_term_size": 150,
+    "maximum_fillers": 6,
+    "seconds_soft": 180
+  },
+  "decision_table": {
+    "INTERFACE_PATH_TO_RHS_COMPATIBILITY": "a replay-valid class-transition path from an LHS class reaches an interface compatible with the frozen RHS class while structural distance need not contract",
+    "INTERFACE_COMPATIBLE_AT_GENERATION1": "at least one of the five LHS generation-1 classes is already compatible with the RHS class",
+    "INTERFACE_TRANSITION_NO_COMPATIBILITY": "transition graph grows but no LHS class reaches RHS compatibility under the frozen depth/bounds",
+    "INTERFACE_QUOTIENT_STALL": "little or no new class-transition structure is produced despite replay-valid syntactic continuations"
+  },
+  "scientific_rule": "Do not promote a constructor from this diagnostic alone. If a compatible interface path is found, freeze that path's effect-level interface obligations and test a separate K-to-W causal admission gate."
+}

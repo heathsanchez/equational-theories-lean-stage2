@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.0014-minimal-lawful-continuation-refinement.v1",
+  "id": "evaluation_order5_0014",
+  "frozen_before_implementation": true,
+  "residual_state": {
+    "lhs_component_live": true,
+    "rhs_component_live": true,
+    "cross_distance": 12,
+    "single_source_instance_exact_bridges": 0,
+    "single_source_instance_distance_improvements": 0,
+    "component_anchored_single_source_instances_tested": 166
+  },
+  "scientific_claim_under_test": "The current single-instance continuation language is insufficient for the live two-component residual. The smallest lawful continuation-space refinement is to allow short replay-valid proof programs as candidate constructors, judged by their verified net effect rather than by a prenamed topology.",
+  "K_effect": {
+    "required": [
+      "candidate conclusion is replay-valid from the original source law under the existing trust base",
+      "candidate program is constructed without external proof trace, answer label, or asserted target equality",
+      "candidate net effect merges the frozen target-LHS and target-RHS equality components, or produces the first verified intermediate state from which that merge occurs under the same frozen continuation budget"
+    ],
+    "forbidden": [
+      "new trusted axiom or proof rule",
+      "case-id dispatch inside generation",
+      "hard-coded theorem answer",
+      "post-hoc constructor topology chosen after observing target closure"
+    ]
+  },
+  "continuation_language_refinement": {
+    "old_H": "single replay-valid source-law instances and previously admitted derived operators",
+    "new_H": "bounded short replay-valid proof programs/macros composed only from already trusted primitive operations such as source instantiation, orientation, congruence/context lifting, and equality composition",
+    "program_size_order": [1, 2, 3, 4],
+    "selection_rule": "minimum program size first; within size, rank only by verified residual effect and resource cost"
+  },
+  "controls": [
+    "old single-instance language",
+    "same-size random/relevance-matched short proof programs",
+    "shuffled component anchors",
+    "structure-only programs that do not satisfy live-component effect constraints"
+  ],
+  "pass_conditions": {
+    "minimal_effect_pass": "a replay-valid short program has a net effect satisfying K_effect while every smaller tested program class does not",
+    "strong_closure_pass": "installing the discovered program closes 0014 under the frozen budget, while old-language and matched controls remain open",
+    "ablation": "removing the discovered program or its necessary constituent distinction destroys the gain",
+    "transfer": "the same induced program schema/effect law gives nontrivial gain on a source-distinct residual without theorem-specific dispatch"
+  },
+  "interpretation_if_empty": "If no bounded short replay-valid proof program satisfies K_effect, classify this as a continuation-language obstruction at the macro-program level and derive the next representation constraint from the failed program frontier rather than guessing another constructor family."
+}

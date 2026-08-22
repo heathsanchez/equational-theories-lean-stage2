@@ -1,0 +1,29 @@
+name: MathGraph Semantic JOIN Attachment Isolated
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+  workflow_dispatch:
+
+jobs:
+  attachment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Provision research dependencies
+        run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Run original frozen semantic JOIN target-context attachment gate
+        run: python experiments/mathgraph/run_residual_target_context_attachment_gate.py
+      - name: Run refined active-continuation attachment gate
+        run: python experiments/mathgraph/run_residual_active_continuation_attachment_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-join-attachment-isolated
+          path: |
+            experiments/mathgraph/results/residual-target-context-attachment-gate.json
+            experiments/mathgraph/results/residual-active-continuation-attachment-gate.json

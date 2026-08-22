@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.normal0040-interface-obstruction-factorization.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "interface_transition_v2_run": 32542477411,
+    "decision": "INTERFACE_TRANSITION_NO_COMPATIBILITY",
+    "frozen_cross_distance": 2,
+    "generation1_lhs_interface_classes": 5,
+    "generation1_rhs_interface_classes": 5,
+    "generation1_compatible_cells": 0,
+    "observed_transition_class_count": 12,
+    "observed_transition_edge_count": 7,
+    "replay_valid_transition_edges_examined": 408,
+    "parent_timed_out": true
+  },
+  "hypothesis": "the next useful residual is the minimum verifier-grounded compatibility obligation missing between reachable LHS continuation-interface classes and the frozen RHS continuation classes, not another operator label or raw depth increase",
+  "primitive_obligations": [
+    "same_source_side_orientation",
+    "same_context_path_shape",
+    "jointly_compatible_substitution"
+  ],
+  "construction_invariants": [
+    "replay_valid_source_law_only",
+    "no_literal_term_identity_in_interface_key",
+    "no_target_or_teacher_trace_in_interface_key"
+  ],
+  "factorization_rule": "For every interaction pair between every reachable LHS continuation class observed under the parent bounded transition construction and every audited RHS class, record the subset of primitive obligations that fail. For each class pair retain the inclusion-minimal failing sets. Then compute inclusion-minimal failing sets globally and their frequencies.",
+  "closure_test": "A missing obligation is CURRENTLY_REALIZABLE iff some replay-valid reachable interaction pair already satisfies all other primitive obligations and fails exactly that one. A conjunction is CURRENTLY_REALIZABLE only if an observed pair fails exactly that conjunction. This diagnostic does not synthesize a new operator.",
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_transition_edges": 12000,
+    "maximum_term_size": 150,
+    "search_depth_from_generation1": 2,
+    "seconds_soft": 260
+  },
+  "decision_table": {
+    "SINGLE_OBLIGATION_FRONTIER": "all globally minimal failures are single primitive obligations; freeze the dominant obligation as K_next",
+    "MULTI_OBLIGATION_FRONTIER": "globally minimal failures require two or more primitive obligations simultaneously; freeze that conjunction as K_next",
+    "MIXED_MINIMAL_FRONTIER": "multiple incomparable minimal failing sets remain; retain a version space of K candidates rather than selecting one",
+    "NO_FACTORABLE_FRONTIER": "no interaction pairs were available for a lawful factorization under the frozen bounds"
+  },
+  "scientific_rule": "Do not enlarge depth or promote a constructor in this experiment. The output is only a residual-derived K_next (or version space of K candidates) plus whether that missing obligation pattern already occurs anywhere in the current bounded continuation closure."
+}

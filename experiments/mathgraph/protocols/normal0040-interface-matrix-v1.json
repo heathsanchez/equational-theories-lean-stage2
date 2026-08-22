@@ -1,0 +1,28 @@
+{
+  "schema": "mathgraph.normal0040-interface-matrix.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "quotient_audit_run": 32531743347,
+    "generation1_lhs_interface_classes": 5,
+    "generation1_rhs_interface_classes": 5,
+    "frozen_cross_distance": 2
+  },
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_transition_edges": 12000,
+    "maximum_term_size": 150,
+    "search_depth_per_side": 2,
+    "seconds_soft": 210
+  },
+  "compatibility": {
+    "require_same_source_side_orientation": true,
+    "require_same_context_path_shape": true,
+    "require_jointly_compatible_substitutions": true,
+    "exclude_literal_term_identity": true,
+    "exclude_target_or_teacher_trace": true
+  },
+  "scientific_rule": "First compute the complete 5x5 generation-1 interface compatibility matrix under the audited quotient. For incompatible cells, search replay-valid quotient transitions from both sides up to the frozen depth. Report the minimum quotient-transition distance to compatibility and the descriptor-level differences for the nearest still-incompatible pair. Do not promote a term-level constructor merely because a path exists."
+}

@@ -15,7 +15,50 @@ jobs:
           python-version: '3.12'
       - name: Sweep residual factorization process and factor count
         run: python experiments/mathgraph/run_residual_factorization_optimum.py
+      - name: Adaptive split-merge closure gate
+        run: python experiments/mathgraph/run_adaptive_residual_factorization_closure.py
+      - name: All-archive adaptive closure transfer
+        run: python experiments/mathgraph/run_adaptive_residual_archive_closure.py
+      - name: Problem-disjoint adaptive closure
+        run: python experiments/mathgraph/run_residual_factorization_id_holdout_closure.py
+      - name: Provision residual research dependencies
+        run: python -m pip install --quiet 'datasets>=3,<5'
+      - name: Recursive residual refactoring self-application gate
+        run: python experiments/mathgraph/run_recursive_residual_refactoring_gate.py
+      - name: Enriched L1 recursive residual refactoring gate
+        run: python experiments/mathgraph/run_recursive_residual_refactoring_enriched_l1_gate.py
+      - name: Prospective problem-disjoint L1 residual gate
+        run: python experiments/mathgraph/run_recursive_residual_refactoring_prospective_l1_gate.py
+      - name: Residual constraint graph specification synthesis
+        run: python experiments/mathgraph/run_residual_constraint_graph_gate.py
+      - name: Hardened cross-view constraint graph synthesis
+        run: python experiments/mathgraph/run_residual_constraint_graph_hardening_gate.py
+      - name: Causal diagnostic response panel closure
+        run: python experiments/mathgraph/run_causal_diagnostic_panel_closure.py
+      - name: Residual-conditioned operator induction closure
+        run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate.py
+      - name: Corrected source-aware residual operator induction
+        run: python experiments/mathgraph/run_residual_conditioned_operator_induction_gate_v2.py
+      - name: Residual reification continuation gate
+        run: python experiments/mathgraph/run_reification_continuation_gate.py
+      - name: Semantic JOIN target-context attachment gate
+        run: python experiments/mathgraph/run_residual_target_context_attachment_gate.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual-factorization-optimum
-          path: experiments/mathgraph/results/residual-factorization-optimum.json
+          path: |
+            experiments/mathgraph/results/residual-factorization-optimum.json
+            experiments/mathgraph/results/adaptive-residual-factorization-closure.json
+            experiments/mathgraph/results/adaptive-residual-archive-closure.json
+            experiments/mathgraph/results/residual-factorization-id-holdout-closure.json
+            experiments/mathgraph/results/recursive-residual-refactoring-gate.json
+            experiments/mathgraph/results/recursive-residual-refactoring-enriched-l1-gate.json
+            experiments/mathgraph/results/recursive-residual-refactoring-prospective-l1-gate.json
+            experiments/mathgraph/results/residual-constraint-graph-gate.json
+            experiments/mathgraph/results/residual-constraint-graph-hardening-gate.json
+            experiments/mathgraph/results/causal-diagnostic-panel-closure.json
+            experiments/mathgraph/results/residual-conditioned-operator-induction-gate.json
+            experiments/mathgraph/results/residual-conditioned-operator-induction-gate-v2.json
+            experiments/mathgraph/results/missing-subterm-reification-gate.json
+            experiments/mathgraph/results/reification-continuation-gate.json
+            experiments/mathgraph/results/residual-target-context-attachment-gate.json

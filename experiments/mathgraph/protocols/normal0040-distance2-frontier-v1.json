@@ -1,0 +1,35 @@
+{
+  "schema": "mathgraph.normal0040-distance2-frontier.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "teacher_trace_used": false,
+  "J": "After the unique replay-valid 3->2 contractor is installed, the residual is defined only by the new verified geometry: the target equality components remain disconnected at minimum structural distance 2. The next developmental question is whether the current admissible replay-valid continuation closure contains any one-step move out of the exact distance-2 shell whose installation lowers that minimum to 1.",
+  "K_rho": {
+    "effect_level": "K_{2->1}(rho) = { Delta : Delta is replay-valid, touches the exact distance-2 frontier, and lowers d(C_L,C_R) from 2 to 1 }",
+    "required": [
+      "reconstruct the frozen post-3->2 state and verify its minimum cut distance is exactly 2",
+      "compute the exact frontier terms attaining minimum distance 2 to the opposite target equality component",
+      "enumerate the widest finite currently admissible source-derived one-step continuation closure over that frontier without preselecting a named operator family",
+      "require every installed seed equality to replay to the original source law; subsequent consequences remain inside the existing trusted symmetry/congruence/transitivity/superposition machinery",
+      "classify candidates by measured effect on the opposite-component distance before installation",
+      "compare any 2->1 candidates against matched frontier-touching candidates that keep distance at 2 or worse",
+      "if 2->1 occurs, ablate the successful continuation and require the cut to return to 2 before retaining it",
+      "freeze the new distance-1 residual before attempting any 1->0 continuation"
+    ],
+    "forbidden": [
+      "Vampire or teacher proof traces",
+      "answer labels",
+      "case-id dispatch inside candidate generation",
+      "asserting the target equality",
+      "unverified synthetic bridge edges",
+      "naming or privileging a constructor family before observing a successful member",
+      "using historical missing-subterm hypotheses as selection criteria after the residual has changed"
+    ]
+  },
+  "prediction": {
+    "primary": "If the present admissible continuation closure contains a lawful 2->1 move, the distance-2 frontier characterization will isolate it as a strict effect-level subset and its installation will lower the verified cut to 1 while matched frontier-touching controls do not.",
+    "grammar_obstruction": "If exhaustive finite enumeration of the declared current continuation closure yields zero replay-valid candidates satisfying K_{2->1}, record an explicit constructor-language obstruction rather than increasing search inside that closure.",
+    "strong_success": "A replay-valid continuation uniquely lowers 2->1 or closes the target, and ablation restores distance 2 / removes closure.",
+    "falsification": "The declared closure contains candidates predicted to lower the distance, but installation does not outperform matched controls under the same verifier and budget."
+  }
+}

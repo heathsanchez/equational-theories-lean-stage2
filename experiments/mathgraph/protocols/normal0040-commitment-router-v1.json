@@ -1,0 +1,44 @@
+{
+  "schema": "mathgraph.normal0040-commitment-router.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "verified_state": {
+    "cross_distance": 2,
+    "lhs_shell": "((((x ◇ y) ◇ x) ◇ x) ◇ y)",
+    "rhs_shell": "((((x ◇ y) ◇ y) ◇ z) ◇ y)",
+    "prior_negative_languages": [
+      "one-step source instances",
+      "bounded two-stage source composition",
+      "binary congruence/transitivity",
+      "position-sensitive context-hole attachment"
+    ]
+  },
+  "obstruction_worlds": {
+    "H_joint_substitution": "a lawful 2->1 continuation requires jointly solving substitutions across multiple replay-valid source instances",
+    "H_overlap_generation": "a lawful 2->1 continuation requires a critical overlap/unification event not present in the tested attachment languages",
+    "H_normal_form_identification": "the d=2 shell distinction is reducible only after quotient/normal-form identification under already verified equalities",
+    "H_deeper_composition": "the needed continuation exists only after more than two replay-valid composition stages"
+  },
+  "lawful_actions": {
+    "H_joint_substitution": ["joint-unification-constructor", "overlap-unification-constructor"],
+    "H_overlap_generation": ["overlap-unification-constructor"],
+    "H_normal_form_identification": ["quotient-normalization-constructor"],
+    "H_deeper_composition": ["depth3-composition-constructor"]
+  },
+  "diagnostic_probes": {
+    "P_normalize_shells": {
+      "cost": 1,
+      "description": "normalize both singleton d=2 shell terms under the current verified rewrite/equality regime and test whether their quotient distance contracts"
+    },
+    "P_joint_unify": {
+      "cost": 1,
+      "description": "enumerate source-law side matches and pairwise substitution compatibility at the exact shell disagreement positions; test for any replay-valid jointly satisfiable pair"
+    },
+    "P_depth3": {
+      "cost": 3,
+      "description": "bounded three-stage replay-valid continuation enumeration from the frozen shell"
+    }
+  },
+  "router_rule": "Choose the minimum-cost adaptive probe policy whose outcome cells each admit a common lawful action; if no policy exists in the probe closure, return DEVELOP_PROBE_LANGUAGE. Do not maximize entropy.",
+  "admission": "Any subsequent constructor must satisfy the existing K_{2->1} witness gate and causal ablation."
+}
