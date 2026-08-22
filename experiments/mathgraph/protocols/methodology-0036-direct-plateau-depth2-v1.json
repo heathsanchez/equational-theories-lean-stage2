@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.methodology-0036-direct-plateau-depth2.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32603520212,
+    "decision": "DIRECT_CONSTRUCTOR_EXHAUSTED",
+    "scope_correction": "The parent proves only that no SINGLE direct original-source instance contracts the post-step cut 8, even after pool/cap relaxation. It does not prove multi-step exhaustion of the same constructor.",
+    "post_step_cut": 8,
+    "L1_cap19_candidates": 34,
+    "L1_strict_contractors": 0
+  },
+  "rivals": {
+    "H1_GREEDY_PLATEAU": "A non-worsening direct source instance can expose a second direct source instance that strictly contracts the cut below 8; the constructor is sufficient but the strictly-greedy controller is trapped on a plateau.",
+    "H2_DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED": "No two-step sequence of direct original-source instances crosses below 8 under the relaxed cap-19 family; the one-step stall survives a complete depth-2 plateau search."
+  },
+  "starting_state": "target narrowing + 9 reentry edges + the exact first causal raw-goal move that contracts 10->8",
+  "first_step_pool": "L1_RELAX_POOL from the parent factorization at cap19: all live unresolved-goal-component anchors <=19; all target vars + all live goal-component terms + all raw goal subterms <=9 as fills; no fill truncation; direct original-source instances only.",
+  "search": {
+    "depth": 2,
+    "first_step_admission": "candidate counterfactual raw-goal separation <=8; install one candidate",
+    "second_step_pool": "recompute the same relaxed direct-source family from the resulting live graph state at cap19",
+    "success": "some second-step candidate has counterfactual raw-goal separation <8",
+    "maximum_first_steps": 100,
+    "maximum_second_pool": 100000,
+    "term_cap": 19,
+    "no_new_proof_operator": true,
+    "no_overlap_unification_or_congruence": true
+  },
+  "measurements": [
+    "number of non-worsening first moves",
+    "number of first moves exposing any strict second-step contractor",
+    "best reachable depth-2 separation",
+    "minimum first-step/second-step sequence witnessing contraction",
+    "whether any depth-2 sequence joins or replay-closes the raw goal"
+  ],
+  "decision_order": ["MEASUREMENT_FAILURE", "GREEDY_PLATEAU_CONFIRMED", "DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED"],
+  "decision_table": {
+    "GREEDY_PLATEAU_CONFIRMED": "At least one non-worsening first direct instance exposes a second direct instance with separation <8.",
+    "DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED": "All admissible non-worsening first direct instances are exhausted and none exposes separation <8.",
+    "MEASUREMENT_FAILURE": "the frozen post-step state cannot be reproduced as cut8 or the parent relaxed cap19 pool is not exactly 34 candidates with zero strict contractors."
+  },
+  "next_if_plateau": "Replace strict greedy descent with the smallest plateau-aware policy and attack it against a matched cut-blind two-step search before transfer.",
+  "next_if_exhausted": "ZOOM OUT again and factor the post-step boundary against constructor classes; only then consider a genuinely new constructor.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}
