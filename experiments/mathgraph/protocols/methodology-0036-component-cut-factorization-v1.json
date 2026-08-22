@@ -1,0 +1,42 @@
+{
+  "schema": "mathgraph.methodology-0036-component-cut-factorization.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32602558205,
+    "current_frame_adequate": true,
+    "reentry_edges": 9,
+    "proper_overlap_decision": "R3_OVERLAP_INSUFFICIENT",
+    "variable_overlap_decision": "R3_VARIABLE_INTERFACE_INSUFFICIENT",
+    "specialization_decision": "R2_GENERIC_UNIFICATION_SIGNAL"
+  },
+  "reframe": "Measure progress on the live equality-component cut rather than by local target-subterm coverage or pairwise interface availability.",
+  "states": [
+    "S0_target_narrowing",
+    "S1_target_narrowing_plus_9_reentry_edges"
+  ],
+  "measurements": {
+    "cross_distance": "minimum symmetric structural distance between any term in the component containing target_lhs and any term in the component containing target_rhs",
+    "boundary_pairs": "all minimizers of cross_distance up to a fixed reporting cap",
+    "target_coverage_by_component": "target-basis coverage of terms in each target component",
+    "coverage_distance_association": "for generated equality endpoints, compare target-coverage gain with distance to the opposite target component",
+    "cut_signature": "alpha-normalized minimal edit/alignment descriptors for the boundary minimizers"
+  },
+  "constraints": {
+    "maximum_boundary_pairs_reported": 40,
+    "maximum_endpoint_records": 500,
+    "operative_term_cap": 19,
+    "no_new_edges": true,
+    "no_new_operator": true,
+    "no_budget_increase": true
+  },
+  "decision_table": {
+    "CUT_ALREADY_CONTRACTED_BY_REENTRY": "S1 cross-distance is strictly smaller than S0; reentry is partial causal progress even without closure.",
+    "TARGET_COVERAGE_SURROGATE": "S1 does not contract the cut and higher target coverage fails to correspond to smaller opposite-component distance.",
+    "COMPACT_CUT_OBLIGATION": "S1 does not contract globally, but boundary minimizers share a compact repeated structural signature suitable for a next obligation.",
+    "MULTIMODAL_CUT": "S1 does not contract and boundary minimizers have no compact repeated signature; abandon local cut-contractor framing.",
+    "MEASUREMENT_FAILURE": "target components cannot be reconstructed or frozen parent counts fail."
+  },
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"],
+  "scientific_rule": "Diagnostic only. Do not select or install a new proof operator in this experiment. The next intervention, if any, must be derived from the measured cut rather than target-subterm coverage."
+}
