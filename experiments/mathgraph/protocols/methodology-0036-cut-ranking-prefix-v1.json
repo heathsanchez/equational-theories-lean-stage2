@@ -1,0 +1,38 @@
+{
+  "schema": "mathgraph.methodology-0036-cut-ranking-prefix.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32602851162,
+    "decision": "TARGET_RANKING_EQUIVALENT",
+    "candidate_pool_count": 35,
+    "predicted_contractors": 15,
+    "arm_budget": 24,
+    "selection_overlap": 14,
+    "both_post_cross_distance": 8,
+    "interpretation": "The K=24 tournament is underdiscriminating because both arms consume most of the common pool and substantially overlap."
+  },
+  "question": "Under scarce matched budgets on the identical frozen candidate pool, does direct component-cut ranking produce useful contraction earlier than target-subterm coverage ranking?",
+  "frozen_candidate_pool": "Exactly the pool generator and deterministic rankings from methodology-0036-cut-ranking-tournament-v1; no new candidates, proof rules, fills, anchors, or term budget.",
+  "prefix_budgets": [1, 2, 4, 8, 12, 16, 24],
+  "arms": {
+    "A_TARGET_COVERAGE": "prefixes of the existing target-coverage ranking",
+    "B_CUT_CONTRACTION": "prefixes of the existing cut-distance ranking"
+  },
+  "measurements_per_prefix": [
+    "post-install cross-distance",
+    "component join",
+    "replayable closure",
+    "selected-prefix overlap"
+  ],
+  "primary_statistic": "smallest prefix budget K at which each arm strictly contracts the frozen cross-distance 10",
+  "decision_order": ["MEASUREMENT_FAILURE", "EARLY_CUT_ADVANTAGE", "RANKINGS_EFFECTIVELY_EQUIVALENT", "PREDICTED_DISTANCE_NONCAUSAL"],
+  "decision_table": {
+    "EARLY_CUT_ADVANTAGE": "B has a strictly smaller first-contraction K than A, or at the same K B reaches a strictly smaller cross-distance / joins / closes.",
+    "RANKINGS_EFFECTIVELY_EQUIVALENT": "A and B have the same first-contraction K and identical best cross-distance/join/closure trajectory at every preregistered prefix.",
+    "PREDICTED_DISTANCE_NONCAUSAL": "B contains preregistered predicted contractors but fails to contract by K=12 while A contracts, or no B prefix through K=24 contracts despite the parent pool containing predicted contractors.",
+    "MEASUREMENT_FAILURE": "the parent frozen state (cut 10, 4/19 target-component sizes, 9 reentry edges), common 35-candidate pool, or deterministic rankings cannot be reproduced."
+  },
+  "attack_rule": "If EARLY_CUT_ADVANTAGE, next run a wrong-direction ranking control and an ablation that preserves the candidate pool but removes cut awareness. Do not expose transfer cases yet.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}
