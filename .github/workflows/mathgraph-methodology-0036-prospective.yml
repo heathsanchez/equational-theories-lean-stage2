@@ -31,7 +31,8 @@ jobs:
           test "$(git rev-list --count 339efbfc46a434921c9fcfb4d1ff750f7636473b..bae69e5d2873994c34b63f7bd9b3ca47b8e7452a)" -ge 1
           test "$(git rev-list --count ec07c94cd6a015edf1a40608663e8f221a577ce0..b1131e675e1a5dc1f883e290a14a05f2533afd02)" -ge 1
           test "$(git rev-list --count b6d761c3feded2b5bf0c6a181e9972332fc20a40..a110149a56dcbe42077a98cc9ea5838aa5be5670)" -ge 1
-          git show b6d761c3feded2b5bf0c6a181e9972332fc20a40:experiments/mathgraph/protocols/methodology-0036-cut-ranking-prefix-v1.json >/dev/null
+          test "$(git rev-list --count 0a1eda936496e92bc6282438d18dea261a5aaea3..b7a0a4827ef380ab14824dcb0488dc1f19f7dfa4)" -ge 1
+          git show 0a1eda936496e92bc6282438d18dea261a5aaea3:experiments/mathgraph/protocols/methodology-0036-cut-ranking-attack-v1.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce 0036 sterility factorization
@@ -48,12 +49,14 @@ jobs:
         run: python experiments/mathgraph/run_methodology_0036_component_cut_factorization_v1.py
       - name: Reproduce cut-ranking tournament
         run: python experiments/mathgraph/run_methodology_0036_cut_ranking_tournament_v1.py
-      - name: Run cut-ranking prefix discriminator
+      - name: Reproduce cut-ranking prefix discriminator
         run: python experiments/mathgraph/run_methodology_0036_cut_ranking_prefix_v1.py
+      - name: Run cut-ranking causal attack
+        run: python experiments/mathgraph/run_methodology_0036_cut_ranking_attack_v1.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates-v11
+          name: methodology-0036-prospective-gates-v12
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
             experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
@@ -63,4 +66,5 @@ jobs:
             experiments/mathgraph/results/methodology-0036-component-cut-factorization-v1.json
             experiments/mathgraph/results/methodology-0036-cut-ranking-tournament-v1.json
             experiments/mathgraph/results/methodology-0036-cut-ranking-prefix-v1.json
+            experiments/mathgraph/results/methodology-0036-cut-ranking-attack-v1.json
           if-no-files-found: warn
