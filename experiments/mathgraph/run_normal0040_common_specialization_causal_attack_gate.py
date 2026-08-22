@@ -20,7 +20,14 @@ def subst_pattern(m,mp,vars_):
 def shared_nontrivial(m,t,shell):
  a={canon(m,x) for x in m.walk_subterms(t) if m.term_size(x)>=2};b={canon(m,x) for x in m.walk_subterms(shell) if m.term_size(x)>=2};return bool(a&b)
 def apply_theta(m,t,theta):
- return m.substitute(t,theta) if theta else t
+ if not theta:return t
+ if t[0]=='var':
+  if t[1] not in theta:return t
+  u=theta[t[1]]
+  if u==t:return t
+  return apply_theta(m,u,theta)
+ if t[0]=='op':return ('op',apply_theta(m,t[1],theta),apply_theta(m,t[2],theta))
+ return t
 def main():
  p=json.loads(PROTO.read_text());m=load(SOLVER,'mgca');sym=load(SYM,'symca');selfm=load(SELF,'selfca');op=load(OPC,'opca');op.selfmod=selfm;rhs=load(RHS,'rhsca');rhs.selfm=selfm;ep=load(EP,'epca');cut=load(CUT,'cutca');rou=load(ROU,'rouca');rou.epmod=ep;qr=load(QR,'qrca')
  row=next(dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_normal',split='train') if r['id']==RID);source=m.parse_equation(row['equation1']);target=m.parse_equation(row['equation2'])
