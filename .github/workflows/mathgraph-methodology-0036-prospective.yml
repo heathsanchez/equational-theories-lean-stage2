@@ -27,10 +27,8 @@ jobs:
           test "$(git rev-list --count f28ed1f30ff5c036963b08077e5f30958e24170e..cf592a846ba218f1f06924047354e1d6dc79dc16)" -ge 1
           test "$(git rev-list --count a5e659e251aca75f04ba46b14c0a0baf59a915b5..2faa293dea18722f09309729cf8064e7b19ad558)" -ge 1
           test "$(git rev-list --count 12daa415740eda7878d0f7fc4e2f30fb42ca2cf8..979abe7ff2ed7fa796f32270c55c83b61bb4424f)" -ge 1
-          git show 583808f7411850897a49ec271cb5adc2d272cec8:experiments/mathgraph/protocols/methodology-0036-sterility-factorization-v1.json >/dev/null
-          git show f28ed1f30ff5c036963b08077e5f30958e24170e:experiments/mathgraph/protocols/methodology-0036-reentry-congruence-gate-v2.json >/dev/null
-          git show a5e659e251aca75f04ba46b14c0a0baf59a915b5:experiments/mathgraph/protocols/methodology-0036-corrected-overlap-causal-v2.json >/dev/null
-          git show 12daa415740eda7878d0f7fc4e2f30fb42ca2cf8:experiments/mathgraph/protocols/methodology-0036-variable-interface-gate-v1.json >/dev/null
+          test "$(git rev-list --count 7b40682483cacde2f3f0380230bb525f8dcd41ff..b723f29b03d2a22760815d6deefa97e6214d2d2e)" -ge 1
+          git show 7b40682483cacde2f3f0380230bb525f8dcd41ff:experiments/mathgraph/protocols/methodology-0036-synchronized-specialization-diagnostic-v1.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce 0036 sterility factorization
@@ -39,15 +37,18 @@ jobs:
         run: python experiments/mathgraph/run_methodology_0036_reentry_congruence_gate_v2.py
       - name: Reproduce corrected raw-cap-19 overlap causal discriminator
         run: python experiments/mathgraph/run_methodology_0036_corrected_overlap_causal_v2.py
-      - name: Run prospective bare-variable interface discriminator
+      - name: Reproduce bare-variable interface discriminator
         run: python experiments/mathgraph/run_methodology_0036_variable_interface_gate_v1.py
+      - name: Run synchronized-specialization diagnostic
+        run: python experiments/mathgraph/run_methodology_0036_synchronized_specialization_diagnostic_v1.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates-v7
+          name: methodology-0036-prospective-gates-v8
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
             experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
             experiments/mathgraph/results/methodology-0036-corrected-overlap-causal-v2.json
             experiments/mathgraph/results/methodology-0036-variable-interface-gate-v1.json
+            experiments/mathgraph/results/methodology-0036-synchronized-specialization-diagnostic-v1.json
           if-no-files-found: warn
