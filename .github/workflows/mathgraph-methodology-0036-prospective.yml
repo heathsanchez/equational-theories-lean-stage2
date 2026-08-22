@@ -24,20 +24,20 @@ jobs:
         run: |
           set -euo pipefail
           test "$(git rev-list --count 583808f7411850897a49ec271cb5adc2d272cec8..fd56588b701b4e610c2c382fe8fd30297ed75611)" -ge 1
-          test "$(git rev-list --count 88fe113f149011792041c25fbae08d6b55f32791..4a1fa1cfb82d56895abaab8ba7faba82ff4c7088)" -ge 1
+          test "$(git rev-list --count f28ed1f30ff5c036963b08077e5f30958e24170e..cf592a846ba218f1f06924047354e1d6dc79dc16)" -ge 1
           git show 583808f7411850897a49ec271cb5adc2d272cec8:experiments/mathgraph/protocols/methodology-0036-sterility-factorization-v1.json >/dev/null
-          git show 88fe113f149011792041c25fbae08d6b55f32791:experiments/mathgraph/protocols/methodology-0036-reentry-gate-v1.json >/dev/null
+          git show f28ed1f30ff5c036963b08077e5f30958e24170e:experiments/mathgraph/protocols/methodology-0036-reentry-congruence-gate-v2.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce prospective 0036 sterility factorization
         run: python experiments/mathgraph/run_methodology_0036_sterility_factorization_gate.py
-      - name: Run prospective 0036 endpoint re-entry discriminator
-        run: python experiments/mathgraph/run_methodology_0036_reentry_gate.py
+      - name: Run corrected prospective 0036 re-entry plus congruence discriminator
+        run: python experiments/mathgraph/run_methodology_0036_reentry_congruence_gate_v2.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates
+          name: methodology-0036-prospective-gates-v2
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
-            experiments/mathgraph/results/methodology-0036-reentry-gate.json
+            experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
           if-no-files-found: warn
