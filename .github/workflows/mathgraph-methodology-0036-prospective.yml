@@ -26,9 +26,11 @@ jobs:
           test "$(git rev-list --count 583808f7411850897a49ec271cb5adc2d272cec8..fd56588b701b4e610c2c382fe8fd30297ed75611)" -ge 1
           test "$(git rev-list --count f28ed1f30ff5c036963b08077e5f30958e24170e..cf592a846ba218f1f06924047354e1d6dc79dc16)" -ge 1
           test "$(git rev-list --count c112e8e4c9a503532f6c4a22f1115b8724db9e85..08d74430bc393e7add939a21bf89dfc78871af22)" -ge 1
+          test "$(git rev-list --count 30a41860a1cd7d2c50c167ca3a8c58d6cf2d77ee..f3b623f563a27e9a3503606024256dad1da418a9)" -ge 1
           git show 583808f7411850897a49ec271cb5adc2d272cec8:experiments/mathgraph/protocols/methodology-0036-sterility-factorization-v1.json >/dev/null
           git show f28ed1f30ff5c036963b08077e5f30958e24170e:experiments/mathgraph/protocols/methodology-0036-reentry-congruence-gate-v2.json >/dev/null
           git show c112e8e4c9a503532f6c4a22f1115b8724db9e85:experiments/mathgraph/protocols/methodology-0036-size-compression-matched-v2.json >/dev/null
+          git show 30a41860a1cd7d2c50c167ca3a8c58d6cf2d77ee:experiments/mathgraph/protocols/methodology-0036-local-overlap-bridge-v1.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce prospective 0036 sterility factorization
@@ -37,12 +39,15 @@ jobs:
         run: python experiments/mathgraph/run_methodology_0036_reentry_congruence_gate_v2.py
       - name: Run matched 0036 raw-size versus macro-compression threshold
         run: python experiments/mathgraph/run_methodology_0036_size_compression_matched_v2.py
+      - name: Conditionally run local contextual-overlap bridge gate
+        run: python experiments/mathgraph/run_methodology_0036_local_overlap_bridge.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates-v4
+          name: methodology-0036-prospective-gates-v5
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
             experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
             experiments/mathgraph/results/methodology-0036-size-compression-matched-v2.json
+            experiments/mathgraph/results/methodology-0036-local-overlap-bridge-v1.json
           if-no-files-found: warn
