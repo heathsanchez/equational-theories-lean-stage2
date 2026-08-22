@@ -1,0 +1,2 @@
+No-science-change trigger for the frozen evaluation_normal_0036 prospective methodology workflow.
+Created to force a fresh GitHub Actions run from the current preregistered branch state.
