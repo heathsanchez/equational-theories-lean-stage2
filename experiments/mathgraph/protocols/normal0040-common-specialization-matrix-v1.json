@@ -1,0 +1,30 @@
+{
+  "schema": "mathgraph.normal0040-common-specialization-matrix.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "rival_run": 32597022411,
+    "decision": "COMMON_SPECIALIZATION_RESCUE",
+    "literal_conflicts": 250000,
+    "common_specialization_rescues": 18393,
+    "alpha_rescues": 0,
+    "verified_equality_rescues": 0,
+    "generation1_lhs_classes": 5,
+    "generation1_rhs_classes": 5,
+    "literal_compatible_cells": 0
+  },
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_term_size": 150,
+    "maximum_pair_checks_per_cell": 250000,
+    "seconds_soft": 300
+  },
+  "compatibility": "same source-side orientation AND same context-path shape AND either literal substitution compatibility or a simultaneous first-order common specialization of all conflicting shared-variable images",
+  "scientific_rule": "Change only the substitution compatibility relation. Do not synthesize or install a new proof operator. Reproduce the audited 5x5 quotient and report the complete matrix of newly compatible cells under common specialization.",
+  "decision_table": {
+    "NO_MATRIX_RESCUE": "common specialization rescues local pairs but no audited class cell becomes compatible",
+    "COMMON_SPECIALIZATION_MATRIX_RESCUE": "one or more previously incompatible 5x5 cells become compatible under common specialization"
+  }
+}
