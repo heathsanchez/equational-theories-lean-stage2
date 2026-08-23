@@ -1,0 +1,49 @@
+name: Developmental Experiment Graph Stable Gate
+on:
+  pull_request:
+    branches: [mathgraph/residual-factorization-base-20260821]
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify frozen graph protocol predates builder
+        run: |
+          set -euo pipefail
+          test "$(git rev-list --count 16bb377077ea28a5060da10381bdf072519a7333..4b8719449d63651bc79936e167594458ac651950)" -ge 1
+          git show 16bb377077ea28a5060da10381bdf072519a7333:experiments/mathgraph/developmental_graph/protocol-v1.json >/dev/null
+      - name: Build graph first pass
+        run: |
+          python experiments/mathgraph/developmental_graph/build_graph.py
+          sha256sum experiments/mathgraph/developmental_graph/developmental-graph-v1.json > /tmp/graph.sha
+          cp experiments/mathgraph/developmental_graph/developmental-graph-v1.json /tmp/graph-first.json
+      - name: Build graph second pass and verify determinism/coverage
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/developmental_graph/build_graph.py
+          sha256sum -c /tmp/graph.sha
+          cmp /tmp/graph-first.json experiments/mathgraph/developmental_graph/developmental-graph-v1.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/mathgraph/developmental_graph/developmental-graph-summary-v1.json')
+          s=json.loads(p.read_text())
+          assert s['problem_count']==5, s
+          assert all(s['coverage'].values()), s['coverage']
+          assert s['parse_failure_count']==0, s
+          print(json.dumps(s, indent=2, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: developmental-experiment-graph-v1
+          path: |
+            experiments/mathgraph/developmental_graph/developmental-graph-v1.json
+            experiments/mathgraph/developmental_graph/developmental-graph-summary-v1.json
