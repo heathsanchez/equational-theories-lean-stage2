@@ -1,0 +1,71 @@
+{
+  "schema": "mathgraph.developmental-experiment-graph.lineage.v1",
+  "edges": [
+    {
+      "from": "normal0040-cut-contraction-gate.json",
+      "to": "normal0040-distance2-frontier-gate.json",
+      "type": "DERIVED_FROM",
+      "note": "The unique replay-valid 3->2 contractor creates the frozen distance-2 residual used by the frontier gate."
+    },
+    {
+      "from": "normal0040-distance2-frontier-gate.json",
+      "to": "normal0040-interface-quotient-audit-gate.json",
+      "type": "CHANGES_REPRESENTATION",
+      "note": "Repeated 2->1 failures motivated replacing literal term identity with continuation-interface identity; the quotient was then audited for order/budget artifacts."
+    },
+    {
+      "from": "normal0040-interface-quotient-audit-gate.json",
+      "to": "normal0040-interface-matrix-gate.json",
+      "type": "DERIVED_FROM",
+      "note": "The audited quotient fixes five LHS and five RHS continuation classes before compatibility testing."
+    },
+    {
+      "from": "normal0040-interface-matrix-gate.json",
+      "to": "normal0040-interface-transition-v2-gate.json",
+      "type": "DERIVED_FROM",
+      "note": "Zero direct compatible cells under literal compatibility motivates bounded second-order transitions between continuation classes."
+    },
+    {
+      "from": "normal0040-interface-transition-v2-gate.json",
+      "to": "normal0040-interface-obstruction-factorization-gate.json",
+      "type": "DERIVED_FROM",
+      "note": "The observed quotient-transition graph grows without reaching RHS compatibility, so the reachable frontier is factorized into primitive interface obligations."
+    },
+    {
+      "from": "normal0040-interface-obstruction-factorization-gate.json",
+      "to": "normal0040-substitution-quotient-rival-gate.json",
+      "type": "RIVAL_OF",
+      "note": "The singleton substitution-compatibility frontier is challenged by the simpler explanation that substitution identity is too strict."
+    },
+    {
+      "from": "normal0040-interface-matrix-gate.json",
+      "to": "normal0040-common-specialization-matrix-gate.json",
+      "type": "CHANGES_REPRESENTATION",
+      "note": "The same audited 5x5 classes are reevaluated after replacing literal shared-assignment equality with common-specialization compatibility."
+    },
+    {
+      "from": "normal0040-substitution-quotient-rival-gate.json",
+      "to": "normal0040-common-specialization-matrix-gate.json",
+      "type": "SUPPORTS",
+      "note": "Common specialization, unlike alpha renaming or existing equality quotienting, rescues a nonzero set of substitution conflicts and is promoted only to a matrix-level rival test."
+    },
+    {
+      "from": "normal0040-common-specialization-matrix-gate.json",
+      "to": "normal0040-common-specialization-causal-attack-gate.json",
+      "type": "COMPILES_TO",
+      "note": "The 10/25 semantic compatibility rescue is attacked by trying to compile witnesses into replay-valid existing-law contextual actions."
+    },
+    {
+      "from": "normal0040-common-specialization-causal-attack-gate.json",
+      "to": "normal0040-specialization-compilation-factorization-gate.json",
+      "type": "FAILS_AT",
+      "note": "Zero replayable specialized actions is decomposed into explicit specialization, construction, and replay stages rather than treated as one failure."
+    },
+    {
+      "from": "normal0040-specialization-compilation-factorization-gate.json",
+      "to": "normal0040-whole-context-specialization-rival-gate.json",
+      "type": "RIVAL_OF",
+      "note": "The constructor-boundary failure is challenged by whole-context specialization before positing a genuinely new joint contextual operator."
+    }
+  ]
+}
