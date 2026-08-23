@@ -64,6 +64,12 @@ jobs:
           }
           if not rows or not expected_columns <= set(rows[0]):
               raise SystemExit("unexpected six-residual schema")
+          diagnostic_ids = {
+              "evaluation_hard_0196",
+              "evaluation_normal_0040",
+              "evaluation_normal_0158",
+          }
+          rows = [row for row in rows if row["id"] in diagnostic_ids]
 
           config = load_config()
           config["solver"]["timeout_seconds"] = 120
@@ -78,6 +84,10 @@ jobs:
                   if key != "answer"
               }
               result = run_solver(submission, problem, config)
+              judge_responses = [
+                  event.get("response") for event in result.get("log", [])
+                  if event.get("type") == "judge"
+              ]
               results.append({
                   "id": row["id"],
                   "expected": row["answer"],
@@ -85,16 +95,13 @@ jobs:
                   "verdict": result.get("verdict"),
                   "judge_calls": result.get("judge_calls", 0),
                   "llm_calls": result.get("llm_calls", 0),
+                  "judge_responses": judge_responses,
                   "last_log": (result.get("log") or [None])[-1],
               })
               print(results[-1], flush=True)
 
           accepted = {row["id"] for row in results if row["solved"]}
-          required = {
-              "evaluation_hard_0196",
-              "evaluation_normal_0040",
-              "evaluation_normal_0158",
-          }
+          required = diagnostic_ids
           output = {
               "schema": "mathgraph.cleanroom-six-official-lean.v1",
               "lean_toolchain": Path("lean-toolchain").read_text().strip(),
