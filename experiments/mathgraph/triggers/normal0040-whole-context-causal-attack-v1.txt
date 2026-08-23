@@ -1,0 +1,3 @@
+Trigger-only commit for the frozen normal0040 whole-context causal attack v1.
+Protocol: d3bf60524430d2e6182f8b7bb5f711e3894cc3f9
+Executable: 373004e8063bde9df85261eea652e72e37b5cf48
