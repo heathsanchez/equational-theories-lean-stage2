@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Implementation-only CI retrigger after tuple-API repair; frozen protocol unchanged.
 import copy, json, sys
 from itertools import product
 from pathlib import Path
