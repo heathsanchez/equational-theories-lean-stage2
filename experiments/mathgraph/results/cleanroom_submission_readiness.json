@@ -1,8 +1,8 @@
 {
-  "schema": "mathgraph.cleanroom-submission-readiness.v2",
-  "date": "2026-08-03",
+  "schema": "mathgraph.cleanroom-submission-readiness.v3",
+  "date": "2026-08-24",
   "branch": "codex/mathgraph-cleanroom-submission",
-  "model_calls": 0,
+  "model_calls": "last-resort only after deterministic abstention",
   "frozen_historical_solver": {
     "path": "submissions/mathgraph/solver.py",
     "bytes": 313240,
@@ -12,8 +12,8 @@
   },
   "cleanroom_coverage_core": {
     "path": "submissions/mathgraph_cleanroom/solver.py",
-    "bytes": 275556,
-    "sha256": "27486952d38a3c6383e9be77a5dc0f4ed48b2ec38428118660c3a8be946d1160",
+    "bytes": 288714,
+    "sha256": "e786aa62ec8b7ebcdaf2ba4f0d5aaeccd3ae1b727f5bcfaac1407d167baf13da",
     "independent_base_path": "experiments/mathgraph/regressions/solver_4c0023b.py",
     "independent_base_sha256": "a5a55ffb1e2feb16fcfc983d53d9dad9254f0f209a2585854ca62e6c4a793405"
   },
@@ -23,32 +23,32 @@
       "model_slot": "Google: Gemma 4 31B",
       "role": "precision",
       "path": "submissions/mathgraph_cleanroom_solo_gemma/solver.py",
-      "bytes": 276371,
-      "sha256": "899b496c24f97d3f6eff5b71f3809bb48204f4512d85e8bb7087afcbbae3a986"
+      "bytes": 291484,
+      "sha256": "f9be704d1bd54e47b5560a0e68b86aed51ba54db13d78f88773f18c526262460"
     },
     {
       "track": "solo",
       "model_slot": "OpenAI: gpt-oss-120b",
       "role": "coverage",
       "path": "submissions/mathgraph_cleanroom_solo_oss/solver.py",
-      "bytes": 276110,
-      "sha256": "de3c4e2f8114cb8ca256b33f4c611b279f027152afb4ca1c18b430255306eec1"
+      "bytes": 290974,
+      "sha256": "e346e8bc97b56a3cf26912678bfa9ae8d98c78ff5cac6ef13cf1a25c3617090a"
     },
     {
       "track": "marathon",
       "model_slot": "Google: Gemma 4 31B",
       "role": "precision",
       "path": "submissions/mathgraph_cleanroom_marathon_gemma/solver.py",
-      "bytes": 277317,
-      "sha256": "479c44b3badfd4eb7e6cc966826c70be05550383194f160785d889ea45540539"
+      "bytes": 292745,
+      "sha256": "b266902617731f5f4218c49ef9a0235f3e497ceacc9874fe2fbeb0103fe091c3"
     },
     {
       "track": "marathon",
       "model_slot": "OpenAI: gpt-oss-120b",
       "role": "coverage",
       "path": "submissions/mathgraph_cleanroom_marathon_oss/solver.py",
-      "bytes": 277340,
-      "sha256": "920996af7f04e34dd9ee07a2a4087ceffc2c9bc36d458d4b982ef2f2f9c17d9a"
+      "bytes": 292768,
+      "sha256": "02565874e51a1ac8778f038a3983d29537c404412d84e76ebec7a7f20ec832b0"
     }
   ],
   "evidence": {
@@ -78,13 +78,19 @@
       "rows": 62576,
       "parsed": 62576,
       "failed": 0
+    },
+    "new_generic_routes": {
+      "given_clause_replayed_residuals": "3/6",
+      "hard3_false_affine_models": "154/205",
+      "normal_false_affine_models": "483/500",
+      "official_lean_requalification": "pending"
     }
   },
   "validation": {
     "solo_platform_gate": "66/66 solver cases; all auxiliary checks passed",
     "marathon_platform_gate": "25 passed, 0 failed",
-    "solo_smoke": "TRUE and FALSE accepted for each file; zero LLM calls",
-    "marathon_smoke": "1/1 accepted for each file at zero token budget",
+    "solo_smoke": "stdin/stdout TRUE protocol passed for both files",
+    "marathon_smoke": "deterministic pass retained; model calls residual-only",
     "forbidden_external_markers": 0,
     "credentials_embedded": false,
     "all_under_500000_bytes": true

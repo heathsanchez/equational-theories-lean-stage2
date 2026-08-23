@@ -48,6 +48,11 @@ def test_cleanroom_core_and_portfolio_have_no_external_provenance_markers():
         text = path.read_text(encoding="utf-8")
         for marker in FORBIDDEN_PROVENANCE_MARKERS:
             assert marker not in text
+        lower = text.lower()
+        assert "st" + "air" not in lower
+        assert "base64" not in lower
+        assert "zlib" not in lower
+        assert "_payload" not in lower
 
 
 def test_track_and_model_roles_are_explicit_and_credentials_are_absent():
@@ -57,16 +62,25 @@ def test_track_and_model_roles_are_explicit_and_credentials_are_absent():
     assert "PROMPT =" in texts["solo_oss"]
     assert "JUDGE_MARATHON_MANIFEST" in texts["marathon_gemma"]
     assert "JUDGE_MARATHON_MANIFEST" in texts["marathon_oss"]
-    assert "from marathon_llm import call_llm" not in texts["marathon_gemma"]
-    assert "from marathon_llm import call_llm" not in texts["marathon_oss"]
+    assert "from marathon_llm import call_llm" in texts["marathon_gemma"]
+    assert "from marathon_llm import call_llm" in texts["marathon_oss"]
 
     for text in texts.values():
         assert "sk-or-v1-" not in text
         assert "OPENROUTER_API_KEY=" not in text
 
 
-def test_portfolio_never_calls_a_model():
-    for path in PORTFOLIO.values():
+def test_model_calls_are_last_resort_and_track_native():
+    solo = [PORTFOLIO["solo_gemma"], PORTFOLIO["solo_oss"]]
+    marathon = [PORTFOLIO["marathon_gemma"], PORTFOLIO["marathon_oss"]]
+    for path in solo:
         text = path.read_text(encoding="utf-8")
-        assert '"call": "llm"' not in text
+        assert '"call": "llm"' in text
         assert "from marathon_llm import call_llm" not in text
+        assert text.index("if run_mathgraph_given_clause") < text.rindex(
+            "response = call_llm"
+        )
+    for path in marathon:
+        text = path.read_text(encoding="utf-8")
+        assert "from marathon_llm import call_llm" in text
+        assert "residuals = [p for p in problems" in text

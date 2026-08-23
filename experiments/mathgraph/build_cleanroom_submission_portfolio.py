@@ -28,8 +28,8 @@ variable, specialize h explicitly, and use compact `have`, `rw`, `congrArg`,
 `Eq.symm`, and `Eq.trans` steps. Never assume associativity or commutativity.
 Do not use sorry, admit, axioms, imports, declarations, native_decide, or prose.
 
-Judge feedback from earlier attempts:
-{history.attempts}
+Latest judge status: {history.last_status}
+Latest concise error: {history.last_error}
 
 Attempt: {solver.round}
 
@@ -50,8 +50,8 @@ Produce one complete Lean file exposing `def submission : Goal := ...`.
 You may prove TRUE from the source law or FALSE with a verified magma.
 Never use sorry, admit, new axioms, or native_decide.
 
-Judge feedback from earlier attempts:
-{history.attempts}
+Latest judge status: {history.last_status}
+Latest concise error: {history.last_error}
 
 Attempt: {solver.round}
 
@@ -280,10 +280,14 @@ def marathon(base, with_llm):
         residuals = [p for p in problems if p.get("id") not in MARATHON_RECORDED]
         residuals.sort(key=lambda p: (len(p.get("equation1", ""))
                                       + len(p.get("equation2", "")), p.get("id", "")))
-        config = {"model": os.environ.get("JUDGE_MARATHON_MODEL", "openai/gpt-oss-120b"),
-                  "max_output_tokens": 60000, "temperature": 0.0,
-                  "reasoning_effort": "medium", "use_seed": True, "seed": 0,
+        model_name = os.environ.get(
+            "JUDGE_MARATHON_MODEL", "openai/gpt-oss-120b"
+        )
+        config = {"model": model_name, "max_output_tokens": 60000,
+                  "temperature": 0.0, "use_seed": True, "seed": 0,
                   "http_timeout_seconds": 600.0}
+        if "gpt-oss" in model_name.lower():
+            config["reasoning_effort"] = "low"
         for problem in residuals:
             if time.monotonic() + 15 >= started + budget:
                 break
@@ -349,10 +353,10 @@ def main():
     base = BASE.read_text(encoding="utf-8")
     precision = precision_base(base)
     outputs = {
-        "solo_gemma": solo_deterministic(precision, "gemma"),
-        "solo_oss": solo_deterministic(base, "oss"),
-        "marathon_gemma": marathon(precision, False),
-        "marathon_oss": marathon(base, False),
+        "solo_gemma": solo(precision, "gemma"),
+        "solo_oss": solo(base, "oss"),
+        "marathon_gemma": marathon(precision, True),
+        "marathon_oss": marathon(base, True),
     }
     for name, text in outputs.items():
         compile(text, str(DESTINATIONS[name]), "exec")

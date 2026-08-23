@@ -79,6 +79,11 @@ def test_submission_contains_no_external_specialist_payload_markers():
         "sair-distillation",
     )
     assert not any(marker in text for marker in forbidden)
+    lower = text.lower()
+    assert "st" + "air" not in lower
+    assert "base64" not in lower
+    assert "zlib" not in lower
+    assert "_payload" not in lower
 
 
 def test_all_official_order5_law_strings_parse():

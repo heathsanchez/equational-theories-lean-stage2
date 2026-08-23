@@ -9,6 +9,7 @@ import json
 import sys
 import time
 import heapq
+import textwrap
 from collections import defaultdict, deque
 from itertools import permutations, product
 
@@ -28,8 +29,8 @@ variable, specialize h explicitly, and use compact `have`, `rw`, `congrArg`,
 `Eq.symm`, and `Eq.trans` steps. Never assume associativity or commutativity.
 Do not use sorry, admit, axioms, imports, declarations, native_decide, or prose.
 
-Judge feedback from earlier attempts:
-{history.attempts}
+Latest judge status: {history.last_status}
+Latest concise error: {history.last_error}
 
 Attempt: {solver.round}
 
@@ -1920,6 +1921,114 @@ def structured_model_candidate(source, target):
     return None
 
 
+def affine_term_signature(term, order, left_weight, right_weight, offset):
+    """Evaluate a term symbolically for a*x + b*y + c modulo order."""
+    if term[0] == "var":
+        return {term[1]: 1 % order}, 0
+    left_coefficients, left_constant = affine_term_signature(
+        term[1], order, left_weight, right_weight, offset
+    )
+    right_coefficients, right_constant = affine_term_signature(
+        term[2], order, left_weight, right_weight, offset
+    )
+    coefficients = {}
+    for variable in set(left_coefficients) | set(right_coefficients):
+        value = (
+            left_weight * left_coefficients.get(variable, 0)
+            + right_weight * right_coefficients.get(variable, 0)
+        ) % order
+        if value:
+            coefficients[variable] = value
+    constant = (
+        left_weight * left_constant
+        + right_weight * right_constant
+        + offset
+    ) % order
+    return coefficients, constant
+
+
+def affine_equation_signature(
+    equation, order, left_weight, right_weight, offset
+):
+    left_coefficients, left_constant = affine_term_signature(
+        equation[0], order, left_weight, right_weight, offset
+    )
+    right_coefficients, right_constant = affine_term_signature(
+        equation[1], order, left_weight, right_weight, offset
+    )
+    variables = set(left_coefficients) | set(right_coefficients)
+    difference = {
+        variable: (
+            left_coefficients.get(variable, 0)
+            - right_coefficients.get(variable, 0)
+        ) % order
+        for variable in variables
+    }
+    difference = {
+        variable: value for variable, value in difference.items() if value
+    }
+    return difference, (left_constant - right_constant) % order
+
+
+def generated_affine_model_candidate(source, target):
+    """Synthesize small modular affine countermodels from the equations."""
+    for order in range(2, 10):
+        for left_weight in range(order):
+            for right_weight in range(order):
+                for offset in range(order):
+                    source_difference = affine_equation_signature(
+                        source, order, left_weight, right_weight, offset
+                    )
+                    if source_difference != ({}, 0):
+                        continue
+                    target_coefficients, target_constant = (
+                        affine_equation_signature(
+                            target,
+                            order,
+                            left_weight,
+                            right_weight,
+                            offset,
+                        )
+                    )
+                    if not target_coefficients and target_constant == 0:
+                        continue
+                    assignment = {
+                        variable: 0 for variable in target[2]
+                    }
+                    if target_constant == 0:
+                        variable = min(target_coefficients)
+                        assignment[variable] = 1
+                    witness = tuple(
+                        assignment[variable] for variable in target[2]
+                    )
+                    flat_table = tuple(
+                        (
+                            left_weight * left
+                            + right_weight * right
+                            + offset
+                        ) % order
+                        for left in range(order)
+                        for right in range(order)
+                    )
+                    serialized = serialize_flat_table(flat_table, order)
+                    if replay_countermodel(
+                        source,
+                        target,
+                        flat_table,
+                        order,
+                        witness,
+                        serialized,
+                    ):
+                        return (
+                            "affine-modular",
+                            order,
+                            flat_table,
+                            witness,
+                            (left_weight, right_weight, offset),
+                        )
+    return None
+
+
 def finish_structured_model_candidate(source, target, found):
     if found is None:
         return False
@@ -1933,6 +2042,28 @@ def finish_structured_model_candidate(source, target, found):
             "order": order,
             "certificate_bytes": code_bytes,
             "witness_cardinality": len(set(witness)),
+        }, separators=(",", ":")),
+        file=sys.stderr,
+        flush=True,
+    )
+    if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
+        return False
+    return judge("false", code).get("status") == "accepted"
+
+
+def finish_generated_affine_candidate(source, target, found):
+    if found is None:
+        return False
+    name, order, table, witness, parameters = found
+    code = emit_fin_certificate(table, order)
+    code_bytes = len(code.encode("utf-8"))
+    print(
+        "MATHGRAPH_METRICS " + json.dumps({
+            "portfolio": "generated-affine-model",
+            "family": name,
+            "order": order,
+            "parameters": parameters,
+            "certificate_bytes": code_bytes,
         }, separators=(",", ":")),
         file=sys.stderr,
         flush=True,
@@ -3195,6 +3326,52 @@ def judge(verdict, code):
     print(json.dumps({"call": "judge", "verdict": verdict, "code": code}), flush=True)
     response = read_message()
     return response if response is not None else {}
+
+
+def call_llm(context):
+    print(json.dumps({"call": "llm", "context": context}), flush=True)
+    response = read_message()
+    return response if response is not None else {}
+
+
+def extract_llm_proof(text):
+    if not isinstance(text, str):
+        return None
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.split("\n", 1)[-1]
+        if text.endswith("```"):
+            text = text[:-3]
+    try:
+        payload = json.loads(text.strip())
+    except (json.JSONDecodeError, ValueError):
+        left, right = text.find("{"), text.rfind("}")
+        if left < 0 or right <= left:
+            return None
+        try:
+            payload = json.loads(text[left:right + 1])
+        except (json.JSONDecodeError, ValueError):
+            return None
+    proof = payload.get("proof") if isinstance(payload, dict) else None
+    if not isinstance(proof, str):
+        return None
+    proof = proof.strip()
+    if proof.startswith("by\n"):
+        proof = proof[3:].lstrip()
+    forbidden = ("sorry", "admit", "axiom", "theorem", "def submission",
+                 "import ", "native_decide")
+    if (not proof or len(proof.encode()) > 90000
+            or any(token in proof for token in forbidden)):
+        return None
+    return proof
+
+
+def make_llm_true_certificate(proof):
+    proof = textwrap.dedent(proof)
+    body = "\n".join("  " + line if line.strip() else ""
+                       for line in proof.splitlines())
+    return ("import JudgeProblem\n\ndef submission : Goal := by\n"
+            "  intro G _ h\n" + body + "\n")
 
 
 def term_depth(term):
@@ -5734,6 +5911,111 @@ class CompactSuperposition:
                 break
         return self.target_proof(self.rules())
 
+    def solve_given_clause(self, maximum_given=512, focus_per_age=4):
+        """Run a bounded age/goal given-clause schedule over replayable rules."""
+        passive = list(self.clauses)
+        active = []
+        age = {id(clause): index for index, clause in enumerate(passive)}
+        next_age = len(passive)
+        selected_count = 0
+
+        def active_rules():
+            output = []
+            for clause in active:
+                oriented = self.orient(clause)
+                if oriented is not None:
+                    output.append(oriented)
+            output.sort(key=self.target_score)
+            return output[:self.limits["maximum_rules"]]
+
+        while (
+            passive
+            and selected_count < maximum_given
+            and len(self.clauses) < self.limits["maximum_clauses"]
+            and not self.expired()
+        ):
+            rules = active_rules()
+            goal = self.target_proof(rules)
+            if goal is not None:
+                return goal
+            if selected_count % (focus_per_age + 1) == focus_per_age:
+                index = min(
+                    range(len(passive)),
+                    key=lambda item: age.get(id(passive[item]), 10 ** 18),
+                )
+            else:
+                index = min(
+                    range(len(passive)),
+                    key=lambda item: (
+                        self.target_score(passive[item]),
+                        age.get(id(passive[item]), 10 ** 18),
+                    ),
+                )
+            selected = passive.pop(index)
+            selected = self.interreduce(selected, rules)
+            active.append(selected)
+            selected_count += 1
+            self.rounds = selected_count
+
+            rules = active_rules()
+            goal = self.target_proof(rules)
+            if goal is not None:
+                return goal
+
+            proposals = []
+            for other_index, other in enumerate(active):
+                pairs = (
+                    (selected, other, selected_count, other_index),
+                    (other, selected, other_index, selected_count),
+                )
+                for outer, inner, outer_index, inner_index in pairs:
+                    for path in self.m.nonvariable_positions(
+                        outer.lhs,
+                        maximum_depth=self.limits["maximum_depth"],
+                        include_root=True,
+                    ):
+                        if self.expired():
+                            break
+                        proposal = self.critical_pair(
+                            outer, inner, outer_index, inner_index, path
+                        )
+                        if proposal is None:
+                            continue
+                        proposal = self.interreduce(proposal, rules)
+                        proposals.append((self.target_score(proposal), proposal))
+            proposals.sort(key=lambda item: item[0])
+            for _, proposal in proposals[
+                :self.limits["new_clauses_per_round"]
+            ]:
+                before = len(self.clauses)
+                if self.add_clause(proposal):
+                    self.superpositions += 1
+                    retained = (
+                        self.clauses[-1]
+                        if len(self.clauses) > before
+                        else proposal
+                    )
+                    passive.append(retained)
+                    age[id(retained)] = next_age
+                    next_age += 1
+
+            reduced_passive = []
+            seen = set()
+            for clause in passive:
+                if self.expired():
+                    break
+                clause = self.interreduce(clause, rules)
+                forward = self.alpha_signature(clause.lhs, clause.rhs)
+                reverse = self.alpha_signature(clause.rhs, clause.lhs)
+                signature = min(forward, reverse)
+                if signature in seen:
+                    continue
+                seen.add(signature)
+                reduced_passive.append(clause)
+            passive = reduced_passive
+
+        return self.target_proof(active_rules())
+
     def compile(self, recipe):
         nodes = []
         cache = {}
@@ -6849,8 +7131,39 @@ class TargetGroundedRefutation:
         cache[id(recipe)] = result
         return result
 
-    def solve(self):
-        recipe = self.search.solve()
+    def schematic_target_closure(self):
+        """Instantiate a derived schematic equality that covers the goal."""
+        target_left = self.encode_rigid(self.target[0])
+        target_right = self.encode_rigid(self.target[1])
+        for clause in sorted(
+            self.search.clauses, key=self.search.target_score
+        ):
+            for reverse in (False, True):
+                left = clause.rhs if reverse else clause.lhs
+                right = clause.lhs if reverse else clause.rhs
+                mapping = {}
+                if not self.search.m.match_term(left, target_left, mapping):
+                    continue
+                if not self.search.m.match_term(right, target_right, mapping):
+                    continue
+                variables = (
+                    self.search.m.term_variables(left)
+                    | self.search.m.term_variables(right)
+                )
+                if not variables <= set(mapping):
+                    continue
+                proof = self.search.instantiate(clause, mapping)
+                if reverse:
+                    proof = Recipe(
+                        proof.rhs, proof.lhs, "symmetry", (proof,)
+                    )
+                if (proof.lhs, proof.rhs) == (target_left, target_right):
+                    return proof
+        return None
+
+    def compile_recipe(self, recipe):
+        if recipe is None:
+            recipe = self.schematic_target_closure()
         if recipe is None:
             return None
         recipe = self.inline_recipe(recipe)
@@ -6877,16 +7190,48 @@ class TargetGroundedRefutation:
             return None
         return nodes, root
 
+    def solve(self):
+        return self.compile_recipe(self.search.solve())
 
-def finish_target_grounded_candidate(source, target, engine, found):
+    def solve_given_clause(self, maximum_given=512, focus_per_age=4):
+        recipe = self.search.solve_given_clause(
+            maximum_given=maximum_given,
+            focus_per_age=focus_per_age,
+        )
+        return self.compile_recipe(recipe)
+
+
+def compact_lean_have_bindings(code):
+    """Let Lean infer repetitive local equality types in large DAG proofs."""
+    output = []
+    for line in code.splitlines():
+        if (
+            line.lstrip().startswith("have ")
+            and " : " in line
+            and " := " in line
+        ):
+            declaration, expression = line.split(" := ", 1)
+            name, explicit_type = declaration.split(" : ", 1)
+            if name.strip().startswith("have ") and explicit_type:
+                line = name + " := " + expression
+        output.append(line)
+    return "\n".join(output) + "\n"
+
+
+def finish_target_grounded_candidate(
+    source, target, engine, found, portfolio="target-grounded-refutation"
+):
     if found is None:
         return False
     nodes, root = found
     code, proof_nodes = make_dag_certificate(target, nodes, root)
     code_bytes = len(code.encode("utf-8"))
+    if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
+        code = compact_lean_have_bindings(code)
+        code_bytes = len(code.encode("utf-8"))
     print(
         "MATHGRAPH_METRICS " + json.dumps({
-            "portfolio": "target-grounded-refutation",
+            "portfolio": portfolio,
             "found": True,
             "clauses": len(engine.search.clauses),
             "rounds": engine.search.rounds,
@@ -6900,6 +7245,48 @@ def finish_target_grounded_candidate(source, target, engine, found):
     if code_bytes > EqualitySearch.MAX_CERTIFICATE_BYTES:
         return False
     return judge("true", code).get("status") == "accepted"
+
+
+def run_mathgraph_given_clause(source, target, timeout):
+    """Last-resort generic proof search with independent replay."""
+    seconds = min(15.0, max(0.5, timeout / 4.0))
+    limits = dict(COMPACT_SUPERPOSITION_PROBE)
+    limits.update({
+        "seconds": seconds,
+        "maximum_term_size": 65,
+        "maximum_replay_term_size": 260,
+        "maximum_depth": 12,
+        "maximum_rules": 768,
+        "maximum_rounds": 64,
+        "new_clauses_per_round": 512,
+        "maximum_clauses": 12000,
+        "normalization_steps": 256,
+        "maximum_proof_nodes": 50000,
+    })
+    engine = None
+    try:
+        engine = TargetGroundedRefutation(
+            source,
+            target,
+            time.monotonic() + seconds,
+            limits,
+        )
+        found = engine.solve_given_clause(
+            maximum_given=512,
+            focus_per_age=4,
+        )
+    except (
+        KeyError, IndexError, MemoryError, RecursionError, TypeError,
+        ValueError,
+    ):
+        found = None
+    return finish_target_grounded_candidate(
+        source,
+        target,
+        engine,
+        found,
+        portfolio="mathgraph-given-clause",
+    )
 
 
 def finish_bridge_ir_candidate(source, target, search, found, portfolio):
@@ -7331,6 +7718,15 @@ def run_solo():
         ):
             return
 
+    # Generate, replay, and certify modular affine models at runtime.  The
+    # family is described by three coefficients rather than stored tables.
+    try:
+        affine_found = generated_affine_model_candidate(source, target)
+    except (IndexError, MemoryError, RecursionError, TypeError, ValueError):
+        affine_found = None
+    if finish_generated_affine_candidate(source, target, affine_found):
+        return
+
     # A tiny equation-blind bank of crossed-coordinate finite geometries.
     # It runs after the cheaper promoted CSP routes so it cannot replace an
     # existing small certificate with a slower large-carrier certificate.
@@ -7420,7 +7816,21 @@ def run_solo():
     ):
         return
 
-    # Unresolved: EOF is intentional. Never guess and never ask an LLM.
+    if run_mathgraph_given_clause(source, target, timeout):
+        return
+
+    for round_index in range(3):
+        response = call_llm({"round": round_index})
+        if "error" in response:
+            break
+        proof = extract_llm_proof(response.get("response"))
+        if proof is None:
+            continue
+        code = make_llm_true_certificate(proof)
+        if judge("true", code).get("status") == "accepted":
+            return
+
+    # Unresolved: EOF is intentional. Never guess.
 
 
 def main():

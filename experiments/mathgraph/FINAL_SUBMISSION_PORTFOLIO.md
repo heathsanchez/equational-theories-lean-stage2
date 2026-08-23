@@ -1,30 +1,34 @@
-# MathGraph deterministic Stage 2 portfolio
+# MathGraph Stage 2 portfolio
 
-This is the recommended four-file, zero-LLM submission portfolio. Each file is
-built from `submissions/mathgraph_cleanroom/solver.py`; no file calls a model,
-contains a credential, performs a network request, or embeds an external
-specialist payload.
+This is the recommended four-file submission portfolio. Each file is built
+from `submissions/mathgraph_cleanroom/solver.py`, uses only MathGraph source,
+contains no credential or direct-network logic, and carries no third-party
+solver payload, table bank, link, or branding. Competition-provided models are
+used only after all deterministic, replay-checked routes abstain.
 
 ## Upload map
 
 | Track | Model slot | Upload file | Deterministic role |
 |---|---|---|---|
-| Solo | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_solo_gemma/solver.py` | Precision configuration; strongest transfer evidence and lower worst-case cost |
-| Solo | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_solo_oss/solver.py` | Coverage hedge; wider compact superposition and two-seed Fin-5 repair |
-| Marathon | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_marathon_gemma/solver.py` | Precision manifest pass for maximum breadth |
-| Marathon | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_marathon_oss/solver.py` | Coverage manifest pass; aggressive routes scale down automatically with per-row remaining budget |
+| Solo | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_solo_gemma/solver.py` | Precision deterministic configuration, then three proof-only model attempts with concise judge feedback |
+| Solo | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_solo_oss/solver.py` | Coverage deterministic configuration, then four full-certificate model attempts with concise judge feedback |
+| Marathon | Google: Gemma 4 31B | `submissions/mathgraph_cleanroom_marathon_gemma/solver.py` | Precision batch pass, then model triage over deterministic residuals |
+| Marathon | OpenAI: gpt-oss-120b | `submissions/mathgraph_cleanroom_marathon_oss/solver.py` | Coverage batch pass, then model triage over deterministic residuals |
 
-The selected model name is operationally inert because the files make zero
-model calls. The four slots are used for deterministic search diversity.
+Solo candidates are accepted only after immediate official-judge verification.
+Marathon candidates are scored by that same verifier at the end of the run;
+invalid candidates and abstentions both score zero, so the residual pass cannot
+remove a deterministic point.
 
 ## Provenance boundary
 
 The cleanroom line starts from
 `experiments/mathgraph/regressions/solver_4c0023b.py` and contains independently
 implemented generic finite-model search, local table repair, equality search,
-and compact superposition. Tests scan the core and every upload file for known
-external integration identifiers, URLs, artifact names, and credentials. None
-are present.
+compact superposition, a proof-carrying given-clause schedule, and modular
+affine model synthesis. Tests scan the core and every upload file for foreign
+identifiers, URLs, compressed payload machinery, artifact names, and
+credentials. None are present.
 
 The historical 794/800 solver remains byte-for-byte unchanged at 313,240 bytes
 and SHA-256
@@ -41,6 +45,17 @@ It is not an upload candidate.
   precision compact-superposition route on all 400 `hard3` rows.
 - The aggressive finite repair solved neither of the two precision FALSE
   residuals. Therefore aggressive search is retained only as slot diversity.
+
+### New clean-room general mechanisms
+
+- The bounded age/goal given-clause route closes 3/6 of the common hardest
+  theorem residuals locally, including `evaluation_hard_0196`; every result is
+  reconstructed and independently replayed. Official Lean requalification of
+  these new certificates remains required before claiming leaderboard gains.
+- Runtime modular-affine synthesis finds countermodels for 154/205 FALSE
+  `hard3` rows and 483/500 FALSE `normal` rows. It derives each operation from
+  three coefficients, replays the source law and target witness, and stores no
+  per-problem model table.
 
 ### Released evaluation regression result
 
@@ -64,18 +79,19 @@ fresh transfer evidence.
 - Solo platform gate: 66/66 solver cases and all auxiliary checks passed.
 - Marathon platform gate: 25/25.
 - Focused cleanroom/portfolio routes: 18/18 after the order-5 parser test.
-- Both Solo files officially accepted TRUE and FALSE smoke certificates with
-  zero model calls.
-- Both Marathon files scored 1/1 with a zero-token budget.
-- All upload files are below 278 KB, well under the 500 KB cap.
+- Both Solo files pass the local stdin/stdout protocol smoke test and retain
+  immediate judge verification before model-generated submission.
+- Marathon retains the previously verified deterministic pass and now queues
+  model calls only for its residual set.
+- All upload files are below 293 KB, well under the 500 KB cap.
 
 ## Decision
 
-The precision configuration is the primary unseen-evaluation bet. The coverage
-configuration is a deliberate second-slot hedge: it has seven official gains
-on released evaluation data but zero marginal `hard3` transfer. This avoids
-mistaking development-set improvement for general capability while still using
-the legal extra slots to cover search-order variance.
+The precision configuration remains the primary unseen-evaluation bet. The
+coverage configuration is the second-slot search-order hedge. Both now use the
+assigned competition model only after deterministic abstention, so all four
+legal track/model opportunities contribute rather than duplicating a zero-model
+solver.
 
 Rebuild and verify with:
 
