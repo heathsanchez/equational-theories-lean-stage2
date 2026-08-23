@@ -1,0 +1,3 @@
+trigger: normal0040-whole-context-specialization-rival-v1
+protocol: 5d737ff4942cf6dd6e8ccee9f1b8413668d64b70
+executable: dfcb2053fdd4890fca551b0c68684e9f2eb405d9
