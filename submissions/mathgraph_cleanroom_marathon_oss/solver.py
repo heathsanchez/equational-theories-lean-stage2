@@ -7154,7 +7154,12 @@ class TargetGroundedRefutation:
 
 
 def compact_lean_have_bindings(code):
-    """Let Lean infer repetitive local equality types in large DAG proofs."""
+    """Let Lean infer repetitive local equality types in large DAG proofs.
+
+    A bare ``rfl`` has no operands from which Lean can infer its equality type,
+    so reflexive nodes must retain their annotation.  All other emitted proof
+    expressions reference typed local hypotheses and remain inferable.
+    """
     output = []
     for line in code.splitlines():
         if (
@@ -7164,7 +7169,11 @@ def compact_lean_have_bindings(code):
         ):
             declaration, expression = line.split(" := ", 1)
             name, explicit_type = declaration.split(" : ", 1)
-            if name.strip().startswith("have ") and explicit_type:
+            if (
+                name.strip().startswith("have ")
+                and explicit_type
+                and expression.strip() != "rfl"
+            ):
                 line = name + " := " + expression
         output.append(line)
     return "\n".join(output) + "\n"
@@ -7201,7 +7210,7 @@ def finish_target_grounded_candidate(
 
 def run_mathgraph_given_clause(source, target, timeout):
     """Last-resort generic proof search with independent replay."""
-    seconds = min(15.0, max(0.5, timeout / 4.0))
+    seconds = min(30.0, max(0.5, timeout / 4.0))
     limits = dict(COMPACT_SUPERPOSITION_PROBE)
     limits.update({
         "seconds": seconds,

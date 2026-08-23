@@ -61,6 +61,11 @@ def test_given_clause_route_closes_hard_case_with_replay():
     compact = solver.compact_lean_have_bindings(code)
     assert len(compact.encode("utf-8")) < 100000
     assert "sorry" not in compact
+    assert not any(
+        line.lstrip().startswith("have ") and line.rstrip().endswith(" := rfl")
+        and " : " not in line
+        for line in compact.splitlines()
+    )
 
 
 def test_affine_family_is_generated_and_independently_replayed():
