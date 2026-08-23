@@ -1,0 +1,1 @@
+Trigger stable specialization-compilation factorization gate after frozen protocol and executable.
