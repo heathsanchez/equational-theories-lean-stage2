@@ -1,0 +1,39 @@
+{
+  "schema": "mathgraph.methodology-0036-boundary-context-lift.protocol.v1",
+  "frozen_before_execution": true,
+  "id": "evaluation_normal_0036",
+  "parent_decision": "PLATEAU_SIGNATURE_INVARIANT",
+  "observed_parent_invariant": {
+    "lhs_kind": "op",
+    "rhs_kind": "op",
+    "subterm_relation": "NONE"
+  },
+  "question": "Does the smallest operator that acts below the invariant boundary scale—an exact one-hole contextual lift of a valid source instance at a proper subterm of a minimum boundary endpoint—strictly contract the separation-8 residual?",
+  "operator": {
+    "name": "BOUNDARY_CONTEXT_LIFT",
+    "scope": "Only minimum cross-component boundary endpoints of the frozen post-contractor 0036 state.",
+    "construction": "Choose a proper subterm u of a boundary endpoint T, match either source side to u, instantiate remaining source variables from the frozen L1 fill pool, obtain the valid source equality u=v, and lift that equality through exactly the one-hole context T=C[u] to produce C[u]=C[v].",
+    "proof_requirement": "Every accepted contextual edge must be represented by a source-instance proof node followed only by symmetry when required and the exact chain of congruence nodes induced by the one-hole context; a strict contractor counts only if replay_dag accepts the resulting target closure when closure occurs.",
+    "isolation": "Direct source and intermediate congruence proof nodes are proof-only; only the final context-lifted equality is admitted as a graph edge for scoring."
+  },
+  "constraints": {
+    "operative_term_cap": 19,
+    "expected_parent_separation": 8,
+    "boundary_scope": "minimum_cross_component_boundary_only",
+    "subterm_scope": "proper_subterms_only",
+    "fill_pool": "frozen_L1_fill_pool",
+    "maximum_candidates": 100000,
+    "report_examples": 20
+  },
+  "decision_rule": {
+    "BOUNDARY_CONTEXT_LIFT_CONTRACTS": "At least one valid context-lifted source consequence reduces cross-component separation below 8; report the best contraction and whether applying it yields replayable closure.",
+    "BOUNDARY_CONTEXT_LIFT_EXHAUSTED": "All bounded context-lifted source consequences satisfying the frozen protocol leave separation at least 8.",
+    "MEASUREMENT_FAILURE": "Frozen parent facts or the prospectively observed plateau invariant fail to reproduce, or a purported proof object fails replay when closure is claimed."
+  },
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "notes": "This protocol is committed before the executable. It attacks only the invariant-supported granularity obstruction; it does not inspect or tune against any sealed transfer case."
+}
