@@ -37,8 +37,10 @@ jobs:
           test "$(git rev-list --count 7c185fa4b9315c65232898461b4621674cf1189b..558da77cb10c76509eb7da394f74177132dfedf7)" -ge 1
           test "$(git rev-list --count 8e7ed54ceb283b4a6853579f2439ad0bf7f28ffa..e118a4561e2712217c7179a9107ef65a97adff21)" -ge 1
           test "$(git rev-list --count 50d637d9618d14b4cce0ec973c674cef6b3e77aa..06cdb072d1581ab49c354a021a52323b83b9ffb8)" -ge 1
+          test "$(git rev-list --count e88d794f0815d24c9dc3cfffe38990b363d9ed1a..2fa67a5ee3cfe2ecdc1a935a983dcc9d73b533e3)" -ge 1
           git show 8e7ed54ceb283b4a6853579f2439ad0bf7f28ffa:experiments/mathgraph/protocols/methodology-0036-direct-plateau-depth2-v1.json >/dev/null
           git show 50d637d9618d14b4cce0ec973c674cef6b3e77aa:experiments/mathgraph/protocols/methodology-0036-plateau-invariant-v1.json >/dev/null
+          git show e88d794f0815d24c9dc3cfffe38990b363d9ed1a:experiments/mathgraph/protocols/methodology-0036-boundary-context-lift-v1.json >/dev/null
       - name: Fetch frozen historical target-narrowing solver
         run: git fetch origin mathgraph/superposition-selector-tournament-20260820:refs/remotes/origin/mathgraph/superposition-selector-tournament-20260820
       - name: Reproduce 0036 sterility factorization
@@ -69,10 +71,12 @@ jobs:
         run: python experiments/mathgraph/run_methodology_0036_direct_plateau_depth2_v1.py
       - name: Run separation-8 plateau invariant diagnostic
         run: python experiments/mathgraph/run_methodology_0036_plateau_invariant_v1.py
+      - name: Run boundary-context lift gate
+        run: python experiments/mathgraph/run_methodology_0036_boundary_context_lift_v1.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: methodology-0036-prospective-gates-v17
+          name: methodology-0036-prospective-gates-v18
           path: |
             experiments/mathgraph/results/methodology-0036-sterility-factorization-gate.json
             experiments/mathgraph/results/methodology-0036-reentry-congruence-gate-v2.json
@@ -88,4 +92,5 @@ jobs:
             experiments/mathgraph/results/methodology-0036-postcontractor-factorization-v1.json
             experiments/mathgraph/results/methodology-0036-direct-plateau-depth2-v1.json
             experiments/mathgraph/results/methodology-0036-plateau-invariant-v1.json
+            experiments/mathgraph/results/methodology-0036-boundary-context-lift-v1.json
           if-no-files-found: warn
