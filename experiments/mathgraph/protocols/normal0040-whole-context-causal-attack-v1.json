@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.normal0040-whole-context-causal-attack.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "whole_context_run": 32656249585,
+    "decision": "WHOLE_CONTEXT_RESCUES_CONSTRUCTION_AND_REPLAY",
+    "distance": 2,
+    "lhs_classes": 5,
+    "rhs_classes": 5,
+    "common_specialization_compatible_cells": 10,
+    "coherent_specializations": 62756,
+    "whole_context_replay_valid_pairs": 62756,
+    "payload_only_constructible": 0
+  },
+  "intervention": "For each common-specialization-compatible class pair, recover the same simultaneous first-order unifier theta, specialize both source-law substitutions and both entire host terms coherently, retain the same structural path and source-law orientation, construct and replay-check the two existing-law contextual equalities, install only that pair into the frozen d=2 theorem state, and recompute closure/cross-distance.",
+  "ranking": "No target-shaped ranking. Enumerate deterministically by existing class order, term order, interaction order, and common-specialization discovery order; deduplicate extensionally before isolation tests.",
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_pair_checks_per_cell": 250000,
+    "maximum_candidates_per_cell": 6,
+    "maximum_isolation_tests": 60,
+    "seconds_isolation": 8.0,
+    "seconds_ablation": 20.0,
+    "maximum_term_size": 170,
+    "replay_maximum_term_size": 190,
+    "replay_maximum_nodes": 30000
+  },
+  "admission": {
+    "R1_COMMON_SPECIALIZATION_WITNESS": true,
+    "R2_WHOLE_CONTEXT_SPECIALIZATION": true,
+    "R3_BOTH_ITEMS_REPLAY_VALID_TO_ORIGINAL_SOURCE_LAW": true,
+    "R4_NO_NEW_OPERATOR_FAMILY": true,
+    "R5_DISTANCE_CONTRACTS_TO_AT_MOST_1_OR_CLOSES": true,
+    "R6_ABLATION_RESTORES_DISTANCE_2_OR_REMOVES_CLOSURE": true
+  },
+  "decision_table": {
+    "PASS_CLOSURE": "a replay-valid whole-context-specialized existing-law pair closes the theorem and ablation removes closure",
+    "PASS_2_TO_1_CAUSAL": "a replay-valid whole-context-specialized existing-law pair lowers d from 2 to at most 1 and ablation restores d=2",
+    "WHOLE_CONTEXT_REPLAY_VALID_NO_CAUSAL_ATTACHMENT": "whole-context specialization compiles to replay-valid pairs but none contracts the real theorem cut under the frozen intervention bounds",
+    "NO_REPLAYABLE_WHOLE_CONTEXT_PAIR": "the parent whole-context replay rescue does not reproduce under the causal attack enumeration"
+  },
+  "scientific_rule": "This is an ATTACK gate, not another representation test. Whole-context specialization earns no theorem-level credit unless installation changes the frozen real theorem geometry and ablation reverses that change. No new proof rule, operator family, target-derived selector, or post-hoc budget change is permitted."
+}
