@@ -1,0 +1,41 @@
+{
+  "schema": "mathgraph.methodology-0036-component-cut-factorization.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32602558205,
+    "current_frame_adequate": true,
+    "reentry_edges": 9,
+    "proper_overlap_decision": "R3_OVERLAP_INSUFFICIENT",
+    "variable_overlap_decision": "R3_VARIABLE_INTERFACE_INSUFFICIENT",
+    "specialization_decision": "R2_GENERIC_UNIFICATION_SIGNAL"
+  },
+  "reframe": "Measure progress on the live equality-component cut rather than by local target-subterm coverage or pairwise interface availability.",
+  "states": ["S0_target_narrowing", "S1_target_narrowing_plus_9_reentry_edges"],
+  "measurements": {
+    "cross_distance": "minimum symmetric structural distance between any term in the component containing target_lhs and any term in the component containing target_rhs",
+    "boundary_pairs": "all minimizers of cross_distance up to a fixed reporting cap",
+    "target_coverage_by_component": "target-basis coverage of terms in each target component",
+    "coverage_distance_association": "compare median opposite-component distance for generated endpoints with positive target-basis gain versus zero gain",
+    "cut_signature": "(endpoint root kinds, absolute term-size difference, absolute variable-count difference, subterm-direction flag) for each minimum-distance boundary pair"
+  },
+  "constraints": {
+    "maximum_boundary_pairs_reported": 40,
+    "maximum_endpoint_records": 500,
+    "operative_term_cap": 19,
+    "compact_signature_fraction": 0.5,
+    "no_new_edges": true,
+    "no_new_operator": true,
+    "no_budget_increase": true
+  },
+  "decision_order": ["MEASUREMENT_FAILURE", "CUT_ALREADY_CONTRACTED_BY_REENTRY", "TARGET_COVERAGE_SURROGATE", "COMPACT_CUT_OBLIGATION", "MULTIMODAL_CUT"],
+  "decision_table": {
+    "CUT_ALREADY_CONTRACTED_BY_REENTRY": "S1 cross-distance is strictly smaller than S0; reentry is partial causal progress even without closure.",
+    "TARGET_COVERAGE_SURROGATE": "S1 does not contract the cut and the positive-target-gain endpoint median opposite-component distance is not smaller than the zero-gain median.",
+    "COMPACT_CUT_OBLIGATION": "S1 does not contract globally, target gain remains associated with cut proximity, and one cut signature accounts for at least 50% of minimum-distance boundary pairs.",
+    "MULTIMODAL_CUT": "S1 does not contract, target gain remains associated with cut proximity, and no cut signature reaches 50% of minimum-distance boundary pairs.",
+    "MEASUREMENT_FAILURE": "target components cannot be reconstructed or frozen parent counts fail."
+  },
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"],
+  "scientific_rule": "Diagnostic only. Do not select or install a new proof operator in this experiment. The next intervention, if any, must be derived from the measured cut rather than target-subterm coverage."
+}

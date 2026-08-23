@@ -1,0 +1,41 @@
+{
+  "schema": "mathgraph.methodology-0036-cut-ranking-tournament.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32602722306,
+    "measurement_decision": "MEASUREMENT_FAILURE",
+    "interpretable_fact": "S0 lacked a measurable two-sided target cut; after the 9 already-audited reentry edges S1 had two live disconnected components, LHS size 4 and RHS size 19, with measured cross-distance 10. No scientific claim is made from the post-hoc coverage association in that failed gate."
+  },
+  "reframe": "Once reentry creates both live target regions, rank replay-valid source-law consequences by predicted contraction of the actual component cut rather than by local target-subterm coverage.",
+  "frozen_state": "target narrowing plus the same 9 reentry edges only",
+  "candidate_family": {
+    "form": "direct instances of the original source law, whose source-x substitution is already a member of either live target component",
+    "anchor_terms": "all live target-component terms of tree size <= 9",
+    "fill_terms": "target variables plus distinct live-component terms and target proper subterms of tree size <= 5, sorted by the historical term key and truncated to 16",
+    "enumeration": "all ordered (anchor_x, y_fill, z_fill) triples, both target components, deduplicated by instantiated equality",
+    "admission": "both instantiated sides tree size <= 19 and equality edge not already present in either orientation",
+    "maximum_pool": 20000
+  },
+  "arms": {
+    "A_TARGET_COVERAGE": "install up to 24 candidates ranked by number of alpha-normalized target-basis subterms in the non-anchor endpoint; deterministic historical-term-key tie break",
+    "B_CUT_CONTRACTION": "install the same number of candidates ranked first by predicted distance of the non-anchor endpoint to the opposite live component, then historical-term-key tie break"
+  },
+  "measurements": [
+    "number of candidates predicted to contract below frozen cross-distance 10",
+    "post-install target-component cross-distance",
+    "component join",
+    "replayable target closure",
+    "overlap between A and B selected candidate sets"
+  ],
+  "decision_order": ["MEASUREMENT_FAILURE", "NO_ONE_STEP_CUT_CONTRACTOR", "CUT_CONTRACTOR_CAUSAL", "TARGET_RANKING_EQUIVALENT", "CONTRACTOR_PREDICTION_FAILS"],
+  "decision_table": {
+    "NO_ONE_STEP_CUT_CONTRACTOR": "the frozen common candidate pool contains zero candidates with predicted opposite-component distance below 10",
+    "CUT_CONTRACTOR_CAUSAL": "B strictly reduces cross-distance or joins/closes while A does not achieve an equal-or-better result",
+    "TARGET_RANKING_EQUIVALENT": "A achieves cross-distance, join, and closure performance equal to or better than B",
+    "CONTRACTOR_PREDICTION_FAILS": "positive predicted contractors exist but B does not reduce the measured post-install cut",
+    "MEASUREMENT_FAILURE": "the S1 parent state, component sizes, 9 reentry edges, cap 19, or matched arm count cannot be reconstructed"
+  },
+  "attack_rule": "If CUT_CONTRACTOR_CAUSAL, ablate cut ranking while preserving candidate pool before any transfer. If NO_ONE_STEP_CUT_CONTRACTOR, do not enlarge the pool immediately; factor why the source law cannot produce a one-step contractor from the live cut.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}

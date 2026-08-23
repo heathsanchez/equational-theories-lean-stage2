@@ -1,0 +1,42 @@
+{
+  "schema": "mathgraph.methodology-0036-goal-cut-descaffold.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32603053797,
+    "decision": "CUT_SIGNAL_CAUSAL",
+    "candidate_pool_count": 35,
+    "contractors": 15,
+    "frozen_cross_distance": 10,
+    "first_contraction_k": {
+      "CUT_BLIND_TARGET": null,
+      "CUT_AWARE": 1,
+      "WRONG_DIRECTION": null
+    }
+  },
+  "scaffold_to_remove": "The current cut-aware score explicitly uses manually labelled L/R target components, anchor_side, and an opposite-component lookup.",
+  "descaffolded_objective": "For each candidate equality, simulate only that candidate edge on the current equality-component partition, then compute the minimum structural distance between the components containing the two raw unresolved goal endpoints. Use no target-subterm basis, no L/R labels, no anchor-side label, and no manually selected opposite component.",
+  "frozen_candidate_pool": "Exactly the same 35 replay-valid direct source-law instances from methodology-0036-cut-ranking-tournament-v1.",
+  "prefix_budgets": [1, 2, 4, 8, 12],
+  "arms": {
+    "A_LABELLED_CUT": "the parent cut-aware ranking by predicted opposite-labelled-component distance",
+    "B_RAW_GOAL_GRAPH": "rank by counterfactual post-action separation of the two raw unresolved goal endpoints in the equality graph",
+    "C_CUT_BLIND_TARGET": "the existing target-subterm coverage ranking"
+  },
+  "measurements": [
+    "first contraction K",
+    "post-install cross-distance per prefix",
+    "top-k selection overlap between A and B",
+    "component join",
+    "replayable closure"
+  ],
+  "decision_order": ["MEASUREMENT_FAILURE", "DESCAFFOLD_SUCCESS", "DESCAFFOLD_DIFFERENT_BUT_USEFUL", "SCAFFOLD_DEPENDENT"],
+  "decision_table": {
+    "DESCAFFOLD_SUCCESS": "B contracts at K=1, is no worse than A at every preregistered prefix, and never uses privileged component-side metadata.",
+    "DESCAFFOLD_DIFFERENT_BUT_USEFUL": "B contracts by K<=4 but is weaker than A on at least one preregistered prefix.",
+    "SCAFFOLD_DEPENDENT": "A contracts at K=1 but B does not contract by K=4.",
+    "MEASUREMENT_FAILURE": "the frozen 35-candidate pool, 15 contractors, cut 10, component sizes 4/19, cap 19, or 9 reentry edges cannot be reproduced."
+  },
+  "next_if_success": "RECURSE dynamically: after each selected source instance, recompute the raw-goal component separation, rebuild the same lawful candidate family from the changed graph state, and select the next minimum-separation move. Compare against a cut-blind dynamic controller before transfer.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}

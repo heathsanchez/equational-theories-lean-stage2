@@ -1,0 +1,49 @@
+{
+  "schema": "mathgraph.methodology-0036-sterility-factorization.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "discovery_case_only": true,
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "parent_evidence": {
+    "constructor": "historical_target_narrowing",
+    "narrowing_successors": 36,
+    "graph_edges": 45,
+    "missing_target_introduced": 0,
+    "components_joined": 0,
+    "closure": false
+  },
+  "sharp_residual": "lawful search motion exists, but observed motion is sterile with respect to target coverage and component joining",
+  "rivals": {
+    "DISTANCE_SURROGATE": "successors move under the current structural metric while preserving target-subterm coverage; the search objective is rewarding motion that is irrelevant to closure",
+    "COMPOSITION_INTERFACE": "individual successors acquire complementary target-relevant structure, but no jointly compatible pair can compose those gains into a bridge",
+    "OPERATOR_COVERAGE_INVARIANT": "the entire lawful target-narrowing successor family preserves the same missing-target coordinates, so the current constructor family cannot enter the required target-coverage directions",
+    "CURRENT_FRAME_ADEQUATE": "at least one successor directly improves exact target-subterm coverage or a compatible successor pair jointly covers a previously missing target coordinate"
+  },
+  "measurements": [
+    "source_to_target_structural_distance",
+    "successor_to_target_structural_distance",
+    "exact_alpha_target_subterm_coverage",
+    "missing_target_subterm_set",
+    "pairwise_union_coverage",
+    "pairwise_substitution_compatibility_when_available"
+  ],
+  "decision_table": {
+    "DISTANCE_SURROGATE": "some successors improve structural distance but no successor or successor pair improves exact target coverage",
+    "COMPOSITION_INTERFACE": "successors improve complementary target coverage but no compatible pair realizes the union needed for a bridge",
+    "OPERATOR_COVERAGE_INVARIANT": "all successors preserve the source target-coverage signature and no pair improves it",
+    "CURRENT_FRAME_ADEQUATE": "a successor or compatible pair improves target coverage under the frozen constructor"
+  },
+  "attack_controls": {
+    "sham_metric": "compare target coverage to source-subterm coverage so generic syntax growth is not mistaken for target progress",
+    "no_budget_escalation": true,
+    "no_new_constructor": true,
+    "no_transfer_case_loading": true,
+    "no_target_answer_label": true,
+    "no_external_proof_trace": true
+  },
+  "scientific_rule": "This gate diagnoses why the 36 already-lawful successors are sterile. It must not synthesize or promote a new constructor. Mechanism selection occurs only after this decision."
+}

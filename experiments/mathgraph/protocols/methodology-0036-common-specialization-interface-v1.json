@@ -1,0 +1,27 @@
+{
+  "schema": "mathgraph.methodology-0036-common-specialization-interface.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_decision": "R3_VARIABLE_INTERFACE_INSUFFICIENT",
+  "hypothesis": "the useful re-entry equalities and the frozen target-narrowing frontier fail to compose literally because their substitution commitments differ, but some pairs admit one simultaneous first-order common specialization of all conflicting shared-variable images",
+  "rivals": {
+    "R1_SYNCHRONIZED_SPECIALIZATION": "re-entry/frontier pairs gain common-specialization compatibility beyond literal compatibility while the old-frontier-only control does not gain comparably",
+    "R2_GENERIC_SPECIALIZATION": "old-frontier-only pairs gain compatibility at the same order, so specialization is generic extra search rather than re-entry-specific structure",
+    "R3_NO_SPECIALIZATION_RESCUE": "no relevant incompatibility is rescued; the higher-order state hypothesis is unsupported"
+  },
+  "constraints": {
+    "operative_term_cap": 19,
+    "maximum_pairs_per_arm": 50000,
+    "no_new_proof_operator": true,
+    "diagnostic_only": true
+  },
+  "compatibility": "For two source-derived equality nodes, take their recorded source substitutions. Literal compatibility requires identical images on every shared source variable. Common-specialization compatibility requires that the set of equations between conflicting shared-variable images has a simultaneous first-order unifier with occurs check. Report literal-compatible and specialization-rescued pair counts separately.",
+  "matched_control": "Arm A compares frozen old-frontier nodes pairwise. Arm B compares the nine frozen re-entry edges against the same old frontier. The same pair cap and unifier are used in both arms.",
+  "decision_table": {
+    "SYNCHRONIZED_SPECIALIZATION_SIGNAL": "Arm B has at least one specialization rescue and its rescue rate exceeds Arm A",
+    "GENERIC_SPECIALIZATION_SIGNAL": "Arm A rescue rate is greater than or equal to Arm B",
+    "NO_SPECIALIZATION_RESCUE": "Arm B has zero specialization rescues",
+    "MEASUREMENT_FAILURE": "parent reproduction or frozen counts fail"
+  },
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}

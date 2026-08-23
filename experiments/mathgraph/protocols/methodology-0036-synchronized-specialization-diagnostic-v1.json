@@ -1,0 +1,40 @@
+{
+  "schema": "mathgraph.methodology-0036-synchronized-specialization-diagnostic.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32601909799,
+    "current_frame_adequate": true,
+    "reentry_edges": 9,
+    "proper_reentry_overlap_candidates": 0,
+    "variable_reentry_interface_candidates": 108,
+    "variable_reentry_interface_joins": 0,
+    "closure": false
+  },
+  "imported_structural_analogue": {
+    "source_case": "evaluation_normal_0040",
+    "fact": "simultaneous first-order common specialization rescued substitution incompatibilities where literal, alpha, and verified-equality compatibility did not",
+    "use_rule": "Treat this only as a rival representation for 0036; do not assume transfer."
+  },
+  "hypotheses": {
+    "H1_SYNCHRONIZED_SPECIALIZATION": "0036 contains target-relevant old/reentry interface pairs that are incompatible under literal matching but admit a simultaneous first-order common specialization.",
+    "H2_GENERIC_UNIFICATION": "the same rescue rate and target relevance already occur among old-frontier pairs, so reentry is not causal.",
+    "H3_WRONG_STATE_OBJECT": "common specialization does not selectively rescue target-relevant reentry interfaces; stop refining pairwise equality composition."
+  },
+  "constraints": {
+    "maximum_pair_checks_per_arm": 20000,
+    "maximum_term_size_after_specialization": 19,
+    "include_root_positions": false,
+    "include_variable_positions": true,
+    "no_new_proof_operator": true,
+    "no_budget_increase": true
+  },
+  "decision_table": {
+    "R1_SYNCHRONIZED_SPECIALIZATION_SIGNAL": "reentry-conditioned arm has at least one newly unifiable target-relevant interface and exceeds the old-old control in target-relevant rescue count",
+    "R2_GENERIC_UNIFICATION_SIGNAL": "old-old control has equal or greater target-relevant rescue count",
+    "R3_NO_SPECIALIZATION_SIGNAL": "no newly unifiable target-relevant reentry interface exists",
+    "MEASUREMENT_FAILURE": "parent reproduction or bounds fail"
+  },
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"],
+  "scientific_rule": "Diagnostic only. Do not add a substitution proof rule or expose transfer cases until this gate selects R1."
+}

@@ -1,0 +1,41 @@
+{
+  "schema": "mathgraph.methodology-0036-cut-ranking-attack.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32602973012,
+    "decision": "EARLY_CUT_ADVANTAGE",
+    "candidate_pool_count": 35,
+    "predicted_contractors": 15,
+    "frozen_cross_distance": 10,
+    "first_contraction_k": {
+      "A_TARGET_COVERAGE": 16,
+      "B_CUT_CONTRACTION": 1
+    }
+  },
+  "claim_under_attack": "Explicit live component-cut distance is causally useful for selecting productive source-law instances under scarce budget; the effect is not merely due to deterministic ordering or selecting any unusual subset of the same pool.",
+  "frozen_candidate_pool": "Exactly the 35 candidates and deterministic metadata produced by methodology-0036-cut-ranking-tournament-v1. No new candidates, fills, anchors, proof rules, term cap, or reentry edges.",
+  "prefix_budgets": [1, 2, 4, 8, 12],
+  "arms": {
+    "A_CUT_BLIND_TARGET": "same target-subterm-coverage ranking used in the parent ablation",
+    "B_CUT_AWARE": "ascending predicted opposite-component distance",
+    "C_WRONG_DIRECTION_CUT": "descending predicted opposite-component distance, with the same deterministic tie break"
+  },
+  "measurements_per_prefix": [
+    "post-install cross-distance",
+    "component join",
+    "replayable closure",
+    "selected contractor count",
+    "selected-prefix overlap"
+  ],
+  "primary_statistic": "first K producing strict contraction below 10",
+  "decision_order": ["MEASUREMENT_FAILURE", "CUT_SIGNAL_CAUSAL", "ORDERING_CONFOUND", "CUT_SIGNAL_WEAK"],
+  "decision_table": {
+    "CUT_SIGNAL_CAUSAL": "B contracts strictly earlier than both A and C, and C does not match B at the first B-success budget.",
+    "ORDERING_CONFOUND": "C contracts as early as B despite ranking in the explicitly wrong direction, or A/C match B's trajectory through K=12.",
+    "CUT_SIGNAL_WEAK": "B retains some advantage but does not satisfy the strict causal criterion.",
+    "MEASUREMENT_FAILURE": "the frozen 35-candidate pool, 15 contractors, cut 10, 4/19 component sizes, cap 19, or 9 reentry edges cannot be reproduced."
+  },
+  "next_if_causal": "DESCAFFOLD: replace access to target-labelled component sides with a derivable graph-state objective using only the two unresolved goal endpoints and current equality components; then test whether the same ranking emerges. Do not expose transfer cases before descaffolding.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}

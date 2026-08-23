@@ -1,0 +1,50 @@
+{
+  "schema": "mathgraph.methodology-0036-dynamic-goal-cut-controller.protocol.v1",
+  "id": "evaluation_normal_0036",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "run": 32603214345,
+    "decision": "DESCAFFOLD_SUCCESS",
+    "raw_goal_first_contraction_k": 1,
+    "labelled_cut_first_contraction_k": 1,
+    "cut_blind_target_first_contraction_k": null,
+    "raw_goal_and_labelled_prefixes_identical_through_k12": true,
+    "frozen_cut": 10
+  },
+  "question": "If the controller recursively recomputes the same descaffolded raw-goal graph objective after every selected lawful source instance, does it continue making causal progress toward closure, or stall at a new obstruction?",
+  "starting_state": "historical target narrowing plus the same 9 audited reentry edges",
+  "candidate_family": "Regenerate after every move using exactly the lawful direct-source-instance family from the cut-ranking tournament: x anchored in a live unresolved-goal component term of size <=9; fills from raw goal variables, live goal-component terms and raw goal proper subterms of size <=5; historical term-key sort; first 16 fills; both sides <=19; deduplicate existing equality edges; max pool 20000.",
+  "arms": {
+    "A_DYNAMIC_RAW_GOAL": "At each step, counterfactually add each current candidate edge and rank by resulting minimum structural separation between the components containing the two raw unresolved goal endpoints; add exactly the best candidate, recompute graph/components/pool, repeat.",
+    "B_DYNAMIC_TARGET_COVERAGE": "Same regenerated candidate pool and one-edge-per-step budget, but rank by target-subterm coverage exactly as in the prior cut-blind control; recompute after every step."
+  },
+  "maximum_steps": 12,
+  "fixed_limits": {
+    "term_cap": 19,
+    "fill_limit": 16,
+    "candidate_pool_limit": 20000,
+    "one_edge_per_step": true,
+    "no_new_proof_operator": true,
+    "no_overlap_or_unification_stage": true
+  },
+  "measurements_per_step": [
+    "pre and post raw-goal component separation",
+    "candidate pool size",
+    "number of strict one-step contractors",
+    "selected candidate",
+    "component sizes",
+    "component join",
+    "replayable closure"
+  ],
+  "decision_order": ["MEASUREMENT_FAILURE", "DYNAMIC_RAW_GOAL_CLOSES", "DYNAMIC_RAW_GOAL_ADVANTAGE", "DYNAMIC_RAW_GOAL_STALLS", "CONTROL_EQUIVALENT_OR_BETTER"],
+  "decision_table": {
+    "DYNAMIC_RAW_GOAL_CLOSES": "A reaches a replayable target closure within 12 steps and B does not close in fewer steps.",
+    "DYNAMIC_RAW_GOAL_ADVANTAGE": "A does not close but reaches a strictly smaller minimum separation than B, or reaches the same best separation in strictly fewer steps.",
+    "DYNAMIC_RAW_GOAL_STALLS": "A makes at least one strict contraction, then reaches a state with no strict one-step contractor before closure while B is not better.",
+    "CONTROL_EQUIVALENT_OR_BETTER": "B matches or beats A on closure and best-separation trajectory under the matched 12-step budget.",
+    "MEASUREMENT_FAILURE": "the parent starting state (9 reentry edges, cut 10, component sizes 4/19, cap 19) cannot be reconstructed or either arm violates matched one-edge-per-step execution."
+  },
+  "next_if_stalls": "Factor the new post-recursion boundary before adding any operator. The residual is then the first state where the learned controller objective succeeds locally but the current candidate constructor cannot express another strict contractor.",
+  "next_if_closes": "ATTACK with frozen candidate-pool ablation and wrong-direction dynamic controller, then expose one sealed transfer case at a time.",
+  "sealed_transfer_ids": ["evaluation_hard_0196", "evaluation_order5_0014", "evaluation_order5_0042"]
+}

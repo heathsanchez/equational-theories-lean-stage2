@@ -1,0 +1,36 @@
+{
+  "schema": "mathgraph.normal0040-substitution-quotient-rival.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "factorization_run": 32552778502,
+    "decision": "SINGLE_OBLIGATION_FRONTIER",
+    "K_next": ["jointly_compatible_substitution"],
+    "distance": 2,
+    "generation1_lhs_classes": 5,
+    "generation1_rhs_classes": 5,
+    "coverage_caveat": "parent factorization reached one observed closest class pair under bounded transition expansion"
+  },
+  "rivals": {
+    "A_literal": "shared source variables must map to literally identical terms",
+    "B_alpha_quotient": "shared source-variable images may differ syntactically but are equal after alpha canonicalization",
+    "C_verified_equality_quotient": "shared source-variable images may differ but already lie in the same verified equality component of the frozen d=2 proof closure",
+    "D_common_specialization": "the conflicting shared-variable images admit a single first-order substitution on their internal variables that makes every conflict equal simultaneously"
+  },
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_pair_checks": 250000,
+    "maximum_term_size": 150,
+    "seconds_soft": 260
+  },
+  "decision_table": {
+    "LITERAL_CONFLICT_ONLY": "none of B/C/D resolves any closest-frontier literal conflict",
+    "ALPHA_QUOTIENT_RESCUE": "B resolves at least one conflict while A fails",
+    "VERIFIED_EQUALITY_QUOTIENT_RESCUE": "C resolves at least one conflict while A fails",
+    "COMMON_SPECIALIZATION_RESCUE": "D resolves at least one conflict while A fails",
+    "MIXED_QUOTIENT_RESCUE": "more than one nonliteral rival resolves conflicts"
+  },
+  "scientific_rule": "No new proof operator may be synthesized or installed. This experiment only tests whether the singleton substitution obstruction is an artifact of an overly literal substitution identity. Report each rival independently, preserve the parent coverage caveat, and do not infer global constructor impossibility from a bounded negative."
+}

@@ -1,0 +1,3 @@
+Science-neutral Actions trigger for the corrected methodology-0036 plateau-invariant diagnostic.
+No protocol, candidate set, invariant feature, threshold, or decision-rule changes.
+Corrected diagnostic commit: 1f55d6b63cf02bc9b9cc56808217788bc1d3ff19
