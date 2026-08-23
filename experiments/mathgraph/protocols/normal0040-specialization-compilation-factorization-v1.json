@@ -1,0 +1,53 @@
+{
+  "schema": "mathgraph.normal0040-specialization-compilation-factorization.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "causal_attack_run": 32601076161,
+    "decision": "NO_REPLAYABLE_SPECIALIZATION",
+    "distance": 2,
+    "lhs_classes": 5,
+    "rhs_classes": 5,
+    "common_specialization_compatible_cells": 10,
+    "replayable_specializations": 0
+  },
+  "question": "At which exact boundary do common-specialization-compatible interface pairs fail to compile into replay-valid existing-law moves?",
+  "pipeline": [
+    "P0_pair_examined",
+    "P1_orientation_and_path_match",
+    "P2_literal_conflict_present",
+    "P3_common_specialization_exists",
+    "P4_specialized_shared_assignments_agree",
+    "P5_left_contextual_item_constructible",
+    "P6_right_contextual_item_constructible",
+    "P7_left_replay_valid",
+    "P8_right_replay_valid",
+    "P9_pair_replay_valid"
+  ],
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_pair_checks_per_cell": 250000,
+    "maximum_term_size": 170,
+    "replay_maximum_term_size": 190,
+    "replay_maximum_nodes": 30000
+  },
+  "controls": {
+    "same_audited_5x5_quotient": true,
+    "same_common_specialization_unifier": true,
+    "no_new_operator_family": true,
+    "no_theorem_level_installation": true,
+    "report_per_cell_and_global_stage_counts": true,
+    "report_first_failure_stage": true
+  },
+  "decision_table": {
+    "FAILS_BEFORE_SPECIALIZATION": "the earlier compatibility rescue does not reproduce under the compilation pipeline",
+    "SPECIALIZATION_AGREES_BUT_ITEM_CONSTRUCTION_FAILS": "common specialization is semantically coherent but cannot be represented by the current contextual-item constructor",
+    "ITEMS_CONSTRUCT_BUT_REPLAY_FAILS": "the contextual constructor can express the specialized moves but the verifier rejects their derivations",
+    "ASYMMETRIC_COMPILATION_FAILURE": "one side systematically compiles farther than the other, indicating a directional interface/attachment mismatch",
+    "REPLAYABLE_PAIR_EXISTS": "at least one common-specialization witness compiles to a replay-valid pair; return to causal installation",
+    "MIXED_FAILURE_VERSION_SPACE": "multiple incomparable compilation failure modes survive"
+  },
+  "scientific_rule": "This is diagnostic only. Do not introduce or promote a new constructor. Classify the weakest compilation failure supported by the observed stage counts."
+}
