@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.normal0040-whole-context-specialization-rival.protocol.v1",
+  "id": "evaluation_normal_0040",
+  "frozen_before_execution": true,
+  "parent_evidence": {
+    "factorization_run": 32614171227,
+    "decision": "SPECIALIZATION_AGREES_BUT_ITEM_CONSTRUCTION_FAILS",
+    "distance": 2,
+    "lhs_classes": 5,
+    "rhs_classes": 5,
+    "common_specialization_compatible_cells": 10,
+    "coherent_specializations_observed": 62756,
+    "payload_only_constructible": 0
+  },
+  "question": "Does the contextual constructor fail only because common specialization was applied to the substitution payload while retaining the unspecialized host/context, or does construction still fail when host, redex, and substitution are specialized coherently together?",
+  "arms": {
+    "A_PAYLOAD_ONLY": "Apply theta only to the source-law substitution and retain the original host term and path.",
+    "B_WHOLE_CONTEXT": "Apply theta to the source-law substitution and to the entire host term, retain the same structural path, then construct/lift the existing source-law equality in that specialized host."
+  },
+  "controls": {
+    "same_audited_5x5_quotient": true,
+    "same_common_specialization_unifier": true,
+    "same_orientation_and_path_requirements": true,
+    "no_new_operator_family": true,
+    "no_theorem_level_installation": true,
+    "both_arms_replay_checked_to_original_source_law": true,
+    "report_per_cell_counts": true
+  },
+  "bounds": {
+    "maximum_fillers": 6,
+    "maximum_interactions_per_term": 96,
+    "maximum_terms_per_class": 24,
+    "maximum_pair_checks_per_cell": 250000,
+    "maximum_term_size": 170,
+    "replay_maximum_term_size": 190,
+    "replay_maximum_nodes": 30000,
+    "maximum_success_examples_per_cell": 8
+  },
+  "decision_table": {
+    "WHOLE_CONTEXT_RESCUES_CONSTRUCTION_AND_REPLAY": "payload-only construction remains zero but at least one coherently whole-context-specialized item is constructible and replay-valid",
+    "WHOLE_CONTEXT_CONSTRUCTS_BUT_REPLAY_FAILS": "whole-context specialization crosses the constructor boundary but verifier replay rejects the resulting item",
+    "WHOLE_CONTEXT_NO_RESCUE": "common specialization remains semantically coherent but even coherent specialization of host, redex, and payload does not produce a contextual item",
+    "PAYLOAD_ONLY_RESCUE_UNEXPECTED": "the earlier zero-construction result does not reproduce"
+  },
+  "scientific_rule": "This test changes only where the already-frozen common specialization theta is applied. It must not invent a new inference rule. A positive rescue establishes a state-transform compilation requirement, not theorem progress."
+}
