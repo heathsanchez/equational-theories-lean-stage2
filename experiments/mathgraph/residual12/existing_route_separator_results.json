@@ -1,0 +1,613 @@
+{
+  "budgets_seconds": [
+    30,
+    60
+  ],
+  "elapsed_seconds": 381.037983,
+  "input_sha256": "6039b4deac53bf290389180c7b688448311e5fde3fd78e083b56147a7eeb6b24",
+  "label_fields_available_to_runner": [],
+  "rows": [
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1015,
+          "elapsed_seconds": 30.027865,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 135,
+          "seconds_budget": 30,
+          "superpositions": 1004
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1355,
+          "elapsed_seconds": 60.03628,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 181,
+          "seconds_budget": 60,
+          "superpositions": 1344
+        }
+      ],
+      "difficulty": "normal",
+      "id": "evaluation_normal_0036",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 3,
+        "source_rhs_size": 9,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 9,
+        "target_variables": 3
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 218,
+          "elapsed_seconds": 0.929174,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 87,
+          "seconds_budget": 30,
+          "superpositions": 207
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 218,
+          "elapsed_seconds": 0.936461,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 87,
+          "seconds_budget": 60,
+          "superpositions": 207
+        }
+      ],
+      "difficulty": "normal",
+      "id": "evaluation_normal_0044",
+      "structure": {
+        "source_lhs_depth": 1,
+        "source_lhs_size": 3,
+        "source_rhs_depth": 3,
+        "source_rhs_size": 7,
+        "source_variables": 3,
+        "target_lhs_depth": 1,
+        "target_lhs_size": 3,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 7,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 196,
+          "elapsed_seconds": 0.292586,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 32,
+          "seconds_budget": 30,
+          "superpositions": 185
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 196,
+          "elapsed_seconds": 0.314144,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 32,
+          "seconds_budget": 60,
+          "superpositions": 185
+        }
+      ],
+      "difficulty": "normal",
+      "id": "evaluation_normal_0154",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 4,
+        "source_rhs_size": 9,
+        "source_variables": 3,
+        "target_lhs_depth": 1,
+        "target_lhs_size": 3,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 193,
+          "elapsed_seconds": 0.514733,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 31,
+          "seconds_budget": 30,
+          "superpositions": 180
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 193,
+          "elapsed_seconds": 0.488354,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 31,
+          "seconds_budget": 60,
+          "superpositions": 180
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0004",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 5,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 5,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1718,
+          "elapsed_seconds": 30.188548,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 190,
+          "seconds_budget": 30,
+          "superpositions": 1705
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 2278,
+          "elapsed_seconds": 60.119224,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 229,
+          "seconds_budget": 60,
+          "superpositions": 2265
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0006",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 4,
+        "source_rhs_size": 11,
+        "source_variables": 4,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 4,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 420,
+          "elapsed_seconds": 18.780204,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 73,
+          "seconds_budget": 30,
+          "superpositions": 407
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 420,
+          "elapsed_seconds": 13.966269,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 73,
+          "seconds_budget": 60,
+          "superpositions": 407
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0014",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 5,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 11,
+        "target_variables": 3
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 36,
+          "elapsed_seconds": 0.092472,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 22,
+          "seconds_budget": 30,
+          "superpositions": 23
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 36,
+          "elapsed_seconds": 0.091144,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 22,
+          "seconds_budget": 60,
+          "superpositions": 23
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0022",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 5,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 5,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 158,
+          "elapsed_seconds": 0.670053,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 41,
+          "seconds_budget": 30,
+          "superpositions": 145
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 158,
+          "elapsed_seconds": 0.607533,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 41,
+          "seconds_budget": 60,
+          "superpositions": 145
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0040",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 4,
+        "source_rhs_size": 11,
+        "source_variables": 4,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 5,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1806,
+          "elapsed_seconds": 30.107997,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 79,
+          "seconds_budget": 30,
+          "superpositions": 1793
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 2406,
+          "elapsed_seconds": 60.163995,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 93,
+          "seconds_budget": 60,
+          "superpositions": 2393
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0042",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 4,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 736,
+          "elapsed_seconds": 13.626351,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 75,
+          "seconds_budget": 30,
+          "superpositions": 723
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 736,
+          "elapsed_seconds": 11.030598,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 75,
+          "seconds_budget": 60,
+          "superpositions": 723
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0142",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 4,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 4,
+        "target_rhs_size": 11,
+        "target_variables": 4
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 407,
+          "elapsed_seconds": 2.393632,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 50,
+          "seconds_budget": 30,
+          "superpositions": 394
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 407,
+          "elapsed_seconds": 2.204939,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 50,
+          "seconds_budget": 60,
+          "superpositions": 394
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0188",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 5,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 11,
+        "target_variables": 5
+      }
+    },
+    {
+      "attempts": [
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1371,
+          "elapsed_seconds": 19.432164,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 82,
+          "seconds_budget": 30,
+          "superpositions": 1358
+        },
+        {
+          "bare_untyped_rfl": 0,
+          "certificate_bytes": 0,
+          "certificate_sha256": null,
+          "clauses": 1371,
+          "elapsed_seconds": 23.888587,
+          "error": null,
+          "exhaustion": null,
+          "found": false,
+          "proof_nodes": 0,
+          "replayed": false,
+          "root_matches": false,
+          "rounds": 82,
+          "seconds_budget": 60,
+          "superpositions": 1358
+        }
+      ],
+      "difficulty": "order5_normal",
+      "id": "evaluation_order5_0190",
+      "structure": {
+        "source_lhs_depth": 0,
+        "source_lhs_size": 1,
+        "source_rhs_depth": 5,
+        "source_rhs_size": 11,
+        "source_variables": 3,
+        "target_lhs_depth": 0,
+        "target_lhs_size": 1,
+        "target_rhs_depth": 3,
+        "target_rhs_size": 11,
+        "target_variables": 5
+      }
+    }
+  ],
+  "schema": "mathgraph.verified-residual-12-existing-route.v1",
+  "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
+}

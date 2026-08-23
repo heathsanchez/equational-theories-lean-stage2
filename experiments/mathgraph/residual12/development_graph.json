@@ -1,0 +1,168 @@
+{
+  "schema": "mathgraph.development-graph.v1",
+  "scope": "SAIR Stage 2 MathGraph cleanroom residual research",
+  "principle": "Preserve distinctions that change lawful future action; revoke or omit distinctions that do not.",
+  "provenance_profile": {
+    "standard": "W3C PROV-O",
+    "mapping": {
+      "state_and_evidence": "prov:Entity",
+      "experiment_and_decision": "prov:Activity",
+      "controller": "prov:Agent"
+    },
+    "extension": "Typed residual, rival, failure-level, transfer, representation-change, and revocation relations."
+  },
+  "allowed_edge_types": [
+    "DERIVED_FROM",
+    "SUPPORTS",
+    "REFUTES",
+    "SPLITS",
+    "FAILS_AT",
+    "EVALUATES",
+    "SELECTS_NEXT",
+    "RIVAL_OF",
+    "ABLATES",
+    "TRANSFERS_TO",
+    "IMPORTS",
+    "COMPILES_TO",
+    "QUOTIENTS",
+    "CHANGES_REPRESENTATION",
+    "REVOKES"
+  ],
+  "nodes": [
+    {
+      "id": "state.cleanroom-baseline-788",
+      "kind": "state",
+      "S": {
+        "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+        "accepted": 788,
+        "total": 800,
+        "true_accepted": 388,
+        "false_accepted": 400,
+        "llm_calls": 0
+      },
+      "V": "official GitHub qualification run 32663444432",
+      "B": "Lean 4.32.2; 120 seconds; 500 KB solver; 100 KB certificate; MathGraph only",
+      "E": [
+        "https://github.com/heathsanchez/equational-theories-lean-stage2/actions/runs/32663444432"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "experiment.grounded-budget-separator",
+      "kind": "experiment",
+      "rho": "Twelve released TRUE residuals remain after the 788/800 baseline.",
+      "D": "Unresolved before intervention: search/resource versus selection versus closure/capability.",
+      "H": ["H_search_resource", "H_selection_memory", "H_closure", "H_capability"],
+      "K": ["No answer fields", "No new representation", "Only budget changes from 30 to 60 seconds"],
+      "Delta": "Run TargetGroundedRefutation.solve_given_clause at frozen 30- and 60-second budgets.",
+      "V": "Internal target-root equality plus replay_dag; official Lean only after an internal success.",
+      "B": "Twelve rows; maximum 60 seconds per attempt.",
+      "E": [
+        "experiments/mathgraph/residual12/verified_residual_preregistration.json#sha256=4886f6aff87e060aed07976970d7b3e8a26a4ee0114a550fc81e1adf3f69ee3a"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "evidence.grounded-budget-zero-of-twelve",
+      "kind": "evidence",
+      "rho": "No target proof was found on any row at either budget.",
+      "D": "Failure occurs in internal proof search, before replay, certificate emission, or Lean.",
+      "H": ["H_search_resource", "H_selection_memory", "H_closure", "H_capability"],
+      "K": ["Do not diagnose constructor-language failure", "Do not attribute the result to judge infrastructure"],
+      "Delta": "None; observation only.",
+      "V": "0 internal successes across 24 frozen attempts.",
+      "B": "Same solver and unlabelled inputs as preregistered.",
+      "E": [
+        "experiments/mathgraph/residual12/existing_route_separator_results.json#sha256=729b462485adef8bfa6e3e9eb6a35154c151333b32d055a43635db2eee75d70c"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "residual.grounded-expanding-three",
+      "kind": "residual",
+      "rho": "Clause frontiers continue expanding between 30 and 60 seconds.",
+      "D": "Search/resource and clause selection remain live; capability failure is not established.",
+      "H": ["H_search_resource", "H_selection_memory"],
+      "K": ["Keep search-continuation explanations live"],
+      "V": "Strict increase in clauses and rounds at the larger budget.",
+      "E": [
+        "evaluation_normal_0036: 1015/135 to 1355/181 clauses/rounds",
+        "evaluation_order5_0006: 1718/190 to 2278/229 clauses/rounds",
+        "evaluation_order5_0042: 1806/79 to 2406/93 clauses/rounds"
+      ],
+      "status": "frontier"
+    },
+    {
+      "id": "residual.grounded-closed-nine",
+      "kind": "residual",
+      "rho": "Nine rows reach the same clause and round frontier at both budgets, usually well before timeout.",
+      "D": "Simple more-time search is refuted for the frozen route; closure or capability remains live.",
+      "H": ["H_closure", "H_capability"],
+      "K": ["Inspect already-implemented closure before inventing a primitive"],
+      "V": "Identical clause and round counts at 30 and 60 seconds.",
+      "E": [
+        "evaluation_normal_0044",
+        "evaluation_normal_0154",
+        "evaluation_order5_0004",
+        "evaluation_order5_0014",
+        "evaluation_order5_0022",
+        "evaluation_order5_0040",
+        "evaluation_order5_0142",
+        "evaluation_order5_0188",
+        "evaluation_order5_0190"
+      ],
+      "status": "frontier"
+    },
+    {
+      "id": "hypothesis.search-resource",
+      "kind": "hypothesis",
+      "H": "The existing route reaches a proof with additional search resource.",
+      "revocation_condition": "A frozen route reaches a stable closed frontier without proof, or a better separator attributes the failure elsewhere.",
+      "status": "partially_live"
+    },
+    {
+      "id": "hypothesis.existing-closure",
+      "kind": "hypothesis",
+      "H": "An already-implemented constructor reaches a residual when run at its strongest existing diagnostic configuration.",
+      "revocation_condition": "All frozen constructor-family census attempts return no replayed target proof.",
+      "status": "live"
+    },
+    {
+      "id": "hypothesis.shared-capability-gap",
+      "kind": "hypothesis",
+      "H": "The residual survives across existing constructor families because a shared composition or genuinely absent capability is required.",
+      "revocation_condition": "Any existing constructor independently reaches and verifies the residual.",
+      "status": "live"
+    },
+    {
+      "id": "experiment.existing-closure-census",
+      "kind": "experiment",
+      "rho": "It is unknown whether the missing proof already exists in another implemented constructor family.",
+      "D": "Representation/closure uncertainty, not yet permission to invent.",
+      "H": ["H_existing_closure", "H_schedule_only", "H_shared_capability_gap", "H_constructor_language"],
+      "K": ["One strongest configuration per existing family", "No parameter grid", "No submission mutation"],
+      "Delta": "Run compact, normalization, bridge, reentry, and contextual constructors on all twelve unlabelled rows.",
+      "V": "Target-root equality, replay_dag, certificate size; official Lean and transformations only after a hit.",
+      "B": "43 nominal seconds per row; 516 total; frozen solver hash.",
+      "E": [
+        "experiments/mathgraph/residual12/existing_closure_census_preregistration.json"
+      ],
+      "status": "frozen"
+    }
+  ],
+  "edges": [
+    {"source": "experiment.grounded-budget-separator", "target": "state.cleanroom-baseline-788", "type": "DERIVED_FROM"},
+    {"source": "experiment.grounded-budget-separator", "target": "state.cleanroom-baseline-788", "type": "EVALUATES"},
+    {"source": "evidence.grounded-budget-zero-of-twelve", "target": "experiment.grounded-budget-separator", "type": "DERIVED_FROM"},
+    {"source": "evidence.grounded-budget-zero-of-twelve", "target": "residual.grounded-expanding-three", "type": "SPLITS"},
+    {"source": "evidence.grounded-budget-zero-of-twelve", "target": "residual.grounded-closed-nine", "type": "SPLITS"},
+    {"source": "evidence.grounded-budget-zero-of-twelve", "target": "experiment.grounded-budget-separator", "type": "FAILS_AT", "detail": "internal search"},
+    {"source": "residual.grounded-expanding-three", "target": "hypothesis.search-resource", "type": "SUPPORTS"},
+    {"source": "residual.grounded-closed-nine", "target": "hypothesis.search-resource", "type": "REFUTES", "scope": "nine closed rows under the frozen route"},
+    {"source": "hypothesis.existing-closure", "target": "hypothesis.shared-capability-gap", "type": "RIVAL_OF"},
+    {"source": "experiment.existing-closure-census", "target": "residual.grounded-closed-nine", "type": "DERIVED_FROM"},
+    {"source": "experiment.existing-closure-census", "target": "hypothesis.existing-closure", "type": "EVALUATES"},
+    {"source": "experiment.existing-closure-census", "target": "hypothesis.shared-capability-gap", "type": "EVALUATES"},
+    {"source": "residual.grounded-closed-nine", "target": "experiment.existing-closure-census", "type": "SELECTS_NEXT"}
+  ]
+}

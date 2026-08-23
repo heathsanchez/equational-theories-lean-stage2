@@ -1,0 +1,61 @@
+{
+  "schema": "mathgraph.verified-residual-12-closure-census-preregistration.v1",
+  "status": "FROZEN_BEFORE_CLOSURE_CENSUS_EXECUTION",
+  "created_date": "2026-08-24",
+  "parent_evidence": {
+    "path": "experiments/mathgraph/residual12/existing_route_separator_results.json",
+    "sha256": "729b462485adef8bfa6e3e9eb6a35154c151333b32d055a43635db2eee75d70c",
+    "outcome": "zero internal successes; three time-expanding frontiers and nine stable closed frontiers"
+  },
+  "target": "Determine whether any already-implemented proof constructor closes a residual before adding a representation or inference primitive.",
+  "verifier": {
+    "internal_success": "target-root equality and independent replay_dag acceptance",
+    "terminal_success_after_separator": "official Lean 4.32.2 judge acceptance",
+    "certificate_bytes_max": 100000
+  },
+  "intervention": {
+    "kind": "existing closure census",
+    "routes": [
+      {"name": "compact-fast", "implementation": "CompactSuperposition", "budget_seconds": 5},
+      {"name": "normalization-deep-diagnostic", "implementation": "EquationalNormalizer", "budget_seconds": 15},
+      {"name": "bridge-deep-diagnostic", "implementation": "BridgeIR", "budget_seconds": 15},
+      {"name": "reentry-targeted", "implementation": "EqualitySearch.solve_reentry", "budget_seconds": 5},
+      {"name": "contextual-target-narrowing", "implementation": "ContextualSearch.solve_target_narrowing", "budget_seconds": 3}
+    ],
+    "selection_rule": "Use the single strongest existing configuration for each distinct constructor family; no parameter grid and no new primitive."
+  },
+  "boundaries": {
+    "input": "the frozen 12-row unlabelled residual file",
+    "label_fields_available_to_runner": [],
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "maximum_nominal_seconds_per_row": 43,
+    "maximum_nominal_seconds_total": 516,
+    "submission_changes": false,
+    "external_code_or_branding": false
+  },
+  "live_rivals": {
+    "H_existing_closure": "A disabled or underbudgeted existing constructor already reaches at least one residual.",
+    "H_schedule_only": "A route works alone but is starved or ordered poorly in the production portfolio.",
+    "H_shared_capability_gap": "No existing constructor reaches the target, so the residual survives across representations.",
+    "H_constructor_language": "A route finds a target proof but replay or certificate construction fails.",
+    "H_surface_dependence": "An apparent result does not survive alpha-renaming and operation duality.",
+    "H_soundness": "A promoted mechanism proposes TRUE on matched FALSE controls."
+  },
+  "outcome_to_action": {
+    "internal_success": "Run official Lean verification, alpha and dual transfer, matched FALSE controls, then full regression before promotion.",
+    "found_but_replay_failed": "Diagnose proof constructor or provenance failure; do not change search.",
+    "route_exhausted": "Record a route-specific closure boundary and compare mechanisms across residual regimes.",
+    "all_routes_fail": "Map cross-route observables and freeze a separator between a shared missing composition and a genuinely absent constructor.",
+    "unexpected_pattern": "Preserve it as a new residual and revise neither diagnosis nor graph ontology until a discriminator is frozen."
+  },
+  "promotion_gate": {
+    "minimum_released_acceptances": 2,
+    "minimum_independent_source_families": 2,
+    "alpha_transfer_rate": 1.0,
+    "dual_transfer_rate": 1.0,
+    "false_control_true_candidates": 0,
+    "replay_failures": 0,
+    "lean_rejections": 0,
+    "minimum_full_regression_accepted": 788
+  }
+}

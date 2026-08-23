@@ -1,0 +1,110 @@
+[
+  {
+    "id": "evaluation_normal_0036",
+    "index": 36,
+    "difficulty": "normal",
+    "eq1_id": 2666,
+    "eq2_id": 2062,
+    "equation1": "x = ((x * y) * (x * z)) * y",
+    "equation2": "x = ((x * y) * y) * (x * z)"
+  },
+  {
+    "id": "evaluation_normal_0044",
+    "index": 44,
+    "difficulty": "normal",
+    "eq1_id": 3366,
+    "eq2_id": 3390,
+    "equation1": "x * y = y * (z * (y * x))",
+    "equation2": "x * y = z * (x * (z * w))"
+  },
+  {
+    "id": "evaluation_normal_0154",
+    "index": 154,
+    "difficulty": "normal",
+    "eq1_id": 1367,
+    "eq2_id": 3599,
+    "equation1": "x = y * (((z * y) * x) * y)",
+    "equation2": "x * y = z * ((y * x) * x)"
+  },
+  {
+    "id": "evaluation_order5_0004",
+    "index": 4,
+    "difficulty": "order5_normal",
+    "eq1_id": 13760,
+    "eq2_id": 37949,
+    "equation1": "x = y * ((x * ((z * y) * x)) * y)",
+    "equation2": "x = ((y * (z * (w * z))) * w) * z"
+  },
+  {
+    "id": "evaluation_order5_0006",
+    "index": 6,
+    "difficulty": "order5_normal",
+    "eq1_id": 26506,
+    "eq2_id": 20227,
+    "equation1": "x = (y * ((z * w) * y)) * (x * y)",
+    "equation2": "x = (y * z) * ((y * (z * y)) * w)"
+  },
+  {
+    "id": "evaluation_order5_0014",
+    "index": 14,
+    "difficulty": "order5_normal",
+    "eq1_id": 8502,
+    "eq2_id": 27144,
+    "equation1": "x = y * (x * (((z * y) * y) * y))",
+    "equation2": "x = ((y * z) * (x * y)) * (x * z)"
+  },
+  {
+    "id": "evaluation_order5_0022",
+    "index": 22,
+    "difficulty": "order5_normal",
+    "eq1_id": 41098,
+    "eq2_id": 38443,
+    "equation1": "x = ((((y * y) * z) * y) * x) * y",
+    "equation2": "x = ((y * ((y * y) * z)) * z) * w"
+  },
+  {
+    "id": "evaluation_order5_0040",
+    "index": 40,
+    "difficulty": "order5_normal",
+    "eq1_id": 6605,
+    "eq2_id": 32838,
+    "equation1": "x = x * (y * ((z * y) * (w * y)))",
+    "equation2": "x = (x * (((y * x) * z) * y)) * w"
+  },
+  {
+    "id": "evaluation_order5_0042",
+    "index": 42,
+    "difficulty": "order5_normal",
+    "eq1_id": 20115,
+    "eq2_id": 21404,
+    "equation1": "x = (y * z) * ((x * (x * y)) * z)",
+    "equation2": "x = (x * (x * y)) * (z * (z * w))"
+  },
+  {
+    "id": "evaluation_order5_0142",
+    "index": 142,
+    "difficulty": "order5_normal",
+    "eq1_id": 28754,
+    "eq2_id": 6616,
+    "equation1": "x = (((y * y) * x) * z) * (y * z)",
+    "equation2": "x = x * (y * ((z * z) * (y * w)))"
+  },
+  {
+    "id": "evaluation_order5_0188",
+    "index": 188,
+    "difficulty": "order5_normal",
+    "eq1_id": 30562,
+    "eq2_id": 21559,
+    "equation1": "x = (y * (y * ((z * x) * y))) * z",
+    "equation2": "x = (x * (y * z)) * (w * (u * u))"
+  },
+  {
+    "id": "evaluation_order5_0190",
+    "index": 190,
+    "difficulty": "order5_normal",
+    "eq1_id": 30719,
+    "eq2_id": 27190,
+    "equation1": "x = (y * (z * ((y * x) * z))) * y",
+    "equation2": "x = ((y * z) * (x * w)) * (z * u)"
+  }
+]

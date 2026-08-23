@@ -1,0 +1,123 @@
+{
+  "schema": "mathgraph.verified-residual-12-preregistration.v1",
+  "status": "FROZEN_BEFORE_EQUATION_BODY_INSPECTION",
+  "created_date": "2026-08-24",
+  "baseline": {
+    "github_commit": "f154e26a4efa6a8da0aab66906c8d0fd3d165ecf",
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "official_run_id": 32663444432,
+    "official_artifact_digest": "sha256:109caf91da41f4fbba521557c65c7672a4138430700d1b9fba7621b5aa0bef7b",
+    "accepted": 788,
+    "total": 800,
+    "true_accepted": 388,
+    "false_accepted": 400,
+    "llm_calls": 0
+  },
+  "target": {
+    "claim": "Recover a reusable TRUE-side mechanism from the 12 released residuals without identifiers, answer lookup, stored certificates, stored equation tables, or a new proof representation.",
+    "primary_metric": "new official Lean 4.32.2 acceptances within the 120-second solver boundary",
+    "secondary_metrics": [
+      "independently replayed proof DAGs",
+      "certificate bytes below 100000",
+      "alpha-renaming transfer",
+      "operation-dual transfer",
+      "no regression from 788/800",
+      "zero FALSE-to-TRUE candidates",
+      "zero Lean rejections among promoted candidates"
+    ]
+  },
+  "residual_ids": [
+    "evaluation_normal_0036",
+    "evaluation_normal_0044",
+    "evaluation_normal_0154",
+    "evaluation_order5_0004",
+    "evaluation_order5_0006",
+    "evaluation_order5_0014",
+    "evaluation_order5_0022",
+    "evaluation_order5_0040",
+    "evaluation_order5_0042",
+    "evaluation_order5_0142",
+    "evaluation_order5_0188",
+    "evaluation_order5_0190"
+  ],
+  "verifier": {
+    "toolchain": "leanprover/lean4:v4.32.2",
+    "mathlib_commit": "905b95818eb32af7874a58b427f50c1711a5e96c",
+    "terminal_success": "official judge status accepted",
+    "internal_success": "target-root equality plus independent replay_dag acceptance",
+    "non_successes": [
+      "search returned no recipe",
+      "internal recipe failed replay",
+      "certificate exceeded 100000 bytes",
+      "Lean rejected the certificate",
+      "timeout",
+      "LLM-only recovery"
+    ]
+  },
+  "boundaries": {
+    "production_file_bytes_max": 500000,
+    "certificate_bytes_max": 100000,
+    "production_solver_seconds": 120,
+    "separator_seconds_per_route": [30, 60],
+    "python_runtime": "standard library only",
+    "submission_brand": "MathGraph only",
+    "forbidden": [
+      "problem-ID routing",
+      "answer lookup",
+      "stored released equations",
+      "stored proof certificates",
+      "stored model tables",
+      "external solver code or branding",
+      "failed search promoted as TRUE"
+    ]
+  },
+  "strongest_existing_route": {
+    "class": "TargetGroundedRefutation",
+    "method": "solve_given_clause",
+    "representation": "existing replayed proof DAG",
+    "production_budget_seconds": 30,
+    "separator_intervention": "budget only; 30 then 60 seconds with all other limits frozen",
+    "why_first": "This route produced the three newly official residual proofs and remains the strongest unexplored existing closure mechanism."
+  },
+  "live_rivals": {
+    "H_search_resource": "The existing route can solve some residuals when given more search time; no new capability is needed.",
+    "H_selection_memory": "The proof is reachable, but current age/goal selection fails to choose the necessary clauses within budget.",
+    "H_closure": "The necessary distinction already exists in accumulated closure but is not composed into the target recipe.",
+    "H_constructor_language": "An internal proof is found and replayed but cannot be compactly or correctly emitted to Lean.",
+    "H_capability": "The existing inference and closure operators cannot construct the required proof even with the frozen extended budget.",
+    "H_measurement_infrastructure": "Observed failure is caused by timeout accounting, judge infrastructure, or logging rather than mathematical search.",
+    "H_leakage_surrogate": "Any apparent gain depends on IDs, labels, exact surface forms, public-answer memory, or a released-set surrogate."
+  },
+  "separator": {
+    "inputs": "The 12 released residual equations, selected only by the frozen IDs above; answer fields are removed before the runner receives them.",
+    "intervention": "Run the frozen existing route at 30 and 60 seconds per row; record found, replay, root match, proof nodes, certificate bytes, search counters, exhaustion, and elapsed time.",
+    "controls": [
+      "alpha-renamed copy of every internal success",
+      "operation-dual copy of every internal success",
+      "FALSE controls sampled without labels before execution",
+      "unchanged 788/800 baseline regression after any proposed promotion"
+    ],
+    "resource_budget": "At most 60 seconds per residual-route execution in this separator; no parameter grid and no new primitive.",
+    "outcome_to_action": {
+      "60_second_gain": "Diagnose search/resource or selection; optimize scheduling under 120 seconds before considering new representation.",
+      "internal_success_lean_failure": "Diagnose constructor/language; repair emitter without changing search.",
+      "no_internal_success": "Map clause frontier and inspect existing closure before proposing a new operator.",
+      "surface_control_failure": "Reject as leakage or representation dependence.",
+      "false_control_true_candidate": "Reject immediately as a soundness failure.",
+      "unexpected_pattern": "Preserve as a new residual and do not force it into a frozen rival."
+    }
+  },
+  "promotion_gate": {
+    "minimum_released_acceptances": 2,
+    "minimum_independent_source_families": 2,
+    "required_alpha_transfer_rate": 1.0,
+    "required_dual_transfer_rate": 1.0,
+    "false_control_true_candidates": 0,
+    "replay_failures": 0,
+    "lean_rejections": 0,
+    "minimum_full_regression_accepted": 788,
+    "production_budget_seconds_max": 120,
+    "complexity_rule": "Retain the smallest causal change; do not add a primitive unless the separator falsifies existing-route explanations."
+  }
+}

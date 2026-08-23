@@ -1,0 +1,39 @@
+{
+  "schema": "mathgraph.verified-residual-12-closure-hit-attack.v1",
+  "status": "FROZEN_BEFORE_HIT_ATTACK_EXECUTION",
+  "created_date": "2026-08-24",
+  "parent_result": {
+    "path": "experiments/mathgraph/residual12/existing_closure_census_results.json",
+    "internal_hits": [
+      "evaluation_order5_0022",
+      "evaluation_order5_0040"
+    ],
+    "route": "compact-fast",
+    "budgets_seconds": 5,
+    "note": "Both hits replayed and fit the certificate limit; neither is counted as official or promoted yet."
+  },
+  "target": "Distinguish a production budget threshold from nondeterminism or surface dependence, and verify every reconstructed certificate with the official local Lean judge.",
+  "live_rivals": {
+    "H_budget_threshold": "The production-equivalent 3-second compact budget misses while the existing 5-second configuration reliably succeeds.",
+    "H_timing_instability": "The apparent gain is a wall-clock threshold artifact that is not reliable across repetitions.",
+    "H_surface_dependence": "The route relies on variable names or left/right operation presentation.",
+    "H_constructor_language": "Internal replay succeeds but Lean rejects the emitted certificate."
+  },
+  "intervention": {
+    "original_budget_repetitions": {"3_seconds": 3, "5_seconds": 3},
+    "metamorphic_variants_at_5_seconds": ["alpha-renamed", "operation-dual"],
+    "official_judge": "Lean 4.32.2 after every internal success"
+  },
+  "controls": {
+    "same_solver_hash": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "same_route_and_limits": "COMPACT_SUPERPOSITION_FAST; only seconds and semantics-preserving presentation change",
+    "label_fields_available_to_runner": []
+  },
+  "outcome_to_action": {
+    "three_second_fail_five_second_stable": "Treat as a scheduling/budget mechanism; retain evidence but do not promote until cross-family transfer and soundness/full regression gates pass.",
+    "unstable_original": "Reject a fixed 5-second promotion and map timing sensitivity.",
+    "metamorphic_failure": "Reject as surface-dependent.",
+    "lean_rejection": "Diagnose constructor/language and repair emission only.",
+    "all_checks_pass": "Seek an independent normal-family or protected transfer before promotion; do not weaken the preregistered family gate."
+  }
+}
