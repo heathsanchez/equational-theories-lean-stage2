@@ -27,7 +27,8 @@ def simulate_goal_separation(m,s,target,c):
         merged=allgroups[k0]|allgroups[k1]
         del allgroups[k0]
         if k1 in allgroups: del allgroups[k1]
-        mk=('merged',repr(c['key']))
+        candidate_key=c.get('key',(m.render_term(c['lhs']),m.render_term(c['rhs'])))
+        mk=('merged',repr(candidate_key))
         allgroups[mk]=merged
     term_to_group={t:k for k,ts in allgroups.items() for t in ts}
     if g0 not in term_to_group or g1 not in term_to_group:return None
@@ -78,4 +79,4 @@ def main():
         return [{'lhs':m.render_term(c['lhs']),'rhs':m.render_term(c['rhs']),'labelled_predicted_distance':c['predicted_cut_distance'],'raw_goal_post_separation':post_scores[c['key']],'target_coverage':c['target_coverage']} for c in rank[:6]]
     out={'schema':p['schema'],'id':RID,'decision':decision,'measurement_ok':ok,'first_contraction_k':{'A_LABELLED_CUT':fa,'B_RAW_GOAL_GRAPH':fb,'C_CUT_BLIND_TARGET':fc},'prefix_overlap_A_B':overlaps,'trajectory':{'A_LABELLED_CUT':ta,'B_RAW_GOAL_GRAPH':tb,'C_CUT_BLIND_TARGET':tc},'ranking_heads':{'A':head(A),'B':head(B),'C':head(C)},'pool':{'count':len(candidates),'contractors':sum(c['predicted_cut_distance']<10 for c in candidates)},'sealed_transfer_ids_loaded':[]}
     OUT.parent.mkdir(parents=True,exist_ok=True); OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print(json.dumps(out,indent=2,sort_keys=True))
-if __name__=='__main__':main()
+if __name__=='__main__': main()
