@@ -1,0 +1,52 @@
+{
+  "schema": "mathgraph.developmental-experiment-graph.protocol.v1",
+  "frozen_before_execution": true,
+  "scope": [
+    "evaluation_normal_0036",
+    "evaluation_normal_0040",
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "source_glob": "experiments/mathgraph/results/*.json",
+  "node_fields": [
+    "node_id",
+    "problem_id",
+    "source_path",
+    "schema",
+    "decision",
+    "protocol",
+    "bounds",
+    "diagnosis",
+    "residual",
+    "evidence"
+  ],
+  "edge_types": [
+    "DERIVED_FROM",
+    "REFUTES",
+    "SUPPORTS",
+    "RIVAL_OF",
+    "ABLATES",
+    "TRANSFERS_TO",
+    "COMPILES_TO",
+    "FAILS_AT",
+    "QUOTIENTS",
+    "SPLITS",
+    "CHANGES_REPRESENTATION",
+    "REVOKES"
+  ],
+  "rules": {
+    "preserve_raw_result": true,
+    "no_solver_changes": true,
+    "negative_results_are_first_class": true,
+    "missing_fields_are_null_not_inferred": true,
+    "curated_edges_require_explicit_manifest_entry": true,
+    "auto_edges_may_only_use_explicit_parent_evidence": true
+  },
+  "admission": {
+    "all_graph_nodes_trace_to_repo_result_json": true,
+    "all_curated_edges_trace_to_manifest": true,
+    "graph_build_is_deterministic": true,
+    "graph_contains_all_discovered_scoped_results": true
+  }
+}
