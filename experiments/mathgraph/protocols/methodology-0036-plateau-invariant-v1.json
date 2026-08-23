@@ -1,0 +1,29 @@
+{
+  "schema": "mathgraph.methodology-0036-plateau-invariant.protocol.v1",
+  "frozen_before_execution": true,
+  "id": "evaluation_normal_0036",
+  "parent_decision": "DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED",
+  "question": "Which structural properties of the minimum cross-component boundary remain invariant across every admissible depth-1 and depth-2 continuation on the separation-8 plateau?",
+  "hypotheses": {
+    "H_structure": "A compact boundary signature is invariant across the entire tested plateau, indicating a representation/operator obstruction rather than insufficient local search.",
+    "H_search": "The minimum boundary signature varies materially across admissible continuations despite constant separation 8, indicating unresolved search within the current representation."
+  },
+  "decision_rule": {
+    "PLATEAU_SIGNATURE_INVARIANT": "All explored depth-0/1/2 plateau states share at least one nontrivial minimum-boundary feature (endpoint kinds, size-gap, variable-count gap, or subterm relation), with no strict contraction.",
+    "PLATEAU_SIGNATURE_MULTIMODAL": "No nontrivial minimum-boundary feature is shared by all explored plateau states.",
+    "MEASUREMENT_FAILURE": "Frozen parent facts fail to reproduce."
+  },
+  "constraints": {
+    "operative_term_cap": 19,
+    "expected_parent_separation": 8,
+    "maximum_first_steps": 100,
+    "maximum_second_steps_per_first": 100,
+    "report_examples": 20
+  },
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "notes": "Diagnostic only. It does not introduce a new proof operator. The next constructor is permitted only after the invariant is observed prospectively."
+}
