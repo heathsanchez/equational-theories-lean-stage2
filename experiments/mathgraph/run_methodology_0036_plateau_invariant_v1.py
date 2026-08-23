@@ -28,6 +28,14 @@ def score(m,s,target,c):
 def apply_direct(s,c,step):
     return s.ensure_source_mapping(c['mapping'],False,'plateau-invariant',step)
 
+def public_move(m,c,d):
+    return {
+        'lhs':m.render_term(c['lhs']),
+        'rhs':m.render_term(c['rhs']),
+        'post_separation':d,
+        'max_term_size':c.get('max_term_size',max(m.term_size(c['lhs']),m.term_size(c['rhs']))),
+    }
+
 def signature(m,a,b):
     if m.is_subterm(a,b): sub='L_IN_R'
     elif m.is_subterm(b,a): sub='R_IN_L'
@@ -47,7 +55,6 @@ def boundary_profile(m,s,target):
         return {'connected':True,'cross_distance':0,'pair_count':0,'signatures':[],'state':st}
     sigs=[]
     for rec in st.get('boundary_pairs',[]):
-        # Recover exact terms by matching rendered strings against live members.
         la=rec['lhs_component_term']; rb=rec['rhs_component_term']
         aa=next((t for t in st['lhs_members'] if m.render_term(t)==la),None)
         bb=next((t for t in st['rhs_members'] if m.render_term(t)==rb),None)
@@ -97,7 +104,7 @@ def main():
             else:
                 profiles.append(q1); depth1_count+=1
                 if len(examples)<p['constraints']['report_examples']:
-                    examples.append({'depth':1,'move':tour.public_candidate(m,c1),'cross_distance':q1['cross_distance'],'signatures':q1['signatures'][:5]})
+                    examples.append({'depth':1,'move':public_move(m,c1,d1),'cross_distance':q1['cross_distance'],'signatures':q1['signatures'][:5]})
             if q1['connected']: continue
             pool2=relaxed_pool(m,s1,source,target,q1['state'],19,100000)
             seconds=sorted([(score(m,s1,target,c2),c2) for c2 in pool2 if score(m,s1,target,c2) is not None],key=lambda x:(x[0],x[1]['key']))
@@ -112,7 +119,7 @@ def main():
                 else:
                     profiles.append(q2); depth2_count+=1
                     if len(examples)<p['constraints']['report_examples']:
-                        examples.append({'depth':2,'first':tour.public_candidate(m,c1),'second':tour.public_candidate(m,c2),'cross_distance':q2['cross_distance'],'signatures':q2['signatures'][:5]})
+                        examples.append({'depth':2,'first':public_move(m,c1,d1),'second':public_move(m,c2,d2),'cross_distance':q2['cross_distance'],'signatures':q2['signatures'][:5]})
         summary=summarize_profiles(profiles)
         nontrivial={k:v for k,v in summary['invariant_features'].items() if k in FEATURES}
         if strict_found:
@@ -123,7 +130,7 @@ def main():
             decision='PLATEAU_SIGNATURE_MULTIMODAL'
         out={
             'schema':p['schema'],'id':RID,'decision':decision,'measurement_ok':decision!='MEASUREMENT_FAILURE',
-            'parent':{'cross_distance':8,'old_nodes':len(old),'reentry_edges':edges,'first_contractor':tour.public_candidate(m,first)},
+            'parent':{'cross_distance':8,'old_nodes':len(old),'reentry_edges':edges,'first_contractor':public_move(m,first,st.get('cross_distance'))},
             'exploration':{'depth0_states':1,'depth1_states':depth1_count,'depth2_states':depth2_count,'strict_contractions_observed':strict_found},
             'plateau':summary,'examples':examples,'sealed_transfer_ids_loaded':[]
         }
