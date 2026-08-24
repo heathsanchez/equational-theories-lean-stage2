@@ -102,6 +102,13 @@
   "validation": {
     "solo_platform_gate": "66/66 solver cases; all auxiliary checks passed",
     "marathon_platform_gate": "25 passed, 0 failed",
+    "promotion_qualification": {
+      "run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32700065430",
+      "portfolio_commit": "76ef25c02bd660efef75d752355214a84d9243b7",
+      "cleanroom_and_portfolio_tests": "13/13 passed",
+      "solo_oss_marginal": "2/2 accepted; zero LLM calls",
+      "marathon_oss_marginal": "2/2 accepted; zero tokens; no timeout signals"
+    },
     "solo_smoke": "stdin/stdout TRUE protocol passed for both files",
     "marathon_smoke": "deterministic pass retained; model calls residual-only",
     "forbidden_external_markers": 0,

@@ -1,0 +1,24 @@
+{
+  "schema": "mathgraph.residual12-promotion-qualification-summary.v1",
+  "status": "PROMOTION_QUALIFIED",
+  "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32700065430",
+  "workflow_job": 97349621140,
+  "artifact": {
+    "id": 9510286240,
+    "digest": "sha256:9e0ba5752993cdb935f6063dd8a75d3773e5429a548ae313535b11889efb1110"
+  },
+  "portfolio_commit": "76ef25c02bd660efef75d752355214a84d9243b7",
+  "checks": {
+    "frozen_hashes_and_mathgraph_branding": "passed",
+    "cleanroom_and_portfolio_tests": "13/13 passed",
+    "solo_platform_harness": "66/66 passed",
+    "marathon_platform_harness": "25/25 passed with Lean enabled",
+    "solo_oss_marginal_gains": "2/2 officially accepted; zero LLM calls",
+    "marathon_oss_marginal_gains": "2/2 officially accepted; zero tokens; no timeout signals"
+  },
+  "marginal_ids": [
+    "evaluation_order5_0022",
+    "evaluation_order5_0040"
+  ],
+  "decision": "The one-line compact scheduling promotion is qualified in the regenerated Solo and Marathon OSS upload variants. Gemma precision variants retain their tighter 1.5-second configured cap, so their deterministic behavior is unchanged."
+}

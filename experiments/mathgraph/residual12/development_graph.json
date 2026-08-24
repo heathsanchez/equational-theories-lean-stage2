@@ -231,6 +231,34 @@
         "experiments/mathgraph/residual12/full_800_compact_budget_ab_verified_summary.json"
       ],
       "status": "retained"
+    },
+    {
+      "id": "evidence.portfolio-promotion-qualified",
+      "kind": "evidence",
+      "rho": "The promoted core still required regeneration and platform qualification across the four upload variants.",
+      "D": "Submission packaging, branding, Solo protocol, Marathon protocol, and official Lean verification all passed.",
+      "K": ["Retain the four regenerated variants at the frozen hashes", "Treat the 790 state as promotion-qualified"],
+      "V": "13/13 cleanroom tests; Solo 66/66; Marathon 25/25; both OSS marginal proofs accepted in both protocols with zero model use.",
+      "E": [
+        "experiments/mathgraph/residual12/promotion_qualification_summary.json",
+        "https://github.com/metalogiclabs/mathgraph/actions/runs/32700065430"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "experiment.expanding-three-120",
+      "kind": "experiment",
+      "rho": "Three grounded-route residuals were still expanding at 60 seconds, so search continuation has not been exhausted.",
+      "D": "Search/resource or selection continuation remains live; closure and capability failure are not established.",
+      "H": ["H_search_resource", "H_selection_continuation", "H_frontier_closure", "H_constructor_language", "H_infrastructure"],
+      "K": ["Use exactly the three preregistered expanding rows", "Change only the budget from 60 to 120 seconds", "Do not add a representation or constructor"],
+      "Delta": "Continue TargetGroundedRefutation.solve_given_clause to the full 120-second solver boundary.",
+      "V": "Target-root equality, replay_dag, certificate boundary, then official Lean 4.32.2 on any internal hit.",
+      "B": "At most 540 nominal search-seconds across six attempts; maximum_given 512 and all other limits frozen.",
+      "E": [
+        "experiments/mathgraph/residual12/expanding_three_120_preregistration.json"
+      ],
+      "status": "frozen"
     }
   ],
   "edges": [
@@ -259,6 +287,10 @@
     {"source": "evidence.full-800-strict-plus-two", "target": "experiment.full-800-compact-budget-ab", "type": "DERIVED_FROM"},
     {"source": "evidence.full-800-strict-plus-two", "target": "state.cleanroom-promoted-790", "type": "SUPPORTS"},
     {"source": "state.cleanroom-promoted-790", "target": "state.cleanroom-baseline-788", "type": "DERIVED_FROM"},
-    {"source": "evidence.compact-independent-transfer", "target": "state.cleanroom-promoted-790", "type": "TRANSFERS_TO"}
+    {"source": "evidence.compact-independent-transfer", "target": "state.cleanroom-promoted-790", "type": "TRANSFERS_TO"},
+    {"source": "evidence.portfolio-promotion-qualified", "target": "state.cleanroom-promoted-790", "type": "SUPPORTS"},
+    {"source": "residual.grounded-expanding-three", "target": "experiment.expanding-three-120", "type": "SELECTS_NEXT"},
+    {"source": "experiment.expanding-three-120", "target": "state.cleanroom-promoted-790", "type": "DERIVED_FROM"},
+    {"source": "experiment.expanding-three-120", "target": "hypothesis.search-resource", "type": "EVALUATES"}
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "schema": "mathgraph.residual12-expanding-three-120-separator.v1",
+  "status": "FROZEN_BEFORE_EXECUTION",
+  "created_date": "2026-08-24",
+  "parent_state": {
+    "solver_sha256": "652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c",
+    "accepted": 790,
+    "true": 390,
+    "false": 400,
+    "promotion_qualification": "https://github.com/metalogiclabs/mathgraph/actions/runs/32700065430"
+  },
+  "target": "Push the still-expanding TargetGroundedRefutation frontier from 60 to the full 120-second solver boundary before changing representation or adding a constructor.",
+  "inputs": {
+    "path": "experiments/mathgraph/residual12/released_residuals_unlabelled.json",
+    "sha256": "6039b4deac53bf290389180c7b688448311e5fde3fd78e083b56147a7eeb6b24",
+    "selected_ids": [
+      "evaluation_normal_0036",
+      "evaluation_order5_0006",
+      "evaluation_order5_0042"
+    ],
+    "selection_rule": "Exactly the three rows whose clause and round frontiers strictly increased from 30 to 60 seconds in the frozen first separator."
+  },
+  "verifier": {
+    "internal": "target-root equality plus independent replay_dag",
+    "terminal": "official Lean 4.32.2 judge acceptance",
+    "certificate_bytes_max": 100000
+  },
+  "intervention": {
+    "route": "TargetGroundedRefutation.solve_given_clause",
+    "budgets_seconds": [60, 120],
+    "unchanged_limits": {
+      "maximum_given": 512,
+      "focus_per_age": 4,
+      "maximum_term_size": 65,
+      "maximum_replay_term_size": 260,
+      "maximum_depth": 12,
+      "maximum_rules": 768,
+      "new_clauses_per_round": 512,
+      "maximum_clauses": 12000,
+      "normalization_steps": 256,
+      "maximum_proof_nodes": 50000
+    }
+  },
+  "live_rivals": {
+    "H_search_resource": "A replayed, Lean-accepted proof appears by 120 seconds.",
+    "H_selection_continuation": "The frontier continues expanding without proof, keeping selection/search live but not establishing missing capability.",
+    "H_frontier_closure": "The 120-second run reaches the same terminal frontier as 60 seconds and can be reclassified as closed under this route.",
+    "H_constructor_language": "An internal proof replays but its emitted Lean certificate is rejected.",
+    "H_infrastructure": "The 60-second control fails to reproduce its prior qualitative expanding/stable classification because of measurement or runtime failure."
+  },
+  "resource_budget": "At most 540 nominal search-seconds across six attempts; no parameter grid, no new operator, no solver mutation.",
+  "outcome_to_action": {
+    "official_hit": "Freeze and attack the hit with repetitions, alpha-renaming, and operation-dual controls before production integration.",
+    "expands_without_hit": "Map clause selection and frontier composition; do not claim capability failure.",
+    "stable_without_hit": "Move the row to the closed residual set and inspect shared closure/representation constraints.",
+    "lean_rejection": "Diagnose certificate construction only.",
+    "infrastructure_mismatch": "Repair measurement without changing scientific limits and rerun."
+  }
+}
