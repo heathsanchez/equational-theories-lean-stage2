@@ -1,6 +1,7 @@
 {
-  "schema": "mathgraph.0036-boundary-interface-reachability-preregistration.v1",
-  "status": "FROZEN_BEFORE_EXECUTABLE",
+  "schema": "mathgraph.0036-boundary-interface-reachability-preregistration.v2",
+  "status": "AMENDED_BEFORE_EXECUTABLE_AFTER_STATIC_REPRESENTATION_REVIEW",
+  "amendment": "The cleanroom target uses rigid internal aliases while the historical plateau state uses expanded boundary terms. The original two-graph wording did not say which representation supplied the seeds and rules. Version 2 prospectively separates internal operational reachability, expanded directed reachability, and expanded equational reachability so alias opacity cannot be misreported as semantic disconnection.",
   "target": {
     "id": "evaluation_normal_0036",
     "source": "x = ((x * y) * (x * z)) * y",
@@ -36,12 +37,12 @@
       "subterm_relation": "NONE"
     }
   },
-  "question": "Does the frozen cleanroom closure contain a depth-at-most-two interface path from either goal boundary term into the exact-contractor lineage, and if so is that path blocked only by solver orientation/order?",
+  "question": "Does the frozen cleanroom closure contain a depth-at-most-two interface path from either goal boundary term into the exact-contractor lineage, and if so is that path blocked by internal alias access, solver orientation/order, or neither?",
   "construction": {
     "closure": "Reproduce attribution Arm C: install the independently replayed known contractor, force-select it exactly once, then run the unchanged frozen given-clause loop for the fixed budget. Retain every admitted clause and mark a clause as contractor-lineage exactly when it is the contractor itself or has an exact/shared-alpha contractor ancestor.",
-    "seeds": "The two complete rigid goal boundary terms. Rewrites may occur at every nonvariable position through the exact one-hole context, so proper boundary subterms are covered without treating them as detached terms.",
-    "directed_graph": "Use only the frozen solver orientation of each admitted clause and admit a transition only when the instantiated replacement is strictly smaller under the frozen normalization order.",
-    "equational_graph": "Use both nonvariable sides of every admitted equality as rewrite directions. Do not require normalization-order decrease, but retain the same term-size, position-depth, variable-binding, and state bounds.",
+    "internal_operational_graph": "Use the solver's exact internal target aliases, admitted clauses, frozen orientation, and strictly decreasing normalization order. This measures what the current representation can operationally expose.",
+    "expanded_directed_graph": "Inline every rigid alias in both goal seeds and admitted clauses, reapply the same frozen orientation and strictly decreasing normalization order, and enumerate in the expanded historical boundary representation. This isolates alias access from orientation/order.",
+    "expanded_equational_graph": "In the same fully inlined representation, use both variable-safe nonvariable directions of every equality without requiring normalization-order decrease. This isolates orientation/order from semantic interface absence.",
     "depth_two_census": "Enumerate every unique one-step state reachable from either seed using every admitted rule. Then exhaustively test every contractor-lineage rule at every nonvariable position of every one-step state. A direct bridge is a contractor-lineage transition at depth one; a pair bridge is a non-lineage transition followed by a contractor-lineage transition at depth two.",
     "deduplication": "Deduplicate states by shared alpha-canonical term and transitions by graph, seed side, before term, after term, clause alpha-signature, and position. No heuristic ranking or top-k pruning is permitted.",
     "witness": "For the first bridge in each graph, compile the exact instantiation/congruence/transitivity recipe and require replay from the source law."
@@ -71,25 +72,23 @@
     "admitted and contractor-lineage clause counts",
     "direct target-entry transition counts by lineage and non-lineage",
     "unique first-step state and transition counts",
-    "direct and pair bridge counts in directed and equational graphs",
+    "direct and pair bridge counts in internal operational, expanded directed, and expanded equational graphs",
     "minimum bridge depth and first replayed witness",
     "exhaustion and truncation flags"
   ],
   "decision_order": [
     "MEASUREMENT_FAILURE",
-    "OPERATIONAL_DIRECT_BRIDGE_PRESENT",
-    "OPERATIONAL_PAIR_BRIDGE_PRESENT",
-    "ORIENTATION_DIRECT_BRIDGE_ONLY",
-    "ORIENTATION_PAIR_BRIDGE_ONLY",
+    "INTERNAL_OPERATIONAL_BRIDGE_PRESENT",
+    "ALIAS_INTERFACE_OBSTRUCTION",
+    "ORIENTATION_ORDER_OBSTRUCTION",
     "BOUNDARY_INTERFACE_DISCONNECTED"
   ],
   "decision_table": {
     "MEASUREMENT_FAILURE": "Any hash, schema, parent-field, reproduction, equivalence, replay, or no-truncation requirement fails.",
-    "OPERATIONAL_DIRECT_BRIDGE_PRESENT": "A directed contractor-lineage rule applies directly to a goal boundary term.",
-    "OPERATIONAL_PAIR_BRIDGE_PRESENT": "No directed direct bridge exists, but a directed non-lineage first transition enables a directed contractor-lineage second transition.",
-    "ORIENTATION_DIRECT_BRIDGE_ONLY": "No operational bridge exists, but an equational contractor-lineage direction applies directly.",
-    "ORIENTATION_PAIR_BRIDGE_ONLY": "No operational bridge exists and no equational direct bridge exists, but an equational non-lineage first transition enables an equational contractor-lineage second transition.",
-    "BOUNDARY_INTERFACE_DISCONNECTED": "The complete directed and equational depth-two censuses contain no contractor-lineage bridge and neither census is truncated."
+    "INTERNAL_OPERATIONAL_BRIDGE_PRESENT": "The internal operational graph contains either a direct or pair bridge.",
+    "ALIAS_INTERFACE_OBSTRUCTION": "The internal operational graph has no bridge, but the expanded directed graph has a direct or pair bridge.",
+    "ORIENTATION_ORDER_OBSTRUCTION": "Neither directed graph has a bridge, but the expanded equational graph has a direct or pair bridge.",
+    "BOUNDARY_INTERFACE_DISCONNECTED": "All three complete depth-two censuses contain no contractor-lineage bridge and none is truncated."
   },
   "scientific_boundary": "This gate diagnoses interface reachability only. It does not install a new proof operator, alter the solver, claim full unbounded exhaustion, or inspect sealed transfer cases.",
   "sealed_transfer_ids": [
