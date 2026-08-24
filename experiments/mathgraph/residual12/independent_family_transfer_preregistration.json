@@ -1,0 +1,54 @@
+{
+  "schema": "mathgraph.verified-residual12-independent-family-transfer.v1",
+  "status": "FROZEN_BEFORE_SEARCH_EXECUTION",
+  "created_date": "2026-08-24",
+  "parent_evidence": {
+    "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32677570719",
+    "artifact_id": 9503185857,
+    "artifact_digest": "sha256:bf79278dd18c42e01a46fd0210371763f209b807c2d1dd062cf4ff7864be0d7d",
+    "result": "Both Order-5 hits succeeded and replayed 3/3 at 3 seconds and 3/3 at 5 seconds; all originals and alpha/dual variants were officially Lean-accepted."
+  },
+  "target": "Determine whether the unchanged compact-superposition capability transfers beyond the released Order-5 residual family and whether 5 seconds adds reliable reach over the production-equivalent 3 seconds.",
+  "frozen_inputs": {
+    "path": "experiments/mathgraph/residual12/independent_family_audit_inputs.json",
+    "sha256": "075f7a3b8d0dd389c2d2a12d444af435eb921f622954185cb3d0f867d7cdb503",
+    "rows": 156,
+    "families": ["normal", "hard1", "hard2", "hard3"],
+    "construction": "Canonical-hash selection after excluding every prior experiment ID and reconstructible equation-pair hash; up to 20 TRUE and 20 FALSE rows per family, with labels written separately."
+  },
+  "sealed_labels": {
+    "path": "experiments/mathgraph/residual12/independent_family_audit_labels.sealed.json",
+    "sha256": "5c07bcfe3659f7abfa14b2594000bee01cb9618aed5901941b6dd67c771d987a",
+    "rule": "The search runner receives no label path. Hash the raw result before a separate evaluator loads labels."
+  },
+  "frozen_solver": {
+    "path": "submissions/mathgraph_cleanroom/solver.py",
+    "sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "mutation": "none"
+  },
+  "live_rivals": {
+    "H_transfer": "The existing compact route proves unseen TRUE rows in at least one non-Order-5 family with no FALSE candidate.",
+    "H_order5_specific": "The verified residual hits do not transfer to any prior-contact-excluded Normal/Hard row.",
+    "H_budget_margin": "Five seconds produces valid TRUE hits not reached at three seconds.",
+    "H_no_budget_effect": "The 3- and 5-second hit sets are identical.",
+    "H_soundness_or_measurement": "A candidate appears on a sealed FALSE row, replay fails, Lean rejects, or result/input boundaries differ."
+  },
+  "intervention": {
+    "route": "CompactSuperposition with unchanged COMPACT_SUPERPOSITION_FAST limits",
+    "budgets_seconds": [3, 5],
+    "repetitions": 1,
+    "verifier": "target-root equality, replay_dag, certificate <=100000 bytes, then official Lean 4.32.2 judge for every internal hit"
+  },
+  "resource_budget": "At most 1,248 nominal search-seconds across 312 attempts; no parameter grid, no new representation, no solver mutation.",
+  "metric": {
+    "primary": "officially accepted TRUE hits by source family",
+    "secondary": "5-second-only TRUE hits, FALSE candidates, replay failures, Lean rejections, proof nodes, certificate bytes"
+  },
+  "outcome_to_action": {
+    "transfer_without_false_candidates": "Retain cross-family capability evidence; next run the 5-second scheduling delta through the full 800 regression before any production change.",
+    "five_second_only_true_hits": "Support a budget-margin change, still conditional on full regression and official marginal gains.",
+    "no_transfer": "Do not promote from the two Order-5 cases; map selection/frontier differences before changing representation.",
+    "false_candidate_or_verifier_failure": "Stop and classify as soundness, constructor-language, or boundary failure.",
+    "surprise": "Preserve the unmatched outcome as a new residual rather than revising the hypothesis after inspection."
+  }
+}

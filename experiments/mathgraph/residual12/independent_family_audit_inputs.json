@@ -1,0 +1,1622 @@
+{
+  "census": {
+    "hard1": {
+      "false": {
+        "eligible": 27,
+        "selected": 20
+      },
+      "true": {
+        "eligible": 16,
+        "selected": 16
+      }
+    },
+    "hard2": {
+      "false": {
+        "eligible": 53,
+        "selected": 20
+      },
+      "true": {
+        "eligible": 83,
+        "selected": 20
+      }
+    },
+    "hard3": {
+      "false": {
+        "eligible": 159,
+        "selected": 20
+      },
+      "true": {
+        "eligible": 163,
+        "selected": 20
+      }
+    },
+    "normal": {
+      "false": {
+        "eligible": 439,
+        "selected": 20
+      },
+      "true": {
+        "eligible": 373,
+        "selected": 20
+      }
+    }
+  },
+  "prior_registry": {
+    "content_hashes": 1053,
+    "ids": 1806
+  },
+  "rows": [
+    {
+      "content_sha256": "041af7040a7bc7f3a19e7bc4a6f0a92850314b475053c33226f583070688d3a6",
+      "eq1_id": 286,
+      "eq2_id": 1238,
+      "equation1": "x = ((y \u25c7 y) \u25c7 z) \u25c7 x",
+      "equation2": "x = x \u25c7 (((y \u25c7 x) \u25c7 x) \u25c7 x)",
+      "id": "transfer_041af7040a7bc7f3a19e",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "29abf1975f6820e2258e915207a843a666c00776ccc758e6bf0316cbff7128e0"
+    },
+    {
+      "content_sha256": "056f98c767b9bd87a73b474cb5788bc2bb08b5090116a0fc56fd3bcbaa897408",
+      "eq1_id": 168,
+      "eq2_id": 431,
+      "equation1": "x = (y \u25c7 x) \u25c7 (x \u25c7 z)",
+      "equation2": "x = x \u25c7 (y \u25c7 (x \u25c7 (y \u25c7 z)))",
+      "id": "transfer_056f98c767b9bd87a73b",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "61ff3689e45987430c73e06c0a0be3526a9b6cf71050f17ca75241fe72dde769"
+    },
+    {
+      "content_sha256": "08656be1135e290f51829b4b69e6fc949376d72efb12a48ed25365965f4b16a2",
+      "eq1_id": 3738,
+      "eq2_id": 3727,
+      "equation1": "x \u25c7 y = (x \u25c7 z) \u25c7 (y \u25c7 w)",
+      "equation2": "x \u25c7 y = (x \u25c7 y) \u25c7 (z \u25c7 x)",
+      "id": "transfer_08656be1135e290f5182",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "4ba5222a7c022e05503d1be5016265bad39d233835667b09c63ca89e0ebcfc6d"
+    },
+    {
+      "content_sha256": "0ee991d95e2ce294d0e1e0514b616e33a74cb775135a695bde5958de8d7ca3ef",
+      "eq1_id": 4208,
+      "eq2_id": 3356,
+      "equation1": "x \u25c7 y = ((z \u25c7 y) \u25c7 x) \u25c7 x",
+      "equation2": "x \u25c7 y = y \u25c7 (y \u25c7 (y \u25c7 y))",
+      "id": "transfer_0ee991d95e2ce294d0e1",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "e33a26e9fa131ecc33666e8e093d1ab97a5c9a60e663ff6c97433399ef087474"
+    },
+    {
+      "content_sha256": "12f43844854858cc47f100415b58ae050280c07077710d0d5554c1c7b3d5a580",
+      "eq1_id": 242,
+      "eq2_id": 3197,
+      "equation1": "x = (y \u25c7 (z \u25c7 y)) \u25c7 x",
+      "equation2": "x = (((y \u25c7 z) \u25c7 y) \u25c7 y) \u25c7 x",
+      "id": "transfer_12f43844854858cc47f1",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "e082aa28569b0de23ae66782167713ff9a3581071ba291b4f2c4f6c678588353"
+    },
+    {
+      "content_sha256": "190813a9aa7e0c4c5060c3fb5cf6993beffe2fac226fd006e7a9d2e7627ad8bf",
+      "eq1_id": 1738,
+      "eq2_id": 3972,
+      "equation1": "x = (y \u25c7 y) \u25c7 ((z \u25c7 x) \u25c7 x)",
+      "equation2": "x \u25c7 y = (y \u25c7 (z \u25c7 x)) \u25c7 y",
+      "id": "transfer_190813a9aa7e0c4c5060",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "16025e6e79ccbc7fa8ef6abe32a75ef821cfd5b4b56e1e486af8cf1684b9d368"
+    },
+    {
+      "content_sha256": "1b21ae7b1c366189b23de8876d0e221ddaf9a0d7af22fb350cf8615c84a3ed03",
+      "eq1_id": 964,
+      "eq2_id": 698,
+      "equation1": "x = y \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 x))",
+      "equation2": "x = y \u25c7 (x \u25c7 ((z \u25c7 w) \u25c7 x))",
+      "id": "transfer_1b21ae7b1c366189b23d",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "7950df8907946b0478c00f5124407e9c26a05d4c598f73f5e87d798f0a250a51"
+    },
+    {
+      "content_sha256": "1e6d462e88bf389efb7d85570b6e3239b8d9b731ce94de8438ac80dd2e192947",
+      "eq1_id": 3583,
+      "eq2_id": 4406,
+      "equation1": "x \u25c7 y = z \u25c7 ((x \u25c7 x) \u25c7 y)",
+      "equation2": "x \u25c7 (x \u25c7 y) = (y \u25c7 x) \u25c7 y",
+      "id": "transfer_1e6d462e88bf389efb7d",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "19897f8e58368c3cce81c564b7600472e2fc16a720df6ac111612cacfd9fa887"
+    },
+    {
+      "content_sha256": "2750b78aff33be3ed31e0c466625a88abe33ec5a786fe7f7eef7b413acd220a2",
+      "eq1_id": 3478,
+      "eq2_id": 4316,
+      "equation1": "x \u25c7 x = y \u25c7 ((x \u25c7 z) \u25c7 y)",
+      "equation2": "x \u25c7 (y \u25c7 x) = x \u25c7 (z \u25c7 x)",
+      "id": "transfer_2750b78aff33be3ed31e",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "acd723752a3b950d92dc272a374ca8afb9575388827e1e880c2ef4cc05642994"
+    },
+    {
+      "content_sha256": "2aa46c92be216d0f9fe51e410da8744431363fa8606bdf3bc0c8825efdaae28f",
+      "eq1_id": 234,
+      "eq2_id": 3065,
+      "equation1": "x = (y \u25c7 (y \u25c7 z)) \u25c7 x",
+      "equation2": "x = (((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 x",
+      "id": "transfer_2aa46c92be216d0f9fe5",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "800986f113b957b38745ed979ba345e82beb4fb032f1dc96e8dedf3632c2b099"
+    },
+    {
+      "content_sha256": "2ce949d1f83215eb9d4b9551e051006d34706ac45ff556957d8936b464bc22e0",
+      "eq1_id": 1446,
+      "eq2_id": 1448,
+      "equation1": "x = (x \u25c7 y) \u25c7 (x \u25c7 (y \u25c7 z))",
+      "equation2": "x = (x \u25c7 y) \u25c7 (x \u25c7 (z \u25c7 y))",
+      "id": "transfer_2ce949d1f83215eb9d4b",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "dde7fd5fa3f447c323dbae847f5a30af6209766fe11748c9946cb81ab63003dc"
+    },
+    {
+      "content_sha256": "3948f1a1c5147d8f2526e2eaa12d4acb4042546fe0b12b1cc37e65718ce2d857",
+      "eq1_id": 1927,
+      "eq2_id": 3409,
+      "equation1": "x = (y \u25c7 (y \u25c7 x)) \u25c7 (z \u25c7 x)",
+      "equation2": "x \u25c7 y = z \u25c7 (y \u25c7 (w \u25c7 y))",
+      "id": "transfer_3948f1a1c5147d8f2526",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "04428efec90d1bcb0af6a2834de3e71dd029c7be245f2841b7c711cd8453f024"
+    },
+    {
+      "content_sha256": "444336e1b87a3627e642906971262990ef218997f8515bc71b374fc1f5b66538",
+      "eq1_id": 3184,
+      "eq2_id": 1288,
+      "equation1": "x = (((y \u25c7 z) \u25c7 x) \u25c7 z) \u25c7 x",
+      "equation2": "x = y \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 x)",
+      "id": "transfer_444336e1b87a3627e642",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "c7261e20ef5d258e3e54268dc097974a24e3fe1807abc1b938fae0d301a6f9de"
+    },
+    {
+      "content_sha256": "4851b2b354f0314a4cb523fb877b94f9be6278582d4643b8f7ca388b48f593ff",
+      "eq1_id": 862,
+      "eq2_id": 2466,
+      "equation1": "x = x \u25c7 ((y \u25c7 z) \u25c7 (z \u25c7 z))",
+      "equation2": "x = (x \u25c7 ((y \u25c7 y) \u25c7 x)) \u25c7 x",
+      "id": "transfer_4851b2b354f0314a4cb5",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "c2ecfe7948799e592bf763e7b68359082631389c663bd8c5a1bdf2b2fa3e51cc"
+    },
+    {
+      "content_sha256": "52475ca17ef132c81114f5debb5c69e9ce22d4b737314cac75fe97cd689780d5",
+      "eq1_id": 54,
+      "eq2_id": 2695,
+      "equation1": "x = x \u25c7 (y \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((x \u25c7 y) \u25c7 (z \u25c7 w)) \u25c7 u",
+      "id": "transfer_52475ca17ef132c81114",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "a1568122ee34607bfbafa8a618a8e769efbcec76d9043a544fa578ffa8a503d5"
+    },
+    {
+      "content_sha256": "5cdcc64ea6ae823e6581be2e637d6fb99263cfddf79ae543e1777956b82175b5",
+      "eq1_id": 2890,
+      "eq2_id": 3261,
+      "equation1": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 x",
+      "equation2": "x \u25c7 x = x \u25c7 (y \u25c7 (y \u25c7 x))",
+      "id": "transfer_5cdcc64ea6ae823e6581",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "644ad264121ca09e2652a611db5e5b7c0967c1ab4c6ef0c669e22686f092de4a"
+    },
+    {
+      "content_sha256": "67523da1ff70b0b434becd1928a39188e509f34a17752450e433c62ae645e0da",
+      "eq1_id": 4150,
+      "eq2_id": 4243,
+      "equation1": "x \u25c7 y = ((x \u25c7 z) \u25c7 w) \u25c7 y",
+      "equation2": "x \u25c7 y = ((z \u25c7 w) \u25c7 x) \u25c7 y",
+      "id": "transfer_67523da1ff70b0b434be",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "715ca35415922242772493eb244b507a1eac7fc7fb84695ce766e1f9a6b051f5"
+    },
+    {
+      "content_sha256": "6a2fe9f634a556cf83f31722527e211946da8b3397ae6d528a40c6a0ea0fc5d4",
+      "eq1_id": 4609,
+      "eq2_id": 4341,
+      "equation1": "(x \u25c7 x) \u25c7 y = (y \u25c7 y) \u25c7 z",
+      "equation2": "x \u25c7 (y \u25c7 y) = x \u25c7 (z \u25c7 z)",
+      "id": "transfer_6a2fe9f634a556cf83f3",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "a03d9721b387ecdd9431c5da5758e88735a1ec6c971485f1d2b02a86209f50db"
+    },
+    {
+      "content_sha256": "6a6055cbc8946d8a2f58552cbb2d9ca2d2260804a06ed3d12d36030274052210",
+      "eq1_id": 3277,
+      "eq2_id": 3473,
+      "equation1": "x \u25c7 x = y \u25c7 (x \u25c7 (z \u25c7 w))",
+      "equation2": "x \u25c7 x = y \u25c7 ((x \u25c7 x) \u25c7 z)",
+      "id": "transfer_6a6055cbc8946d8a2f58",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "233993cd23be8b7130c8a039279d334846cf27f00ff6bd9afc332494a7a8b7ee"
+    },
+    {
+      "content_sha256": "6c69a00577005a5dfdfc7501c52bf26b7c5522780539fc6825eeeece5d09b278",
+      "eq1_id": 1953,
+      "eq2_id": 608,
+      "equation1": "x = (y \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 x)",
+      "equation2": "x = y \u25c7 (z \u25c7 (w \u25c7 (u \u25c7 x)))",
+      "id": "transfer_6c69a00577005a5dfdfc",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "c38f353049371a4dd73b36e2567e7bfe8d2529cfd4587a74d5d5a31757666ece"
+    },
+    {
+      "content_sha256": "70afad00df8534742c57bfd34fd65f7178545ad88b3d8a17b4e24d982617de7c",
+      "eq1_id": 3118,
+      "eq2_id": 3441,
+      "equation1": "x = (((y \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 x",
+      "equation2": "x \u25c7 y = z \u25c7 (w \u25c7 (z \u25c7 y))",
+      "id": "transfer_70afad00df8534742c57",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "b6b0f8a64736e7a6128b462692d6235e7b5896898769c60d079e00d418b956a9"
+    },
+    {
+      "content_sha256": "7276aecdd5ce7c174588152814ccc04f53f6be236eb5dd9e0325f1544dd357de",
+      "eq1_id": 1400,
+      "eq2_id": 1364,
+      "equation1": "x = y \u25c7 (((z \u25c7 w) \u25c7 x) \u25c7 x)",
+      "equation2": "x = y \u25c7 (((z \u25c7 x) \u25c7 w) \u25c7 w)",
+      "id": "transfer_7276aecdd5ce7c174588",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "e76393e99c3d8a2d08c45afb93369405f9db68a6a87a848373b97b31e98e95d8"
+    },
+    {
+      "content_sha256": "739a9b5a778fd7a76603cf695e2470fc99a22dacda244b84e9d3fd7eec63a352",
+      "eq1_id": 4653,
+      "eq2_id": 4270,
+      "equation1": "(x \u25c7 y) \u25c7 x = (z \u25c7 w) \u25c7 u",
+      "equation2": "x \u25c7 (x \u25c7 x) = x \u25c7 (y \u25c7 y)",
+      "id": "transfer_739a9b5a778fd7a76603",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "b357ce9ebd11fefbc633c673e0a05388372e0f4c19ccde105f5fcc8a8da154db"
+    },
+    {
+      "content_sha256": "7fa6d324b490932799c39082a24289d6c610bac2959e18d7c5ec45734ccf02b8",
+      "eq1_id": 2105,
+      "eq2_id": 1229,
+      "equation1": "x = ((y \u25c7 x) \u25c7 y) \u25c7 (z \u25c7 z)",
+      "equation2": "x = x \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 y)",
+      "id": "transfer_7fa6d324b490932799c3",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "e60b8ad80e2fe6d14f622fa8836516b1c60461051376e13b9c1d6934229d4c93"
+    },
+    {
+      "content_sha256": "812ce578c494f6d3767d71ae3dbdc697d06cd6872ca06e6151e66d29842c940f",
+      "eq1_id": 1480,
+      "eq2_id": 572,
+      "equation1": "x = (y \u25c7 x) \u25c7 (x \u25c7 (x \u25c7 z))",
+      "equation2": "x = y \u25c7 (z \u25c7 (z \u25c7 (x \u25c7 y)))",
+      "id": "transfer_812ce578c494f6d3767d",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "5ef3ae19980081f2d37fa71cc4b9fc10d8a23041ed6bceca4400350cb48ea6dd"
+    },
+    {
+      "content_sha256": "8233c5d61016e1622cbfac48e2ea8fc4b7d643bf2b765c7f6787053c301d4107",
+      "eq1_id": 2180,
+      "eq2_id": 3116,
+      "equation1": "x = ((y \u25c7 z) \u25c7 y) \u25c7 (x \u25c7 z)",
+      "equation2": "x = (((y \u25c7 x) \u25c7 y) \u25c7 y) \u25c7 y",
+      "id": "transfer_8233c5d61016e1622cbf",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "2b7f8c3e4f7c01506257b903c0becdb502cddf36672a62e62cb551100b4e3ee1"
+    },
+    {
+      "content_sha256": "84faaa17ba8b65259526bcb5b4e53e36d7c5a7d9102726812212e5f75749b239",
+      "eq1_id": 706,
+      "eq2_id": 4204,
+      "equation1": "x = y \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 x))",
+      "equation2": "x \u25c7 y = ((z \u25c7 x) \u25c7 w) \u25c7 y",
+      "id": "transfer_84faaa17ba8b65259526",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "a7f28ffc4d3015bb7d1b617eb2b521beed95078c35b880d69809d35825e24134"
+    },
+    {
+      "content_sha256": "8c8a5bbe55c7b339abf0dfbb037bda857d5a1f0249d8ae1b9b23150c39ec71e6",
+      "eq1_id": 1274,
+      "eq2_id": 2647,
+      "equation1": "x = x \u25c7 (((y \u25c7 z) \u25c7 w) \u25c7 u)",
+      "equation2": "x = ((x \u25c7 x) \u25c7 (x \u25c7 y)) \u25c7 y",
+      "id": "transfer_8c8a5bbe55c7b339abf0",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "ade6d9db0c91436de1a399a7812f18d0eb87bad26d8367329a7848184507887c"
+    },
+    {
+      "content_sha256": "8eb7132385e325875473faa4899b25528088fbb0355da4ad8d5dcb55e59a1716",
+      "eq1_id": 868,
+      "eq2_id": 2243,
+      "equation1": "x = x \u25c7 ((y \u25c7 z) \u25c7 (w \u25c7 u))",
+      "equation2": "x = (x \u25c7 (x \u25c7 (y \u25c7 x))) \u25c7 x",
+      "id": "transfer_8eb7132385e325875473",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "0349b5cf23161bf2a98bd5483e6b60cf5d0c6744e29b5f6326e0d2c2c600dc31"
+    },
+    {
+      "content_sha256": "92f3ddfc2ef0c8eb57a25baa5da58dec9601b3241231e83fdc58124ca5a4017a",
+      "eq1_id": 4574,
+      "eq2_id": 4438,
+      "equation1": "x \u25c7 (y \u25c7 z) = (w \u25c7 w) \u25c7 z",
+      "equation2": "x \u25c7 (y \u25c7 x) = (x \u25c7 z) \u25c7 x",
+      "id": "transfer_92f3ddfc2ef0c8eb57a2",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "97d06888c3168b345679d2daad8a21cddcfa7403d42369fdaddd14e02b917aa0"
+    },
+    {
+      "content_sha256": "97a1f445014928777619d080d8ec24b173c1662b191d374971e74b188fec4ee8",
+      "eq1_id": 1880,
+      "eq2_id": 2031,
+      "equation1": "x = (x \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 y)",
+      "equation2": "x = (y \u25c7 (z \u25c7 w)) \u25c7 (u \u25c7 z)",
+      "id": "transfer_97a1f445014928777619",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "eeed9c5f9f99a0647398227a0e75d3c73e246acb99a7048d814f9869d095ec3e"
+    },
+    {
+      "content_sha256": "97fe9027b1c8eb3685e7320edf83b4584dfe230bcd823be95955dbddffeb1f58",
+      "eq1_id": 2343,
+      "eq2_id": 3446,
+      "equation1": "x = (y \u25c7 (y \u25c7 (y \u25c7 z))) \u25c7 x",
+      "equation2": "x \u25c7 y = z \u25c7 (w \u25c7 (w \u25c7 y))",
+      "id": "transfer_97fe9027b1c8eb3685e7",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "c18f9bc0dce6c5e0b3d29c020221fef95990ed14a47059c247f99ee485f90d89"
+    },
+    {
+      "content_sha256": "a22cf95d27977f685a57fd1b07e769147b17c4c8bb035cf21f64e86a08f2b6e0",
+      "eq1_id": 4508,
+      "eq2_id": 4527,
+      "equation1": "x \u25c7 (y \u25c7 z) = (x \u25c7 x) \u25c7 z",
+      "equation2": "x \u25c7 (y \u25c7 z) = (y \u25c7 y) \u25c7 x",
+      "id": "transfer_a22cf95d27977f685a57",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "603a04eb088b3d0ea980f84eca6d5128e7d9942139a444688ebca1d3bd1cd18e"
+    },
+    {
+      "content_sha256": "b2cd7d1a2f68cc274826f0e84128df4b482934e71b0cabdd9697d01985ecd3d6",
+      "eq1_id": 386,
+      "eq2_id": 3639,
+      "equation1": "x \u25c7 y = (y \u25c7 x) \u25c7 z",
+      "equation2": "x \u25c7 y = z \u25c7 ((w \u25c7 y) \u25c7 y)",
+      "id": "transfer_b2cd7d1a2f68cc274826",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "897b5ed801869e483bed233b12db48de25e9a5a0b53d4314da86cfa8ed497210"
+    },
+    {
+      "content_sha256": "d6c22cea789857a6e18db43303191f5a5cb2a59b8145051e57f2f429f1aeaa41",
+      "eq1_id": 1070,
+      "eq2_id": 3950,
+      "equation1": "x = x \u25c7 ((y \u25c7 (z \u25c7 w)) \u25c7 w)",
+      "equation2": "x \u25c7 y = (x \u25c7 (z \u25c7 w)) \u25c7 u",
+      "id": "transfer_d6c22cea789857a6e18d",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "64b5f82627bf900924fb11df6723869bd4047cbfeeb5205af32014f2e669dae1"
+    },
+    {
+      "content_sha256": "e0d1cc50b5ae55eba9a9520f651209c4e0eb6be513d2c407a2a575d054e3e0cc",
+      "eq1_id": 302,
+      "eq2_id": 1217,
+      "equation1": "x = ((y \u25c7 z) \u25c7 w) \u25c7 x",
+      "equation2": "x = y \u25c7 ((z \u25c7 (w \u25c7 u)) \u25c7 x)",
+      "id": "transfer_e0d1cc50b5ae55eba9a9",
+      "source_family": "hard1",
+      "source_problem_id_sha256": "52a6bdfd315268b61b0b98651b4574ca749c6aa58ad3c3c31cf654ce34d3e876"
+    },
+    {
+      "content_sha256": "02df42f1e0c4a95ba3da5fb57746fa5ed86511c51b05904d55488ec3a5adfacd",
+      "eq1_id": 2500,
+      "eq2_id": 3127,
+      "equation1": "x = (y \u25c7 ((x \u25c7 x) \u25c7 z)) \u25c7 y",
+      "equation2": "x = (((y \u25c7 x) \u25c7 z) \u25c7 y) \u25c7 y",
+      "id": "transfer_02df42f1e0c4a95ba3da",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "cbadf220a87e06b2adb3b519bb9b4c1c964139d7f89234f8b5c097be630d0037"
+    },
+    {
+      "content_sha256": "0323a7e329f973b064e5995365cd6ba9fb4fca6ab104ea8ffce062cb77027413",
+      "eq1_id": 2450,
+      "eq2_id": 4130,
+      "equation1": "x = (x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y",
+      "equation2": "x \u25c7 y = ((x \u25c7 y) \u25c7 y) \u25c7 x",
+      "id": "transfer_0323a7e329f973b064e5",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "32012dd509ebb91a4a43f98c40589cfc7abbd13711a2f0974254199db59225b9"
+    },
+    {
+      "content_sha256": "03fd5bc244f0bfe3335445ecb0fcb12a3da3b5dc300582bcef6b92e1c35699ec",
+      "eq1_id": 3141,
+      "eq2_id": 1091,
+      "equation1": "x = (((y \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 z",
+      "equation2": "x = y \u25c7 ((x \u25c7 (y \u25c7 z)) \u25c7 w)",
+      "id": "transfer_03fd5bc244f0bfe33354",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "3e46b318d98ec556c3436133b5fe127399d9332245999eb56dfc09999c88e7a5"
+    },
+    {
+      "content_sha256": "04126289aae29cd3820c1d74021525f90bfae46f1e70137f69b0723ce8edaed8",
+      "eq1_id": 3577,
+      "eq2_id": 3798,
+      "equation1": "x \u25c7 y = y \u25c7 ((z \u25c7 w) \u25c7 x)",
+      "equation2": "x \u25c7 y = (z \u25c7 x) \u25c7 (w \u25c7 y)",
+      "id": "transfer_04126289aae29cd3820c",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "cb89f9f677b78143c29f863d97b95015830063506b6cf055db91bcc756be7b53"
+    },
+    {
+      "content_sha256": "0692f7e4e51dd071469588cb06114ba1cc6ccf3b668d06b1b3be2719b61e05ba",
+      "eq1_id": 1076,
+      "eq2_id": 3364,
+      "equation1": "x = y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 y)",
+      "equation2": "x \u25c7 y = y \u25c7 (z \u25c7 (x \u25c7 z))",
+      "id": "transfer_0692f7e4e51dd0714695",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "4fc22f32286bc9b0d014acee132faafac8fb1b157f41f71b0b4ad6dee36501e8"
+    },
+    {
+      "content_sha256": "083225126b484028032ca55367e0d67d9919c516dfff9ac8244085a5a555dac9",
+      "eq1_id": 2907,
+      "eq2_id": 1312,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 z) \u25c7 z",
+      "equation2": "x = y \u25c7 (((y \u25c7 x) \u25c7 x) \u25c7 x)",
+      "id": "transfer_083225126b484028032c",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "764e765262061c233d5b00c5a7fb8d39ee221b94a605db3c3c8a25c5ad0bc370"
+    },
+    {
+      "content_sha256": "09174e171dd02bae6004e7a798cd949f2ec16faad47604125385be5578c3ddd0",
+      "eq1_id": 4116,
+      "eq2_id": 3515,
+      "equation1": "x \u25c7 x = ((y \u25c7 z) \u25c7 w) \u25c7 u",
+      "equation2": "x \u25c7 y = x \u25c7 ((x \u25c7 z) \u25c7 y)",
+      "id": "transfer_09174e171dd02bae6004",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "4bd56eeb055605cc95afb003bbba9b4b73169f3a44e359ae6bfb6a80a7e26d3c"
+    },
+    {
+      "content_sha256": "0939515fdab488acbcb69f1490366c46f25e10d40bb61ebf66d5fd00c30f1a63",
+      "eq1_id": 1483,
+      "eq2_id": 4472,
+      "equation1": "x = (y \u25c7 x) \u25c7 (x \u25c7 (y \u25c7 z))",
+      "equation2": "x \u25c7 (y \u25c7 y) = (x \u25c7 y) \u25c7 x",
+      "id": "transfer_0939515fdab488acbcb6",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "619e1ac10648177faa8d6e02ad3f7542245c214ce30835722dc802de0d34c998"
+    },
+    {
+      "content_sha256": "0b1b4340211150bf77912c677d7f5f84153ba6c70c32f400456fb52f9ef788ec",
+      "eq1_id": 4373,
+      "eq2_id": 4655,
+      "equation1": "x \u25c7 (y \u25c7 z) = z \u25c7 (w \u25c7 u)",
+      "equation2": "(x \u25c7 y) \u25c7 y = (x \u25c7 z) \u25c7 y",
+      "id": "transfer_0b1b4340211150bf7791",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "e4d137747ab0bd1886cd25c2db4c2527bb2bbdf3dae4c354a8198e5de52488a1"
+    },
+    {
+      "content_sha256": "0ce151c45454f2a250ad9280dff0e0907c88ca30d0384438baccff33543929b6",
+      "eq1_id": 4116,
+      "eq2_id": 4267,
+      "equation1": "x \u25c7 x = ((y \u25c7 z) \u25c7 w) \u25c7 u",
+      "equation2": "x \u25c7 y = ((z \u25c7 w) \u25c7 u) \u25c7 v",
+      "id": "transfer_0ce151c45454f2a250ad",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "e7f3fa76cf8c7be58be54bbc102c1f1564a3a9966b287d058c0a73ed28c31abe"
+    },
+    {
+      "content_sha256": "0d8c5421cb8325b6edac5cd364003a580c0651d47e16adbf8930049bc89b7682",
+      "eq1_id": 1184,
+      "eq2_id": 3962,
+      "equation1": "x = y \u25c7 ((z \u25c7 (z \u25c7 y)) \u25c7 x)",
+      "equation2": "x \u25c7 y = (y \u25c7 (y \u25c7 x)) \u25c7 y",
+      "id": "transfer_0d8c5421cb8325b6edac",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "6ef764a76ea15393fd6f56b2aedaf8f8da6aac83763c582db6c276a5ab2c9653"
+    },
+    {
+      "content_sha256": "10cab597b4268bdf89ff4a866788d1767d3fc9c486a2d006ec0adf8bd6dc5b87",
+      "eq1_id": 3913,
+      "eq2_id": 3820,
+      "equation1": "x \u25c7 x = (y \u25c7 (z \u25c7 w)) \u25c7 u",
+      "equation2": "x \u25c7 y = (z \u25c7 z) \u25c7 (x \u25c7 y)",
+      "id": "transfer_10cab597b4268bdf89ff",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "8348126f5bfc53c7e74180adf1c551e909e28e3b50b71ee683cc9e4732bbeeaf"
+    },
+    {
+      "content_sha256": "1126155a42a842c881e40f294e0a67af136466d7adf4bf7c4c68f45a4d12c368",
+      "eq1_id": 3205,
+      "eq2_id": 2469,
+      "equation1": "x = (((y \u25c7 z) \u25c7 y) \u25c7 w) \u25c7 x",
+      "equation2": "x = (x \u25c7 ((y \u25c7 y) \u25c7 y)) \u25c7 x",
+      "id": "transfer_1126155a42a842c881e4",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "de95b839d2a9977d3a4e4ce5e534b9d3772ff8bdec52df6ebd256a1924c1e09d"
+    },
+    {
+      "content_sha256": "11f6bee64ae3df19e6851d17ab684083f76ea0e24e454ea867317c0f11e6c7fc",
+      "eq1_id": 1349,
+      "eq2_id": 1022,
+      "equation1": "x = y \u25c7 (((z \u25c7 x) \u25c7 x) \u25c7 x)",
+      "equation2": "x = x \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 x)",
+      "id": "transfer_11f6bee64ae3df19e685",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "98cdd7d9bd2ac7f2049d98338aa18fbc775ab0476aa6bc4c09ca986404baf8b0"
+    },
+    {
+      "content_sha256": "126f9cc0cc0ced65552bfb427d5e9ce8893a2c7545bf1a6b8ac18939a6cb9991",
+      "eq1_id": 2325,
+      "eq2_id": 3159,
+      "equation1": "x = (y \u25c7 (x \u25c7 (z \u25c7 w))) \u25c7 w",
+      "equation2": "x = (((y \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 x",
+      "id": "transfer_126f9cc0cc0ced65552b",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "7c72b22ca9a611c9095c7ba9f47ffd3e9f22ff440842f34c64bb3986e5ffc8b9"
+    },
+    {
+      "content_sha256": "1531838d5baba88a8e6444df7789279efcbc83c725215b86afa7bfcf87160b5b",
+      "eq1_id": 2178,
+      "eq2_id": 3431,
+      "equation1": "x = ((y \u25c7 z) \u25c7 y) \u25c7 (x \u25c7 x)",
+      "equation2": "x \u25c7 y = z \u25c7 (w \u25c7 (x \u25c7 y))",
+      "id": "transfer_1531838d5baba88a8e64",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "498a5540323fd9a0d0d77188d3df28ebec796a09c7ddf5a142253b104bf41621"
+    },
+    {
+      "content_sha256": "199f4376af6e2a326acf1a7dd47782e80df76642792fd284845eeae62841ca2b",
+      "eq1_id": 1284,
+      "eq2_id": 2435,
+      "equation1": "x = y \u25c7 (((x \u25c7 x) \u25c7 z) \u25c7 w)",
+      "equation2": "x = (y \u25c7 (z \u25c7 (w \u25c7 u))) \u25c7 x",
+      "id": "transfer_199f4376af6e2a326acf",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "ad2314fd6cf9bec2bf8694a56973ca664b6ded65f1f1df42ff84ae1494cf6634"
+    },
+    {
+      "content_sha256": "1b42835ce7c74bea318ab7308c9c3d90336446fbb8cbbd2b6d40021998ece39b",
+      "eq1_id": 4208,
+      "eq2_id": 3879,
+      "equation1": "x \u25c7 y = ((z \u25c7 y) \u25c7 x) \u25c7 x",
+      "equation2": "x \u25c7 x = (y \u25c7 (x \u25c7 x)) \u25c7 z",
+      "id": "transfer_1b42835ce7c74bea318a",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "b6859d9afb4acb0bd6c3fb56276cb3385dd659b13de38c2e04bdd85faa1f90e1"
+    },
+    {
+      "content_sha256": "21cdd409bc82250187e51aa3a79b9d2a0d29c68bcedaa0c8c8fc255ac568c845",
+      "eq1_id": 194,
+      "eq2_id": 1133,
+      "equation1": "x = (y \u25c7 z) \u25c7 (z \u25c7 x)",
+      "equation2": "x = y \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 x)",
+      "id": "transfer_21cdd409bc82250187e5",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "46303bf74ccbf583bfbf959ed40b9051c2fa7cace3886879709df394ba42ee2b"
+    },
+    {
+      "content_sha256": "2546791df6ec574aa8b8d8006a61239648df31eedec5f0afe28e3ae7a8a8fd5c",
+      "eq1_id": 3126,
+      "eq2_id": 2652,
+      "equation1": "x = (((y \u25c7 x) \u25c7 z) \u25c7 y) \u25c7 x",
+      "equation2": "x = ((x \u25c7 x) \u25c7 (y \u25c7 y)) \u25c7 x",
+      "id": "transfer_2546791df6ec574aa8b8",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "c432ac0faf6ee3f457eb303dcb384a5e684823598ea24d67b244e664ba96f228"
+    },
+    {
+      "content_sha256": "264f883a3ae4eaf80943e0a05d203a0e01072ea44ce40b4a740fe2d63d9a71bf",
+      "eq1_id": 1648,
+      "eq2_id": 2239,
+      "equation1": "x = (x \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y)",
+      "equation2": "x = (x \u25c7 (x \u25c7 (x \u25c7 x))) \u25c7 y",
+      "id": "transfer_264f883a3ae4eaf80943",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "221fd06583e4108fca54f28a7fb6e287865133b30d2359ca94272b49c17bffcd"
+    },
+    {
+      "content_sha256": "2743dc66a47b384e7affd1221d57742bec925b81562f64177b3fbbd1ff94dc7c",
+      "eq1_id": 1076,
+      "eq2_id": 3407,
+      "equation1": "x = y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 y)",
+      "equation2": "x \u25c7 y = z \u25c7 (y \u25c7 (z \u25c7 w))",
+      "id": "transfer_2743dc66a47b384e7aff",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "548caab0a9d594c8c85b240980cefb1655b06d730b510fd7748f2f15a00337f0"
+    },
+    {
+      "content_sha256": "2990fb483dc2175acc39eaa5906c35163854aee15eaaf54c29eb4fdeff3bd92b",
+      "eq1_id": 1961,
+      "eq2_id": 3155,
+      "equation1": "x = (y \u25c7 (z \u25c7 x)) \u25c7 (x \u25c7 w)",
+      "equation2": "x = (((y \u25c7 y) \u25c7 y) \u25c7 z) \u25c7 x",
+      "id": "transfer_2990fb483dc2175acc39",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "83883d88c4ce7261687b9203e8aae42201ff027f36e7ad4a90fac8a2939bd89d"
+    },
+    {
+      "content_sha256": "2eea8d38b2f56fd1551d2454e7efc6bf18269a8333d1557bad6134dcfdb32094",
+      "eq1_id": 4653,
+      "eq2_id": 4394,
+      "equation1": "(x \u25c7 y) \u25c7 x = (z \u25c7 w) \u25c7 u",
+      "equation2": "x \u25c7 (x \u25c7 x) = (y \u25c7 z) \u25c7 w",
+      "id": "transfer_2eea8d38b2f56fd1551d",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "a5e4818cc2f5470c078df47c03e8f0c751add32f9e9ce33e7ddfa27b26ffcfce"
+    },
+    {
+      "content_sha256": "379b72e39f3138a538ca43fd5508612550951f1b1c34d5f9d6aef082e7beb57e",
+      "eq1_id": 646,
+      "eq2_id": 4127,
+      "equation1": "x = x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y))",
+      "equation2": "x \u25c7 y = ((x \u25c7 y) \u25c7 x) \u25c7 x",
+      "id": "transfer_379b72e39f3138a538ca",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "e812709457591faeb1860c625110097b566dd93e8ac0adb0c7843a014f86145d"
+    },
+    {
+      "content_sha256": "40adbe683ec1f7c6e413fa2455cb74c857fc35b6182ddaad9f347571715b5716",
+      "eq1_id": 2450,
+      "eq2_id": 1446,
+      "equation1": "x = (x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y",
+      "equation2": "x = (x \u25c7 y) \u25c7 (x \u25c7 (y \u25c7 z))",
+      "id": "transfer_40adbe683ec1f7c6e413",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "207d7b0c2c26ac411722545113d2ee22b136cb78733894c005871f53f8c5cb4b"
+    },
+    {
+      "content_sha256": "44df3d8b9ee30bde9ac60f21982e8654ca5442b30e44de6c9ff3251df7da6e71",
+      "eq1_id": 2907,
+      "eq2_id": 2968,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 z) \u25c7 z",
+      "equation2": "x = ((y \u25c7 (y \u25c7 z)) \u25c7 w) \u25c7 x",
+      "id": "transfer_44df3d8b9ee30bde9ac6",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "935952cb2c452722bcaa14306137f583bfd03f856d98a900ee62ab1d9027234d"
+    },
+    {
+      "content_sha256": "465601c85be421487c8dd0e77e9c7c79016434b00980df42bcfd63543386aa6c",
+      "eq1_id": 1277,
+      "eq2_id": 858,
+      "equation1": "x = y \u25c7 (((x \u25c7 x) \u25c7 x) \u25c7 z)",
+      "equation2": "x = x \u25c7 ((y \u25c7 z) \u25c7 (y \u25c7 z))",
+      "id": "transfer_465601c85be421487c8d",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "566cf8060e4a0cd14a1e4d1400bb1a9fefa7c1461f91d8f8e38a5b85c74e4a2a"
+    },
+    {
+      "content_sha256": "4698b70ae385e6cff74e52d94506ce497e6902ea43041343adc534442ac59691",
+      "eq1_id": 1076,
+      "eq2_id": 2152,
+      "equation1": "x = y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 y) \u25c7 z) \u25c7 (z \u25c7 x)",
+      "id": "transfer_4698b70ae385e6cff74e",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "4d98c14d871e2024d5f9d5d56ce8221ee9371efa25b9939168f7682e8207e130"
+    },
+    {
+      "content_sha256": "496210f7757c7afb87d176b3b82a281bb33b8b713d27e7c962e15bcb393f082c",
+      "eq1_id": 2531,
+      "eq2_id": 4307,
+      "equation1": "x = (y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y",
+      "equation2": "x \u25c7 (x \u25c7 y) = z \u25c7 (z \u25c7 y)",
+      "id": "transfer_496210f7757c7afb87d1",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "501b404a3f911d643c91809726e88964d178457ee33b836065d9360222e0622a"
+    },
+    {
+      "content_sha256": "498949d8402302125fea06196e67e970de01c9cea76a749535c7d0233cf79129",
+      "eq1_id": 2116,
+      "eq2_id": 1932,
+      "equation1": "x = ((y \u25c7 x) \u25c7 z) \u25c7 (z \u25c7 y)",
+      "equation2": "x = (y \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 y)",
+      "id": "transfer_498949d8402302125fea",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "bdeb43c1ac3fa5e69fea7bf2db4d33bb4b7aee45cfeec7b0f13230408ad6a955"
+    },
+    {
+      "content_sha256": "4a7aa7c75687704bf0fe874589b3de8d2085ef0e9ff6bc85cda970a30d36fad3",
+      "eq1_id": 3348,
+      "eq2_id": 3972,
+      "equation1": "x \u25c7 y = y \u25c7 (x \u25c7 (z \u25c7 x))",
+      "equation2": "x \u25c7 y = (y \u25c7 (z \u25c7 x)) \u25c7 y",
+      "id": "transfer_4a7aa7c75687704bf0fe",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "89858fd48c3c5f67f482da339e0ab36c0f09341ec748c262b27149df32255a90"
+    },
+    {
+      "content_sha256": "4b2a11e8f96eb83f78e13ac785fcfcb3ba3e7e8c67dcb191cd65e063cd62ecd7",
+      "eq1_id": 4683,
+      "eq2_id": 4330,
+      "equation1": "(x \u25c7 y) \u25c7 z = (y \u25c7 w) \u25c7 u",
+      "equation2": "x \u25c7 (y \u25c7 x) = z \u25c7 (y \u25c7 x)",
+      "id": "transfer_4b2a11e8f96eb83f78e1",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "4008aa4b4449af1d1717e594bda385c497c3b72f71a290a1a74dc944eeceb2fc"
+    },
+    {
+      "content_sha256": "50cc8669a5901700fdd3bb6b6e9a39ab072353a968f2680dca32ddd5e9841080",
+      "eq1_id": 2539,
+      "eq2_id": 3870,
+      "equation1": "x = (y \u25c7 ((y \u25c7 x) \u25c7 z)) \u25c7 w",
+      "equation2": "x \u25c7 x = (x \u25c7 (y \u25c7 y)) \u25c7 x",
+      "id": "transfer_50cc8669a5901700fdd3",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "e47faceef4e7ff9504e3c5ce3d5d6e0349588469c3bef019229442ef077f6ab8"
+    },
+    {
+      "content_sha256": "512e26f6263c5ed207336563d53fa4014a68a7aa4ff951271f227ab3e3c4a86d",
+      "eq1_id": 2531,
+      "eq2_id": 3432,
+      "equation1": "x = (y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y",
+      "equation2": "x \u25c7 y = z \u25c7 (w \u25c7 (x \u25c7 z))",
+      "id": "transfer_512e26f6263c5ed20733",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "90828cc1448c388333a9c22dea2e2359659e9231b5de7f0cad279f46ddc1f17f"
+    },
+    {
+      "content_sha256": "53f25ba408f08b707196f793ec91768fd14401c9a88c850c1b273eba94faf929",
+      "eq1_id": 2901,
+      "eq2_id": 1251,
+      "equation1": "x = ((y \u25c7 (x \u25c7 x)) \u25c7 x) \u25c7 z",
+      "equation2": "x = x \u25c7 (((y \u25c7 y) \u25c7 y) \u25c7 x)",
+      "id": "transfer_53f25ba408f08b707196",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "b828b6c880742e691c5afc80ee4691191dd9837187051cde8ed26eeaae6f10a1"
+    },
+    {
+      "content_sha256": "56f47361f5425ff73579de6efbc6cbdcb3285aee58694190a71619f14cafb055",
+      "eq1_id": 2920,
+      "eq2_id": 1248,
+      "equation1": "x = ((y \u25c7 (x \u25c7 z)) \u25c7 x) \u25c7 y",
+      "equation2": "x = x \u25c7 (((y \u25c7 y) \u25c7 x) \u25c7 x)",
+      "id": "transfer_56f47361f5425ff73579",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "8e9da9943b021af795f00dea1d2f5d4900379236b69a47ce8e8edc7388119e79"
+    },
+    {
+      "content_sha256": "59a37ddaa2bef5317f4062dbccaa4828a1bd35ddc2b5bde2653db33c43e3f598",
+      "eq1_id": 1294,
+      "eq2_id": 2496,
+      "equation1": "x = y \u25c7 (((x \u25c7 y) \u25c7 z) \u25c7 w)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 x) \u25c7 y)) \u25c7 x",
+      "id": "transfer_59a37ddaa2bef5317f40",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "355ec74c3775e1f4a368dec17385061551f44b7d5641b2b9e54cf7c41c06d065"
+    },
+    {
+      "content_sha256": "5acb660cd5a825799bab0e65354b6bfac5536f88d74490ea85d49fb07617e27b",
+      "eq1_id": 1147,
+      "eq2_id": 2511,
+      "equation1": "x = y \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 y) \u25c7 z)) \u25c7 z",
+      "id": "transfer_5acb660cd5a825799bab",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "3329c2df90003cc66a9bd222314bf1d28132e66e4800fed46e4ff6ba54631f23"
+    },
+    {
+      "content_sha256": "5b6db1147f148af5b393cc61f8c84cfc40a13ebbc0da7b4a3b281559077d0e6a",
+      "eq1_id": 3913,
+      "eq2_id": 4541,
+      "equation1": "x \u25c7 x = (y \u25c7 (z \u25c7 w)) \u25c7 u",
+      "equation2": "x \u25c7 (y \u25c7 z) = (z \u25c7 x) \u25c7 y",
+      "id": "transfer_5b6db1147f148af5b393",
+      "source_family": "hard2",
+      "source_problem_id_sha256": "a1fdf99e0ed57251f5e3be4a2785ab2517e260acb07123c0b66e5a2d924d4f52"
+    },
+    {
+      "content_sha256": "006d987a805083974f6e1088a54935c830abf24b0ffce958d44852d7328786d5",
+      "eq1_id": 1681,
+      "eq2_id": 2203,
+      "equation1": "x = (y \u25c7 x) \u25c7 ((x \u25c7 x) \u25c7 x)",
+      "equation2": "x = ((y \u25c7 z) \u25c7 z) \u25c7 (z \u25c7 x)",
+      "id": "transfer_006d987a805083974f6e",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "8c4643a41c7ef8d7af4667437d3f717d5a91aa66059e24567fb682bf0ca1015b"
+    },
+    {
+      "content_sha256": "026b60a5786623b56406154d8fd20713c02ef483f335f249d56b64a1f72f0bf8",
+      "eq1_id": 2410,
+      "eq2_id": 2456,
+      "equation1": "x = (y \u25c7 (z \u25c7 (z \u25c7 w))) \u25c7 x",
+      "equation2": "x = (x \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 x",
+      "id": "transfer_026b60a5786623b56406",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "b526d0768fc8ddd139b77a100606e405cfd9b2a7ec6df61d920798fd128ebf2e"
+    },
+    {
+      "content_sha256": "0320547c0badacaba255135e1b9e6149d6a3fc51e06863dcfb4d039a47ddf3b3",
+      "eq1_id": 2927,
+      "eq2_id": 4611,
+      "equation1": "x = ((y \u25c7 (x \u25c7 z)) \u25c7 z) \u25c7 x",
+      "equation2": "(x \u25c7 x) \u25c7 y = (y \u25c7 z) \u25c7 y",
+      "id": "transfer_0320547c0badacaba255",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "b4024f85a82ef0a2ec6a305079aa4229c49a90d24696c46cf647e98360c58541"
+    },
+    {
+      "content_sha256": "0415f18531396d8e9c2f7ea6a265ed329dac38ce37fa647f5e1c4b21c7e39c85",
+      "eq1_id": 2156,
+      "eq2_id": 2097,
+      "equation1": "x = ((y \u25c7 y) \u25c7 z) \u25c7 (w \u25c7 x)",
+      "equation2": "x = ((y \u25c7 x) \u25c7 y) \u25c7 (x \u25c7 x)",
+      "id": "transfer_0415f18531396d8e9c2f",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "ab98d1de7b148e5649645c15c6311b46099eee1570313d31c84ed6336f12c3e1"
+    },
+    {
+      "content_sha256": "059a9203d410607b78959c4d8c1a24ba967cd8f82e11be37f42c9819be48f389",
+      "eq1_id": 3621,
+      "eq2_id": 3471,
+      "equation1": "x \u25c7 y = z \u25c7 ((z \u25c7 y) \u25c7 y)",
+      "equation2": "x \u25c7 x = y \u25c7 ((x \u25c7 x) \u25c7 x)",
+      "id": "transfer_059a9203d410607b7895",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "99dbfd9cf170b6ee0ab845bbd90fae1a19d2fc6a46d3e63d7444163a574da634"
+    },
+    {
+      "content_sha256": "07c977b11132bf652c57f261d08866cd3fe8db28b2bd7155e25c323a388a7558",
+      "eq1_id": 1699,
+      "eq2_id": 1075,
+      "equation1": "x = (y \u25c7 x) \u25c7 ((y \u25c7 z) \u25c7 z)",
+      "equation2": "x = y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 x)",
+      "id": "transfer_07c977b11132bf652c57",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "87a2f49f1e358268f3adbd971deedae2a0b1324b29f303e8372df4a4c8030b73"
+    },
+    {
+      "content_sha256": "088ab8675899d3c5c6985dc01bd05b9375ed9308c0707d5ca259b014e2827dbe",
+      "eq1_id": 1571,
+      "eq2_id": 2541,
+      "equation1": "x = (y \u25c7 z) \u25c7 (y \u25c7 (x \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 y) \u25c7 x)) \u25c7 y",
+      "id": "transfer_088ab8675899d3c5c698",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "732af870cc6ec2efa6bb14fbe8e95822ef8bd3df766b9e55c48d00990df9a116"
+    },
+    {
+      "content_sha256": "08f2c9482992beec514da30c8d1ffcfc4085821d5bb56194651748968420ab1f",
+      "eq1_id": 1433,
+      "eq2_id": 4631,
+      "equation1": "x = (x \u25c7 x) \u25c7 (y \u25c7 (x \u25c7 z))",
+      "equation2": "(x \u25c7 y) \u25c7 x = (x \u25c7 z) \u25c7 x",
+      "id": "transfer_08f2c9482992beec514d",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "2cd37592288411cf98455b8a880ea543ed899bf2db0daea64a89dd284b57f6bb"
+    },
+    {
+      "content_sha256": "0a44ec640804dcc92d9c05e1c62a23d9d477f1b28fbf344424b68577ec3aa77f",
+      "eq1_id": 3086,
+      "eq2_id": 2262,
+      "equation1": "x = (((x \u25c7 y) \u25c7 z) \u25c7 x) \u25c7 y",
+      "equation2": "x = (x \u25c7 (y \u25c7 (x \u25c7 z))) \u25c7 w",
+      "id": "transfer_0a44ec640804dcc92d9c",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "9c469cde1b790e7a2d7aa3a58bc8908a2a40df08bc43ab7b03b48d4c17dec385"
+    },
+    {
+      "content_sha256": "0a5dfe80b1d7fa2daeef4d3754c96bbd79b06cac45806c4553f6a143df1697c9",
+      "eq1_id": 2483,
+      "eq2_id": 1461,
+      "equation1": "x = (x \u25c7 ((y \u25c7 z) \u25c7 y)) \u25c7 w",
+      "equation2": "x = (x \u25c7 y) \u25c7 (z \u25c7 (x \u25c7 x))",
+      "id": "transfer_0a5dfe80b1d7fa2daeef",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "4729cb2d51d643472523d77c38e53699c852297825fbe07030cec66093230bc8"
+    },
+    {
+      "content_sha256": "0a87bf6f08f745a182141f6fd9db34a62a0746e7b96f82807d54e94ef2f77181",
+      "eq1_id": 1763,
+      "eq2_id": 4142,
+      "equation1": "x = (y \u25c7 z) \u25c7 ((x \u25c7 z) \u25c7 x)",
+      "equation2": "x \u25c7 y = ((x \u25c7 z) \u25c7 y) \u25c7 y",
+      "id": "transfer_0a87bf6f08f745a18214",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "f79eea32c84b36fc6cbc95237393ef8f00ea017d2fc7388a4e069fbeabafe347"
+    },
+    {
+      "content_sha256": "0ae75cdf6708c5e6dae3d079c4b96686eb70869385459a830b4180d6b051476a",
+      "eq1_id": 1014,
+      "eq2_id": 2480,
+      "equation1": "x = y \u25c7 ((z \u25c7 w) \u25c7 (u \u25c7 x))",
+      "equation2": "x = (x \u25c7 ((y \u25c7 z) \u25c7 y)) \u25c7 x",
+      "id": "transfer_0ae75cdf6708c5e6dae3",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "c71068c39374a31a774721bc5c0efa2ed8a60173e79d96751f3a92f21306a5dd"
+    },
+    {
+      "content_sha256": "0bf680e5e5cfa9efce7e1455784c5e36aefb7aba2f5cfb3d5c30a1d0fdd33257",
+      "eq1_id": 3946,
+      "eq2_id": 4339,
+      "equation1": "x \u25c7 y = (x \u25c7 (z \u25c7 w)) \u25c7 x",
+      "equation2": "x \u25c7 (y \u25c7 y) = x \u25c7 (y \u25c7 z)",
+      "id": "transfer_0bf680e5e5cfa9efce7e",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "c19ae002b40bfeddfee7bcdbe0f9c12d510a67b95c2adabcc450b5cf8904b8ac"
+    },
+    {
+      "content_sha256": "0d4ef9c52bccf16361ba0c551915988e9c67edae83bac47d5dc6910631b2b85e",
+      "eq1_id": 1806,
+      "eq2_id": 545,
+      "equation1": "x = (y \u25c7 z) \u25c7 ((w \u25c7 x) \u25c7 x)",
+      "equation2": "x = y \u25c7 (z \u25c7 (x \u25c7 (z \u25c7 x)))",
+      "id": "transfer_0d4ef9c52bccf16361ba",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "46f3771a3ada3c89bb026a728d2c8b97dae448929f379bba4bee6711405bfd37"
+    },
+    {
+      "content_sha256": "0ece3f24b611b5b3c9d93d46533e4e3327181cfd16a17bbf14f5abe4cd6df7a4",
+      "eq1_id": 2081,
+      "eq2_id": 656,
+      "equation1": "x = ((x \u25c7 y) \u25c7 z) \u25c7 (z \u25c7 w)",
+      "equation2": "x = x \u25c7 (y \u25c7 ((z \u25c7 y) \u25c7 w))",
+      "id": "transfer_0ece3f24b611b5b3c9d9",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "1bc7a47fb52454e01c67c9683815d5731a920c8a6556487425fbee3f7238dec0"
+    },
+    {
+      "content_sha256": "0ed482b8e5bfc42558210a0e05318507df2e9676eb9231bb5cfd184600ee7c93",
+      "eq1_id": 22,
+      "eq2_id": 4347,
+      "equation1": "x = y \u25c7 (z \u25c7 w)",
+      "equation2": "x \u25c7 (y \u25c7 y) = y \u25c7 (z \u25c7 w)",
+      "id": "transfer_0ed482b8e5bfc4255821",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "14088cde26507fb919b1cda9faf5a17d04d829466bcb47d828640f63017bbfd2"
+    },
+    {
+      "content_sha256": "0ef4aaceedbd5417e5fe2ad6d7b75725bad5238c29b76fb59914c807c00a397e",
+      "eq1_id": 315,
+      "eq2_id": 4196,
+      "equation1": "x \u25c7 x = y \u25c7 (y \u25c7 x)",
+      "equation2": "x \u25c7 y = ((z \u25c7 x) \u25c7 y) \u25c7 y",
+      "id": "transfer_0ef4aaceedbd5417e5fe",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "dba70ce44bf66206f3beeeb41f8682e371249a7723ebd67f144456705f529599"
+    },
+    {
+      "content_sha256": "10b09d689f8ae49afeb6b1d1ca7a259e5ad4219806ff8e7276c4e50002ccd0e7",
+      "eq1_id": 1054,
+      "eq2_id": 2264,
+      "equation1": "x = x \u25c7 ((y \u25c7 (y \u25c7 z)) \u25c7 w)",
+      "equation2": "x = (x \u25c7 (y \u25c7 (y \u25c7 x))) \u25c7 y",
+      "id": "transfer_10b09d689f8ae49afeb6",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "904d548fbae10dca7f5c10c58f661c2e1585a4dc7de8efd87292a44823e026a7"
+    },
+    {
+      "content_sha256": "121b1f405734d9cc07cc02c88447b3355ec72356d15a88e79bb87a7c30c08f02",
+      "eq1_id": 994,
+      "eq2_id": 2628,
+      "equation1": "x = y \u25c7 ((z \u25c7 w) \u25c7 (x \u25c7 x))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 w) \u25c7 z)) \u25c7 x",
+      "id": "transfer_121b1f405734d9cc07cc",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "058e35d0422ce105cd1d0d146f72403f7a27f648f5d6a4f311ff20bc89531d88"
+    },
+    {
+      "content_sha256": "12fc30d5ce005754da30961d93542110b254bb8a50e24b2204315217658dbc23",
+      "eq1_id": 4392,
+      "eq2_id": 4677,
+      "equation1": "x \u25c7 (x \u25c7 x) = (y \u25c7 z) \u25c7 y",
+      "equation2": "(x \u25c7 y) \u25c7 z = (y \u25c7 x) \u25c7 z",
+      "id": "transfer_12fc30d5ce005754da30",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "1c66b153e963f424777c0a4d49df72934ae7d1b4404ae06cd0479601028680f6"
+    },
+    {
+      "content_sha256": "15d0cfca774caeec676acfe5d29d0839035ac556e5a735d85c8a0702dbd687c7",
+      "eq1_id": 2049,
+      "eq2_id": 215,
+      "equation1": "x = ((x \u25c7 x) \u25c7 y) \u25c7 (z \u25c7 w)",
+      "equation2": "x = (x \u25c7 (y \u25c7 z)) \u25c7 y",
+      "id": "transfer_15d0cfca774caeec676a",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "c36de0225c6d66b2333aac90258d2e666cb7f176508567d3729d9a2e1834c736"
+    },
+    {
+      "content_sha256": "1771396eb266f29d4062d999a509b565acbce146392423df300272a84e461e4b",
+      "eq1_id": 859,
+      "eq2_id": 2878,
+      "equation1": "x = x \u25c7 ((y \u25c7 z) \u25c7 (y \u25c7 w))",
+      "equation2": "x = ((x \u25c7 (y \u25c7 y)) \u25c7 z) \u25c7 x",
+      "id": "transfer_1771396eb266f29d4062",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "924f490b79b800ced362434f64c69634660dad432f1e0787402b736fce2f16b1"
+    },
+    {
+      "content_sha256": "17823ed10e0a5bbacda66b68767e20f73c06c000dc8e81bec2403339ad774c7c",
+      "eq1_id": 90,
+      "eq2_id": 1428,
+      "equation1": "x = y \u25c7 (z \u25c7 (z \u25c7 x))",
+      "equation2": "x = (x \u25c7 x) \u25c7 (x \u25c7 (y \u25c7 x))",
+      "id": "transfer_17823ed10e0a5bbacda6",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "5e9d143238734f4e6337e9f1c509716555217b9c5002235a9b7b0f2a7bccbabc"
+    },
+    {
+      "content_sha256": "17958c7fdeb6831567ce05ec198bf306ba14d4aa3a9fd32a78ee70857ac84073",
+      "eq1_id": 13,
+      "eq2_id": 583,
+      "equation1": "x = y \u25c7 (x \u25c7 x)",
+      "equation2": "x = y \u25c7 (z \u25c7 (z \u25c7 (w \u25c7 x)))",
+      "id": "transfer_17958c7fdeb6831567ce",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "aa2fcf45a6e42a397b8503f751727a69bf8a156ec722d7beec3135caf42cbe67"
+    },
+    {
+      "content_sha256": "1817f6855c4e566ade4048f40d98381e0a59347fb630496f7811770aa38a019e",
+      "eq1_id": 2493,
+      "eq2_id": 3052,
+      "equation1": "x = (y \u25c7 ((x \u25c7 x) \u25c7 x)) \u25c7 x",
+      "equation2": "x = (((x \u25c7 x) \u25c7 x) \u25c7 y) \u25c7 x",
+      "id": "transfer_1817f6855c4e566ade40",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "3562d0ff82bba822a4767be57700bf489075c61d5defc8fc1c7a5223075eef91"
+    },
+    {
+      "content_sha256": "18cbe51f15287edc46f1ee56931a3a09b7fa076df1ef2172c7c18d8e6b305b60",
+      "eq1_id": 1014,
+      "eq2_id": 4158,
+      "equation1": "x = y \u25c7 ((z \u25c7 w) \u25c7 (u \u25c7 x))",
+      "equation2": "x \u25c7 y = ((y \u25c7 x) \u25c7 y) \u25c7 y",
+      "id": "transfer_18cbe51f15287edc46f1",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "933aca896847460935013e39dea4adc414924dab9e630b1e54df610c09191c21"
+    },
+    {
+      "content_sha256": "19767bcbd6fc5a522bb97da3ffdaef47ce8ec55bc0706fc887248c614f060762",
+      "eq1_id": 623,
+      "eq2_id": 1035,
+      "equation1": "x = x \u25c7 (x \u25c7 ((y \u25c7 y) \u25c7 y))",
+      "equation2": "x = x \u25c7 ((y \u25c7 (x \u25c7 x)) \u25c7 x)",
+      "id": "transfer_19767bcbd6fc5a522bb9",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "fd3cd69ca64c29dd20d63bd3660d2b4c6a48605e28f3ddab985773f87c17a37f"
+    },
+    {
+      "content_sha256": "19948b64cd91f38a195806a1f6827908c8c423b5503cdd197dc907d19381a2c2",
+      "eq1_id": 922,
+      "eq2_id": 1444,
+      "equation1": "x = y \u25c7 ((y \u25c7 y) \u25c7 (z \u25c7 x))",
+      "equation2": "x = (x \u25c7 y) \u25c7 (x \u25c7 (y \u25c7 x))",
+      "id": "transfer_19948b64cd91f38a1958",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "b2c1fbd42db63312e0001e060263367e6e0c2e00267f068d3b33cb088d24ed17"
+    },
+    {
+      "content_sha256": "1a69a6b1737799789196d5a868e994483bf9b1da787f3c19ce5036250486490b",
+      "eq1_id": 2270,
+      "eq2_id": 4288,
+      "equation1": "x = (x \u25c7 (y \u25c7 (y \u25c7 z))) \u25c7 y",
+      "equation2": "x \u25c7 (x \u25c7 y) = x \u25c7 (z \u25c7 z)",
+      "id": "transfer_1a69a6b1737799789196",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "480e69ade8a0f0fc6f9e64e2b15ccbf5718475dba912ded4c5e48a898812c7e0"
+    },
+    {
+      "content_sha256": "1aa1755a79225f207114e8a5aef122a7ce73ed55f03fccbb0fdb3fc67cdc851c",
+      "eq1_id": 1065,
+      "eq2_id": 1647,
+      "equation1": "x = x \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 z)",
+      "equation2": "x = (x \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 x)",
+      "id": "transfer_1aa1755a79225f207114",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "f52a4c8b96a6ebba2099280dec77e14cf11bb7be49a71dc4c3e3084350224a2f"
+    },
+    {
+      "content_sha256": "1ac1f74d2d3ee8da41f39bd8ebd0d674557454a939ea7ba49f3f57b8b5bc8fa6",
+      "eq1_id": 3039,
+      "eq2_id": 3065,
+      "equation1": "x = ((y \u25c7 (z \u25c7 w)) \u25c7 w) \u25c7 x",
+      "equation2": "x = (((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 x",
+      "id": "transfer_1ac1f74d2d3ee8da41f3",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "3cd97efe749f331421b290d1e667ac94e0b2e8f3282b2a3f6d19012ddfd2dc5e"
+    },
+    {
+      "content_sha256": "1b20f3459bc46593c38f501db5f02d01467a5cfdfcad4a19761bbee69731f849",
+      "eq1_id": 1328,
+      "eq2_id": 1078,
+      "equation1": "x = y \u25c7 (((y \u25c7 y) \u25c7 z) \u25c7 x)",
+      "equation2": "x = y \u25c7 ((x \u25c7 (x \u25c7 z)) \u25c7 x)",
+      "id": "transfer_1b20f3459bc46593c38f",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "ad961d486beeda392d39dbf954a30c3aae1a917e7f6487106b4ed5bcb1925132"
+    },
+    {
+      "content_sha256": "1b812a15303880734cda043b0d1248aaa120183551a1e126e3b9535237f2dab2",
+      "eq1_id": 48,
+      "eq2_id": 2255,
+      "equation1": "x = x \u25c7 (x \u25c7 (x \u25c7 y))",
+      "equation2": "x = (x \u25c7 (y \u25c7 (x \u25c7 x))) \u25c7 z",
+      "id": "transfer_1b812a15303880734cda",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "b4f84e28b6e483267ece9a3fb5da1a489e153b286efe2978b3fe9c5e914e15c6"
+    },
+    {
+      "content_sha256": "1b860bdfb2a960db9dd1232d7c98fa14284a2d74b349bd7252018d8fcf36998b",
+      "eq1_id": 1682,
+      "eq2_id": 4515,
+      "equation1": "x = (y \u25c7 x) \u25c7 ((x \u25c7 x) \u25c7 y)",
+      "equation2": "x \u25c7 (y \u25c7 z) = (x \u25c7 z) \u25c7 y",
+      "id": "transfer_1b860bdfb2a960db9dd1",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "1b1b6356e552fc17e8fbc7d81fd893e0720d13a895a3a0e6ca6b07e88bbf354a"
+    },
+    {
+      "content_sha256": "1c4cbef828d3528d33d4c2c03e84717141ff521aadbec7dc2beb603ddcf0d396",
+      "eq1_id": 49,
+      "eq2_id": 3867,
+      "equation1": "x = x \u25c7 (x \u25c7 (y \u25c7 x))",
+      "equation2": "x \u25c7 x = (x \u25c7 (y \u25c7 x)) \u25c7 x",
+      "id": "transfer_1c4cbef828d3528d33d4",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "3a002aeab833f8f06afc227e78f7cdd592f20f7958a0b6624394a56d6c90fe88"
+    },
+    {
+      "content_sha256": "1ee2255167adfea01ad788f1788f676f371f70ee209660f238b2c733ed662073",
+      "eq1_id": 1510,
+      "eq2_id": 2140,
+      "equation1": "x = (y \u25c7 x) \u25c7 (z \u25c7 (w \u25c7 x))",
+      "equation2": "x = ((y \u25c7 y) \u25c7 y) \u25c7 (z \u25c7 x)",
+      "id": "transfer_1ee2255167adfea01ad7",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "1427c87bb3b2918c550cacc3728ef59ada9210ba7242e291eb35eebe53464676"
+    },
+    {
+      "content_sha256": "22f08a2b419ac2125ecc66271111d17580530773ce8da1114699cc3718c0728b",
+      "eq1_id": 1663,
+      "eq2_id": 214,
+      "equation1": "x = (x \u25c7 y) \u25c7 ((y \u25c7 z) \u25c7 w)",
+      "equation2": "x = (x \u25c7 (y \u25c7 z)) \u25c7 x",
+      "id": "transfer_22f08a2b419ac2125ecc",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "6d607d83467cbefe1d16b94ee8bf185717d25e142cbd01b5bd57f91a8f48aed7"
+    },
+    {
+      "content_sha256": "25f79c9a8a9f07332f4ebdd4be70d51ddcee5847dae631924747d9cec73d1d76",
+      "eq1_id": 205,
+      "eq2_id": 3464,
+      "equation1": "x = (x \u25c7 (x \u25c7 y)) \u25c7 x",
+      "equation2": "x \u25c7 x = x \u25c7 ((y \u25c7 y) \u25c7 x)",
+      "id": "transfer_25f79c9a8a9f07332f4e",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "4d99b247230000628c096e79920c3ee2b3e7e1a7961cc8f95029ae31e10a62e5"
+    },
+    {
+      "content_sha256": "27178126fe19a30268bde1aee668b226ded31b91ef35b297444d43e39dcaf46b",
+      "eq1_id": 2973,
+      "eq2_id": 4124,
+      "equation1": "x = ((y \u25c7 (z \u25c7 x)) \u25c7 x) \u25c7 x",
+      "equation2": "x \u25c7 y = ((x \u25c7 x) \u25c7 z) \u25c7 y",
+      "id": "transfer_27178126fe19a30268bd",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "e67f78a52a8ab3acb920f074a8f1099d8f85c1eec6dbbf52d05512db46267085"
+    },
+    {
+      "content_sha256": "275de7a71a27e49ddb85a1e7066639b43f851faa85e8da8a7ac16f7f57048a5d",
+      "eq1_id": 103,
+      "eq2_id": 3519,
+      "equation1": "x = x \u25c7 ((x \u25c7 y) \u25c7 z)",
+      "equation2": "x \u25c7 y = x \u25c7 ((y \u25c7 x) \u25c7 y)",
+      "id": "transfer_275de7a71a27e49ddb85",
+      "source_family": "hard3",
+      "source_problem_id_sha256": "4e9b519ead8516e0ffbdba26fa065d38baa853d8cf152ade5495dee26cd2e672"
+    },
+    {
+      "content_sha256": "003eac22640f9922e1a8a3eb09a9dbd85e8deddadf56aa9f4dab7ec08e7b5ffa",
+      "eq1_id": 4008,
+      "eq2_id": 912,
+      "equation1": "x \u25c7 y = (z \u25c7 (y \u25c7 x)) \u25c7 w",
+      "equation2": "x = y \u25c7 ((y \u25c7 x) \u25c7 (z \u25c7 x))",
+      "id": "transfer_003eac22640f9922e1a8",
+      "source_family": "normal",
+      "source_problem_id_sha256": "b527eea6cfce2dc5b6c4c34411e65d1ef990cb50b38650c04547923201a03402"
+    },
+    {
+      "content_sha256": "00c0a8b8b9176f7328958a3a49f4fa87110f17555100b40492935df37283eb01",
+      "eq1_id": 583,
+      "eq2_id": 3201,
+      "equation1": "x = y \u25c7 (z \u25c7 (z \u25c7 (w \u25c7 x)))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 y) \u25c7 z) \u25c7 x",
+      "id": "transfer_00c0a8b8b9176f732895",
+      "source_family": "normal",
+      "source_problem_id_sha256": "47c98e970d9a363dc2cc2aad8a2c540b934a4c1ccdd2d7dec495e22df6c4256b"
+    },
+    {
+      "content_sha256": "011ad011e379255ae669a519b5d40fc67ae5117ff46c51150850fedfa6d76768",
+      "eq1_id": 632,
+      "eq2_id": 1215,
+      "equation1": "x = x \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 x))",
+      "equation2": "x = y \u25c7 ((z \u25c7 (w \u25c7 w)) \u25c7 w)",
+      "id": "transfer_011ad011e379255ae669",
+      "source_family": "normal",
+      "source_problem_id_sha256": "784b995d1f9a2640c35d6deb7b95e6e7a15c1b614f865b95785bd268da6840ba"
+    },
+    {
+      "content_sha256": "013d32af5111912a1027c133aa7a140de7190e2b1a8ce30fa7eb1767c29c947d",
+      "eq1_id": 3596,
+      "eq2_id": 1769,
+      "equation1": "x \u25c7 y = z \u25c7 ((x \u25c7 w) \u25c7 z)",
+      "equation2": "x = (y \u25c7 z) \u25c7 ((x \u25c7 w) \u25c7 z)",
+      "id": "transfer_013d32af5111912a1027",
+      "source_family": "normal",
+      "source_problem_id_sha256": "f6419ac84bc42ebd91b968e32666177a8d737af9ea0e92498cd21ba57b97c786"
+    },
+    {
+      "content_sha256": "015f1439c8544b4759cca5fdd5c8a0a0579da08373b279a0fa915e656806370a",
+      "eq1_id": 3718,
+      "eq2_id": 4116,
+      "equation1": "x \u25c7 y = (x \u25c7 x) \u25c7 (z \u25c7 y)",
+      "equation2": "x \u25c7 x = ((y \u25c7 z) \u25c7 w) \u25c7 u",
+      "id": "transfer_015f1439c8544b4759cc",
+      "source_family": "normal",
+      "source_problem_id_sha256": "5cbcd894b4eec6542670edf0cdd779a45941d857961cf5977cbcf52bb7492e72"
+    },
+    {
+      "content_sha256": "016e85e74f5cab89062aa2c6b3b0827610f7e9bbaeb1ce28bd03529d8b3b61ee",
+      "eq1_id": 2376,
+      "eq2_id": 307,
+      "equation1": "x = (y \u25c7 (z \u25c7 (x \u25c7 w))) \u25c7 x",
+      "equation2": "x \u25c7 x = x \u25c7 (x \u25c7 x)",
+      "id": "transfer_016e85e74f5cab89062a",
+      "source_family": "normal",
+      "source_problem_id_sha256": "575918c4be8ecf822a5078e31b8d4c5dcebd5098dde8a77d47b9323eaca0add6"
+    },
+    {
+      "content_sha256": "01bd88b4478b46e78db0cbd8fd0499e824542547f9c210d142af1b14fc31af75",
+      "eq1_id": 711,
+      "eq2_id": 3567,
+      "equation1": "x = y \u25c7 (y \u25c7 ((x \u25c7 z) \u25c7 z))",
+      "equation2": "x \u25c7 y = y \u25c7 ((z \u25c7 x) \u25c7 z)",
+      "id": "transfer_01bd88b4478b46e78db0",
+      "source_family": "normal",
+      "source_problem_id_sha256": "666fdfee1d390b7236ef4c8c43de44d02ece14f1ff2728a50e0d3af5ebc6660c"
+    },
+    {
+      "content_sha256": "01eeb56753316cc60fc188f1d573e215f0298c5f6c1c379b1ef96ce654bed3d5",
+      "eq1_id": 231,
+      "eq2_id": 953,
+      "equation1": "x = (y \u25c7 (y \u25c7 y)) \u25c7 x",
+      "equation2": "x = y \u25c7 ((z \u25c7 x) \u25c7 (z \u25c7 z))",
+      "id": "transfer_01eeb56753316cc60fc1",
+      "source_family": "normal",
+      "source_problem_id_sha256": "f1f53c3a615f259eb1ec9f2b752e1c70983897ff7d6eca98ae8127404396305e"
+    },
+    {
+      "content_sha256": "0208bd9845b2a907b4509de8697fe3748015207f0a907d982a4249552d7b5dc5",
+      "eq1_id": 4505,
+      "eq2_id": 609,
+      "equation1": "x \u25c7 (y \u25c7 y) = (z \u25c7 w) \u25c7 u",
+      "equation2": "x = y \u25c7 (z \u25c7 (w \u25c7 (u \u25c7 y)))",
+      "id": "transfer_0208bd9845b2a907b450",
+      "source_family": "normal",
+      "source_problem_id_sha256": "d747a1641983487347722ea512664d87e6cccc660df0cfbc97d3dd18d13d719d"
+    },
+    {
+      "content_sha256": "0247642cb6114b1e5db964da4ef3d411dae330ea4ced7de25198a6d064d7a8c1",
+      "eq1_id": 3049,
+      "eq2_id": 82,
+      "equation1": "x = ((y \u25c7 (z \u25c7 w)) \u25c7 u) \u25c7 v",
+      "equation2": "x = y \u25c7 (z \u25c7 (x \u25c7 x))",
+      "id": "transfer_0247642cb6114b1e5db9",
+      "source_family": "normal",
+      "source_problem_id_sha256": "cdec49546c51d3b1a88c610058a87e8938d330a97768c4ca3fd0b71bd528e80a"
+    },
+    {
+      "content_sha256": "02c7b7cbc2b759d1a029099404dc6e7e50cd3a25af6a1559233aeb915dc23b0c",
+      "eq1_id": 2397,
+      "eq2_id": 1212,
+      "equation1": "x = (y \u25c7 (z \u25c7 (y \u25c7 w))) \u25c7 u",
+      "equation2": "x = y \u25c7 ((z \u25c7 (w \u25c7 w)) \u25c7 x)",
+      "id": "transfer_02c7b7cbc2b759d1a029",
+      "source_family": "normal",
+      "source_problem_id_sha256": "b7c3aa9b6f2b243e8a0b7ff1c1196b239bf981249507ce3dc514271b1a2f5509"
+    },
+    {
+      "content_sha256": "031175fb518d648afa6d2c532640b0be7059931f5072428ab3822045ce1a4b0a",
+      "eq1_id": 3391,
+      "eq2_id": 4539,
+      "equation1": "x \u25c7 y = z \u25c7 (x \u25c7 (w \u25c7 x))",
+      "equation2": "x \u25c7 (y \u25c7 z) = (y \u25c7 w) \u25c7 u",
+      "id": "transfer_031175fb518d648afa6d",
+      "source_family": "normal",
+      "source_problem_id_sha256": "c13ad1853e1fc5be9ee3220cac0b20cbcdabfd2f596c35bda4a0c70f91182fd6"
+    },
+    {
+      "content_sha256": "0323b3e6b95049f87390359bd2ab24f20aee449eb8e8c23430ddaad7ef3e26cb",
+      "eq1_id": 4062,
+      "eq2_id": 426,
+      "equation1": "x \u25c7 y = (z \u25c7 (w \u25c7 u)) \u25c7 w",
+      "equation2": "x = x \u25c7 (y \u25c7 (x \u25c7 (x \u25c7 x)))",
+      "id": "transfer_0323b3e6b95049f87390",
+      "source_family": "normal",
+      "source_problem_id_sha256": "032b82aec53c5f0a6af6203ae1f94a95a30115d2d1c214246655c9cc234e5ae9"
+    },
+    {
+      "content_sha256": "037ff5e15852d252b86cb1fa7a993c222f054bfd77f608fd4f87d87aa51362d0",
+      "eq1_id": 4347,
+      "eq2_id": 732,
+      "equation1": "x \u25c7 (y \u25c7 y) = y \u25c7 (z \u25c7 w)",
+      "equation2": "x = y \u25c7 (y \u25c7 ((z \u25c7 z) \u25c7 y))",
+      "id": "transfer_037ff5e15852d252b86c",
+      "source_family": "normal",
+      "source_problem_id_sha256": "2f13d8ac1c32d583c12f12dfc6e8aae911ef185110a9ea0596f328b20f99cf69"
+    },
+    {
+      "content_sha256": "03a627dcff0b1d900d2209a160eab1379e703b946483a7a8f8e18a0d9e58f3f1",
+      "eq1_id": 3624,
+      "eq2_id": 2514,
+      "equation1": "x \u25c7 y = z \u25c7 ((z \u25c7 z) \u25c7 x)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 z) \u25c7 x)) \u25c7 y",
+      "id": "transfer_03a627dcff0b1d900d22",
+      "source_family": "normal",
+      "source_problem_id_sha256": "eeb56d04ab4c47f89a6ca53e2bf740b7635508612a56715f38b4d6ebc671079c"
+    },
+    {
+      "content_sha256": "03a9a951ee3f93bcd4c025b00bd848ce07d1661de74001cbd8834d52766c770a",
+      "eq1_id": 249,
+      "eq2_id": 2801,
+      "equation1": "x = (y \u25c7 (z \u25c7 z)) \u25c7 w",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (y \u25c7 w)) \u25c7 z",
+      "id": "transfer_03a9a951ee3f93bcd4c0",
+      "source_family": "normal",
+      "source_problem_id_sha256": "792b8951f63050e877339019438d27396d05a199a3bc07102a94c9189b453f34"
+    },
+    {
+      "content_sha256": "03b728e55b68c5f7f3f9ea30ea56fd55ef6c55be8e6aa1f285025fda612361c9",
+      "eq1_id": 3662,
+      "eq2_id": 4519,
+      "equation1": "x \u25c7 x = (x \u25c7 x) \u25c7 (y \u25c7 y)",
+      "equation2": "x \u25c7 (y \u25c7 z) = (x \u25c7 w) \u25c7 y",
+      "id": "transfer_03b728e55b68c5f7f3f9",
+      "source_family": "normal",
+      "source_problem_id_sha256": "7565b08d7e31b640789dcfa0276248a2e18fcb14c285874f415462e258b19594"
+    },
+    {
+      "content_sha256": "040482caa8dc5c5e4b0e2676614ca8480a1c139071e08646f8356bd305e867d1",
+      "eq1_id": 4386,
+      "eq2_id": 2355,
+      "equation1": "x \u25c7 (x \u25c7 x) = (y \u25c7 x) \u25c7 y",
+      "equation2": "x = (y \u25c7 (y \u25c7 (z \u25c7 z))) \u25c7 x",
+      "id": "transfer_040482caa8dc5c5e4b0e",
+      "source_family": "normal",
+      "source_problem_id_sha256": "1477a731cd82ed2676b4f2ae88059e12bea647849313ec585e7ece93ead89c26"
+    },
+    {
+      "content_sha256": "0458e33b32af180d2b61b6ece2b908dd51ae93e4ce24e6ecaa1335e1e2d283b7",
+      "eq1_id": 1830,
+      "eq2_id": 426,
+      "equation1": "x = (y \u25c7 z) \u25c7 ((w \u25c7 u) \u25c7 u)",
+      "equation2": "x = x \u25c7 (y \u25c7 (x \u25c7 (x \u25c7 x)))",
+      "id": "transfer_0458e33b32af180d2b61",
+      "source_family": "normal",
+      "source_problem_id_sha256": "25ffd717f35e54d0edf5a746358eed3960f6fd948e194f1bf5c8ab8940858cf6"
+    },
+    {
+      "content_sha256": "047819700fa27b5cb77d9b0add96516f5d97d66dc60299017e0dec52f22d01f8",
+      "eq1_id": 2170,
+      "eq2_id": 4640,
+      "equation1": "x = ((y \u25c7 z) \u25c7 x) \u25c7 (z \u25c7 y)",
+      "equation2": "(x \u25c7 y) \u25c7 x = (y \u25c7 z) \u25c7 z",
+      "id": "transfer_047819700fa27b5cb77d",
+      "source_family": "normal",
+      "source_problem_id_sha256": "0db83e04ced6d00ac98e0da18884020a1754f6dfc66930028204213ef31a1195"
+    },
+    {
+      "content_sha256": "04c35a25b5648590103233f331f238052aba8c0b8b2c83c2ecb52e2e1ca74a4a",
+      "eq1_id": 3173,
+      "eq2_id": 443,
+      "equation1": "x = (((y \u25c7 y) \u25c7 z) \u25c7 w) \u25c7 z",
+      "equation2": "x = x \u25c7 (y \u25c7 (y \u25c7 (z \u25c7 y)))",
+      "id": "transfer_04c35a25b56485901032",
+      "source_family": "normal",
+      "source_problem_id_sha256": "5514ff4be18199e0b9cdae91ccaaac9b21af4b6909b0d7a062def7bff4b5b312"
+    },
+    {
+      "content_sha256": "0551bd47a163fca8680af71da77645c29f3f3c0ce559e02b40a82e84f19997f5",
+      "eq1_id": 323,
+      "eq2_id": 1641,
+      "equation1": "x \u25c7 y = x \u25c7 (x \u25c7 y)",
+      "equation2": "x = (x \u25c7 x) \u25c7 ((y \u25c7 z) \u25c7 y)",
+      "id": "transfer_0551bd47a163fca8680a",
+      "source_family": "normal",
+      "source_problem_id_sha256": "f479c8ae0d2d8404d184fd1082e5623edd0935b9d56a011b8af2442a401b4752"
+    },
+    {
+      "content_sha256": "0626b69bc6c3545115a5b04804e03dac0758ccd3055e239e2f91f8a2daa7b454",
+      "eq1_id": 1715,
+      "eq2_id": 374,
+      "equation1": "x = (y \u25c7 x) \u25c7 ((z \u25c7 w) \u25c7 z)",
+      "equation2": "x \u25c7 y = (x \u25c7 x) \u25c7 x",
+      "id": "transfer_0626b69bc6c3545115a5",
+      "source_family": "normal",
+      "source_problem_id_sha256": "6ee77a746714632b5fb55475b2a0298b95e52e2cdb72d7013303a215fa57f92a"
+    },
+    {
+      "content_sha256": "062eb5c7e47e8e5225afb000ed3ef9da52d1d5a1955778366e6284187911b623",
+      "eq1_id": 1888,
+      "eq2_id": 4667,
+      "equation1": "x = (y \u25c7 (x \u25c7 x)) \u25c7 (y \u25c7 y)",
+      "equation2": "(x \u25c7 y) \u25c7 y = (z \u25c7 y) \u25c7 w",
+      "id": "transfer_062eb5c7e47e8e5225af",
+      "source_family": "normal",
+      "source_problem_id_sha256": "baf8bf7bbea7b7ddf7d02242ab9e59d39f84735425de5a9cddbea1f0ea09ffde"
+    },
+    {
+      "content_sha256": "066ab79aefe5e4bb5c062e86386fedba7cb8ba1a03ed87711826d5c4bd2a742c",
+      "eq1_id": 1931,
+      "eq2_id": 1952,
+      "equation1": "x = (y \u25c7 (y \u25c7 y)) \u25c7 (x \u25c7 x)",
+      "equation2": "x = (y \u25c7 (y \u25c7 z)) \u25c7 (z \u25c7 w)",
+      "id": "transfer_066ab79aefe5e4bb5c06",
+      "source_family": "normal",
+      "source_problem_id_sha256": "70709912c029a2ea5701cf93f0f346e2a680b39757e8d151f0b474e1ca58611d"
+    },
+    {
+      "content_sha256": "072ec4c1aff8c3292215f15d05ab3861811a8491534e55de08606aab4ec1ff5f",
+      "eq1_id": 3666,
+      "eq2_id": 3675,
+      "equation1": "x \u25c7 x = (x \u25c7 y) \u25c7 (x \u25c7 z)",
+      "equation2": "x \u25c7 x = (y \u25c7 x) \u25c7 (x \u25c7 y)",
+      "id": "transfer_072ec4c1aff8c3292215",
+      "source_family": "normal",
+      "source_problem_id_sha256": "27bd315e4941626b6e3bd92c4e7d666b0709da72887927909438af565ae036e9"
+    },
+    {
+      "content_sha256": "075884969b01ea6ac6aaf4ead0f9b63909330e04e42160d5ecb4c7c5adc6b846",
+      "eq1_id": 1250,
+      "eq2_id": 4607,
+      "equation1": "x = x \u25c7 (((y \u25c7 y) \u25c7 x) \u25c7 z)",
+      "equation2": "(x \u25c7 x) \u25c7 y = (y \u25c7 x) \u25c7 z",
+      "id": "transfer_075884969b01ea6ac6aa",
+      "source_family": "normal",
+      "source_problem_id_sha256": "70f762a8e9a6ef641d2195974783adc6706283f827711be26615e15218a46a26"
+    },
+    {
+      "content_sha256": "07a44cbff24fd13600861066ed0ea07f4b11ec89c71e51180807e401f0328155",
+      "eq1_id": 415,
+      "eq2_id": 964,
+      "equation1": "x = x \u25c7 (x \u25c7 (x \u25c7 (y \u25c7 z)))",
+      "equation2": "x = y \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 x))",
+      "id": "transfer_07a44cbff24fd1360086",
+      "source_family": "normal",
+      "source_problem_id_sha256": "a6a1c9d6264470d41032e84dac1305153eca490c5e5680d208e70496dc1d2fea"
+    },
+    {
+      "content_sha256": "07f451829cd7f98c2935fc47604c4d82a674905ff93d55f3a44778b13c8e9615",
+      "eq1_id": 2428,
+      "eq2_id": 67,
+      "equation1": "x = (y \u25c7 (z \u25c7 (w \u25c7 z))) \u25c7 w",
+      "equation2": "x = y \u25c7 (x \u25c7 (y \u25c7 z))",
+      "id": "transfer_07f451829cd7f98c2935",
+      "source_family": "normal",
+      "source_problem_id_sha256": "44924faa36a3077b234f4d12b3324cfd70fd1150e10e6e662ff40c535cb9cd9a"
+    },
+    {
+      "content_sha256": "080d24c2d772bbbeaede6278aa1d2384a8825e80c123c10a291b108d43593a84",
+      "eq1_id": 4309,
+      "eq2_id": 1382,
+      "equation1": "x \u25c7 (x \u25c7 y) = z \u25c7 (w \u25c7 x)",
+      "equation2": "x = y \u25c7 (((z \u25c7 y) \u25c7 w) \u25c7 u)",
+      "id": "transfer_080d24c2d772bbbeaede",
+      "source_family": "normal",
+      "source_problem_id_sha256": "8dd3c36d12d585c295ea55747880fa248dc77d02b7c0cba33d2e22fa27e8b033"
+    },
+    {
+      "content_sha256": "08233663dd67025af2e113e08c3c2ce466a0a030d363d0df1145ecf8848bff6c",
+      "eq1_id": 1193,
+      "eq2_id": 3952,
+      "equation1": "x = y \u25c7 ((z \u25c7 (z \u25c7 w)) \u25c7 y)",
+      "equation2": "x \u25c7 y = (y \u25c7 (x \u25c7 x)) \u25c7 y",
+      "id": "transfer_08233663dd67025af2e1",
+      "source_family": "normal",
+      "source_problem_id_sha256": "972c054d14f3fc7324dd197f789a617c6c9b2bc42f93c70726e01c2aeaa7136f"
+    },
+    {
+      "content_sha256": "08749119dc144adedd74b44eadffe7cde21d9397fed4d05d51217c844c913f80",
+      "eq1_id": 3251,
+      "eq2_id": 2230,
+      "equation1": "x = (((y \u25c7 z) \u25c7 w) \u25c7 u) \u25c7 u",
+      "equation2": "x = ((y \u25c7 z) \u25c7 w) \u25c7 (w \u25c7 w)",
+      "id": "transfer_08749119dc144adedd74",
+      "source_family": "normal",
+      "source_problem_id_sha256": "fe94409ee1e8b98f60c0ed67028163638b1bff198b2888fd41a0c36739258e0c"
+    },
+    {
+      "content_sha256": "0894b8b6e0a412773b64e56d856a17e01dfb7de0156efaddb951f783d1166f3c",
+      "eq1_id": 4396,
+      "eq2_id": 1441,
+      "equation1": "x \u25c7 (x \u25c7 y) = (x \u25c7 x) \u25c7 y",
+      "equation2": "x = (x \u25c7 y) \u25c7 (x \u25c7 (x \u25c7 x))",
+      "id": "transfer_0894b8b6e0a412773b64",
+      "source_family": "normal",
+      "source_problem_id_sha256": "dd563864e860b4b138421f94c5154d6925e23e63542a21dfcdce2f7c3c79eb7f"
+    },
+    {
+      "content_sha256": "094241aaab947f6f1619b51ffdb64c40602c7f87699c7b573f50ecbd777ce62d",
+      "eq1_id": 1900,
+      "eq2_id": 1966,
+      "equation1": "x = (y \u25c7 (x \u25c7 y)) \u25c7 (z \u25c7 x)",
+      "equation2": "x = (y \u25c7 (z \u25c7 x)) \u25c7 (z \u25c7 x)",
+      "id": "transfer_094241aaab947f6f1619",
+      "source_family": "normal",
+      "source_problem_id_sha256": "de917c57d084b12ea7def1ae3810317d53bbecf78bf607f2f87f42afc728a9e6"
+    },
+    {
+      "content_sha256": "09f9cb260c2f1b65dd7b46a39b0d9487ee6f2eb71abeca3f16f65dca68a4edfb",
+      "eq1_id": 688,
+      "eq2_id": 3470,
+      "equation1": "x = y \u25c7 (x \u25c7 ((z \u25c7 x) \u25c7 z))",
+      "equation2": "x \u25c7 x = x \u25c7 ((y \u25c7 z) \u25c7 w)",
+      "id": "transfer_09f9cb260c2f1b65dd7b",
+      "source_family": "normal",
+      "source_problem_id_sha256": "9cf6d4fedd3488b9e99542bb91c3a0a822acd9a5768327f61c782f863b13d372"
+    },
+    {
+      "content_sha256": "0a1996dde1626265c7e1b07a871356d2f0ee6cef716d14d12359f48a3c55e7fe",
+      "eq1_id": 525,
+      "eq2_id": 2885,
+      "equation1": "x = y \u25c7 (y \u25c7 (z \u25c7 (y \u25c7 y)))",
+      "equation2": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 x) \u25c7 w",
+      "id": "transfer_0a1996dde1626265c7e1",
+      "source_family": "normal",
+      "source_problem_id_sha256": "4c02a3aac68ee765772a05896ddb4077748584b9d19afb3785fd3e01e7505664"
+    },
+    {
+      "content_sha256": "0a68d27ef4843a641dc73c1f053aa6c46b087516083c9eed4bd912a23bd6cdd7",
+      "eq1_id": 2587,
+      "eq2_id": 1135,
+      "equation1": "x = (y \u25c7 ((z \u25c7 y) \u25c7 x)) \u25c7 w",
+      "equation2": "x = y \u25c7 ((y \u25c7 (z \u25c7 y)) \u25c7 z)",
+      "id": "transfer_0a68d27ef4843a641dc7",
+      "source_family": "normal",
+      "source_problem_id_sha256": "d9f339d774b24c8ec2853d791d42366dbf34467fc316ad5e460b3222619ddb4c"
+    },
+    {
+      "content_sha256": "0aef3d15fa5d627bfb041514b7ea9f3def433d6e1f72317b9df85e9323d6b4d0",
+      "eq1_id": 1617,
+      "eq2_id": 156,
+      "equation1": "x = (y \u25c7 z) \u25c7 (w \u25c7 (z \u25c7 u))",
+      "equation2": "x = (x \u25c7 y) \u25c7 (x \u25c7 x)",
+      "id": "transfer_0aef3d15fa5d627bfb04",
+      "source_family": "normal",
+      "source_problem_id_sha256": "ae5a728163cd238a80dcecfc7709723b7ca4f62ecff09b0ee3c2cf38f338a908"
+    },
+    {
+      "content_sha256": "0b353898f69cb3673ff58b8c213657563db3b585194dc56403c95a4638156392",
+      "eq1_id": 2775,
+      "eq2_id": 3943,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 y",
+      "equation2": "x \u25c7 y = (x \u25c7 (z \u25c7 z)) \u25c7 y",
+      "id": "transfer_0b353898f69cb3673ff5",
+      "source_family": "normal",
+      "source_problem_id_sha256": "efa9be0dba45ccaf781483360c21b21803d8e2a5310b0bd7ac69e2a161b314a6"
+    },
+    {
+      "content_sha256": "0b36e0ae0929c45e653397ee8ebe0cb6948ab50744c2399614ba65f4005d762d",
+      "eq1_id": 1269,
+      "eq2_id": 3875,
+      "equation1": "x = x \u25c7 (((y \u25c7 z) \u25c7 z) \u25c7 w)",
+      "equation2": "x \u25c7 x = (x \u25c7 (y \u25c7 z)) \u25c7 z",
+      "id": "transfer_0b36e0ae0929c45e6533",
+      "source_family": "normal",
+      "source_problem_id_sha256": "f010eb4383cff10fef1f6c7d642754490170bcf95d3f35848c7f63fd7971e8ab"
+    }
+  ],
+  "schema": "mathgraph.residual12-independent-family-inputs.v1",
+  "selection": {
+    "families": [
+      "normal",
+      "hard1",
+      "hard2",
+      "hard3"
+    ],
+    "ordering": "canonical content hash",
+    "per_label_per_family": 20,
+    "prior_exclusion": "all IDs and reconstructible content hashes in experiments/mathgraph JSON outside residual12"
+  }
+}
