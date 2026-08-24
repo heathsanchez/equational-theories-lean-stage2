@@ -1,0 +1,113 @@
+{
+  "schema": "mathgraph.0036-target-bridge-macro-preregistration.v1",
+  "status": "FROZEN_BEFORE_EXECUTABLE",
+  "created_date": "2026-08-24",
+  "target": {
+    "id": "evaluation_normal_0036",
+    "source": "x = ((x * y) * (x * z)) * y",
+    "original_goal": "x = ((x * y) * y) * (x * z)"
+  },
+  "immediate_parent": {
+    "evidence_path": "experiments/mathgraph/residual12/evidence/0036_boundary_interface_reachability_run_32683209277.json",
+    "evidence_sha256": "b4ec5908656162fbad9d4eee66aeef10e25423609d2ab3a8da1d225a39432768",
+    "workflow_run": 32683209277,
+    "head_sha": "0122a1776c8b8555532647905a8b606249298bfa",
+    "artifact_id": 9505798702,
+    "artifact_zip_sha256": "c43fac1449b44048fd17a959d09aaa46fb14dcef5606ca43f14a6cad3f506ba2",
+    "required_decision": "ORIENTATION_ORDER_OBSTRUCTION",
+    "required_measurement_ok": true,
+    "required_equational_pair_bridges": 7,
+    "required_directed_pair_bridges": 0
+  },
+  "residual": "A replayed depth-two semantic bridge exists from the original right boundary into the exact-contractor lineage, but neither the internal nor expanded directed graph can expose it under the frozen decreasing orientation.",
+  "question": "Does forcing exactly the prospectively selected two-step equational bridge once on the denied-goal boundary cause the unchanged frozen solver to close the transformed goal and reconstruct an officially accepted proof of the original 0036 theorem, with both bridge steps causally necessary?",
+  "selected_macro": {
+    "selection_rule": "Among the seven complete equational pair bridges, lexicographically minimize maximum seed/intermediate/final term size, then final term size, combined rule cost, and rendered final term. This selects the unique size-15 pair before the executable exists.",
+    "seed": "((x * y) * y) * (x * z)",
+    "first_rule": "(((x * y) * y) * u) = (((x * x) * u) * ((x * y) * y))",
+    "first_rule_kind": "symmetry",
+    "first_rule_cost": 319,
+    "first_path": [],
+    "first_after": "((x * x) * (x * z)) * ((x * y) * y)",
+    "second_rule": "((x * x) * (x * z)) = ((x * (x * z)) * (x * x))",
+    "second_rule_kind": "symmetry",
+    "second_rule_cost": 30,
+    "second_path": [
+      "L"
+    ],
+    "second_after": "((x * (x * z)) * (x * x)) * ((x * y) * y)",
+    "selection_score": [
+      15,
+      15,
+      349,
+      "(((x ◇ (x ◇ z)) ◇ (x ◇ x)) ◇ ((x ◇ y) ◇ y))"
+    ]
+  },
+  "construction": {
+    "bridge_reconstruction": "Reproduce the immediate-parent Arm-C closure, enumerate the same complete expanded equational depth-two census, select by the frozen score, and require exact agreement with every selected-macro term, path, kind, cost, and bridge count. Compile and replay the composed macro from the source law before any causal arm runs.",
+    "target_retargeting": "For an intervention arm only, replace the denied goal right boundary by the prescribed first-after or second-after term. Run the same TargetGroundedRefutation given-clause implementation, limits, maximum-given count, and focus-per-age schedule. No bridge equality becomes a general rewrite rule in retargeted arms.",
+    "original_reconstruction": "If a retargeted arm proves x = transformed-boundary, compose that replayable proof with the symmetry of the appropriate source-derived boundary macro to obtain x = original-boundary. Compile, replay, emit, and officially judge only this reconstructed original theorem.",
+    "installed_pair_control": "Install both selected source-derived equalities into the original-goal search without forcing their non-decreasing directions. This tests availability separately from target-side use."
+  },
+  "arms": {
+    "A_frozen_original": "Unchanged original target and unchanged solver.",
+    "B_pair_installed_directed": "Original target; install both selected replayed equality recipes, then allow only the solver's frozen orientation and schedule.",
+    "C_first_step_only": "Retarget the right boundary to first_after, run the unchanged solver, and reconstruct the original goal with the first-step macro only.",
+    "D_second_step_only": "Attempt the selected second step directly at the original boundary. It must not match; retain the original target and run the unchanged solver as a path-specific negative control.",
+    "E_full_two_step_macro": "Retarget the right boundary to second_after, run the unchanged solver, then reconstruct the original goal with the complete two-step macro."
+  },
+  "constraints": {
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "input_path": "experiments/mathgraph/residual12/released_residuals_unlabelled.json",
+    "seconds_for_bridge_reconstruction": 60,
+    "seconds_per_arm": 60,
+    "maximum_given": 512,
+    "focus_per_age": 4,
+    "maximum_term_size": 65,
+    "maximum_replay_term_size": 260,
+    "maximum_depth": 12,
+    "maximum_rules": 768,
+    "maximum_rounds": 64,
+    "new_clauses_per_round": 512,
+    "maximum_clauses": 12000,
+    "normalization_steps": 256,
+    "maximum_proof_nodes": 50000,
+    "maximum_unique_first_step_states_per_graph": 200000,
+    "maximum_transitions_per_graph": 2000000,
+    "report_examples": 20,
+    "official_judge": "Lean 4.32.2",
+    "certificate_limit_bytes": 100000,
+    "label_fields_available_to_runner": []
+  },
+  "measurements": [
+    "parent evidence hash and required fields",
+    "input headers before equation-body access",
+    "observational equivalence of instrumented and native closure reproduction",
+    "complete graph counts and frozen selected-pair identity",
+    "selected macro compilation, root agreement, and independent replay",
+    "per-arm internal target proof, rounds, clauses, superpositions, target distance, proof nodes, and certificate bytes",
+    "reconstruction compilation and replay against the original target",
+    "official Lean status for every reconstructed internal success"
+  ],
+  "decision_order": [
+    "MEASUREMENT_FAILURE",
+    "BASELINE_OR_INSTALLED_PAIR_CLOSES",
+    "SINGLE_STEP_SUFFICIENT",
+    "TARGET_BRIDGE_MACRO_CAUSAL",
+    "POST_MACRO_SEARCH_FAILURE"
+  ],
+  "decision_table": {
+    "MEASUREMENT_FAILURE": "Any parent, hash, header, equation-body, closure reproduction, census completeness, selected-pair identity, macro replay, certificate-bound, or reconstruction check fails.",
+    "BASELINE_OR_INSTALLED_PAIR_CLOSES": "A or B reconstructs and receives official Lean acceptance; the obstruction was not specific to forced target-side use.",
+    "SINGLE_STEP_SUFFICIENT": "C reconstructs and is officially accepted while A and B do not; reject the claim that the complete pair is necessary.",
+    "TARGET_BRIDGE_MACRO_CAUSAL": "Only E reconstructs an officially accepted original theorem; A, B, C, and D do not close, and D confirms the second rule does not directly match the original boundary.",
+    "POST_MACRO_SEARCH_FAILURE": "All measurements pass but E does not reconstruct an officially accepted original theorem. The exact semantic interface is reachable yet insufficient under the frozen continuation."
+  },
+  "scientific_boundary": "This is one fixed target-side macro derived from a complete parent census. It does not enable general reverse rewriting, expand context-lift depth, change scoring or retrieval, inspect answer labels, tune on arm outcomes, or inspect sealed transfer rows.",
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ]
+}

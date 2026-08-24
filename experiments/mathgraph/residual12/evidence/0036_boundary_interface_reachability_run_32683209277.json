@@ -1,0 +1,78 @@
+{
+  "schema": "mathgraph.github-actions-evidence-manifest.v1",
+  "recorded_date": "2026-08-24",
+  "repository": "heathsanchez/equational-theories-lean-stage2",
+  "workflow": "MathGraph 0036 Boundary Interface Reachability",
+  "workflow_run": 32683209277,
+  "job": 97303388444,
+  "head_branch": "codex/mathgraph-0036-boundary-interface-reachability",
+  "head_sha": "0122a1776c8b8555532647905a8b606249298bfa",
+  "conclusion": "success",
+  "artifact": {
+    "id": 9505798702,
+    "name": "mathgraph-0036-boundary-interface-reachability",
+    "size_in_bytes": 2388,
+    "zip_sha256": "c43fac1449b44048fd17a959d09aaa46fb14dcef5606ca43f14a6cad3f506ba2",
+    "payload_embedded": false,
+    "retention_days": 30
+  },
+  "result_summary": {
+    "schema": "mathgraph.0036-boundary-interface-reachability-results.v2",
+    "decision": "ORIENTATION_ORDER_OBSTRUCTION",
+    "measurement_ok": true,
+    "smoke_only": false,
+    "closure": {
+      "clauses": 1192,
+      "rounds": 176,
+      "superpositions": 1180,
+      "contractor_lineage_clauses": 14,
+      "contractor_descendants": 13,
+      "target_structural_distance": 10
+    },
+    "graphs": {
+      "internal_operational": {
+        "rules": 1130,
+        "unique_first_step_states": 0,
+        "direct_bridges": 0,
+        "pair_bridges": 0,
+        "truncated": false
+      },
+      "expanded_directed": {
+        "rules": 805,
+        "unique_first_step_states": 1,
+        "direct_bridges": 0,
+        "pair_bridges": 0,
+        "truncated": false
+      },
+      "expanded_equational": {
+        "rules": 1703,
+        "unique_first_step_states": 65,
+        "direct_bridges": 0,
+        "pair_bridges": 7,
+        "minimum_bridge_depth": 2,
+        "first_witness_proof_nodes": 255,
+        "first_witness_compiled": true,
+        "first_witness_replayed": true,
+        "truncated": false
+      }
+    }
+  },
+  "selected_bridge": {
+    "selection_rule": "Lexicographically minimize maximum seed/intermediate/final term size, then final term size, combined rule cost, and rendered final term across the seven enumerated pair bridges.",
+    "selection_score": [
+      15,
+      15,
+      349,
+      "(((x ◇ (x ◇ z)) ◇ (x ◇ x)) ◇ ((x ◇ y) ◇ y))"
+    ],
+    "seed": "(((x ◇ y) ◇ y) ◇ (x ◇ z))",
+    "first_after": "(((x ◇ x) ◇ (x ◇ z)) ◇ ((x ◇ y) ◇ y))",
+    "second_after": "(((x ◇ (x ◇ z)) ◇ (x ◇ x)) ◇ ((x ◇ y) ◇ y))",
+    "first_rule_cost": 319,
+    "second_rule_cost": 30,
+    "second_path": [
+      "L"
+    ]
+  },
+  "claim_boundary": "This manifest pins public GitHub run metadata and the inspected result summary. It does not claim to embed or replace the retained Actions artifact payload. The next experiment must independently reconstruct and replay the selected bridge from the source law."
+}
