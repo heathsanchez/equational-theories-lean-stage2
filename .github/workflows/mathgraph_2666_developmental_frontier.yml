@@ -3,23 +3,15 @@ name: MathGraph 2666 Developmental Frontier
 on:
   pull_request:
     paths:
-      - experiments/mathgraph/run_2666_developmental_frontier.py
-      - experiments/mathgraph/run_2666_role_aware_continuation.py
-      - experiments/mathgraph/run_2666_role_aware_intermediate_coverage.py
-      - experiments/mathgraph/run_2666_oriented_basis_coverage.py
-      - experiments/mathgraph/run_3366_role_aware_transfer.py
-      - experiments/mathgraph/run_3366_basis_width_sweep.py
+      - experiments/mathgraph/run_final_solver_fast_gate.py
+      - submissions/mathgraph/solver.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
-      - experiments/mathgraph/run_2666_developmental_frontier.py
-      - experiments/mathgraph/run_2666_role_aware_continuation.py
-      - experiments/mathgraph/run_2666_role_aware_intermediate_coverage.py
-      - experiments/mathgraph/run_2666_oriented_basis_coverage.py
-      - experiments/mathgraph/run_3366_role_aware_transfer.py
-      - experiments/mathgraph/run_3366_basis_width_sweep.py
+      - experiments/mathgraph/run_final_solver_fast_gate.py
+      - submissions/mathgraph/solver.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -35,14 +27,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run held-out 3366 basis width sweep
-        run: python experiments/mathgraph/run_3366_basis_width_sweep.py
+      - name: Compile candidate solver
+        run: python -m py_compile submissions/mathgraph/solver.py
+      - name: Run fast final solver gate
+        run: python experiments/mathgraph/run_final_solver_fast_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-3366-basis-width-sweep
-          path: |
-            experiments/mathgraph/results/3366-basis-width-sweep.json
-            experiments/mathgraph/results/3366-role-aware-transfer.json
+          name: mathgraph-final-solver-fast-gate
+          path: experiments/mathgraph/results/final-solver-fast-gate.json
           if-no-files-found: warn
-# trigger: 3366-basis-width-v1
+# trigger: final-solver-fast-gate-v1
