@@ -5,6 +5,7 @@ on:
     paths:
       - experiments/mathgraph/run_2666_developmental_frontier.py
       - experiments/mathgraph/run_2666_role_aware_continuation.py
+      - experiments/mathgraph/run_2666_role_aware_intermediate_coverage.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
@@ -12,6 +13,7 @@ on:
     paths:
       - experiments/mathgraph/run_2666_developmental_frontier.py
       - experiments/mathgraph/run_2666_role_aware_continuation.py
+      - experiments/mathgraph/run_2666_role_aware_intermediate_coverage.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -27,11 +29,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run role-aware continuation discriminator
-        run: python experiments/mathgraph/run_2666_role_aware_continuation.py
+      - name: Run role-aware intermediate coverage
+        run: python experiments/mathgraph/run_2666_role_aware_intermediate_coverage.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-2666-role-aware-continuation-via-frontier
-          path: experiments/mathgraph/results/2666-role-aware-continuation.json
+          name: mathgraph-2666-role-aware-intermediate-coverage
+          path: experiments/mathgraph/results/2666-role-aware-intermediate-coverage.json
           if-no-files-found: warn
