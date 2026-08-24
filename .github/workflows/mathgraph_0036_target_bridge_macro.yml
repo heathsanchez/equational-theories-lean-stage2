@@ -1,0 +1,147 @@
+name: MathGraph 0036 Target Bridge Macro
+
+on:
+  push:
+    branches:
+      - codex/mathgraph-0036-target-bridge-macro
+    paths:
+      - experiments/mathgraph/residual12/0036_target_bridge_macro_preregistration.json
+      - experiments/mathgraph/residual12/evidence/0036_boundary_interface_reachability_run_32683209277.json
+      - experiments/mathgraph/residual12/run_0036_target_bridge_macro.py
+      - .github/workflows/mathgraph_0036_target_bridge_macro.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify frozen protocol predates executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          frozen=a462f73ef0a9ae0450630171ec1bc03189d9c3a3
+          git merge-base --is-ancestor "$frozen" HEAD
+          test "$(git log -1 --format=%H -- experiments/mathgraph/residual12/0036_target_bridge_macro_preregistration.json)" = "$frozen"
+          if git cat-file -e "$frozen:experiments/mathgraph/residual12/run_0036_target_bridge_macro.py" 2>/dev/null; then
+            echo "Executable existed at the frozen protocol commit" >&2
+            exit 1
+          fi
+
+      - name: Validate frozen inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.32.2"
+          grep -q 905b95818eb32af7874a58b427f50c1711a5e96c lake-manifest.json
+          test "$(sha256sum submissions/mathgraph_cleanroom/solver.py | cut -d' ' -f1)" = "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
+          test "$(sha256sum experiments/mathgraph/residual12/evidence/0036_boundary_interface_reachability_run_32683209277.json | cut -d' ' -f1)" = "b4ec5908656162fbad9d4eee66aeef10e25423609d2ab3a8da1d225a39432768"
+          python -m py_compile experiments/mathgraph/residual12/run_0036_target_bridge_macro.py
+          python -m json.tool experiments/mathgraph/residual12/0036_target_bridge_macro_preregistration.json >/dev/null
+          python -m json.tool experiments/mathgraph/residual12/evidence/0036_boundary_interface_reachability_run_32683209277.json >/dev/null
+
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: mathgraph-0036-bridge-macro-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Build official Lean judge
+        env:
+          SKIP_DOCKER: "1"
+        run: bash scripts/setup.sh
+
+      - name: Run frozen target bridge macro gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          PYTHONDONTWRITEBYTECODE=1 python \
+            experiments/mathgraph/residual12/run_0036_target_bridge_macro.py \
+            --official
+
+      - name: Enforce claim boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "experiments/mathgraph/residual12/"
+              "0036_target_bridge_macro_results.json"
+          )
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if not data["measurement_ok"]:
+              raise SystemExit("measurement failure")
+          if data["smoke_only"] or not data["official_enabled"]:
+              raise SystemExit("non-evidentiary execution")
+          allowed = {
+              "BASELINE_OR_INSTALLED_PAIR_CLOSES",
+              "SINGLE_STEP_SUFFICIENT",
+              "TARGET_BRIDGE_MACRO_CAUSAL",
+              "POST_MACRO_SEARCH_FAILURE",
+          }
+          if data["decision"] not in allowed:
+              raise SystemExit(data["decision"])
+          if data["direct_second_step_at_original_boundary"]["count"] != 0:
+              raise SystemExit("second-step negative control unexpectedly matched")
+          macro = data["macro_verification"]
+          if not (
+              macro["compiled"]
+              and macro["root_matches"]
+              and macro["replayed"]
+              and macro["boundary_root_matches"]
+          ):
+              raise SystemExit("selected macro failed replay")
+          for name, graph in data["graphs"].items():
+              if graph["truncated"]:
+                  raise SystemExit(f"{name} was truncated")
+          for name, arm in data["arms"].items():
+              proof = arm["verification"]
+              if proof["target_recipe_found"] and not (
+                  proof["target_compiled"]
+                  and proof["target_root_matches"]
+                  and proof["target_replayed"]
+                  and proof["reconstruction_compiled"]
+                  and proof["reconstruction_root_matches"]
+                  and proof["reconstruction_replayed"]
+                  and proof["certificate_within_limit"]
+                  and proof["judge_status"] == "accepted"
+              ):
+                  raise SystemExit(f"{name} verification failure")
+          print(json.dumps({
+              "decision": data["decision"],
+              "measurement_ok": data["measurement_ok"],
+              "selected_score": data["selected_bridge"]["score"],
+              "arms": {
+                  name: {
+                      "found": arm["verification"]["target_recipe_found"],
+                      "judge": arm["verification"]["judge_status"],
+                  }
+                  for name, arm in data["arms"].items()
+              },
+          }, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-0036-target-bridge-macro
+          path: experiments/mathgraph/residual12/0036_target_bridge_macro_results.json
+          if-no-files-found: warn
+          retention-days: 30
