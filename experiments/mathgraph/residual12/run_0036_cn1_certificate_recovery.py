@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import importlib.util
 import json
@@ -70,6 +71,34 @@ def ancestry_table(proof_text, ancestry_ids, closed_id):
             "closes": number == str(int(closed_id) + 1),
         })
     return rows
+
+
+def official_judge(problem, code):
+    from judge.verify import verify_answer
+
+    proxy_tree = ast.parse(
+        (ROOT / "pipeline/proxy.py").read_text(encoding="utf-8")
+    )
+    policy = None
+    for node in proxy_tree.body:
+        if (
+            isinstance(node, ast.Assign)
+            and any(
+                isinstance(target, ast.Name)
+                and target.id == "DEFAULT_PROOF_POLICY"
+                for target in node.targets
+            )
+        ):
+            policy = ast.literal_eval(node.value)
+            break
+    if policy is None:
+        raise RuntimeError("DEFAULT_PROOF_POLICY not found")
+    started = time.monotonic()
+    result = verify_answer(
+        {**problem, "proof_policy": policy},
+        json.dumps({"verdict": "true", "code": code}),
+    )
+    return result, time.monotonic() - started
 
 
 def main():
@@ -161,7 +190,7 @@ def main():
         independent_ok = bool(independent.replay_plan(result["spec"]))
         external_ok = bool(external_replay["replay_plan"](result["spec"]))
         if args.official and independent_ok and external_ok:
-            judged, elapsed = runner.judge(row, result["code"])
+            judged, elapsed = official_judge(row, result["code"])
             judge_status = judged.get("status")
             judge_seconds = round(elapsed, 6)
 
