@@ -2,9 +2,6 @@ name: MathGraph Residual-12 Hit Attack
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - codex/mathgraph-verified-residual-12
 
 permissions:
   contents: read

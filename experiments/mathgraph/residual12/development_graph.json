@@ -147,7 +147,90 @@
       "E": [
         "experiments/mathgraph/residual12/existing_closure_census_preregistration.json"
       ],
-      "status": "frozen"
+      "status": "completed"
+    },
+    {
+      "id": "evidence.compact-closure-two-hits",
+      "kind": "evidence",
+      "rho": "A supposedly closed grounded-route frontier contains two proofs reachable by the already-implemented compact-superposition constructor.",
+      "D": "Existing closure and scheduling failure, not a missing representation or constructor.",
+      "H": ["H_existing_closure", "H_schedule_only"],
+      "K": ["Reuse CompactSuperposition", "Do not add a primitive", "Attack timing and surface dependence"],
+      "V": "evaluation_order5_0022 and evaluation_order5_0040 replayed internally and fit the certificate boundary.",
+      "E": [
+        "experiments/mathgraph/residual12/existing_closure_census_results.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.compact-hit-attack-passed",
+      "kind": "evidence",
+      "rho": "Both compact hits survive repeated budgets and semantics-preserving presentation changes.",
+      "D": "Constructor language, nondeterminism, and surface-dependence rivals are refuted for the two hits.",
+      "K": ["Seek independent-family transfer before promotion"],
+      "V": "Each original passed 3/3 at 3 seconds and 3/3 at 5 seconds; alpha-renamed and operation-dual forms replayed and were Lean-accepted.",
+      "E": [
+        "https://github.com/metalogiclabs/mathgraph/actions/runs/32677570719"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.compact-independent-transfer",
+      "kind": "evidence",
+      "rho": "It was unknown whether compact closure generalized beyond released Order-5 residuals.",
+      "D": "Cross-family capability is established; Order-5 specificity and FALSE contamination are refuted on the frozen audit.",
+      "K": ["Run the smallest production scheduling delta on the full 800"],
+      "V": "67/76 TRUE across Normal, Hard1, Hard2, and Hard3; 65 source laws; 0/80 FALSE candidates; every hit replayed and was Lean-accepted.",
+      "E": [
+        "https://github.com/metalogiclabs/mathgraph/actions/runs/32682983088"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "experiment.full-800-compact-budget-ab",
+      "kind": "experiment",
+      "rho": "The production 3-second compact allocation may be too tight to realize two verified reachable proofs under the full solver schedule.",
+      "D": "Scheduling/resource margin versus no budget effect, with displacement and infrastructure as live rivals.",
+      "H": ["H_budget_margin", "H_no_budget_effect", "H_timing_displacement", "H_soundness_constructor"],
+      "K": ["Change only timeout / 40.0 to timeout / 24.0", "Pair arms on every row", "Alternate arm order by problem hash"],
+      "Delta": "Increase compact-fast allocation from 3 to 5 seconds at the 120-second boundary.",
+      "V": "Official Lean 4.32.2 on all released 800 rows in both arms.",
+      "B": "800 paired rows; 120 seconds per arm; zero model calls.",
+      "E": [
+        "experiments/mathgraph/residual12/full_800_compact_budget_preregistration.json"
+      ],
+      "status": "completed"
+    },
+    {
+      "id": "evidence.full-800-strict-plus-two",
+      "kind": "evidence",
+      "rho": "The 5-second allocation produced a strict verified gain with no displacement.",
+      "D": "A causal production scheduling deficit is established for two reachable Order-5 proofs.",
+      "K": ["Promote the one-line allocation change", "Retain every other solver distinction unchanged"],
+      "V": "788/800 to 790/800; gains 0022 and 0040; 400/400 FALSE; zero losses; 790/790 judge calls accepted; zero LLM calls.",
+      "E": [
+        "experiments/mathgraph/residual12/full_800_compact_budget_ab_verified_summary.json",
+        "https://github.com/metalogiclabs/mathgraph/actions/runs/32684220121"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "state.cleanroom-promoted-790",
+      "kind": "state",
+      "S": {
+        "solver_sha256": "652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c",
+        "accepted": 790,
+        "total": 800,
+        "true_accepted": 390,
+        "false_accepted": 400,
+        "llm_calls": 0
+      },
+      "V": "paired official full-800 run 32684220121",
+      "B": "Lean 4.32.2; 120 seconds; 500 KB solver; 100 KB certificate; MathGraph only",
+      "E": [
+        "experiments/mathgraph/residual12/full_800_compact_budget_ab_verified_summary.json"
+      ],
+      "status": "retained"
     }
   ],
   "edges": [
@@ -163,6 +246,19 @@
     {"source": "experiment.existing-closure-census", "target": "residual.grounded-closed-nine", "type": "DERIVED_FROM"},
     {"source": "experiment.existing-closure-census", "target": "hypothesis.existing-closure", "type": "EVALUATES"},
     {"source": "experiment.existing-closure-census", "target": "hypothesis.shared-capability-gap", "type": "EVALUATES"},
-    {"source": "residual.grounded-closed-nine", "target": "experiment.existing-closure-census", "type": "SELECTS_NEXT"}
+    {"source": "residual.grounded-closed-nine", "target": "experiment.existing-closure-census", "type": "SUPPORTS"},
+    {"source": "evidence.compact-closure-two-hits", "target": "experiment.existing-closure-census", "type": "DERIVED_FROM"},
+    {"source": "evidence.compact-closure-two-hits", "target": "hypothesis.existing-closure", "type": "SUPPORTS"},
+    {"source": "evidence.compact-closure-two-hits", "target": "hypothesis.shared-capability-gap", "type": "REFUTES", "scope": "evaluation_order5_0022 and evaluation_order5_0040"},
+    {"source": "evidence.compact-closure-two-hits", "target": "evidence.compact-hit-attack-passed", "type": "SUPPORTS"},
+    {"source": "evidence.compact-hit-attack-passed", "target": "evidence.compact-closure-two-hits", "type": "DERIVED_FROM"},
+    {"source": "evidence.compact-hit-attack-passed", "target": "evidence.compact-independent-transfer", "type": "SUPPORTS"},
+    {"source": "evidence.compact-independent-transfer", "target": "evidence.compact-hit-attack-passed", "type": "DERIVED_FROM"},
+    {"source": "evidence.compact-independent-transfer", "target": "experiment.full-800-compact-budget-ab", "type": "SUPPORTS"},
+    {"source": "experiment.full-800-compact-budget-ab", "target": "state.cleanroom-baseline-788", "type": "DERIVED_FROM"},
+    {"source": "evidence.full-800-strict-plus-two", "target": "experiment.full-800-compact-budget-ab", "type": "DERIVED_FROM"},
+    {"source": "evidence.full-800-strict-plus-two", "target": "state.cleanroom-promoted-790", "type": "SUPPORTS"},
+    {"source": "state.cleanroom-promoted-790", "target": "state.cleanroom-baseline-788", "type": "DERIVED_FROM"},
+    {"source": "evidence.compact-independent-transfer", "target": "state.cleanroom-promoted-790", "type": "TRANSFERS_TO"}
   ]
 }

@@ -1,0 +1,46 @@
+{
+  "schema": "mathgraph.residual12-full-800-compact-budget-ab-verified-summary.v1",
+  "status": "VERIFIED_STRICT_GAIN_NO_LOSS",
+  "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32684220121",
+  "workflow_job": 97306185116,
+  "artifact": {
+    "id": 9507708626,
+    "digest": "sha256:0c749c446f29bc7d64174ab5b6c613844c1f6cddda597bab6dca6a5dfe80a98f",
+    "result_sha256": "0b4f3dd345f7915fd1f615ef67d11831d770dc3068d7aa8dd83507fab08fa16f"
+  },
+  "control": {
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "compact_fast_seconds": 3,
+    "accepted": 788,
+    "true": 388,
+    "false": 400,
+    "judge_calls": 788,
+    "llm_calls": 0,
+    "elapsed_seconds": 4038.444
+  },
+  "intervention": {
+    "solver_sha256": "652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c",
+    "only_change": "The production COMPACT_SUPERPOSITION_FAST allocation uses timeout / 24.0 instead of timeout / 40.0, giving 5 rather than 3 seconds at the 120-second boundary.",
+    "accepted": 790,
+    "true": 390,
+    "false": 400,
+    "judge_calls": 790,
+    "llm_calls": 0,
+    "elapsed_seconds": 4332.978
+  },
+  "marginal_gains": [
+    "evaluation_order5_0022",
+    "evaluation_order5_0040"
+  ],
+  "losses": [],
+  "nonaccepted_judge_statuses": {},
+  "prior_attack_evidence": {
+    "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32677570719",
+    "result": "Both marginal rows succeeded 3/3 at 3 seconds and 3/3 at 5 seconds in the isolated route attack; alpha-renamed and operation-dual forms replayed and were Lean-accepted."
+  },
+  "independent_transfer_evidence": {
+    "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32682983088",
+    "result": "67/76 TRUE across Normal, Hard1, Hard2, and Hard3; 65 distinct source laws; 0/80 FALSE candidates; every hit replayed and was Lean-accepted."
+  },
+  "decision": "Promote the one-line compact-fast scheduling change to the MathGraph cleanroom core and regenerate all four submission variants."
+}

@@ -7401,7 +7401,7 @@ def run_solo():
 
     compact_limits = dict(COMPACT_SUPERPOSITION_FAST)
     compact_seconds = min(
-        compact_limits["seconds"], max(0.1, timeout / 40.0)
+        compact_limits["seconds"], max(0.1, timeout / 24.0)
     )
     try:
         compact_search = CompactSuperposition(

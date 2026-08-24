@@ -73,6 +73,23 @@ Across the four released 200-row strata, a short-budget screen produced
 These rows influenced configuration selection and are regression evidence, not
 fresh transfer evidence.
 
+### Verified residual-12 scheduling promotion
+
+The unchanged cleanroom core was tested in a preregistered, paired full-800
+run with arm order alternated by problem hash.  Changing only the production
+compact-fast allocation from three to five seconds increased official Lean
+acceptances from 788/800 to 790/800.  The gains were exactly
+`evaluation_order5_0022` and `evaluation_order5_0040`; there were no losses,
+all 400 FALSE rows remained accepted, all 790 judge calls were accepted, and
+there were zero model calls.  An earlier isolated attack had already repeated
+both gains at each budget and verified alpha-renamed and operation-dual forms.
+
+Independent transfer was tested on 156 prior-contact-excluded rows: the same
+compact mechanism proved 67/76 TRUE rows across Normal, Hard1, Hard2, and
+Hard3, spanning 65 source laws, while producing no candidate on 80 FALSE
+controls.  The promoted core is 289,045 bytes with SHA-256
+`652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c`.
+
 ### Format and platform gates
 
 - All 62,576 organizer-provided `eq_size5.txt` laws parse successfully.
