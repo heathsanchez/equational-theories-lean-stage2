@@ -1,0 +1,109 @@
+{
+  "schema": "mathgraph.0036-post-macro-contractor-preregistration.v2",
+  "status": "AMENDED_BEFORE_EXECUTABLE_AFTER_STATIC_DECISION_COVERAGE_REVIEW",
+  "amendment": "The v1 decision table omitted the possible outcome in which the forced-contractor closure already contains a complete depth-at-most-two equational path between the two shared-context boundaries but the transformed target still does not close or improve. Version 2 names that outcome prospectively so it cannot be folded into sibling disconnection after execution.",
+  "created_date": "2026-08-24",
+  "developmental_parent": {
+    "local_result_path": "/tmp/0036_target_bridge_macro_full_local.json",
+    "local_result_sha256": "def7838b24af7412fd54a15d7af51097f5b84d1d59fa816744f4190139a3ae58",
+    "schema": "mathgraph.0036-target-bridge-macro-results.v1",
+    "decision": "POST_MACRO_SEARCH_FAILURE",
+    "measurement_ok": true,
+    "smoke_only": false,
+    "official_enabled": false,
+    "claim_boundary": "This completed local measurement selects the next discriminator but is not substituted for the queued GitHub/Actions evidentiary result. The follow-on gate independently reconstructs and replays the macro and reproduces the transformed-target baseline."
+  },
+  "pending_public_parent": {
+    "workflow_run": 32690664599,
+    "head_sha": "542075faf8e50a726a21db2a97c20af6fc88d810",
+    "status_at_freeze": "queued",
+    "required_before_terminal_promotion": true
+  },
+  "target": {
+    "id": "evaluation_normal_0036",
+    "source": "x = ((x * y) * (x * z)) * y",
+    "original_goal": "x = ((x * y) * y) * (x * z)",
+    "macro_transformed_goal": "x = ((x * (x * z)) * (x * x)) * ((x * y) * y)",
+    "known_contractor": "x = ((x * (x * z)) * (x * x)) * (x * z)"
+  },
+  "factorization": {
+    "shared_context": "C[t] = (((x * (x * z)) * (x * x)) * t)",
+    "shared_left_component": "((x * (x * z)) * (x * x))",
+    "shared_left_component_size": 9,
+    "contractor_sibling": "x * z",
+    "contractor_sibling_size": 3,
+    "target_sibling": "(x * y) * y",
+    "target_sibling_size": 5,
+    "sibling_structural_distance": 5,
+    "whole_boundary_structural_distance": 5,
+    "observation": "The macro aligns the entire size-9 left component with the known contractor. The sole remaining syntactic difference is the right sibling under one shared outer context."
+  },
+  "question": "After the frozen macro has exposed the contractor's exact size-9 core, is failure caused by the known contractor being absent or unselected in the transformed-target search, or does an active contractor still fail to attach across the remaining sibling difference?",
+  "intervention": {
+    "macro_reconstruction": "Independently reproduce the complete seven-pair parent census, select the same unique size-15 bridge, compile it, and replay it from the source law.",
+    "A_transformed_baseline": "Run the unchanged frozen solver on the macro-transformed target.",
+    "B_contractor_installed": "Run the same transformed target after installing the independently replayed exact contractor as one passive clause; do not force its selection.",
+    "C_contractor_forced_once": "Run B but force-select the exact contractor once as the first given clause; all subsequent scheduling remains frozen.",
+    "original_reconstruction": "For every transformed-target proof, compose with the symmetry of the independently replayed macro and require compilation, replay, certificate bounds, and official Lean acceptance for the original 0036 theorem."
+  },
+  "constraints": {
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "input_path": "experiments/mathgraph/residual12/released_residuals_unlabelled.json",
+    "seconds_for_macro_reconstruction": 60,
+    "seconds_per_arm": 60,
+    "maximum_given": 512,
+    "focus_per_age": 4,
+    "maximum_term_size": 65,
+    "maximum_replay_term_size": 260,
+    "maximum_depth": 12,
+    "maximum_rules": 768,
+    "maximum_rounds": 64,
+    "new_clauses_per_round": 512,
+    "maximum_clauses": 12000,
+    "normalization_steps": 256,
+    "maximum_proof_nodes": 50000,
+    "maximum_unique_first_step_states_per_graph": 200000,
+    "maximum_transitions_per_graph": 2000000,
+    "report_examples": 20,
+    "certificate_limit_bytes": 100000,
+    "official_judge": "Lean 4.32.2",
+    "label_fields_available_to_runner": []
+  },
+  "measurements": [
+    "input headers before equation-body access",
+    "solver hash and exact source, original goal, transformed goal, and contractor bodies",
+    "observational equivalence of the instrumented and native frozen loop",
+    "complete seven-pair census, selected macro identity, compilation, and replay",
+    "contractor compilation, replay, admission, selection, activation, and descendants",
+    "per-arm target proof, clauses, rounds, superpositions, reductions, and normalized target distance",
+    "whether any admitted equality directly or at depth two connects the two shared-context boundaries",
+    "original-goal reconstruction and official Lean status for every internal success"
+  ],
+  "decision_order": [
+    "MEASUREMENT_FAILURE",
+    "TRANSFORMED_BASELINE_CLOSES",
+    "CONTRACTOR_INSTALLATION_CAUSAL_AFTER_MACRO",
+    "CONTRACTOR_SELECTION_CAUSAL_AFTER_MACRO",
+    "CONTRACTOR_SELECTION_PARTIAL_AFTER_MACRO",
+    "SHARED_CONTEXT_BRIDGE_PRESENT",
+    "SIBLING_ATTACHMENT_OBSTRUCTION",
+    "CONTRACTOR_DISPLACED_AFTER_MACRO"
+  ],
+  "decision_table": {
+    "MEASUREMENT_FAILURE": "Any hash, body, equivalence, macro replay, contractor replay, forced-selection, reconstruction, certificate, judge, or no-truncation requirement fails.",
+    "TRANSFORMED_BASELINE_CLOSES": "A reconstructs an officially accepted original proof; the earlier local negative was timing-sensitive and cannot select a contractor explanation.",
+    "CONTRACTOR_INSTALLATION_CAUSAL_AFTER_MACRO": "B closes while A does not; explicit availability is causal.",
+    "CONTRACTOR_SELECTION_CAUSAL_AFTER_MACRO": "C alone closes and reconstructs the officially accepted original theorem.",
+    "CONTRACTOR_SELECTION_PARTIAL_AFTER_MACRO": "C does not close but strictly improves the normalized target distance relative to A and B.",
+    "SHARED_CONTEXT_BRIDGE_PRESENT": "C does not close or improve, but its complete depth-at-most-two equational census connects the contractor boundary to the transformed target boundary. The remaining failure is downstream selection or continuation, not sibling reachability.",
+    "SIBLING_ATTACHMENT_OBSTRUCTION": "C selects and activates the exact contractor and admits contractor descendants, does not close or improve target distance, and its complete depth-at-most-two equational census finds no connection between the two shared-context boundaries.",
+    "CONTRACTOR_DISPLACED_AFTER_MACRO": "The forced contractor cannot be made exact, active, or descendant-producing in the transformed representation."
+  },
+  "scientific_boundary": "This gate changes only contractor availability and one forced selection after one already-frozen target macro. It does not add reverse rewriting, a new equality schema, a sibling rewrite, cancellation, deeper context lifting, altered retrieval, answer labels, or sealed transfer rows.",
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ]
+}
