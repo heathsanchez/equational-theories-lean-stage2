@@ -28,3 +28,5 @@ jobs:
         with:
           name: mathgraph-2666-role-aware-continuation
           path: experiments/mathgraph/results/2666-role-aware-continuation.json
+
+# trigger marker: 2026-08-25 role-aware continuation
