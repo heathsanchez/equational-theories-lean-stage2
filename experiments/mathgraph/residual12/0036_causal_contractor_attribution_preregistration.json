@@ -1,6 +1,6 @@
 {
-  "schema": "mathgraph.0036-causal-contractor-attribution-preregistration.v1",
-  "status": "FROZEN_BEFORE_ATTRIBUTION_EXECUTABLE",
+  "schema": "mathgraph.0036-causal-contractor-attribution-preregistration.v2",
+  "status": "AMENDED_AFTER_LOCAL_DEVELOPMENT_RUN_BEFORE_EVIDENTIARY_EXECUTABLE",
   "created_date": "2026-08-24",
   "target_id": "evaluation_normal_0036",
   "parent_evidence": {
@@ -36,6 +36,11 @@
     "historical_post_transition_context_lift": "BOUNDARY_CONTEXT_LIFT_EXHAUSTED"
   },
   "question": "Where does the exact independently established 0036 causal 10-to-8 source consequence disappear in the frozen cleanroom target-grounded given-clause route: construction, retention, selection, activation/composition, or representation transfer?",
+  "amendment_basis": {
+    "claim_status": "implementation-development observation only; no official judge was available and no scientific decision is promoted from it",
+    "observed_pattern": "Arm A did not construct the exact contractor. Arm B admitted and retained the replay-valid contractor for 60 seconds but never selected it. Neither arm found a target proof.",
+    "reason_for_v2": "The frozen v1 decision table did not separate an installed-but-unselected contractor from representation displacement. One forced selection is the smallest discriminator and is frozen here before any remote evidentiary executable or run."
+  },
   "target": {
     "source": "x = ((x * y) * (x * z)) * y",
     "goal": "x = ((x * y) * y) * (x * z)",
@@ -45,7 +50,8 @@
   },
   "arms": {
     "A_FROZEN_BASELINE": "Unchanged TargetGroundedRefutation given-clause search.",
-    "B_KNOWN_CONTRACTOR_INSTALLED": "The identical search with exactly one additional initial clause: the known source instance with mapping x:=x, y:=(x*z), z:=x. No other search, scoring, retention, inference, or proof-language change."
+    "B_KNOWN_CONTRACTOR_INSTALLED": "The identical search with exactly one additional initial clause: the known source instance with mapping x:=x, y:=(x*z), z:=x. No other search, scoring, retention, inference, or proof-language change.",
+    "C_KNOWN_CONTRACTOR_FORCED_ONCE": "Arm B, except the admitted contractor is selected as the first given clause exactly once; all later selections use the unchanged frozen age/target schedule."
   },
   "instrumentation": {
     "stages": [
@@ -55,7 +61,9 @@
       "admitted_clause",
       "retained_passive",
       "selected_given_clause",
+      "forced_selected_counterfactual",
       "active_clause",
+      "contractor_descendant_admitted",
       "used_in_returned_proof_ancestry"
     ],
     "matching": [
@@ -73,6 +81,7 @@
     "seconds_per_arm": 60,
     "maximum_given": 512,
     "focus_per_age": 4,
+    "forced_selection_steps_in_arm_C": 1,
     "maximum_term_size": 65,
     "maximum_replay_term_size": 260,
     "maximum_depth": 12,
@@ -85,7 +94,8 @@
     "no_answer_fields": true,
     "no_problem_id_routing": true,
     "no_new_inference_operator": true,
-    "no_scheduler_change": true,
+    "scheduler_change_scope": "one forced first selection in Arm C only",
+    "no_persistent_scheduler_change": true,
     "no_retention_change": true,
     "no_production_mutation": true
   },
@@ -98,28 +108,31 @@
   "decision_order": [
     "MEASUREMENT_FAILURE",
     "KNOWN_CONTRACTOR_CLOSES",
+    "CONTRACTOR_SELECTION_CAUSAL",
     "EXISTING_CLOSURE_UNSELECTED",
     "RETENTION_FAILURE",
     "CONSTRUCTOR_ABSENT",
-    "CONTRACTOR_REPRESENTATION_DISPLACED",
-    "POST_CONTRACTOR_COMPOSITION_FAILURE"
+    "POST_CONTRACTOR_COMPOSITION_FAILURE",
+    "CONTRACTOR_REPRESENTATION_DISPLACED"
   ],
   "decision_table": {
     "KNOWN_CONTRACTOR_CLOSES": "Arm B reaches an internally replayed and officially Lean-accepted target proof while Arm A does not.",
+    "CONTRACTOR_SELECTION_CAUSAL": "Only Arm C reaches an internally replayed and officially Lean-accepted target proof, or only Arm C strictly improves the frozen target-state measurement after activating the contractor.",
     "EXISTING_CLOSURE_UNSELECTED": "Arm A constructs and retains a contractor-equivalent recipe but never selects it; Arm B changes the trajectory or closes.",
     "RETENTION_FAILURE": "Arm A constructs a contractor-equivalent recipe but it is absent from the retained passive/active frontier; Arm B changes the trajectory or closes.",
     "CONSTRUCTOR_ABSENT": "Arm A never constructs a contractor-equivalent recipe, while Arm B is replay-valid and changes the trajectory or closes.",
-    "CONTRACTOR_REPRESENTATION_DISPLACED": "The historical contractor is replay-valid but Arm B has no measurable effect in the cleanroom representation.",
-    "POST_CONTRACTOR_COMPOSITION_FAILURE": "Arm B activates the contractor and improves a preregistered target-state measurement without closing; the residual lies downstream in composition.",
+    "POST_CONTRACTOR_COMPOSITION_FAILURE": "Arm C activates the contractor, produces replay-connected descendants or improves a preregistered target-state measurement, but does not close; the residual lies downstream in composition.",
+    "CONTRACTOR_REPRESENTATION_DISPLACED": "Arm C activates the replay-valid historical contractor but produces neither target-state improvement nor a replay-connected descendant admitted to the cleanroom frontier.",
     "MEASUREMENT_FAILURE": "Any frozen identity, validity, isolation, replay, judge, or observational-equivalence condition fails."
   },
   "outcome_to_action": {
     "KNOWN_CONTRACTOR_CLOSES": "Run alpha-renaming, operation-dual, protected normal-family transfer, and full 800-row regression before promotion.",
+    "CONTRACTOR_SELECTION_CAUSAL": "Preregister a target-independent cut-aware given-clause selector against age/target and reversed controls.",
     "EXISTING_CLOSURE_UNSELECTED": "Preregister the cut-aware given-clause selector against age/target and reversed controls.",
     "RETENTION_FAILURE": "Preregister causal multi-representative retention without changing inference.",
     "CONSTRUCTOR_ABSENT": "Run the mixed direct/context union-closure census before proposing a primitive.",
-    "CONTRACTOR_REPRESENTATION_DISPLACED": "Map the relation between the historical component cut and the rigid-clause target state.",
+    "CONTRACTOR_REPRESENTATION_DISPLACED": "Map the relation between the historical component cut and the rigid-clause target state before changing selection.",
     "POST_CONTRACTOR_COMPOSITION_FAILURE": "Test mixed two-action synergy and paired boundary transformations under the frozen representation."
   },
-  "claim_boundary": "This gate attributes one known useful consequence across two solver representations. It does not claim universal contextual-lift failure, production improvement, transfer, or a new proof capability."
+  "claim_boundary": "This gate attributes one known useful consequence across two solver representations and one forced-selection counterfactual. It does not claim universal contextual-lift failure, production improvement, transfer, or a new proof capability. The local v1 development observation is provenance for the amendment, not evidentiary support for the v2 outcome."
 }
