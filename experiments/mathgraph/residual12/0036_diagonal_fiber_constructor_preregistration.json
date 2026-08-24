@@ -1,11 +1,18 @@
 {
-  "schema": "mathgraph.0036-diagonal-fiber-constructor-preregistration.v1",
-  "status": "FROZEN_BEFORE_EXECUTABLE_FROM_COMPLETED_LOCAL_RECOVERY_PENDING_PUBLIC_PARENT",
+  "schema": "mathgraph.0036-diagonal-fiber-constructor-preregistration.v2",
+  "status": "AMENDED_AFTER_PARENT_JUDGE_WRAPPER_FAILURE_BEFORE_EXECUTABLE_PUBLICATION",
   "recorded_date": "2026-08-24",
   "pending_public_parent": {
-    "workflow_run": 32693003307,
+    "workflow_run": 32693370694,
+    "evidence_path": "experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json",
     "required_decision": "CN1_WORK_FRONTIER_RECOVERED",
     "required_lean_status": "accepted"
+  },
+  "parent_replacement_reason": {
+    "failed_run": 32693003307,
+    "failure_level": "judge wrapper dependency import after deterministic proof recovery",
+    "replacement_run": 32693370694,
+    "replacement_change": "Use the dependency-free proof-policy extraction already used by other residual workflows; search, proof plan, certificate, and frozen work frontier unchanged."
   },
   "local_selection_evidence": {
     "claim_boundary": "Completed local measurement selects this next discriminator but is not authoritative evidence.",
@@ -63,5 +70,5 @@
     "DIAGONAL_FIBER_CONSTRUCTOR_FAILURE": "The relation or certificate fails replay, size, or official Lean verification.",
     "MEASUREMENT_FAILURE": "The pending public parent, frozen hashes, headers, or equation bodies do not validate."
   },
-  "claim_boundary": "A positive gate establishes a sufficient generic proof constructor for this algebraic source/target schema. It does not promote the rejected six-row CN1 search policy and does not claim that diagonal-fiber reasoning explains unrelated residuals."
+  "claim_boundary": "A positive gate establishes a sufficient generic proof constructor for this algebraic source/target schema. The parent amendment replaces only a failed optional-dependency judge wrapper with a successful authoritative run of the unchanged proof recovery. It does not promote the rejected six-row CN1 search policy and does not claim that diagonal-fiber reasoning explains unrelated residuals."
 }

@@ -1,0 +1,58 @@
+{
+  "schema": "mathgraph.github-actions-evidence-manifest.v1",
+  "recorded_date": "2026-08-24",
+  "repository": "heathsanchez/equational-theories-lean-stage2",
+  "workflow": "MathGraph 0036 CN1 Certificate Recovery",
+  "workflow_run": 32693370694,
+  "job": 97330915714,
+  "head_branch": "codex/mathgraph-0036-target-bridge-macro",
+  "head_sha": "5c23697e4923472342fcb85b0c53b204dbe4937e",
+  "conclusion": "success",
+  "artifact": {
+    "id": 9508032060,
+    "name": "mathgraph-0036-cn1-certificate-recovery",
+    "size_in_bytes": 18850,
+    "zip_sha256": "b0ff14d6893d9d7936dd99c6fc66b501eac0a07c7600ca9f779e028ab6923494",
+    "payload_embedded": false,
+    "retention_days": 30,
+    "files": {
+      "0036_cn1_certificate_recovery_results.json": 1658,
+      "0036_cn1_certificate.lean": 1911,
+      "0036_cn1_ancestry.json": 1955,
+      "0036_cn1_plan.json": 2962,
+      "0036_cn1_proof.p9p": 156574
+    }
+  },
+  "result_summary": {
+    "schema": "mathgraph.0036-cn1-certificate-recovery-results.v2",
+    "decision": "CN1_WORK_FRONTIER_RECOVERED",
+    "measurement_ok": true,
+    "official_enabled": true,
+    "status": "proved",
+    "processed": 24,
+    "generated": 1157,
+    "retained": 1154,
+    "closed_id": "1161",
+    "proof_ancestry_ids": ["3", "4", "8", "161", "169", "280", "876", "927", "1161"],
+    "proof_ancestry_nodes": 9,
+    "proof_ancestry_superpositions": 7,
+    "proof_ancestry_demodulations": 0,
+    "independent_replay": true,
+    "external_plan_replay": true,
+    "plan_ok": true,
+    "shape_ok": true,
+    "global_diagonal_relation_ok": true,
+    "lean_status": "accepted",
+    "certificate_bytes": 1911,
+    "certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6",
+    "plan_sha256": "433b35039bd773b7c9b5c619e304e32535d07f6aab0d09a09cb3398c2cade172",
+    "ancestry_sha256": "1d149fe732d7703d1ca2b44eacbe55d506d81631171d5b92fc945b49566d06a5",
+    "proof_sha256": "b7ea242d6c8fd1d8941d8362ca4fbed2e9550d7aa76f9f2ccbd0fc3165a4837c",
+    "diagonal_fiber_clause": {
+      "id": "876",
+      "formula": "((x ◇ y) ◇ y) = ((x ◇ z) ◇ z)",
+      "justification": "para(280(a,1),169(a,2,1,1))"
+    }
+  },
+  "claim_boundary": "The deterministic work frontier reproduces and officially verifies the previously observed row-level CN1 proof and exposes its exact ancestry. This is authoritative evidence for residual 0036, not promotion evidence for CN1 on the six-row family."
+}
