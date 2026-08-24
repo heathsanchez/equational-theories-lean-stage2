@@ -1,0 +1,38 @@
+name: MathGraph 2666 2860 Proof Program Beam
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_2860_proof_program_beam.py
+      - .github/workflows/mathgraph_2666_2860_proof_program_beam.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_2860_proof_program_beam.py
+      - .github/workflows/mathgraph_2666_2860_proof_program_beam.yml
+
+permissions:
+  contents: read
+
+jobs:
+  proof-program-beam:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run proof-program beam
+        run: python experiments/mathgraph/run_2666_2860_proof_program_beam.py
+      - name: Upload proof-program beam artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-2666-2860-proof-program-beam
+          path: experiments/mathgraph/results/2666-2860-proof-program-beam.json
+          if-no-files-found: warn
