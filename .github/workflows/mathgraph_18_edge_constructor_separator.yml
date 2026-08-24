@@ -5,8 +5,9 @@ on:
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
-    paths:
-      - .github/workflows/mathgraph_18_edge_constructor_separator.yml
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
 
 permissions:
   contents: read
@@ -16,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Checkout frozen MathGraph baseline
+      - name: Checkout separator branch
         uses: actions/checkout@v4
         with:
           ref: mathgraph/18-edge-constructor-separator-20260824
@@ -26,188 +27,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Replay the recovered 18-edge separator
-        shell: bash
-        run: |
-          set -euo pipefail
-          mkdir -p experiments/mathgraph/results
-          python - <<'PY'
-          import importlib.util
-          import json
-          import re
-          import sys
-          import time
-          import urllib.request
-          from pathlib import Path
-
-          UPSTREAM_SHA = 'e5a88a1479011ece4aad8e3c2e7e5c0ebc0a5b2a'
-          ROUTES = {
-              '2666_to_2062': [2666, 2860, 2062],
-              '3366_to_3390': [3366, 41, 3390],
-              '1367_to_3599': [1367, 678, 1696, 979, 2945, 2938, 2922, 2920,
-                               1151, 689, 688, 2, 41, 3602, 3599],
-          }
-          EDGES = []
-          for route_name, route in ROUTES.items():
-              for index, (source, target) in enumerate(zip(route, route[1:]), start=1):
-                  EDGES.append((route_name, index, source, target))
-          assert len(EDGES) == 18
-
-          # Pull the authoritative equation declarations at a pinned upstream commit.
-          api = (
-              'https://api.github.com/repos/teorth/equational_theories/contents/'
-              'equational_theories/Equations?ref=' + UPSTREAM_SHA
-          )
-          req = urllib.request.Request(api, headers={'User-Agent': 'mathgraph-separator'})
-          with urllib.request.urlopen(req, timeout=30) as response:
-              listing = json.load(response)
-          files = [x for x in listing if x.get('name', '').startswith('Eqns') and x['name'].endswith('.lean')]
-          needed = {n for _, _, s, t in EDGES for n in (s, t)}
-          equations = {}
-          decl = re.compile(r'^equation\s+(\d+)\s*:=\s*(.+?)\s*$')
-          for item in files:
-              with urllib.request.urlopen(item['download_url'], timeout=30) as response:
-                  text = response.read().decode('utf-8')
-              for line in text.splitlines():
-                  match = decl.match(line)
-                  if not match:
-                      continue
-                  number = int(match.group(1))
-                  if number in needed:
-                      equations[number] = match.group(2)
-              if needed <= equations.keys():
-                  break
-          missing = sorted(needed - equations.keys())
-          if missing:
-              raise RuntimeError(f'missing equation declarations: {missing}')
-
-          spec = importlib.util.spec_from_file_location('mg_separator', 'submissions/mathgraph/solver.py')
-          m = importlib.util.module_from_spec(spec)
-          sys.modules[spec.name] = m
-          spec.loader.exec_module(m)
-
-          def proof_ids(nodes, root):
-              seen = set()
-              stack = [root]
-              while stack:
-                  node_id = stack.pop()
-                  if node_id in seen:
-                      continue
-                  seen.add(node_id)
-                  stack.extend(getattr(nodes[node_id], 'parents', ()))
-              return sorted(seen)
-
-          def node_summary(nodes, root):
-              ids = proof_ids(nodes, root)
-              return {
-                  'proof_nodes': len(ids),
-                  'constructors': sorted({str(getattr(nodes[i], 'constructor', None)) for i in ids}),
-                  'kinds': sorted({str(getattr(nodes[i], 'kind', None)) for i in ids}),
-              }
-
-          output = {
-              'schema': 'mathgraph.18-edge-constructor-separator.v1',
-              'upstream_equations_commit': UPSTREAM_SHA,
-              'solver_ref': 'mathgraph/superposition-selector-tournament-20260820',
-              'routes': ROUTES,
-              'edges': [],
-          }
-
-          for route_name, route_index, source_id, target_id in EDGES:
-              source_text = equations[source_id]
-              target_text = equations[target_id]
-              source = m.parse_equation(source_text)
-              target = m.parse_equation(target_text)
-              record = {
-                  'route': route_name,
-                  'route_edge_index': route_index,
-                  'source_id': source_id,
-                  'target_id': target_id,
-                  'source_equation': source_text,
-                  'target_equation': target_text,
-              }
-
-              # Arm A: the bounded proof-DAG constructor used by the solver.
-              start = time.monotonic()
-              try:
-                  search = m.EqualitySearch(source, target, time.monotonic() + 8.0)
-                  found = search.solve()
-                  record['equality_search_seconds'] = time.monotonic() - start
-                  record['equality_search_exhaustion'] = getattr(search, 'exhaustion', None)
-                  record['equality_search_graph_edges'] = getattr(search, 'graph_edges', None)
-                  record['equality_search_nodes'] = len(getattr(search, 'nodes', ()))
-                  record['equality_search_generations'] = getattr(search, 'generations_completed', None)
-                  if isinstance(found, tuple) and len(found) == 2:
-                      nodes, root = found
-                      record['equality_search_found'] = True
-                      record['equality_search_proof'] = node_summary(nodes, root)
-                      try:
-                          record['equality_search_replayed'] = bool(m.replay_dag(source, nodes, root))
-                      except TypeError:
-                          record['equality_search_replayed'] = bool(
-                              m.replay_dag(source, nodes, root,
-                                           maximum_term_size=getattr(search, 'max_term_size', 256),
-                                           maximum_nodes=getattr(search, 'max_derivation_nodes', 50000))
-                          )
-                  else:
-                      record['equality_search_found'] = bool(found)
-                      record['equality_search_raw_result'] = repr(found)[:500]
-              except Exception as error:
-                  record['equality_search_found'] = False
-                  record['equality_search_error'] = type(error).__name__ + ': ' + str(error)
-
-              # Arm B: the compact target-grounded proof-producing constructor.
-              start = time.monotonic()
-              try:
-                  limits = dict(m.COMPACT_SUPERPOSITION_PROBE)
-                  engine = m.TargetGroundedRefutation(
-                      source, target, time.monotonic() + 8.0, limits
-                  )
-                  recipe = engine.solve()
-                  record['target_grounded_seconds'] = time.monotonic() - start
-                  record['target_grounded_found'] = bool(recipe)
-                  record['target_grounded_recipe_type'] = type(recipe).__name__ if recipe else None
-                  record['target_grounded_recipe'] = repr(recipe)[:1000] if recipe else None
-                  record['target_grounded_clauses'] = len(getattr(engine.search, 'clauses', ()))
-                  record['target_grounded_rounds'] = getattr(engine.search, 'rounds', None)
-                  record['target_grounded_superpositions'] = getattr(engine.search, 'superpositions', None)
-                  record['target_grounded_reductions'] = getattr(engine.search, 'reductions', None)
-              except Exception as error:
-                  record['target_grounded_found'] = False
-                  record['target_grounded_error'] = type(error).__name__ + ': ' + str(error)
-
-              output['edges'].append(record)
-              print(json.dumps({
-                  'edge': f'{source_id}->{target_id}',
-                  'route': route_name,
-                  'equality': record.get('equality_search_found'),
-                  'replayed': record.get('equality_search_replayed'),
-                  'target_grounded': record.get('target_grounded_found'),
-                  'equality_error': record.get('equality_search_error'),
-                  'target_error': record.get('target_grounded_error'),
-              }, sort_keys=True), flush=True)
-
-          for arm in ('equality_search_found', 'equality_search_replayed', 'target_grounded_found'):
-              output[arm + '_count'] = sum(bool(row.get(arm)) for row in output['edges'])
-          output['equality_search_gaps'] = [
-              [row['source_id'], row['target_id']]
-              for row in output['edges'] if not row.get('equality_search_replayed')
-          ]
-          output['target_grounded_gaps'] = [
-              [row['source_id'], row['target_id']]
-              for row in output['edges'] if not row.get('target_grounded_found')
-          ]
-
-          path = Path('experiments/mathgraph/results/18-edge-constructor-separator.json')
-          path.write_text(json.dumps(output, indent=2, sort_keys=True) + '\n', encoding='utf-8')
-          print('SUMMARY', json.dumps({
-              'equality_found': output['equality_search_found_count'],
-              'equality_replayed': output['equality_search_replayed_count'],
-              'equality_gaps': output['equality_search_gaps'],
-              'target_grounded': output['target_grounded_found_count'],
-              'target_gaps': output['target_grounded_gaps'],
-          }, sort_keys=True))
-          PY
+      - name: Replay recovered 18-edge separator
+        run: python experiments/mathgraph/run_18_edge_constructor_separator.py
 
       - name: Upload separator artifact
         uses: actions/upload-artifact@v4
