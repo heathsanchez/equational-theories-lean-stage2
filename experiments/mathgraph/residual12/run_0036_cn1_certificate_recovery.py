@@ -148,7 +148,7 @@ def main():
         lazy_representative_materialization=False,
         continuation_novelty=True,
         corridor_lookahead=False,
-        trace_events=True,
+        trace_events=False,
     ).solve()
     wall_seconds = round(time.monotonic() - started, 6)
 
