@@ -6,14 +6,17 @@ import hashlib
 import json
 import tempfile
 import time
+import sys
 from collections import Counter
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(ROOT))
 
 from datasets import load_dataset
 from pipeline.proxy import load_config, run_solver
 
 
-ROOT = Path(__file__).resolve().parents[3]
 CONTROL = ROOT / "submissions/mathgraph_cleanroom/solver.py"
 EXPECTED_CONTROL_SHA256 = "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
 EXPECTED_INTERVENTION_SHA256 = "652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c"
