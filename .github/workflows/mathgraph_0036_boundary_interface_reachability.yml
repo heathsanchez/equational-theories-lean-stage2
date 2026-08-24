@@ -1,0 +1,112 @@
+name: MathGraph 0036 Boundary Interface Reachability
+
+on:
+  push:
+    branches:
+      - codex/mathgraph-0036-boundary-interface-reachability
+    paths:
+      - experiments/mathgraph/residual12/0036_boundary_interface_reachability_preregistration.json
+      - experiments/mathgraph/residual12/evidence/0036_causal_contractor_attribution_results_run_32677423657.json
+      - experiments/mathgraph/residual12/run_0036_boundary_interface_reachability.py
+      - .github/workflows/mathgraph_0036_boundary_interface_reachability.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  census:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify frozen protocol predates executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          frozen=2c14ea683607ed606311ca1a846cb7a8d3649b56
+          git merge-base --is-ancestor "$frozen" HEAD
+          test "$(git log -1 --format=%H -- experiments/mathgraph/residual12/0036_boundary_interface_reachability_preregistration.json)" = "$frozen"
+          if git cat-file -e "$frozen:experiments/mathgraph/residual12/run_0036_boundary_interface_reachability.py" 2>/dev/null; then
+            echo "Executable existed at the frozen protocol commit" >&2
+            exit 1
+          fi
+
+      - name: Validate source and pinned evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile experiments/mathgraph/residual12/run_0036_boundary_interface_reachability.py
+          python -m json.tool experiments/mathgraph/residual12/0036_boundary_interface_reachability_preregistration.json >/dev/null
+          python -m json.tool experiments/mathgraph/residual12/evidence/0036_causal_contractor_attribution_results_run_32677423657.json >/dev/null
+          actual=$(sha256sum experiments/mathgraph/residual12/evidence/0036_causal_contractor_attribution_results_run_32677423657.json | cut -d' ' -f1)
+          test "$actual" = fead748c1f5dd06258cf264bf65cec1a2e973a394f30ed29ed9d0b1ab8292345
+
+      - name: Run frozen boundary interface census
+        shell: bash
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/residual12/run_0036_boundary_interface_reachability.py
+
+      - name: Enforce claim boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "experiments/mathgraph/residual12/"
+              "0036_boundary_interface_reachability_results.json"
+          )
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if not data["measurement_ok"]:
+              raise SystemExit("measurement failure")
+          if data["smoke_only"]:
+              raise SystemExit("smoke output is not evidence")
+          allowed = {
+              "INTERNAL_OPERATIONAL_BRIDGE_PRESENT",
+              "ALIAS_INTERFACE_OBSTRUCTION",
+              "ORIENTATION_ORDER_OBSTRUCTION",
+              "BOUNDARY_INTERFACE_DISCONNECTED",
+          }
+          if data["decision"] not in allowed:
+              raise SystemExit(data["decision"])
+          for name, graph in data["graphs"].items():
+              if graph["truncated"]:
+                  raise SystemExit(f"{name} was truncated")
+              witness = graph["first_bridge_witness"]
+              if witness is not None and not (
+                  witness["compiled"]
+                  and witness["root_matches"]
+                  and witness["replayed"]
+              ):
+                  raise SystemExit(f"{name} witness failed replay")
+          print(json.dumps({
+              "decision": data["decision"],
+              "measurement_ok": data["measurement_ok"],
+              "graphs": {
+                  name: {
+                      "direct": graph["direct_bridge_count"],
+                      "pairs": graph["pair_bridge_count"],
+                      "truncated": graph["truncated"],
+                  }
+                  for name, graph in data["graphs"].items()
+              },
+          }, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0036-boundary-interface-reachability
+          path: experiments/mathgraph/residual12/0036_boundary_interface_reachability_results.json
+          if-no-files-found: error
+          retention-days: 30
