@@ -1,0 +1,39 @@
+name: MathGraph 18 Edge Full Target Binding Separator
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_18_edge_full_target_binding_separator.py
+      - .github/workflows/mathgraph_18_edge_full_target_binding_separator.yml
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  binding-separator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run full target-binding separator
+        run: python experiments/mathgraph/run_18_edge_full_target_binding_separator.py
+      - name: Upload binding artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-18-edge-full-target-binding-separator
+          path: experiments/mathgraph/results/18-edge-full-target-binding-separator.json
+          if-no-files-found: error
+          retention-days: 30
