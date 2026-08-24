@@ -1,0 +1,42 @@
+name: MathGraph 18 Edge Gap Budget Separator
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_18_edge_gap_budget_separator.py
+      - .github/workflows/mathgraph_18_edge_gap_budget_separator.yml
+  pull_request:
+    branches: [main]
+    types: [opened, reopened, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  gap-separator:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run six-gap budget separator
+        run: python experiments/mathgraph/run_18_edge_gap_budget_separator.py
+
+      - name: Upload gap separator artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-18-edge-gap-budget-separator
+          path: experiments/mathgraph/results/18-edge-gap-budget-separator.json
+          if-no-files-found: error
+          retention-days: 30
