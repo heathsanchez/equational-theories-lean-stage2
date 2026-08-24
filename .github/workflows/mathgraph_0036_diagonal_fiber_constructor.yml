@@ -1,0 +1,122 @@
+name: MathGraph 0036 Diagonal Fiber Constructor
+
+on:
+  push:
+    branches:
+      - codex/mathgraph-0036-target-bridge-macro
+    paths:
+      - experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_preregistration.json
+      - experiments/mathgraph/residual12/run_0036_diagonal_fiber_constructor.py
+      - experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json
+      - .github/workflows/mathgraph_0036_diagonal_fiber_constructor.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify frozen protocol predates executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          frozen=a0ab9f95df4a55e6d13c9f5d4ad143d940ce0d38
+          git merge-base --is-ancestor "$frozen" HEAD
+          test "$(git log -1 --format=%H -- experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_preregistration.json)" = "$frozen"
+          if git cat-file -e "$frozen:experiments/mathgraph/residual12/run_0036_diagonal_fiber_constructor.py" 2>/dev/null; then
+            echo "Executable existed at the frozen protocol commit" >&2
+            exit 1
+          fi
+
+      - name: Validate frozen inputs and public parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.32.2"
+          grep -q 905b95818eb32af7874a58b427f50c1711a5e96c lake-manifest.json
+          test "$(sha256sum submissions/mathgraph_cleanroom/solver.py | cut -d' ' -f1)" = "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
+          test "$(sha256sum experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_preregistration.json | cut -d' ' -f1)" = "344b192c53e42fe362f2f5cce6797e8f7752eeaa2328992a786bedf3b0b67a23"
+          python -m py_compile experiments/mathgraph/residual12/run_0036_diagonal_fiber_constructor.py
+          python -m json.tool experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_preregistration.json >/dev/null
+          python -m json.tool experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json >/dev/null
+
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: mathgraph-0036-diagonal-fiber-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Build official Lean judge
+        env:
+          SKIP_DOCKER: "1"
+        run: bash scripts/setup.sh
+
+      - name: Run frozen diagonal-fiber constructor gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          PYTHONDONTWRITEBYTECODE=1 python \
+            experiments/mathgraph/residual12/run_0036_diagonal_fiber_constructor.py \
+            --official
+
+      - name: Enforce causal claim boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(
+              "experiments/mathgraph/residual12/"
+              "0036_diagonal_fiber_constructor_artifacts"
+          )
+          result = json.loads(
+              (root / "0036_diagonal_fiber_constructor_results.json").read_text()
+          )
+          expected = {
+              "decision": "DIAGONAL_FIBER_CONSTRUCTOR_CAUSAL",
+              "measurement_ok": True,
+              "official_enabled": True,
+              "parent_ok": True,
+              "frozen_hashes_ok": True,
+              "input_headers_ok": True,
+              "schema_match_count": 1,
+              "source_schema_matches": True,
+              "target_schema_matches": True,
+              "diagonal_fiber_relation_ok": True,
+              "final_congruence_lift_ok": True,
+              "certificate_static_ok": True,
+              "certificate_bytes": 1911,
+              "certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6",
+              "lean_status": "accepted",
+          }
+          for key, value in expected.items():
+              if result[key] != value:
+                  raise SystemExit(f"{key}: {result[key]!r}")
+          if result["label_fields_available_to_runner"]:
+              raise SystemExit("label leakage")
+          print(json.dumps(expected, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-0036-diagonal-fiber-constructor
+          path: experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_artifacts
+          if-no-files-found: warn
+          retention-days: 30
