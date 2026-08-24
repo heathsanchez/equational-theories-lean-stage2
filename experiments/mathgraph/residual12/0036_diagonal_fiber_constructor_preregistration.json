@@ -1,0 +1,67 @@
+{
+  "schema": "mathgraph.0036-diagonal-fiber-constructor-preregistration.v1",
+  "status": "FROZEN_BEFORE_EXECUTABLE_FROM_COMPLETED_LOCAL_RECOVERY_PENDING_PUBLIC_PARENT",
+  "recorded_date": "2026-08-24",
+  "pending_public_parent": {
+    "workflow_run": 32693003307,
+    "required_decision": "CN1_WORK_FRONTIER_RECOVERED",
+    "required_lean_status": "accepted"
+  },
+  "local_selection_evidence": {
+    "claim_boundary": "Completed local measurement selects this next discriminator but is not authoritative evidence.",
+    "certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6",
+    "certificate_bytes": 1911,
+    "plan_sha256": "433b35039bd773b7c9b5c619e304e32535d07f6aab0d09a09cb3398c2cade172",
+    "ancestry_sha256": "1d149fe732d7703d1ca2b44eacbe55d506d81631171d5b92fc945b49566d06a5",
+    "proof_shape": {
+      "processed": 24,
+      "generated": 1157,
+      "retained": 1154,
+      "ancestry_ids": ["3", "4", "8", "161", "169", "280", "876", "927", "1161"],
+      "superpositions": 7,
+      "demodulations": 0
+    }
+  },
+  "target": {
+    "id": "evaluation_normal_0036",
+    "source": "x = ((x * y) * (x * z)) * y",
+    "goal": "x = ((x * y) * y) * (x * z)"
+  },
+  "question": "Is the globally quantified diagonal-fiber relation, rather than a rewrite under the macro's shared boundary component, the sufficient missing interface for residual 0036?",
+  "hypothesis": "For every magma satisfying p = ((p ◇ q) ◇ (p ◇ r)) ◇ q, the value ((p ◇ q) ◇ q) is independent of q. A generic alpha-invariant constructor for that relation closes the target in one congruence lift.",
+  "frozen_input": {
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "unlabelled_input_path": "experiments/mathgraph/residual12/released_residuals_unlabelled.json",
+    "unlabelled_input_sha256": "6039b4deac53bf290389180c7b688448311e5fde3fd78e083b56147a7eeb6b24",
+    "allowed_input_headers": ["difficulty", "eq1_id", "eq2_id", "equation1", "equation2", "id", "index"],
+    "label_fields_available_to_runner": []
+  },
+  "constructor_constraints": {
+    "match_source_by_alpha_invariant_term_shape": true,
+    "match_target_by_alpha_invariant_term_shape": true,
+    "forbidden_dispatch": ["row id", "row index", "equation id", "equation hash", "answer label"],
+    "source_schema": "p = ((p ◇ q) ◇ (p ◇ r)) ◇ q",
+    "target_schema": "p = ((p ◇ q) ◇ q) ◇ (p ◇ r)",
+    "derived_lemma_1": "((p ◇ q) ◇ (p ◇ r)) = ((p ◇ p) ◇ q)",
+    "derived_lemma_2": "(((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) = p",
+    "derived_diagonal_fiber": "((p ◇ q) ◇ q) = ((p ◇ r) ◇ r)",
+    "final_expansion": "p = ((p ◇ (p ◇ r)) ◇ (p ◇ r)) ◇ (p ◇ r)",
+    "final_lift": "Replace only the left child using the symmetry of the diagonal-fiber lemma.",
+    "maximum_certificate_bytes": 100000,
+    "official_lean_required": true
+  },
+  "arms": {
+    "A_schema_disabled": "The frozen cleanroom solver remains unchanged; cite the public post-macro negative rather than rerun a parameter grid.",
+    "B_diagonal_lemma_only": "Construct the three generic lemmas and independently verify that the third has the exact diagonal-fiber root.",
+    "C_full_generic_constructor": "Compose the source expansion and one congruence lift, then require root equality, replay, certificate bound, and official Lean acceptance."
+  },
+  "decision_table": {
+    "DIAGONAL_FIBER_CONSTRUCTOR_CAUSAL": "The generic constructor derives the exact global relation and the full certificate is officially accepted.",
+    "DIAGONAL_FIBER_RELATION_ONLY": "The global relation verifies but the full target reconstruction fails.",
+    "DIAGONAL_FIBER_SCHEMA_MISMATCH": "The alpha-invariant source or target schema does not match the unlabelled row.",
+    "DIAGONAL_FIBER_CONSTRUCTOR_FAILURE": "The relation or certificate fails replay, size, or official Lean verification.",
+    "MEASUREMENT_FAILURE": "The pending public parent, frozen hashes, headers, or equation bodies do not validate."
+  },
+  "claim_boundary": "A positive gate establishes a sufficient generic proof constructor for this algebraic source/target schema. It does not promote the rejected six-row CN1 search policy and does not claim that diagonal-fiber reasoning explains unrelated residuals."
+}
