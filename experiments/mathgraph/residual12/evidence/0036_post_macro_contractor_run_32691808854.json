@@ -1,0 +1,51 @@
+{
+  "schema": "mathgraph.github-actions-evidence-manifest.v1",
+  "recorded_date": "2026-08-24",
+  "repository": "heathsanchez/equational-theories-lean-stage2",
+  "workflow": "MathGraph 0036 Post-Macro Contractor",
+  "workflow_run": 32691808854,
+  "job": 97326697435,
+  "head_branch": "codex/mathgraph-0036-target-bridge-macro",
+  "head_sha": "3c4fd8d196915c9615332cc0f75ad88ff54134bb",
+  "conclusion": "success",
+  "artifact": {
+    "id": 9507701396,
+    "name": "mathgraph-0036-post-macro-contractor",
+    "size_in_bytes": 3636,
+    "zip_sha256": "05b80b7e6494716ed057903f3c3c8916741837f7d1d2593bbc477015e0dce888",
+    "payload_name": "0036_post_macro_contractor_results.json",
+    "payload_embedded": false,
+    "retention_days": 30
+  },
+  "result_summary": {
+    "schema": "mathgraph.0036-post-macro-contractor-results.v1",
+    "decision": "SIBLING_ATTACHMENT_OBSTRUCTION",
+    "measurement_ok": true,
+    "official_enabled": true,
+    "smoke_only": false,
+    "factorization": {
+      "shared_left": "((x ◇ (x ◇ z)) ◇ (x ◇ x))",
+      "contractor_sibling": "(x ◇ z)",
+      "target_sibling": "((x ◇ y) ◇ y)",
+      "shared_left_size": 9,
+      "contractor_sibling_size": 3,
+      "target_sibling_size": 5,
+      "sibling_structural_distance": 5
+    },
+    "arms": {
+      "A_transformed_baseline": {"rounds": 207, "clauses": 1115, "distance": 16, "target_recipe_found": false},
+      "B_contractor_installed": {"rounds": 207, "clauses": 1137, "distance": 16, "target_recipe_found": false},
+      "C_contractor_forced_once": {"rounds": 204, "clauses": 1145, "distance": 16, "target_recipe_found": false, "contractor_descendants": 278, "forced_exact": 1, "active_exact": 1}
+    },
+    "shared_context_census": {
+      "rule_count": 1520,
+      "first_step_transitions": 26,
+      "unique_first_step_states": 16,
+      "total_transitions_examined": 364,
+      "direct_bridge_count": 0,
+      "pair_bridge_count": 0,
+      "truncated": false
+    }
+  },
+  "claim_boundary": "The public gate establishes that the replayed contractor is installed, force-selected, active, and has descendants, yet neither it nor a complete depth-two shared-context census attaches the required sibling or lowers the transformed-goal distance. This localizes the tested route; it does not assert that no longer ordinary-superposition proof exists."
+}

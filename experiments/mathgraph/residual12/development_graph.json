@@ -217,6 +217,19 @@
       "status": "retained"
     },
     {
+      "id": "evidence.0036-sibling-attachment-obstruction",
+      "kind": "evidence",
+      "rho": "After the replayed macro, the contractor is force-selected and active with 278 descendants, but all three arms remain at distance 16 and a complete depth-two shared-context census finds no bridge between the differing siblings.",
+      "D": "The tested local route fails specifically at attaching (x ◇ z) versus ((x ◇ y) ◇ y) under the shared nine-node left component; this strengthens the case for proof-state localization over another boundary lift.",
+      "H": ["H_selection_state", "H_local_boundary_operator"],
+      "K": ["Do not generalize a depth-two census to impossibility of longer ordinary-superposition proofs"],
+      "V": "Public run 32691808854: SIBLING_ATTACHMENT_OBSTRUCTION; measurement_ok and official_enabled true; census not truncated.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_post_macro_contractor_run_32691808854.json"
+      ],
+      "status": "retained"
+    },
+    {
       "id": "hypothesis.0036-local-boundary-operator",
       "kind": "hypothesis",
       "H": "Residual 0036 is blocked chiefly by the absence of one local equality insertion or short boundary macro.",
@@ -280,6 +293,10 @@
     {"source": "evidence.0036-boundary-interface-order", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
     {"source": "evidence.0036-target-macro-negative", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "selected complete depth-two boundary macro"},
     {"source": "evidence.0036-target-macro-negative", "target": "residual.0036-proof-interface-localization", "type": "SELECTS_NEXT"},
+    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "evidence.0036-target-macro-negative", "type": "DERIVED_FROM"},
+    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "contractor activation plus complete depth-two shared-context attachment"},
+    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "residual.0036-proof-interface-localization", "type": "SELECTS_NEXT"},
     {"source": "evidence.0036-cn1-accepted-proof", "target": "residual.0036-proof-interface-localization", "type": "DERIVED_FROM"},
     {"source": "residual.0036-proof-interface-localization", "target": "experiment.0036-cn1-certificate-recovery", "type": "SELECTS_NEXT"},
     {"source": "experiment.0036-cn1-certificate-recovery", "target": "evidence.0036-cn1-accepted-proof", "type": "DERIVED_FROM"},
