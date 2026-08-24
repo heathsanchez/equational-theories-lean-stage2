@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(ROOT))
 PREREG = HERE / "0036_diagonal_fiber_constructor_preregistration.json"
 INPUT = HERE / "released_residuals_unlabelled.json"
 PARENT = HERE / "evidence/0036_cn1_work_frontier_run_32693370694.json"
