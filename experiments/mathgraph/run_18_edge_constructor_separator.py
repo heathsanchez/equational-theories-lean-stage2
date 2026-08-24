@@ -33,7 +33,7 @@ def load_equations():
         listing = json.load(response)
     files = [
         item for item in listing
-        if item.get("name", "").startswith("Eqns") and item["name"].endswith(".lean")
+        if item["name"].endswith(".lean") and item.get("download_url")
     ]
     needed = {number for _, _, source, target in EDGES for number in (source, target)}
     equations = {}
