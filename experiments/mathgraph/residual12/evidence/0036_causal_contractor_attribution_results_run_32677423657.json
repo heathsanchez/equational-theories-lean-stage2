@@ -1,0 +1,1629 @@
+{
+  "arm_A_frozen_baseline": {
+    "active_count": 168,
+    "attribution": {
+      "active_clause": {
+        "count": 1,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "constructed_by_critical_pair": {
+        "count": 8,
+        "exact_count": 0,
+        "first": {
+          "cost": 125,
+          "kind": "transitivity",
+          "lhs": "_o4_0",
+          "rhs": "(((_o4_0 \u25c7 _o4_1) \u25c7 (_o4_0 \u25c7 _o4_2)) \u25c7 _o4_1)"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "constructed_by_instantiation": {
+        "count": 1205,
+        "exact_count": 0,
+        "first": {
+          "cost": 3,
+          "kind": "instantiate",
+          "lhs": "(((_o5_0 \u25c7 _o5_1) \u25c7 (_o5_0 \u25c7 _o5_2)) \u25c7 _o5_1)",
+          "rhs": "_o5_0"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "initial_schematic_coverage": {
+        "count": 1,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "retained_passive": {
+        "count": 5,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "selected_given_clause": {
+        "count": 2,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      }
+    },
+    "clauses": 1289,
+    "contractor_validity": null,
+    "elapsed_seconds": 60.050843,
+    "expired": true,
+    "forced_contractor_once": false,
+    "installed_contractor": false,
+    "passive_count": 423,
+    "proof": {
+      "certificate_bytes": 0,
+      "compiled": false,
+      "found_recipe": false,
+      "judge_status": null,
+      "proof_nodes": 0,
+      "replayed": false,
+      "root_matches": false
+    },
+    "reductions": 6990,
+    "rounds": 168,
+    "selected_prefix": [
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 2,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "z",
+        "rhs": "z"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 z)",
+        "rhs": "(x \u25c7 z)"
+      },
+      {
+        "cost": 11,
+        "kind": "transitivity",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 5,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 20,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "((_i4_0 \u25c7 (((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_2)) \u25c7 _i4_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 y)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 z)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "(((((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_1) \u25c7 _i4_0) \u25c7 _o5_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 _o4_2)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 14,
+        "kind": "symmetry",
+        "lhs": "((((x \u25c7 y) \u25c7 _o4_1) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 14,
+        "kind": "symmetry",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 36,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 _o5_1) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 _o5_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 63,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 40,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 _o5_2)) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 20,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _i14_0) \u25c7 (x \u25c7 y)) \u25c7 _o4_2)) \u25c7 _i14_0)",
+        "rhs": "((x \u25c7 _i14_0) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 38,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 _i30_1))",
+        "rhs": "x"
+      },
+      {
+        "cost": 56,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 y)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 38,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 y)) \u25c7 _i30_1))",
+        "rhs": "x"
+      },
+      {
+        "cost": 56,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 y)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 20,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 _i14_0) \u25c7 (x \u25c7 y)) \u25c7 _o4_1) \u25c7 x) \u25c7 _o4_1)",
+        "rhs": "((x \u25c7 _i14_0) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 30,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 _o4_2)) \u25c7 (x \u25c7 y)) \u25c7 (((x \u25c7 (x \u25c7 _o4_2)) \u25c7 (x \u25c7 y)) \u25c7 _i30_1))",
+        "rhs": "x"
+      },
+      {
+        "cost": 48,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 _o36_1)) \u25c7 (x \u25c7 y)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 30,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 _i15_2)) \u25c7 (((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 _i15_2)) \u25c7 _i15_3))",
+        "rhs": "x"
+      },
+      {
+        "cost": 40,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 _i4_2)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 22,
+        "kind": "symmetry",
+        "lhs": "(((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 (((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 _i15_3))",
+        "rhs": "_i15_0"
+      },
+      {
+        "cost": 48,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 y)) \u25c7 (x \u25c7 z)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 32,
+        "kind": "symmetry",
+        "lhs": "(((_i4_0 \u25c7 (_i4_0 \u25c7 _o40_3)) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _i4_0)",
+        "rhs": "_i4_0"
+      },
+      {
+        "cost": 40,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 _o42_2)) \u25c7 (x \u25c7 z)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 49,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 z)) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 21,
+        "kind": "transitivity",
+        "lhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))",
+        "rhs": "((_i4_0 \u25c7 _i4_0) \u25c7 _i4_1)"
+      },
+      {
+        "cost": 78,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 86,
+        "kind": "transitivity",
+        "lhs": "(x \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 123,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 52,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o45_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _o15_1) \u25c7 (x \u25c7 z)) \u25c7 _o15_3)) \u25c7 _o15_1)",
+        "rhs": "((x \u25c7 _o15_1) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 158,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 63,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "x"
+      },
+      {
+        "cost": 178,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 100,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 x) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 106,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 184,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 x) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 30,
+        "kind": "symmetry",
+        "lhs": "(((_i45_0 \u25c7 _i45_0) \u25c7 _i45_1) \u25c7 _i45_1)",
+        "rhs": "_i45_0"
+      },
+      {
+        "cost": 118,
+        "kind": "transitivity",
+        "lhs": "_i45_0",
+        "rhs": "_i45_0"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 z) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 z)",
+        "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 183,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 100,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 _o58_1) \u25c7 _o58_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 138,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 276,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      }
+    ],
+    "superpositions": 1278,
+    "target_state": {
+      "equal": false,
+      "left": "x",
+      "right": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+      "structural_distance": 10
+    }
+  },
+  "arm_B_known_contractor_installed": {
+    "active_count": 175,
+    "attribution": {
+      "active_clause": {
+        "count": 1,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "admitted_clause": {
+        "count": 1,
+        "exact_count": 1,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "constructed_by_critical_pair": {
+        "count": 8,
+        "exact_count": 0,
+        "first": {
+          "cost": 121,
+          "kind": "transitivity",
+          "lhs": "_o4_0",
+          "rhs": "(((_o4_0 \u25c7 _o4_1) \u25c7 (_o4_0 \u25c7 _o4_2)) \u25c7 _o4_1)"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "constructed_by_instantiation": {
+        "count": 1987,
+        "exact_count": 703,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "initial_schematic_coverage": {
+        "count": 2,
+        "exact_count": 1,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "installed_counterfactual": {
+        "count": 1,
+        "exact_count": 1,
+        "first": {
+          "cost": 2,
+          "kind": "instantiate",
+          "lhs": "x",
+          "rhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))"
+        },
+        "modes": [
+          "exact",
+          "shared_alpha",
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "retained_passive": {
+        "count": 10,
+        "exact_count": 5,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "selected_given_clause": {
+        "count": 2,
+        "exact_count": 0,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage"
+        ]
+      }
+    },
+    "clauses": 1176,
+    "contractor_validity": {
+      "admitted": true,
+      "lhs": "x",
+      "proof_nodes": 1,
+      "replayed": true,
+      "rhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+      "root_matches": true
+    },
+    "elapsed_seconds": 60.091341,
+    "expired": true,
+    "forced_contractor_once": false,
+    "installed_contractor": true,
+    "passive_count": 0,
+    "proof": {
+      "certificate_bytes": 0,
+      "compiled": false,
+      "found_recipe": false,
+      "judge_status": null,
+      "proof_nodes": 0,
+      "replayed": false,
+      "root_matches": false
+    },
+    "reductions": 7565,
+    "rounds": 175,
+    "selected_prefix": [
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 2,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "z",
+        "rhs": "z"
+      },
+      {
+        "cost": 8,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 6,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 7,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 z)",
+        "rhs": "(x \u25c7 z)"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "((_i4_0 \u25c7 (((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_2)) \u25c7 _i4_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 11,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 6,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "(((((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_1) \u25c7 _i4_0) \u25c7 _o5_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 y)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 z)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 _o4_2)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 _o5_1) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 _o5_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 34,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 22,
+        "kind": "symmetry",
+        "lhs": "(((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 (((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 _i15_3))",
+        "rhs": "_i15_0"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "((((x \u25c7 y) \u25c7 _o4_1) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 31,
+        "kind": "symmetry",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 22,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 _o5_2)) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 21,
+        "kind": "transitivity",
+        "lhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))",
+        "rhs": "((_i4_0 \u25c7 _i4_0) \u25c7 _i4_1)"
+      },
+      {
+        "cost": 53,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o35_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 176,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 65,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "x"
+      },
+      {
+        "cost": 187,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _o15_1) \u25c7 (x \u25c7 y)) \u25c7 _o15_3)) \u25c7 _o15_1)",
+        "rhs": "((x \u25c7 _o15_1) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 83,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 x) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 90,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 30,
+        "kind": "symmetry",
+        "lhs": "(((_i35_0 \u25c7 _i35_0) \u25c7 _i35_1) \u25c7 _i35_1)",
+        "rhs": "_i35_0"
+      },
+      {
+        "cost": 114,
+        "kind": "transitivity",
+        "lhs": "_i4_0",
+        "rhs": "_i4_0"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _o15_1) \u25c7 (x \u25c7 z)) \u25c7 _o15_3)) \u25c7 _o15_1)",
+        "rhs": "((x \u25c7 _o15_1) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 102,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 _o43_1) \u25c7 _o43_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 131,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 109,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 z) \u25c7 z)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 120,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 y))",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 140,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 112,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 _o4_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 145,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 (x \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 161,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)))",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 z) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 z)",
+        "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 156,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 z) \u25c7 _o34_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 280,
+        "kind": "transitivity",
+        "lhs": "(x \u25c7 z)",
+        "rhs": "(x \u25c7 z)"
+      },
+      {
+        "cost": 574,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 161,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 x) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 20,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 _i19_0) \u25c7 (x \u25c7 y)) \u25c7 _o4_1) \u25c7 x) \u25c7 _o4_1)",
+        "rhs": "((x \u25c7 _i19_0) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 165,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 x)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 170,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 x) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 170,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 x) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 428,
+        "kind": "transitivity",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 _i14_3))",
+        "rhs": "x"
+      }
+    ],
+    "superpositions": 1164,
+    "target_state": {
+      "equal": false,
+      "left": "x",
+      "right": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+      "structural_distance": 10
+    }
+  },
+  "arm_C_known_contractor_forced_once": {
+    "active_count": 175,
+    "attribution": {
+      "active_clause": {
+        "count": 2,
+        "exact_count": 1,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "admitted_clause": {
+        "count": 1,
+        "exact_count": 1,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "constructed_by_critical_pair": {
+        "count": 20,
+        "exact_count": 12,
+        "first": {
+          "cost": 121,
+          "kind": "transitivity",
+          "lhs": "x",
+          "rhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))"
+        },
+        "modes": [
+          "exact",
+          "shared_alpha",
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "constructed_by_instantiation": {
+        "count": 3616,
+        "exact_count": 2336,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "contractor_descendant_admitted": {
+        "count": 13,
+        "first": {
+          "cost": 12,
+          "kind": "symmetry",
+          "lhs": "(((((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 _o5_1) \u25c7 x) \u25c7 _o5_1)",
+          "rhs": "((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x))"
+        }
+      },
+      "forced_selected_counterfactual": {
+        "count": 1,
+        "exact_count": 1,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "initial_schematic_coverage": {
+        "count": 2,
+        "exact_count": 1,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "installed_counterfactual": {
+        "count": 1,
+        "exact_count": 1,
+        "first": {
+          "cost": 2,
+          "kind": "instantiate",
+          "lhs": "x",
+          "rhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))"
+        },
+        "modes": [
+          "exact",
+          "shared_alpha",
+          "simultaneous_specialization_coverage"
+        ]
+      },
+      "retained_passive": {
+        "count": 6,
+        "exact_count": 1,
+        "first": {
+          "cost": 2,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      },
+      "selected_given_clause": {
+        "count": 4,
+        "exact_count": 2,
+        "first": {
+          "cost": 3,
+          "kind": "symmetry",
+          "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+          "rhs": "x"
+        },
+        "modes": [
+          "simultaneous_specialization_coverage",
+          "symmetric_exact",
+          "symmetric_shared_alpha"
+        ]
+      }
+    },
+    "clauses": 1187,
+    "contractor_validity": {
+      "admitted": true,
+      "lhs": "x",
+      "proof_nodes": 1,
+      "replayed": true,
+      "rhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+      "root_matches": true
+    },
+    "elapsed_seconds": 60.047056,
+    "expired": true,
+    "forced_contractor_once": true,
+    "installed_contractor": true,
+    "passive_count": 514,
+    "proof": {
+      "certificate_bytes": 0,
+      "compiled": false,
+      "found_recipe": false,
+      "judge_status": null,
+      "proof_nodes": 0,
+      "replayed": false,
+      "root_matches": false
+    },
+    "reductions": 7802,
+    "rounds": 175,
+    "selected_prefix": [
+      {
+        "cost": 3,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 (x \u25c7 z)) \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 z))",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 2,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "y",
+        "rhs": "y"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "z",
+        "rhs": "z"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 6,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 7,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 1,
+        "kind": "reflexivity",
+        "lhs": "(x \u25c7 z)",
+        "rhs": "(x \u25c7 z)"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "((_i4_0 \u25c7 (((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_2)) \u25c7 _i4_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 11,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 6,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 12,
+        "kind": "symmetry",
+        "lhs": "(((((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2)) \u25c7 _o5_1) \u25c7 _i4_0) \u25c7 _o5_1)",
+        "rhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 y)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 y)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 _o4_1) \u25c7 (x \u25c7 z)) \u25c7 _o4_1)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 (x \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 10,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 z) \u25c7 (x \u25c7 _o4_2)) \u25c7 z)",
+        "rhs": "x"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 _o5_1) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 _o5_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 34,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 22,
+        "kind": "symmetry",
+        "lhs": "(((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 (((_i15_0 \u25c7 (_i15_0 \u25c7 _o4_2)) \u25c7 (_i15_0 \u25c7 _i15_2)) \u25c7 _i15_3))",
+        "rhs": "_i15_0"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "((((x \u25c7 y) \u25c7 _o4_1) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 _o4_1)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 31,
+        "kind": "symmetry",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 18,
+        "kind": "transitivity",
+        "lhs": "((((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o4_2)) \u25c7 y)",
+        "rhs": "(x \u25c7 y)"
+      },
+      {
+        "cost": 22,
+        "kind": "transitivity",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 _o5_2)) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 21,
+        "kind": "transitivity",
+        "lhs": "((_i4_0 \u25c7 _i4_1) \u25c7 (_i4_0 \u25c7 _i4_2))",
+        "rhs": "((_i4_0 \u25c7 _i4_0) \u25c7 _i4_1)"
+      },
+      {
+        "cost": 73,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 53,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 _o35_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 176,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 65,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _o15_1) \u25c7 (x \u25c7 y)) \u25c7 _o15_3)) \u25c7 _o15_1)",
+        "rhs": "((x \u25c7 _o15_1) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 187,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 83,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)) \u25c7 x) \u25c7 (x \u25c7 z))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 90,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 ((x \u25c7 y) \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 30,
+        "kind": "symmetry",
+        "lhs": "(((_i35_0 \u25c7 _i35_0) \u25c7 _i35_1) \u25c7 _i35_1)",
+        "rhs": "_i35_0"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 _o15_1) \u25c7 (x \u25c7 z)) \u25c7 _o15_3)) \u25c7 _o15_1)",
+        "rhs": "((x \u25c7 _o15_1) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 114,
+        "kind": "transitivity",
+        "lhs": "_i4_0",
+        "rhs": "_i4_0"
+      },
+      {
+        "cost": 70,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 102,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 _o44_1) \u25c7 _o44_1)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 131,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 y)",
+        "rhs": "((x \u25c7 y) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 109,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 z) \u25c7 z)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 120,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 y))",
+        "rhs": "x"
+      },
+      {
+        "cost": 140,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 x)",
+        "rhs": "x"
+      },
+      {
+        "cost": 112,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 _o4_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 26,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 z) \u25c7 (x \u25c7 _o15_2)) \u25c7 _o15_3)) \u25c7 z)",
+        "rhs": "((x \u25c7 z) \u25c7 (x \u25c7 _o15_2))"
+      },
+      {
+        "cost": 145,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 (x \u25c7 y))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 161,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)))",
+        "rhs": "x"
+      },
+      {
+        "cost": 156,
+        "kind": "symmetry",
+        "lhs": "(((x \u25c7 y) \u25c7 y) \u25c7 ((x \u25c7 z) \u25c7 _o34_2))",
+        "rhs": "x"
+      },
+      {
+        "cost": 280,
+        "kind": "transitivity",
+        "lhs": "(x \u25c7 z)",
+        "rhs": "(x \u25c7 z)"
+      },
+      {
+        "cost": 20,
+        "kind": "symmetry",
+        "lhs": "(((((x \u25c7 _i19_0) \u25c7 (x \u25c7 y)) \u25c7 _o4_1) \u25c7 x) \u25c7 _o4_1)",
+        "rhs": "((x \u25c7 _i19_0) \u25c7 (x \u25c7 y))"
+      },
+      {
+        "cost": 574,
+        "kind": "transitivity",
+        "lhs": "x",
+        "rhs": "x"
+      },
+      {
+        "cost": 161,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 x) \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z)))",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 165,
+        "kind": "symmetry",
+        "lhs": "((x \u25c7 (((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))) \u25c7 x)",
+        "rhs": "((x \u25c7 y) \u25c7 y)"
+      },
+      {
+        "cost": 170,
+        "kind": "transitivity",
+        "lhs": "((x \u25c7 y) \u25c7 y)",
+        "rhs": "((x \u25c7 x) \u25c7 (x \u25c7 y))"
+      }
+    ],
+    "superpositions": 1175,
+    "target_state": {
+      "equal": false,
+      "left": "x",
+      "right": "(((x \u25c7 y) \u25c7 y) \u25c7 (x \u25c7 z))",
+      "structural_distance": 10
+    }
+  },
+  "decision": "POST_CONTRACTOR_COMPOSITION_FAILURE",
+  "equation_bodies_ok": true,
+  "input_headers": [
+    "difficulty",
+    "eq1_id",
+    "eq2_id",
+    "equation1",
+    "equation2",
+    "id",
+    "index"
+  ],
+  "input_headers_ok": true,
+  "label_fields_available_to_runner": [],
+  "measurement_ok": true,
+  "observational_equivalence_probe": {
+    "checks": {
+      "clauses_equal": true,
+      "found_equal": true,
+      "rounds_equal": true,
+      "signatures_equal": true,
+      "superpositions_equal": true
+    },
+    "maximum_given": 8,
+    "passed": true
+  },
+  "official_enabled": true,
+  "schema": "mathgraph.0036-causal-contractor-attribution-results.v2",
+  "smoke_only": false,
+  "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
+}
