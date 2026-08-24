@@ -1,0 +1,59 @@
+{
+  "schema": "mathgraph.developmental-experiment-graph.protocol.v2",
+  "frozen_before_execution": true,
+  "scope": [
+    "evaluation_normal_0036",
+    "evaluation_normal_0040",
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ],
+  "sources": {
+    "raw_result_glob": "experiments/mathgraph/results/*.json",
+    "evidence_registry": "experiments/mathgraph/developmental_graph/evidence-registry-v2.json",
+    "lineage_manifest": "experiments/mathgraph/developmental_graph/lineage-v1.json"
+  },
+  "evidence_classes": [
+    "RAW_RESULT_JSON",
+    "CI_RUN_REFERENCE",
+    "REPO_EXPERIMENT_REFERENCE",
+    "SCOPE_ONLY"
+  ],
+  "authority_order": [
+    "RAW_RESULT_JSON",
+    "CI_RUN_REFERENCE",
+    "REPO_EXPERIMENT_REFERENCE",
+    "SCOPE_ONLY"
+  ],
+  "edge_types": [
+    "DERIVED_FROM",
+    "REFUTES",
+    "SUPPORTS",
+    "RIVAL_OF",
+    "ABLATES",
+    "TRANSFERS_TO",
+    "COMPILES_TO",
+    "FAILS_AT",
+    "QUOTIENTS",
+    "SPLITS",
+    "CHANGES_REPRESENTATION",
+    "REVOKES"
+  ],
+  "rules": {
+    "raw_result_json_is_authoritative_on_node_id_collision": true,
+    "registry_entries_must_declare_evidence_class_and_provenance": true,
+    "scope_only_nodes_may_not_assert_decisions": true,
+    "missing_fields_are_null_not_inferred": true,
+    "negative_results_are_first_class": true,
+    "curated_edges_require_explicit_manifest_entry": true,
+    "no_solver_changes": true
+  },
+  "admission": {
+    "graph_build_is_deterministic": true,
+    "all_five_problem_ids_have_scope_coverage": true,
+    "scientific_result_coverage_is_reported_separately": true,
+    "all_registry_source_paths_that_are_declared_must_exist": true,
+    "all_curated_normal0040_edges_resolve": true,
+    "parse_failure_count_is_zero": true
+  }
+}
