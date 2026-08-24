@@ -1,0 +1,106 @@
+{
+  "schema": "mathgraph.0036-diagonal-fiber-production-preregistration.v1",
+  "status": "FROZEN_BEFORE_PRODUCTION_EXECUTABLE_PUBLICATION",
+  "recorded_date": "2026-08-24",
+  "authoritative_parents": [
+    {
+      "workflow_run": 32693370694,
+      "evidence_path": "experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json",
+      "required_decision": "CN1_WORK_FRONTIER_RECOVERED"
+    },
+    {
+      "workflow_run": 32693880978,
+      "evidence_path": "experiments/mathgraph/residual12/evidence/0036_diagonal_fiber_constructor_run_32693880978.json",
+      "required_decision": "DIAGONAL_FIBER_CONSTRUCTOR_CAUSAL"
+    }
+  ],
+  "question": "Does the causally validated diagonal-fiber constructor transfer into the cleanroom production route, add residual 0036, and preserve the released qualification floor without using row identity?",
+  "hypothesis": "A fail-closed joint alpha-invariant source/target matcher placed before bounded search can emit the validated diagonal-fiber certificate for its structural class while leaving every non-match on the existing solver route.",
+  "frozen_baseline": {
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "released_qualification_floor": 777,
+    "released_qualification_total": 800,
+    "existing_qualification_workflow": ".github/workflows/mathgraph_cleanroom_qualification.yml",
+    "focused_required_ids": [
+      "evaluation_hard_0196",
+      "evaluation_normal_0040",
+      "evaluation_normal_0158"
+    ],
+    "historical_claim_boundary": "The checked-in portfolio documents 777/800 by verified union. This is the frozen regression floor, not a claim that a new run has already reproduced it."
+  },
+  "frozen_inputs": {
+    "released_dataset": "SAIRfoundation/equational-theories-selected-problems",
+    "configurations": [
+      "evaluation_normal",
+      "evaluation_hard",
+      "evaluation_extra_hard",
+      "evaluation_order5"
+    ],
+    "rows_per_configuration": 200,
+    "six_residual_input_path": "colab/data/six_residuals.json",
+    "six_residual_input_sha256": "1daa4537b3eb7f20abf270cf79c904c4eb120e4ce84e9cb1afb87fe0cbb384d3",
+    "lean_toolchain_sha256": "2bdc48adfa58d0017e538a0ad117c5d73d35deec879978f909406a80c8037273",
+    "lake_manifest_sha256": "d71f2a324d2c2dd102b2e9abf70702ee8d0858dba0fe4013fbe0c545a9242ecf"
+  },
+  "constructor_constraints": {
+    "source_schema": "p = ((p ◇ q) ◇ (p ◇ r)) ◇ q",
+    "target_schema": "p = ((p ◇ q) ◇ q) ◇ (p ◇ r)",
+    "joint_alpha_invariant_structural_match": true,
+    "forbidden_dispatch": [
+      "problem id",
+      "row index",
+      "equation id",
+      "equation hash",
+      "difficulty",
+      "answer label"
+    ],
+    "allowed_dispatch_input": ["parsed source equation", "parsed target equation"],
+    "fail_closed_on_parse_or_shape_mismatch": true,
+    "expected_released_schema_matches": 1,
+    "derived_diagonal_fiber": "((p ◇ q) ◇ q) = ((p ◇ r) ◇ r)",
+    "expected_certificate_bytes": 1911,
+    "expected_certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6",
+    "maximum_certificate_bytes": 100000,
+    "integration_point": "After direct source-instance and variable-omission constructors, before bounded equality and superposition search.",
+    "nonmatch_behavior": "Return no candidate and continue through the byte-identical pre-existing route."
+  },
+  "qualification": {
+    "unit_and_provenance_tests": [
+      "tests/test_mathgraph_cleanroom_generalization.py",
+      "tests/test_mathgraph_cleanroom_finite_search.py",
+      "tests/test_mathgraph_final_portfolio.py"
+    ],
+    "focused_official_lean": {
+      "required_existing_ids": [
+        "evaluation_hard_0196",
+        "evaluation_normal_0040",
+        "evaluation_normal_0158"
+      ],
+      "required_new_id": "evaluation_normal_0036",
+      "required_llm_calls": 0,
+      "required_new_certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6"
+    },
+    "released_800_official_audit": {
+      "required_total": 800,
+      "minimum_solved": 778,
+      "required_id": "evaluation_normal_0036",
+      "required_schema_match_count": 1,
+      "required_llm_calls": 0,
+      "official_judge_required_for_every_solved_row": true
+    },
+    "static_nonmatch_regression": {
+      "require_single_new_dispatch_site": true,
+      "require_matcher_to_read_only_parsed_equations": true,
+      "require_existing_route_text_unchanged_except_insertion": true
+    }
+  },
+  "decision_table": {
+    "DIAGONAL_FIBER_PRODUCTION_PROMOTED": "All static, focused, official Lean, and released-800 gates pass; 0036 is accepted; the released score is at least 778/800; exactly one released row matches structurally.",
+    "DIAGONAL_FIBER_FOCUSED_ONLY": "0036 is officially accepted but the released-800 promotion or regression gate fails.",
+    "DIAGONAL_FIBER_SCHEMA_LEAK": "The constructor matches other released rows, consumes forbidden metadata, or changes a non-match route.",
+    "DIAGONAL_FIBER_PRODUCTION_FAILURE": "The production certificate is rejected, the expected target is not solved, or an existing focused qualification case regresses.",
+    "MEASUREMENT_FAILURE": "Frozen parents, inputs, baseline hash, toolchain, headers, or official-judge setup do not validate."
+  },
+  "claim_boundary": "A positive result promotes only the joint alpha-invariant diagonal-fiber constructor and establishes an official released score floor of 778/800 for this production candidate. It does not promote CN1, identify rows by metadata, or claim applicability beyond the matched structural class."
+}
