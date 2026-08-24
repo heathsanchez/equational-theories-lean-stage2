@@ -1,0 +1,125 @@
+{
+  "schema": "mathgraph.0036-causal-contractor-attribution-preregistration.v1",
+  "status": "FROZEN_BEFORE_ATTRIBUTION_EXECUTABLE",
+  "created_date": "2026-08-24",
+  "target_id": "evaluation_normal_0036",
+  "parent_evidence": {
+    "cleanroom_baseline_commit": "f154e26a4efa6a8da0aab66906c8d0fd3d165ecf",
+    "cleanroom_solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "cleanroom_official_run_id": 32663444432,
+    "cleanroom_accepted": 788,
+    "existing_route_separator_sha256": "729b462485adef8bfa6e3e9eb6a35154c151333b32d055a43635db2eee75d70c",
+    "cleanroom_0036_30_seconds": {
+      "found": false,
+      "clauses": 1015,
+      "rounds": 135
+    },
+    "cleanroom_0036_60_seconds": {
+      "found": false,
+      "clauses": 1355,
+      "rounds": 181
+    },
+    "historical_methodology_commit": "af4bf6b6f15376876635e1d8fc334f91f97bf97d",
+    "historical_solver_commit": "0e50def39ad2f88874e1b349267e7f269b6f5c55",
+    "historical_boundary_context_run_id": 32660260669,
+    "historical_parent_transition": "raw-goal component separation 10 -> 8",
+    "historical_parent_mapping": {
+      "x": "x",
+      "y": "(x * z)",
+      "z": "x"
+    },
+    "historical_parent_equality": {
+      "lhs": "x",
+      "rhs": "(((x * (x * z)) * (x * x)) * (x * z))"
+    },
+    "historical_post_transition_direct_depth2": "DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED",
+    "historical_post_transition_context_lift": "BOUNDARY_CONTEXT_LIFT_EXHAUSTED"
+  },
+  "question": "Where does the exact independently established 0036 causal 10-to-8 source consequence disappear in the frozen cleanroom target-grounded given-clause route: construction, retention, selection, activation/composition, or representation transfer?",
+  "target": {
+    "source": "x = ((x * y) * (x * z)) * y",
+    "goal": "x = ((x * y) * y) * (x * z)",
+    "contractor": "x = (((x * (x * z)) * (x * x)) * (x * z))",
+    "primary_metric": "attribution stage of the known contractor under exact, symmetric, and shared-alpha equality",
+    "secondary_metric": "whether installing exactly that replay-valid source instance changes cleanroom proof reachability or search trajectory"
+  },
+  "arms": {
+    "A_FROZEN_BASELINE": "Unchanged TargetGroundedRefutation given-clause search.",
+    "B_KNOWN_CONTRACTOR_INSTALLED": "The identical search with exactly one additional initial clause: the known source instance with mapping x:=x, y:=(x*z), z:=x. No other search, scoring, retention, inference, or proof-language change."
+  },
+  "instrumentation": {
+    "stages": [
+      "initial_schematic_coverage",
+      "constructed_by_instantiation",
+      "constructed_by_critical_pair",
+      "admitted_clause",
+      "retained_passive",
+      "selected_given_clause",
+      "active_clause",
+      "used_in_returned_proof_ancestry"
+    ],
+    "matching": [
+      "exact",
+      "symmetric_exact",
+      "shared_alpha",
+      "symmetric_shared_alpha",
+      "simultaneous_specialization_coverage"
+    ],
+    "observation_only": "Instrumentation may record recipes and queue membership but must not change ordering, limits, or proof construction."
+  },
+  "constraints": {
+    "solver_path": "submissions/mathgraph_cleanroom/solver.py",
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "seconds_per_arm": 60,
+    "maximum_given": 512,
+    "focus_per_age": 4,
+    "maximum_term_size": 65,
+    "maximum_replay_term_size": 260,
+    "maximum_depth": 12,
+    "maximum_rules": 768,
+    "maximum_rounds": 64,
+    "new_clauses_per_round": 512,
+    "maximum_clauses": 12000,
+    "normalization_steps": 256,
+    "maximum_proof_nodes": 50000,
+    "no_answer_fields": true,
+    "no_problem_id_routing": true,
+    "no_new_inference_operator": true,
+    "no_scheduler_change": true,
+    "no_retention_change": true,
+    "no_production_mutation": true
+  },
+  "verifier": {
+    "contractor_validity": "replay_dag from the original source law",
+    "internal_proof_success": "target-root equality plus replay_dag acceptance",
+    "external_proof_success": "official Lean 4.32.2 judge status accepted",
+    "measurement_failure": "solver hash, equation bodies, contractor reconstruction, injected-clause replay, or observational-equivalence checks fail"
+  },
+  "decision_order": [
+    "MEASUREMENT_FAILURE",
+    "KNOWN_CONTRACTOR_CLOSES",
+    "EXISTING_CLOSURE_UNSELECTED",
+    "RETENTION_FAILURE",
+    "CONSTRUCTOR_ABSENT",
+    "CONTRACTOR_REPRESENTATION_DISPLACED",
+    "POST_CONTRACTOR_COMPOSITION_FAILURE"
+  ],
+  "decision_table": {
+    "KNOWN_CONTRACTOR_CLOSES": "Arm B reaches an internally replayed and officially Lean-accepted target proof while Arm A does not.",
+    "EXISTING_CLOSURE_UNSELECTED": "Arm A constructs and retains a contractor-equivalent recipe but never selects it; Arm B changes the trajectory or closes.",
+    "RETENTION_FAILURE": "Arm A constructs a contractor-equivalent recipe but it is absent from the retained passive/active frontier; Arm B changes the trajectory or closes.",
+    "CONSTRUCTOR_ABSENT": "Arm A never constructs a contractor-equivalent recipe, while Arm B is replay-valid and changes the trajectory or closes.",
+    "CONTRACTOR_REPRESENTATION_DISPLACED": "The historical contractor is replay-valid but Arm B has no measurable effect in the cleanroom representation.",
+    "POST_CONTRACTOR_COMPOSITION_FAILURE": "Arm B activates the contractor and improves a preregistered target-state measurement without closing; the residual lies downstream in composition.",
+    "MEASUREMENT_FAILURE": "Any frozen identity, validity, isolation, replay, judge, or observational-equivalence condition fails."
+  },
+  "outcome_to_action": {
+    "KNOWN_CONTRACTOR_CLOSES": "Run alpha-renaming, operation-dual, protected normal-family transfer, and full 800-row regression before promotion.",
+    "EXISTING_CLOSURE_UNSELECTED": "Preregister the cut-aware given-clause selector against age/target and reversed controls.",
+    "RETENTION_FAILURE": "Preregister causal multi-representative retention without changing inference.",
+    "CONSTRUCTOR_ABSENT": "Run the mixed direct/context union-closure census before proposing a primitive.",
+    "CONTRACTOR_REPRESENTATION_DISPLACED": "Map the relation between the historical component cut and the rigid-clause target state.",
+    "POST_CONTRACTOR_COMPOSITION_FAILURE": "Test mixed two-action synergy and paired boundary transformations under the frozen representation."
+  },
+  "claim_boundary": "This gate attributes one known useful consequence across two solver representations. It does not claim universal contextual-lift failure, production improvement, transfer, or a new proof capability."
+}
