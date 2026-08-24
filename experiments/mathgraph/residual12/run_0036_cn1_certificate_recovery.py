@@ -26,7 +26,7 @@ PRIOR = (
 INPUT = HERE / "released_residuals_unlabelled.json"
 DEFAULT_OUTPUT_DIR = HERE / "0036_cn1_certificate_recovery_artifacts"
 EXPECTED_PREREG_SHA256 = (
-    "6c58b6ce9075669e09cc1dde856be800eadde1756fb5eb4a74df758135f07465"
+    "71291e2f267688d4d87300dc72aebac7a7e83561138e30a95ffff62c1acbe0e4"
 )
 
 
@@ -116,13 +116,14 @@ def main():
     independent = runner.load_independent_replayer()
     engine, external_replay = runner.prepare_engine(solver)
     config = protocol["frozen_configuration"]
+    recovery_config = protocol["work_frontier_recovery_configuration"]
     settings = engine["argparse"].Namespace(
         max_clauses=config["maximum_clauses"],
         max_weight=config["maximum_weight"],
         max_term_size=config["maximum_term_size"],
-        max_processed=config["maximum_processed"],
+        max_processed=recovery_config["maximum_processed"],
         pair_budget=config["pair_budget"],
-        timeout=config["timeout_seconds"],
+        timeout=recovery_config["wall_clock_safety_seconds"],
         translate=True,
         unordered=False,
         neg_bias=0,
@@ -195,9 +196,16 @@ def main():
     )
     artifact_paths = [proof_path, plan_path, lean_path, ancestry_path]
     artifacts_ok = all(path.exists() and path.stat().st_size > 0 for path in artifact_paths)
+    relation_ok = any(
+        item["id"] == "876"
+        and item["formula"]
+        == "((x ◇ y) ◇ y) = ((x ◇ z) ◇ z)"
+        for item in ancestry
+    )
 
     measurement_ok = all((
-        protocol["status"] == "FROZEN_BEFORE_RECOVERY_EXECUTABLE",
+        protocol["status"]
+        == "AMENDED_AFTER_PUBLIC_TIMER_REPRODUCTION_FAILURE_BEFORE_WORK_FRONTIER_EXECUTABLE",
         frozen_hashes_ok,
         sha256(ROOT / frozen["solver_path"]) == frozen["solver_sha256"],
         header_ok,
@@ -211,8 +219,14 @@ def main():
         == gate["proof_ancestry_superpositions"],
         result.get("proof_ancestry_demodulations")
         == gate["proof_ancestry_demodulations"],
+        result.get("proof_ancestry_ids") == gate["proof_ancestry_ids"],
+        result.get("processed") == gate["expected_processed"],
+        result.get("generated") == gate["expected_generated"],
+        result.get("retained") == gate["expected_retained"],
+        result.get("closed_id") == gate["expected_closed_id"],
         result.get("n_lemmas") == gate["expected_lemmas"],
         result.get("total_steps") == gate["expected_total_steps"],
+        relation_ok,
     ))
     accepted = all((
         result.get("status") == gate["status"],
@@ -227,14 +241,14 @@ def main():
     if not measurement_ok:
         decision = "MEASUREMENT_FAILURE"
     elif accepted and shape_ok:
-        decision = "CN1_CERTIFICATE_RECOVERED"
+        decision = "CN1_WORK_FRONTIER_RECOVERED"
     elif accepted:
-        decision = "CN1_PROOF_SHAPE_DRIFT"
+        decision = "CN1_WORK_FRONTIER_PROOF_SHAPE_DRIFT"
     else:
-        decision = "CN1_RECOVERY_FAILURE"
+        decision = "CN1_WORK_FRONTIER_RECOVERY_FAILURE"
 
     summary = {
-        "schema": "mathgraph.0036-cn1-certificate-recovery-results.v1",
+        "schema": "mathgraph.0036-cn1-certificate-recovery-results.v2",
         "decision": decision,
         "measurement_ok": measurement_ok,
         "official_enabled": args.official,
@@ -270,6 +284,7 @@ def main():
             "total_steps": result.get("total_steps"),
             "certificate_bytes": len(result.get("code", "").encode()),
             "shape_ok": shape_ok,
+            "global_diagonal_relation_ok": relation_ok,
         },
         "artifacts": {
             path.name: {
@@ -285,7 +300,10 @@ def main():
         encoding="utf-8",
     )
     print(json.dumps(summary, sort_keys=True), flush=True)
-    if decision not in {"CN1_CERTIFICATE_RECOVERED", "CN1_PROOF_SHAPE_DRIFT"}:
+    if decision not in {
+        "CN1_WORK_FRONTIER_RECOVERED",
+        "CN1_WORK_FRONTIER_PROOF_SHAPE_DRIFT",
+    }:
         raise SystemExit(decision)
 
 

@@ -30,11 +30,11 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          frozen=98b04bcbfc6199d73513ad9111eb442bc33063cb
+          frozen=23be9797c91f3f9c1d58581c300cbf7f85765915
           git merge-base --is-ancestor "$frozen" HEAD
           test "$(git log -1 --format=%H -- experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json)" = "$frozen"
-          if git cat-file -e "$frozen:experiments/mathgraph/residual12/run_0036_cn1_certificate_recovery.py" 2>/dev/null; then
-            echo "Recovery executable existed at the frozen protocol commit" >&2
+          if git show "$frozen:experiments/mathgraph/residual12/run_0036_cn1_certificate_recovery.py" | grep -q work_frontier_recovery_configuration; then
+            echo "Work-frontier recovery executable existed at the amended protocol commit" >&2
             exit 1
           fi
 
@@ -46,7 +46,7 @@ jobs:
           grep -q 905b95818eb32af7874a58b427f50c1711a5e96c lake-manifest.json
           test "$(sha256sum submissions/mathgraph/solver.py | cut -d' ' -f1)" = "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1"
           test "$(sha256sum experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py | cut -d' ' -f1)" = "6f2891c7cd23dc45699c2040b559cb2d37d40030a581d27880b1746d285375a8"
-          test "$(sha256sum experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json | cut -d' ' -f1)" = "6c58b6ce9075669e09cc1dde856be800eadde1756fb5eb4a74df758135f07465"
+          test "$(sha256sum experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json | cut -d' ' -f1)" = "71291e2f267688d4d87300dc72aebac7a7e83561138e30a95ffff62c1acbe0e4"
           python -m py_compile experiments/mathgraph/residual12/run_0036_cn1_certificate_recovery.py
           python -m json.tool experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json >/dev/null
 
@@ -90,7 +90,8 @@ jobs:
           if not result["measurement_ok"] or not result["official_enabled"]:
               raise SystemExit("non-evidentiary recovery")
           if result["decision"] not in {
-              "CN1_CERTIFICATE_RECOVERED", "CN1_PROOF_SHAPE_DRIFT"
+              "CN1_WORK_FRONTIER_RECOVERED",
+              "CN1_WORK_FRONTIER_PROOF_SHAPE_DRIFT",
           }:
               raise SystemExit(result["decision"])
           recovery = result["recovery"]
@@ -100,6 +101,14 @@ jobs:
               "independent_replay": True,
               "external_plan_replay": True,
               "lean_status": "accepted",
+              "processed": 24,
+              "generated": 1157,
+              "retained": 1154,
+              "closed_id": "1161",
+              "proof_ancestry_nodes": 9,
+              "proof_ancestry_superpositions": 7,
+              "proof_ancestry_demodulations": 0,
+              "global_diagonal_relation_ok": True,
           }
           for key, expected in required.items():
               if recovery[key] != expected:
