@@ -33,4 +33,4 @@ jobs:
           name: mathgraph-3366-dynamic-compatibility-basis
           path: experiments/mathgraph/results/3366-dynamic-compatibility-basis.json
           if-no-files-found: warn
-# trigger: 3366-dynamic-compatibility-v1
+# trigger: 3366-dynamic-compatibility-v2
