@@ -1,0 +1,103 @@
+name: MathGraph 0036 Causal Contractor Attribution
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - codex/mathgraph-0036-contractor-attribution
+
+permissions:
+  contents: read
+
+jobs:
+  attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Verify frozen protocol predates executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          git merge-base --is-ancestor \
+            e38f48b80a6557a62c68614b6b0f2b6fce845bcc HEAD
+          test "$(git rev-list --count \
+            e38f48b80a6557a62c68614b6b0f2b6fce845bcc..HEAD)" -ge 1
+          test "$(jq -r .status \
+            experiments/mathgraph/residual12/0036_causal_contractor_attribution_preregistration.json)" = \
+            "AMENDED_AFTER_LOCAL_DEVELOPMENT_RUN_BEFORE_EVIDENTIARY_EXECUTABLE"
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: mathgraph-0036-attribution-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+      - name: Build official Lean judge
+        env:
+          SKIP_DOCKER: "1"
+        run: bash scripts/setup.sh
+      - name: Run frozen attribution gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          PYTHONDONTWRITEBYTECODE=1 python \
+            experiments/mathgraph/residual12/run_0036_causal_contractor_attribution.py \
+            --official \
+            --output \
+              experiments/mathgraph/residual12/0036_causal_contractor_attribution_results.json
+      - name: Enforce claim boundary
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "experiments/mathgraph/residual12/"
+              "0036_causal_contractor_attribution_results.json"
+          )
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if not data["measurement_ok"]:
+              raise SystemExit("measurement failure")
+          if data["decision"] in {"MEASUREMENT_FAILURE", "SMOKE_ONLY"}:
+              raise SystemExit(data["decision"])
+          arm_c = data["arm_C_known_contractor_forced_once"]
+          forced = arm_c["attribution"].get(
+              "forced_selected_counterfactual", {}
+          )
+          if forced.get("exact_count", 0) < 1:
+              raise SystemExit("forced contractor was not selected")
+          for arm_name in (
+              "arm_A_frozen_baseline",
+              "arm_B_known_contractor_installed",
+              "arm_C_known_contractor_forced_once",
+          ):
+              proof = data[arm_name]["proof"]
+              if proof["compiled"] and proof["judge_status"] != "accepted":
+                  raise SystemExit(
+                      f"{arm_name} compiled but judge returned "
+                      f"{proof['judge_status']}"
+                  )
+          print(json.dumps({
+              "decision": data["decision"],
+              "measurement_ok": data["measurement_ok"],
+              "forced_exact": forced.get("exact_count", 0),
+              "contractor_descendants": arm_c["attribution"].get(
+                  "contractor_descendant_admitted", {}
+              ).get("count", 0),
+          }, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-0036-causal-contractor-attribution
+          path: experiments/mathgraph/residual12/0036_causal_contractor_attribution_results.json
+          if-no-files-found: warn
+          retention-days: 30
