@@ -1,0 +1,53 @@
+name: Developmental Experiment Graph V2 Stable Gate
+
+on:
+  pull_request:
+    branches:
+      - mathgraph/residual-factorization-base-20260821
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-factorization-optimum-20260821
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify frozen protocol predates executable
+        run: |
+          set -euo pipefail
+          test "$(git rev-list --count bc3c761863c887a34544eb46c88e41971dbe9a5b..ad8cdaf2d3155593278ae47147f088c1e32f93c1)" -ge 1
+          git show bc3c761863c887a34544eb46c88e41971dbe9a5b:experiments/mathgraph/developmental_graph/protocol-v2.json >/dev/null
+      - name: Build graph twice deterministically
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/developmental_graph/build_graph_v2.py --output /tmp/graph-a.json
+          python experiments/mathgraph/developmental_graph/build_graph_v2.py --output /tmp/graph-b.json
+          cmp /tmp/graph-a.json /tmp/graph-b.json
+          cp /tmp/graph-a.json experiments/mathgraph/developmental_graph/graph-v2.json
+      - name: Verify graph admission
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/mathgraph/developmental_graph/graph-v2.json')
+          g=json.loads(p.read_text())
+          s=g['summary']
+          assert s['problem_count']==5, s
+          assert all(s['scope_coverage'].values()), s['scope_coverage']
+          assert set(s['scientific_result_coverage'])==set(s['scope_coverage'])
+          assert s['scientific_result_coverage']['evaluation_normal_0040'] is True, s['scientific_result_coverage']
+          assert s['evidence_class_counts'].get('CI_RUN_REFERENCE',0)>=1, s['evidence_class_counts']
+          assert s['parse_failure_count']==0, g['gaps']['parse_failures']
+          assert s['source_path_failure_count']==0, g['gaps']['source_path_failures']
+          assert s['unresolved_curated_edge_count']==0, g['gaps']['unresolved_curated_edges']
+          print(json.dumps(s,indent=2,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: developmental-experiment-graph-v2
+          path: experiments/mathgraph/developmental_graph/graph-v2.json
