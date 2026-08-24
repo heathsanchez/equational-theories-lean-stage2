@@ -1,0 +1,37 @@
+name: MathGraph 2666 2860 Proof Program Compile
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_2860_proof_program_compile.py
+      - .github/workflows/mathgraph_2666_2860_proof_program_compile.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_2860_proof_program_compile.py
+      - .github/workflows/mathgraph_2666_2860_proof_program_compile.yml
+
+permissions:
+  contents: read
+
+jobs:
+  compile-proof-program:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile and replay exact proof program
+        run: python experiments/mathgraph/run_2666_2860_proof_program_compile.py
+      - name: Upload proof-program artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-2666-2860-proof-program-compile
+          path: experiments/mathgraph/results/2666-2860-proof-program-compile.json
+          if-no-files-found: warn
