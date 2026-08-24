@@ -1,0 +1,35 @@
+name: MathGraph 2666 Stratified Term Retention
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_stratified_term_retention.py
+      - .github/workflows/mathgraph_2666_stratified_term_retention.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_stratified_term_retention.py
+      - .github/workflows/mathgraph_2666_stratified_term_retention.yml
+
+permissions:
+  contents: read
+
+jobs:
+  stratified-retention:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_2666_stratified_term_retention.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-2666-stratified-term-retention
+          path: experiments/mathgraph/results/2666-stratified-term-retention.json
+          if-no-files-found: warn
