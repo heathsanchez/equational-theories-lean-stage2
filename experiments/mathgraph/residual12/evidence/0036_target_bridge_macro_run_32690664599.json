@@ -1,0 +1,48 @@
+{
+  "schema": "mathgraph.github-actions-evidence-manifest.v1",
+  "recorded_date": "2026-08-24",
+  "repository": "heathsanchez/equational-theories-lean-stage2",
+  "workflow": "MathGraph 0036 Target Bridge Macro",
+  "workflow_run": 32690664599,
+  "job": 97323613767,
+  "head_branch": "codex/mathgraph-0036-target-bridge-macro",
+  "head_sha": "542075faf8e50a726a21db2a97c20af6fc88d810",
+  "conclusion": "success",
+  "artifact": {
+    "id": 9507453396,
+    "name": "mathgraph-0036-target-bridge-macro",
+    "size_in_bytes": 2148,
+    "zip_sha256": "7e12a5b411f71937d3771848e58c19c7ebd68c812dabdb6cc5826fc31700ecf1",
+    "payload_name": "0036_target_bridge_macro_results.json",
+    "payload_embedded": false,
+    "retention_days": 30
+  },
+  "result_summary": {
+    "schema": "mathgraph.0036-target-bridge-macro-results.v1",
+    "decision": "POST_MACRO_SEARCH_FAILURE",
+    "measurement_ok": true,
+    "official_enabled": true,
+    "smoke_only": false,
+    "input_headers_ok": true,
+    "equation_bodies_ok": true,
+    "observational_equivalence_probe_passed": true,
+    "selected_bridge_checks_all_true": true,
+    "macro": {
+      "lhs": "(((x ◇ y) ◇ y) ◇ (x ◇ z))",
+      "rhs": "(((x ◇ (x ◇ z)) ◇ (x ◇ x)) ◇ ((x ◇ y) ◇ y))",
+      "compiled": true,
+      "replayed": true,
+      "root_matches": true,
+      "proof_nodes": 257
+    },
+    "direct_second_step_at_original_boundary": 0,
+    "arms": {
+      "A_frozen_original": {"rounds": 171, "clauses": 1302, "expired": true, "target_recipe_found": false},
+      "B_pair_installed_directed": {"rounds": 173, "clauses": 1239, "expired": true, "target_recipe_found": false},
+      "C_first_step_only": {"rounds": 201, "clauses": 1043, "expired": true, "target_recipe_found": false},
+      "D_second_step_only": {"rounds": 171, "clauses": 1306, "expired": true, "target_recipe_found": false},
+      "E_full_two_step_macro": {"rounds": 211, "clauses": 1127, "expired": true, "target_recipe_found": false}
+    }
+  },
+  "claim_boundary": "This manifest pins the public green workflow, retained artifact digest, and inspected result summary. The verified macro reaches its transformed boundary but no frozen arm reaches the original target; this rejects the target-bridge macro as a sufficient explanation, not the source law."
+}

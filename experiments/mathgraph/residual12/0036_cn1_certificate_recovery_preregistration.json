@@ -1,0 +1,64 @@
+{
+  "schema": "mathgraph.0036-cn1-certificate-recovery-preregistration.v1",
+  "status": "FROZEN_BEFORE_RECOVERY_EXECUTABLE",
+  "recorded_date": "2026-08-24",
+  "target": {
+    "id": "evaluation_normal_0036",
+    "source": "x = ((x * y) * (x * z)) * y",
+    "goal": "x = ((x * y) * y) * (x * z)"
+  },
+  "motivation": "The public target-bridge macro gate rejected a sufficient local boundary macro, while a previously checked-in diagnostic records an officially Lean-accepted CN1 proof for the same row. Recover that proof and its ancestry as a public, replayed artifact before inventing another operator.",
+  "frozen_inputs": {
+    "solver_path": "submissions/mathgraph/solver.py",
+    "solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
+    "runner_path": "experiments/mathgraph/paramodulator_control/run_forward_demodulation_ablation.py",
+    "runner_sha256": "6f2891c7cd23dc45699c2040b559cb2d37d40030a581d27880b1746d285375a8",
+    "prior_result_path": "experiments/mathgraph/paramodulator_control/six_residual_continuation_novelty_cn1_results.json",
+    "prior_result_sha256": "ac2a5bf08c2de8b639413ee9344014ce553b716a3893f6ead887f42598d05a93",
+    "unlabelled_input_path": "experiments/mathgraph/residual12/released_residuals_unlabelled.json",
+    "unlabelled_input_sha256": "6039b4deac53bf290389180c7b688448311e5fde3fd78e083b56147a7eeb6b24"
+  },
+  "frozen_configuration": {
+    "condition": "CN1",
+    "maximum_clauses": 8000,
+    "maximum_processed": 8000,
+    "maximum_weight": 36,
+    "maximum_term_size": 30,
+    "pair_budget": 300,
+    "timeout_seconds": 2.0,
+    "age_to_weight": "1:4",
+    "goal_quota": "1 selection opportunity in 4",
+    "dual_retention_per_given": 1,
+    "dual_retention_global": 256,
+    "operation_relative_representatives": true,
+    "continuation_novelty": true,
+    "corridor_lookahead": false
+  },
+  "required_artifacts": [
+    "machine-readable result summary",
+    "raw translated superposition proof",
+    "translated proof plan",
+    "Lean certificate submitted to the official judge",
+    "proof-ancestry node and inference table"
+  ],
+  "acceptance_gate": {
+    "status": "proved",
+    "plan_ok": true,
+    "independent_replay": true,
+    "external_plan_replay": true,
+    "official_lean_status": "accepted",
+    "maximum_certificate_bytes": 100000,
+    "proof_ancestry_nodes": 9,
+    "proof_ancestry_superpositions": 7,
+    "proof_ancestry_demodulations": 0,
+    "expected_lemmas": 3,
+    "expected_total_steps": 12
+  },
+  "decision_table": {
+    "CN1_CERTIFICATE_RECOVERED": "Every acceptance condition holds and all required artifacts are emitted.",
+    "CN1_PROOF_SHAPE_DRIFT": "A proof is officially accepted but the frozen ancestry shape differs.",
+    "CN1_RECOVERY_FAILURE": "No officially accepted proof or a required replay/artifact check fails.",
+    "MEASUREMENT_FAILURE": "Frozen hashes, input schema, or equation bodies do not match."
+  },
+  "claim_boundary": "This is a prospective recovery and localization gate for a previously observed row-level proof, not a prospective discovery claim and not a production-promotion claim. The recovered proof may select a later causal discriminator; it does not validate CN1 as a general six-row strategy."
+}
