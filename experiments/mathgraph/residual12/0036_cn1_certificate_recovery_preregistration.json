@@ -1,6 +1,6 @@
 {
-  "schema": "mathgraph.0036-cn1-certificate-recovery-preregistration.v1",
-  "status": "FROZEN_BEFORE_RECOVERY_EXECUTABLE",
+  "schema": "mathgraph.0036-cn1-certificate-recovery-preregistration.v2",
+  "status": "AMENDED_AFTER_PUBLIC_TIMER_REPRODUCTION_FAILURE_BEFORE_WORK_FRONTIER_EXECUTABLE",
   "recorded_date": "2026-08-24",
   "target": {
     "id": "evaluation_normal_0036",
@@ -8,6 +8,18 @@
     "goal": "x = ((x * y) * y) * (x * z)"
   },
   "motivation": "The public target-bridge macro gate rejected a sufficient local boundary macro, while a previously checked-in diagnostic records an officially Lean-accepted CN1 proof for the same row. Recover that proof and its ancestry as a public, replayed artifact before inventing another operator.",
+  "public_timer_reproduction_failure": {
+    "workflow_run": 32692402637,
+    "job": 97328315190,
+    "artifact_id": 9507748686,
+    "decision": "CN1_RECOVERY_FAILURE",
+    "measurement_ok": true,
+    "status": "unproved",
+    "elapsed_seconds": 2.068325,
+    "processed": 21,
+    "generated": 913,
+    "interpretation": "The exact two-second wall-clock replay did not reach the previously recorded 24-clause proof frontier. Frozen hashes, inputs, setup, and artifact emission passed. Replace only the environmental wall-clock discriminator with the already recorded deterministic processed frontier."
+  },
   "frozen_inputs": {
     "solver_path": "submissions/mathgraph/solver.py",
     "solver_sha256": "fc402fae046096d99a8c01a6848bc4030d282c7f4a90ff5e9c26c3c8d8833fe1",
@@ -34,6 +46,14 @@
     "continuation_novelty": true,
     "corridor_lookahead": false
   },
+  "work_frontier_recovery_configuration": {
+    "inherits_every_non_time_setting_from": "frozen_configuration",
+    "maximum_processed": 24,
+    "wall_clock_safety_seconds": 10.0,
+    "selection_reason": "The checked-in prior accepted result records processed=24, generated=1157, retained=1154, and closure at clause 1161. This bound predates the recovery executable and is not selected from a new proof search grid.",
+    "single_arm": true,
+    "no_parameter_grid": true
+  },
   "required_artifacts": [
     "machine-readable result summary",
     "raw translated superposition proof",
@@ -51,14 +71,20 @@
     "proof_ancestry_nodes": 9,
     "proof_ancestry_superpositions": 7,
     "proof_ancestry_demodulations": 0,
+    "proof_ancestry_ids": ["3", "4", "8", "161", "169", "280", "876", "927", "1161"],
+    "expected_processed": 24,
+    "expected_generated": 1157,
+    "expected_retained": 1154,
+    "expected_closed_id": "1161",
     "expected_lemmas": 3,
-    "expected_total_steps": 12
+    "expected_total_steps": 12,
+    "required_global_relation": "((p ◇ q) ◇ q) = ((p ◇ r) ◇ r)"
   },
   "decision_table": {
-    "CN1_CERTIFICATE_RECOVERED": "Every acceptance condition holds and all required artifacts are emitted.",
-    "CN1_PROOF_SHAPE_DRIFT": "A proof is officially accepted but the frozen ancestry shape differs.",
-    "CN1_RECOVERY_FAILURE": "No officially accepted proof or a required replay/artifact check fails.",
+    "CN1_WORK_FRONTIER_RECOVERED": "The deterministic 24-processed frontier reproduces the exact accepted proof shape and all required artifacts.",
+    "CN1_WORK_FRONTIER_PROOF_SHAPE_DRIFT": "The deterministic frontier produces an officially accepted proof but its ancestry differs.",
+    "CN1_WORK_FRONTIER_RECOVERY_FAILURE": "The deterministic frontier does not produce an officially accepted proof or a required replay/artifact check fails.",
     "MEASUREMENT_FAILURE": "Frozen hashes, input schema, or equation bodies do not match."
   },
-  "claim_boundary": "This is a prospective recovery and localization gate for a previously observed row-level proof, not a prospective discovery claim and not a production-promotion claim. The recovered proof may select a later causal discriminator; it does not validate CN1 as a general six-row strategy."
+  "claim_boundary": "This is a prospective deterministic-work-frontier recovery and localization gate for a previously observed row-level proof, not a prospective discovery claim, not a reproduction of the original wall-clock latency, and not a production-promotion claim. The recovered proof may select a later causal discriminator; it does not validate CN1 as a general six-row strategy."
 }
