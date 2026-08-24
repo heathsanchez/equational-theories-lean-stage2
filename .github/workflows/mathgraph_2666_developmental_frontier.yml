@@ -39,3 +39,4 @@ jobs:
           name: mathgraph-2666-oriented-basis-coverage
           path: experiments/mathgraph/results/2666-oriented-basis-coverage.json
           if-no-files-found: warn
+# trigger: oriented-basis-v1
