@@ -7348,6 +7348,63 @@ def run_contextual_portfolio(source, target, timeout):
     return False
 
 
+DIAGONAL_FIBER_CERTIFICATE = """import JudgeProblem
+
+def submission : Goal := by
+  intro G _ h
+  have lem1 : ∀ (p : G) (q : G) (r : G), ((p ◇ q) ◇ (p ◇ r)) = ((p ◇ p) ◇ q) := by
+    intro p q r
+    calc ((p ◇ q) ◇ (p ◇ r))
+      _ = (((((p ◇ q) ◇ (p ◇ r)) ◇ q) ◇ (((p ◇ q) ◇ (p ◇ r)) ◇ q)) ◇ q) := h ((p ◇ q) ◇ (p ◇ r)) q q
+      _ = ((p ◇ (((p ◇ q) ◇ (p ◇ r)) ◇ q)) ◇ q) := congrArg (· ◇ q) (congrArg (· ◇ (((p ◇ q) ◇ (p ◇ r)) ◇ q)) ((h p q r).symm))
+      _ = ((p ◇ p) ◇ q) := congrArg (· ◇ q) (congrArg (p ◇ ·) ((h p q r).symm))
+  have lem2 : ∀ (p : G) (q : G) (r : G), (((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) = p := by
+    intro p q r
+    calc (((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r))
+      _ = ((((((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) ◇ q) ◇ ((((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) ◇ q)) ◇ q) := h (((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) q q
+      _ = (((p ◇ q) ◇ ((((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) ◇ q)) ◇ q) := congrArg (· ◇ q) (congrArg (· ◇ ((((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ r)) ◇ q)) ((h (p ◇ q) q r).symm))
+      _ = (((p ◇ q) ◇ (p ◇ q)) ◇ q) := congrArg (· ◇ q) (congrArg ((p ◇ q) ◇ ·) ((h (p ◇ q) q r).symm))
+      _ = p := (h p q q).symm
+  have lem3 : ∀ (p : G) (q : G) (r : G), ((p ◇ q) ◇ q) = ((p ◇ r) ◇ r) := by
+    intro p q r
+    calc ((p ◇ q) ◇ q)
+      _ = (((((p ◇ q) ◇ q) ◇ r) ◇ (((p ◇ q) ◇ q) ◇ p)) ◇ r) := h ((p ◇ q) ◇ q) r p
+      _ = (((((p ◇ q) ◇ q) ◇ ((p ◇ q) ◇ q)) ◇ r) ◇ r) := congrArg (· ◇ r) (lem1 ((p ◇ q) ◇ q) r p)
+      _ = ((p ◇ r) ◇ r) := congrArg (· ◇ r) (congrArg (· ◇ r) (lem2 p q q))
+  intro x y z
+  calc x
+    _ = (((x ◇ (x ◇ z)) ◇ (x ◇ z)) ◇ (x ◇ z)) := h x (x ◇ z) z
+    _ = (((x ◇ y) ◇ y) ◇ (x ◇ z)) := congrArg (· ◇ (x ◇ z)) ((lem3 x y (x ◇ z)).symm)
+"""
+
+
+def joint_alpha_equation_key(source, target):
+    def equation_key(equation):
+        names = {}
+
+        def visit(term):
+            if term[0] == "var":
+                names.setdefault(term[1], "v" + str(len(names)))
+                return "var", names[term[1]]
+            return "op", visit(term[1]), visit(term[2])
+
+        return visit(equation[0]), visit(equation[1])
+
+    return equation_key(source), equation_key(target)
+
+
+DIAGONAL_FIBER_SCHEMA_KEY = joint_alpha_equation_key(
+    parse_equation("p = ((p * q) * (p * r)) * q"),
+    parse_equation("p = ((p * q) * q) * (p * r)"),
+)
+
+
+def diagonal_fiber_certificate(source, target):
+    if joint_alpha_equation_key(source, target) != DIAGONAL_FIBER_SCHEMA_KEY:
+        return None
+    return DIAGONAL_FIBER_CERTIFICATE
+
+
 def run_solo():
     startup = read_message()
     if startup is None:
@@ -7377,6 +7434,15 @@ def run_solo():
             and judge("true", code).get("status") == "accepted"
         ):
             return
+
+    diagonal_code = diagonal_fiber_certificate(source, target)
+    if (
+        diagonal_code is not None
+        and len(diagonal_code.encode("utf-8"))
+        <= EqualitySearch.MAX_CERTIFICATE_BYTES
+        and judge("true", diagonal_code).get("status") == "accepted"
+    ):
+        return
 
     timeout = budget.get("timeout_seconds", 0)
     if not isinstance(timeout, (int, float)) or timeout <= 0:

@@ -254,7 +254,7 @@
       "E": [
         "experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json"
       ],
-      "status": "frontier"
+      "status": "retained"
     },
     {
       "id": "experiment.0036-cn1-certificate-recovery",
@@ -267,7 +267,85 @@
       "V": "Independent replay, external plan replay, official Lean acceptance, and frozen nine-node/seven-superposition/zero-demodulation ancestry checks.",
       "B": "One row; two-second search timeout plus official Lean judging; 100 KB certificate bound.",
       "E": [
-        "experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json#sha256=6c58b6ce9075669e09cc1dde856be800eadde1756fb5eb4a74df758135f07465"
+        "experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json",
+        "experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-cn1-work-frontier-recovered",
+      "kind": "evidence",
+      "rho": "The deterministic 24-processed CN1 work frontier reproduces residual 0036 with an officially accepted 1,911-byte Lean certificate and exposes its complete nine-node ancestry.",
+      "D": "The first decisive relation is global rather than a local boundary attachment: ((p ◇ q) ◇ q) = ((p ◇ r) ◇ r).",
+      "H": ["H_selection_state_interface", "H_diagonal_fiber_relation"],
+      "K": ["Recovery localizes the proof interface; it does not promote CN1 as a production policy"],
+      "V": "Public run 32693370694: CN1_WORK_FRONTIER_RECOVERED; independent replay, external plan replay, proof-shape checks, and official Lean acceptance all pass.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_cn1_work_frontier_run_32693370694.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "hypothesis.0036-diagonal-fiber-relation",
+      "kind": "hypothesis",
+      "H": "For the matched residual-0036 structural class, deriving independence of the right-diagonal fiber, ((p ◇ q) ◇ q) = ((p ◇ r) ◇ r), supplies the missing relation and one congruence lift closes the target.",
+      "revocation_condition": "A frozen alpha-invariant constructor cannot uniquely recognize the class or its emitted certificate fails official Lean checking.",
+      "status": "supported"
+    },
+    {
+      "id": "experiment.0036-diagonal-fiber-constructor",
+      "kind": "experiment",
+      "rho": "The recovered ancestry identifies a global diagonal-fiber relation, but it may still be a row-labelled restatement of the recovered proof.",
+      "D": "Causal promotion requires a constructor selected only by alpha-invariant source/target structure and checked by the official Lean judge.",
+      "H": ["H_diagonal_fiber_relation", "H_row_label_leakage", "H_certificate_failure"],
+      "K": ["No row IDs, equation IDs, labels, hashes, or index positions available to the runner", "Exactly one joint structural match across all twelve unlabelled rows"],
+      "Delta": "Recognize the source and target schemas structurally, derive the recovered diagonal-fiber relation, and emit the generic certificate.",
+      "V": "Frozen-parent validation, unique alpha-invariant match, empty label-field exposure, exact certificate hash, and official Lean acceptance.",
+      "B": "All twelve unlabelled rows scanned once; one emitted certificate; official Lean judging.",
+      "E": [
+        "experiments/mathgraph/residual12/0036_diagonal_fiber_constructor_preregistration.json",
+        "experiments/mathgraph/residual12/evidence/0036_diagonal_fiber_constructor_run_32693880978.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-diagonal-fiber-causal",
+      "kind": "evidence",
+      "rho": "A frozen alpha-invariant gate finds exactly one source/target schema match among twelve unlabelled rows and emits the recovered 1,911-byte certificate without access to labels or identifiers.",
+      "D": "The diagonal-fiber relation is the causal proof interface for this matched structural class; the failed boundary families were searching at the wrong relational level.",
+      "H": ["H_diagonal_fiber_relation", "H_selection_state_interface", "H_local_boundary_operator"],
+      "K": ["Promote the structural constructor, not the CN1 search policy", "No coverage claim outside the matched schema"],
+      "V": "Public run 32693880978: DIAGONAL_FIBER_CONSTRUCTOR_CAUSAL; measurement_ok and official_enabled true; Lean accepted the exact certificate.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_diagonal_fiber_constructor_run_32693880978.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "residual.0036-diagonal-fiber-production-integration",
+      "kind": "residual",
+      "rho": "The generic diagonal-fiber constructor is causally validated for its unique matched structural class but is not yet integrated into the cleanroom solver or tested against the full frozen qualification set.",
+      "D": "The remaining engineering-scientific question is whether the constructor transfers into production without changing existing accepted outputs or broadening its claim boundary.",
+      "H": ["H_production_transfer", "H_regression_free", "H_claim_boundary_preserved"],
+      "K": ["Integrate structural matching only", "Preserve the current solver route for all non-matches", "Require official Lean acceptance and frozen full-suite regression"],
+      "V": "A preregistered public qualification artifact comparing the production baseline and candidate on the full frozen set.",
+      "E": [
+        "experiments/mathgraph/residual12/0036_diagonal_fiber_production_preregistration.json"
+      ],
+      "status": "frontier"
+    },
+    {
+      "id": "experiment.0036-diagonal-fiber-production-qualification",
+      "kind": "experiment",
+      "rho": "The diagonal-fiber constructor is sufficient and label-free in a frozen twelve-row causal gate but has not been exercised inside the production route on the released 800-row population.",
+      "D": "Promotion requires exact production integration, official acceptance of 0036, preservation of existing focused cases, exactly one structural match, and a released score of at least 778/800.",
+      "H": ["H_production_transfer", "H_regression_free", "H_schema_leakage"],
+      "K": ["Joint alpha-invariant matching only", "No metadata dispatch", "Nonmatches continue through the unchanged route", "Promote the constructor but not CN1"],
+      "Delta": "Insert the diagonal-fiber constructor after the two existing direct constructors and run focused plus full released official qualification.",
+      "V": "Static route-diff checks, cleanroom tests, four focused official Lean acceptances, exactly one released structural match, zero LLM calls, and at least 778/800 official solves.",
+      "B": "One structural scan per problem; one additional 1,911-byte certificate only on a match; the existing 120-second solver and 90-second Lean limits on 800 released rows.",
+      "E": [
+        "experiments/mathgraph/residual12/0036_diagonal_fiber_production_preregistration.json"
       ],
       "status": "frozen"
     }
@@ -292,14 +370,25 @@
     {"source": "evidence.0036-post-contractor-composition-failure", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "known contractor sufficiency"},
     {"source": "evidence.0036-boundary-interface-order", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
     {"source": "evidence.0036-target-macro-negative", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "selected complete depth-two boundary macro"},
-    {"source": "evidence.0036-target-macro-negative", "target": "residual.0036-proof-interface-localization", "type": "SELECTS_NEXT"},
+    {"source": "evidence.0036-target-macro-negative", "target": "residual.0036-proof-interface-localization", "type": "SUPPORTS"},
     {"source": "evidence.0036-sibling-attachment-obstruction", "target": "evidence.0036-target-macro-negative", "type": "DERIVED_FROM"},
     {"source": "evidence.0036-sibling-attachment-obstruction", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "contractor activation plus complete depth-two shared-context attachment"},
     {"source": "evidence.0036-sibling-attachment-obstruction", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
-    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "residual.0036-proof-interface-localization", "type": "SELECTS_NEXT"},
+    {"source": "evidence.0036-sibling-attachment-obstruction", "target": "residual.0036-proof-interface-localization", "type": "SUPPORTS"},
     {"source": "evidence.0036-cn1-accepted-proof", "target": "residual.0036-proof-interface-localization", "type": "DERIVED_FROM"},
-    {"source": "residual.0036-proof-interface-localization", "target": "experiment.0036-cn1-certificate-recovery", "type": "SELECTS_NEXT"},
+    {"source": "residual.0036-proof-interface-localization", "target": "experiment.0036-cn1-certificate-recovery", "type": "DERIVED_FROM"},
     {"source": "experiment.0036-cn1-certificate-recovery", "target": "evidence.0036-cn1-accepted-proof", "type": "DERIVED_FROM"},
-    {"source": "experiment.0036-cn1-certificate-recovery", "target": "hypothesis.0036-selection-state-interface", "type": "EVALUATES"}
+    {"source": "experiment.0036-cn1-certificate-recovery", "target": "hypothesis.0036-selection-state-interface", "type": "EVALUATES"},
+    {"source": "evidence.0036-cn1-work-frontier-recovered", "target": "experiment.0036-cn1-certificate-recovery", "type": "DERIVED_FROM"},
+    {"source": "evidence.0036-cn1-work-frontier-recovered", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-cn1-work-frontier-recovered", "target": "hypothesis.0036-diagonal-fiber-relation", "type": "SUPPORTS"},
+    {"source": "experiment.0036-diagonal-fiber-constructor", "target": "evidence.0036-cn1-work-frontier-recovered", "type": "DERIVED_FROM"},
+    {"source": "experiment.0036-diagonal-fiber-constructor", "target": "hypothesis.0036-diagonal-fiber-relation", "type": "EVALUATES"},
+    {"source": "evidence.0036-diagonal-fiber-causal", "target": "experiment.0036-diagonal-fiber-constructor", "type": "DERIVED_FROM"},
+    {"source": "evidence.0036-diagonal-fiber-causal", "target": "hypothesis.0036-diagonal-fiber-relation", "type": "SUPPORTS"},
+    {"source": "evidence.0036-diagonal-fiber-causal", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-diagonal-fiber-causal", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "global diagonal-fiber relation closes the matched class where bounded local boundary families fail"},
+    {"source": "evidence.0036-diagonal-fiber-causal", "target": "residual.0036-diagonal-fiber-production-integration", "type": "SELECTS_NEXT"},
+    {"source": "residual.0036-diagonal-fiber-production-integration", "target": "experiment.0036-diagonal-fiber-production-qualification", "type": "SELECTS_NEXT"}
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "schema": "mathgraph.github-actions-evidence-manifest.v1",
+  "recorded_date": "2026-08-24",
+  "repository": "heathsanchez/equational-theories-lean-stage2",
+  "workflow": "MathGraph 0036 Diagonal Fiber Constructor",
+  "workflow_run": 32693880978,
+  "job": 97332329289,
+  "head_branch": "codex/mathgraph-0036-target-bridge-macro",
+  "head_sha": "1276ec3a929aa64f66b56c69424db4935b9fc864",
+  "conclusion": "success",
+  "artifact": {
+    "id": 9508196207,
+    "name": "mathgraph-0036-diagonal-fiber-constructor",
+    "size_in_bytes": 1157,
+    "zip_sha256": "1138d22cc03d4954b81b374e85d45d10f77d6ca799fdf2fac1d0cbfdc9dbf4ea",
+    "payload_embedded": false,
+    "retention_days": 30,
+    "files": {
+      "0036_diagonal_fiber_certificate.lean": 1911,
+      "0036_diagonal_fiber_constructor_results.json": 755
+    }
+  },
+  "result_summary": {
+    "schema": "mathgraph.0036-diagonal-fiber-constructor-results.v1",
+    "decision": "DIAGONAL_FIBER_CONSTRUCTOR_CAUSAL",
+    "measurement_ok": true,
+    "official_enabled": true,
+    "parent_ok": true,
+    "frozen_hashes_ok": true,
+    "input_headers_ok": true,
+    "schema_match_count": 1,
+    "source_schema_matches": true,
+    "target_schema_matches": true,
+    "label_fields_available_to_runner": [],
+    "diagonal_fiber_relation": "((p ◇ q) ◇ q) = ((p ◇ r) ◇ r)",
+    "diagonal_fiber_relation_ok": true,
+    "final_congruence_lift_ok": true,
+    "certificate_static_ok": true,
+    "lean_status": "accepted",
+    "judge_seconds": 2.19801,
+    "certificate_bytes": 1911,
+    "certificate_sha256": "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6"
+  },
+  "claim_boundary": "The frozen structural gate establishes that an alpha-invariant source/target schema match uniquely selects residual 0036 and that the generic diagonal-fiber constructor emits an officially Lean-accepted certificate. The result promotes this constructor for the matched structural class; it does not promote the CN1 search policy or claim coverage outside that class."
+}

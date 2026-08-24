@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import sys
 import time
@@ -91,3 +92,30 @@ def test_affine_family_abstains_when_target_is_forced():
     solver = load_solver()
     equation = solver.parse_equation("(x * y) * z = x * (y * z)")
     assert solver.generated_affine_model_candidate(equation, equation) is None
+
+
+def test_diagonal_fiber_constructor_is_jointly_alpha_invariant():
+    solver = load_solver()
+    source = solver.parse_equation(
+        "a = ((a * b) * (a * c)) * b"
+    )
+    target = solver.parse_equation(
+        "a = ((a * b) * b) * (a * c)"
+    )
+    code = solver.diagonal_fiber_certificate(source, target)
+    assert code is not None
+    assert len(code.encode("utf-8")) == 1911
+    assert hashlib.sha256(code.encode("utf-8")).hexdigest() == (
+        "af4d0e6f1f82be8548aa44debc11761eb96b8964668a5ecbc0e799f44526f6d6"
+    )
+
+
+def test_diagonal_fiber_constructor_fails_closed_on_shape_change():
+    solver = load_solver()
+    source = solver.parse_equation(
+        "a = ((a * b) * (a * c)) * b"
+    )
+    target = solver.parse_equation(
+        "a = ((a * c) * b) * (a * b)"
+    )
+    assert solver.diagonal_fiber_certificate(source, target) is None
