@@ -15,6 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 HERE = Path(__file__).resolve().parent
+sys.dont_write_bytecode = True
 sys.path.insert(0, str(ROOT))
 PREREG = HERE / "0036_diagonal_fiber_production_preregistration.json"
 SOLVER = ROOT / "submissions/mathgraph_cleanroom/solver.py"
@@ -93,6 +94,7 @@ def run_row(raw, configuration, solver_module, config):
         "judge_calls": result.get("judge_calls", 0),
         "llm_calls": result.get("llm_calls", 0),
         "diagonal_fiber_schema_match": structural_match,
+        "last_log": (result.get("log") or [None])[-1],
     }
 
 
