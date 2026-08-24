@@ -1,0 +1,100 @@
+{
+  "schema": "mathgraph.0036-boundary-interface-reachability-preregistration.v1",
+  "status": "FROZEN_BEFORE_EXECUTABLE",
+  "target": {
+    "id": "evaluation_normal_0036",
+    "source": "x = ((x * y) * (x * z)) * y",
+    "goal": "x = ((x * y) * y) * (x * z)",
+    "known_contractor": "x = (((x * (x * z)) * (x * x)) * (x * z))"
+  },
+  "immediate_parent": {
+    "workflow_run": 32677423657,
+    "head_sha": "2874efac1918533603dd20a2149133e2a8ee0b6a",
+    "artifact_id": 9504243577,
+    "artifact_zip_sha256": "6c34e7cedf2a54fcd7ddb3921bf1ded10db8e42e986a9554cc87aa66e1af128f",
+    "result_json_sha256": "fead748c1f5dd06258cf264bf65cec1a2e973a394f30ed29ed9d0b1ab8292345",
+    "required_schema": "mathgraph.0036-causal-contractor-attribution-results.v2",
+    "required_decision": "POST_CONTRACTOR_COMPOSITION_FAILURE",
+    "required_measurement_ok": true,
+    "required_forced_exact_minimum": 1,
+    "required_contractor_descendants_minimum": 1
+  },
+  "historical_parent": {
+    "workflow_run": 32660260669,
+    "head_sha": "af4bf6b6f15376876635e1d8fc334f91f97bf97d",
+    "facts": [
+      "DIRECT_CONSTRUCTOR_EXHAUSTED",
+      "DIRECT_CONSTRUCTOR_DEPTH2_EXHAUSTED",
+      "PLATEAU_SIGNATURE_INVARIANT",
+      "BOUNDARY_CONTEXT_LIFT_EXHAUSTED"
+    ],
+    "plateau_states": 1202,
+    "boundary_signatures": 1546,
+    "invariant": {
+      "lhs_kind": "op",
+      "rhs_kind": "op",
+      "subterm_relation": "NONE"
+    }
+  },
+  "question": "Does the frozen cleanroom closure contain a depth-at-most-two interface path from either goal boundary term into the exact-contractor lineage, and if so is that path blocked only by solver orientation/order?",
+  "construction": {
+    "closure": "Reproduce attribution Arm C: install the independently replayed known contractor, force-select it exactly once, then run the unchanged frozen given-clause loop for the fixed budget. Retain every admitted clause and mark a clause as contractor-lineage exactly when it is the contractor itself or has an exact/shared-alpha contractor ancestor.",
+    "seeds": "The two complete rigid goal boundary terms. Rewrites may occur at every nonvariable position through the exact one-hole context, so proper boundary subterms are covered without treating them as detached terms.",
+    "directed_graph": "Use only the frozen solver orientation of each admitted clause and admit a transition only when the instantiated replacement is strictly smaller under the frozen normalization order.",
+    "equational_graph": "Use both nonvariable sides of every admitted equality as rewrite directions. Do not require normalization-order decrease, but retain the same term-size, position-depth, variable-binding, and state bounds.",
+    "depth_two_census": "Enumerate every unique one-step state reachable from either seed using every admitted rule. Then exhaustively test every contractor-lineage rule at every nonvariable position of every one-step state. A direct bridge is a contractor-lineage transition at depth one; a pair bridge is a non-lineage transition followed by a contractor-lineage transition at depth two.",
+    "deduplication": "Deduplicate states by shared alpha-canonical term and transitions by graph, seed side, before term, after term, clause alpha-signature, and position. No heuristic ranking or top-k pruning is permitted.",
+    "witness": "For the first bridge in each graph, compile the exact instantiation/congruence/transitivity recipe and require replay from the source law."
+  },
+  "constraints": {
+    "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+    "seconds_for_closure": 60,
+    "maximum_given": 512,
+    "focus_per_age": 4,
+    "maximum_term_size": 65,
+    "maximum_replay_term_size": 260,
+    "maximum_depth": 12,
+    "maximum_rules": 768,
+    "maximum_rounds": 64,
+    "new_clauses_per_round": 512,
+    "maximum_clauses": 12000,
+    "normalization_steps": 256,
+    "maximum_proof_nodes": 50000,
+    "maximum_unique_first_step_states_per_graph": 200000,
+    "maximum_transitions_per_graph": 2000000,
+    "report_examples": 20
+  },
+  "measurements": [
+    "predecessor artifact hash and required fields",
+    "observational equivalence of the instrumented and native frozen loop",
+    "contractor validity, forced selection, activation, and descendant count",
+    "admitted and contractor-lineage clause counts",
+    "direct target-entry transition counts by lineage and non-lineage",
+    "unique first-step state and transition counts",
+    "direct and pair bridge counts in directed and equational graphs",
+    "minimum bridge depth and first replayed witness",
+    "exhaustion and truncation flags"
+  ],
+  "decision_order": [
+    "MEASUREMENT_FAILURE",
+    "OPERATIONAL_DIRECT_BRIDGE_PRESENT",
+    "OPERATIONAL_PAIR_BRIDGE_PRESENT",
+    "ORIENTATION_DIRECT_BRIDGE_ONLY",
+    "ORIENTATION_PAIR_BRIDGE_ONLY",
+    "BOUNDARY_INTERFACE_DISCONNECTED"
+  ],
+  "decision_table": {
+    "MEASUREMENT_FAILURE": "Any hash, schema, parent-field, reproduction, equivalence, replay, or no-truncation requirement fails.",
+    "OPERATIONAL_DIRECT_BRIDGE_PRESENT": "A directed contractor-lineage rule applies directly to a goal boundary term.",
+    "OPERATIONAL_PAIR_BRIDGE_PRESENT": "No directed direct bridge exists, but a directed non-lineage first transition enables a directed contractor-lineage second transition.",
+    "ORIENTATION_DIRECT_BRIDGE_ONLY": "No operational bridge exists, but an equational contractor-lineage direction applies directly.",
+    "ORIENTATION_PAIR_BRIDGE_ONLY": "No operational bridge exists and no equational direct bridge exists, but an equational non-lineage first transition enables an equational contractor-lineage second transition.",
+    "BOUNDARY_INTERFACE_DISCONNECTED": "The complete directed and equational depth-two censuses contain no contractor-lineage bridge and neither census is truncated."
+  },
+  "scientific_boundary": "This gate diagnoses interface reachability only. It does not install a new proof operator, alter the solver, claim full unbounded exhaustion, or inspect sealed transfer cases.",
+  "sealed_transfer_ids": [
+    "evaluation_hard_0196",
+    "evaluation_order5_0014",
+    "evaluation_order5_0042"
+  ]
+}
