@@ -1,0 +1,157 @@
+name: MathGraph 0036 Post-Macro Contractor
+
+on:
+  push:
+    branches:
+      - codex/mathgraph-0036-target-bridge-macro
+    paths:
+      - experiments/mathgraph/residual12/0036_post_macro_contractor_preregistration.json
+      - experiments/mathgraph/residual12/run_0036_post_macro_contractor.py
+      - .github/workflows/mathgraph_0036_post_macro_contractor.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  causal-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Verify frozen protocol predates executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          frozen=6ecc849fdd1808172a1a8942e8e3d02ca5cf3f74
+          git merge-base --is-ancestor "$frozen" HEAD
+          test "$(git log -1 --format=%H -- experiments/mathgraph/residual12/0036_post_macro_contractor_preregistration.json)" = "$frozen"
+          if git cat-file -e "$frozen:experiments/mathgraph/residual12/run_0036_post_macro_contractor.py" 2>/dev/null; then
+            echo "Executable existed at the frozen protocol commit" >&2
+            exit 1
+          fi
+
+      - name: Validate frozen inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(cat lean-toolchain)" = "leanprover/lean4:v4.32.2"
+          grep -q 905b95818eb32af7874a58b427f50c1711a5e96c lake-manifest.json
+          test "$(sha256sum submissions/mathgraph_cleanroom/solver.py | cut -d' ' -f1)" = "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08"
+          test "$(sha256sum experiments/mathgraph/residual12/0036_post_macro_contractor_preregistration.json | cut -d' ' -f1)" = "0ce25df4053049cf373394195f4fa098034d37656f0072bbd23379bea9869cbf"
+          python -m py_compile experiments/mathgraph/residual12/run_0036_post_macro_contractor.py
+          python -m json.tool experiments/mathgraph/residual12/0036_post_macro_contractor_preregistration.json >/dev/null
+
+      - name: Cache Lean and Lake packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            .lake/packages
+          key: mathgraph-0036-post-macro-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+
+      - name: Build official Lean judge
+        env:
+          SKIP_DOCKER: "1"
+        run: bash scripts/setup.sh
+
+      - name: Run frozen post-macro contractor gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          PYTHONDONTWRITEBYTECODE=1 python \
+            experiments/mathgraph/residual12/run_0036_post_macro_contractor.py \
+            --official
+
+      - name: Enforce claim boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          path = Path(
+              "experiments/mathgraph/residual12/"
+              "0036_post_macro_contractor_results.json"
+          )
+          data = json.loads(path.read_text(encoding="utf-8"))
+          if not data["measurement_ok"]:
+              raise SystemExit("measurement failure")
+          if data["smoke_only"] or not data["official_enabled"]:
+              raise SystemExit("non-evidentiary execution")
+          allowed = {
+              "TRANSFORMED_BASELINE_CLOSES",
+              "CONTRACTOR_INSTALLATION_CAUSAL_AFTER_MACRO",
+              "CONTRACTOR_SELECTION_CAUSAL_AFTER_MACRO",
+              "CONTRACTOR_SELECTION_PARTIAL_AFTER_MACRO",
+              "SHARED_CONTEXT_BRIDGE_PRESENT",
+              "SIBLING_ATTACHMENT_OBSTRUCTION",
+              "CONTRACTOR_DISPLACED_AFTER_MACRO",
+          }
+          if data["decision"] not in allowed:
+              raise SystemExit(data["decision"])
+          macro = data["macro_reconstruction"]
+          if not all(macro["checks"].values()):
+              raise SystemExit("macro reconstruction failure")
+          if not all(data["factorization"]["checks"].values()):
+              raise SystemExit("factorization failure")
+          if not all(data["forced_checks"].values()):
+              raise SystemExit("forced contractor failure")
+          census = data["shared_context_census"]
+          if census["truncated"]:
+              raise SystemExit("shared-context census truncated")
+          witness = census["first_bridge_witness"]
+          if witness is not None and not (
+              witness["compiled"]
+              and witness["root_matches"]
+              and witness["replayed"]
+          ):
+              raise SystemExit("shared-context witness failed replay")
+          for name, arm in data["arms"].items():
+              proof = arm["verification"]
+              if proof["target_recipe_found"] and not (
+                  proof["target_compiled"]
+                  and proof["target_root_matches"]
+                  and proof["target_replayed"]
+                  and proof["reconstruction_compiled"]
+                  and proof["reconstruction_root_matches"]
+                  and proof["reconstruction_replayed"]
+                  and proof["certificate_within_limit"]
+                  and proof["judge_status"] == "accepted"
+              ):
+                  raise SystemExit(f"{name} verification failure")
+          print(json.dumps({
+              "decision": data["decision"],
+              "measurement_ok": data["measurement_ok"],
+              "shared_context": {
+                  "direct": census["direct_bridge_count"],
+                  "pairs": census["pair_bridge_count"],
+                  "states": census["unique_first_step_states"],
+              },
+              "arms": {
+                  name: {
+                      "found": arm["verification"]["target_recipe_found"],
+                      "distance": arm["target_state"]["structural_distance"],
+                      "judge": arm["verification"]["judge_status"],
+                  }
+                  for name, arm in data["arms"].items()
+              },
+          }, sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-0036-post-macro-contractor
+          path: experiments/mathgraph/residual12/0036_post_macro_contractor_results.json
+          if-no-files-found: warn
+          retention-days: 30
