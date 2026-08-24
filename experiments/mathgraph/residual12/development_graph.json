@@ -148,6 +148,115 @@
         "experiments/mathgraph/residual12/existing_closure_census_preregistration.json"
       ],
       "status": "frozen"
+    },
+    {
+      "id": "evidence.0036-external-short-proof",
+      "kind": "evidence",
+      "rho": "Residual 0036 is externally proved by Vampire 5.0.1 in a 28-node trace with 13 superpositions and one forward-demodulation step.",
+      "D": "The row is a theorem; repeated cleanroom negatives localize an internal search or proof-language obstruction rather than non-implication.",
+      "H": ["H_selection_state", "H_proof_translation", "H_missing_operator"],
+      "K": ["External ATP output is diagnostic and is not itself a Lean certificate"],
+      "V": "Vampire reports SZS Theorem; the trace statistics are independently recorded in the obstruction atlas.",
+      "E": [
+        "experiments/mathgraph/external/sair_buckets/residual_evidence_ledger.json",
+        "experiments/mathgraph/external/sair_buckets/residual_evidence_ledger.md"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-cn1-accepted-proof",
+      "kind": "evidence",
+      "rho": "The checked-in CN1 diagnostic found an officially Lean-accepted 1,911-byte certificate for residual 0036.",
+      "D": "Ordinary superposition is sufficient when the clause representation and selection state expose the right continuation.",
+      "H": ["H_selection_state", "H_missing_operator"],
+      "K": ["Row-level success does not promote CN1 as a six-row production strategy"],
+      "V": "Independent replay, external plan replay, and official Lean all passed; proof ancestry has nine nodes, seven superpositions, and zero demodulations.",
+      "E": [
+        "experiments/mathgraph/paramodulator_control/six_residual_continuation_novelty_cn1_results.json",
+        "experiments/mathgraph/paramodulator_control/continuation_novelty_summary.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-post-contractor-composition-failure",
+      "kind": "evidence",
+      "rho": "Installing and force-selecting the known 10-to-8 contractor activates it and creates descendants but does not close the original target.",
+      "D": "Construction, retention, and selection of that contractor are not the terminal obstruction; failure is after activation, in composition with the denied goal.",
+      "H": ["H_selection_state", "H_local_boundary_operator"],
+      "K": ["Do not infer that the contractor is absent or discarded"],
+      "V": "Public run 32677423657: POST_CONTRACTOR_COMPOSITION_FAILURE with measurement_ok true.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_causal_contractor_attribution_results_run_32677423657.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-boundary-interface-order",
+      "kind": "evidence",
+      "rho": "The operational and directed boundary graphs have no bridge, while the expanded equational graph has seven complete depth-two bridges.",
+      "D": "The equality is available only under a representation and orientation regime not exposed by the operational route.",
+      "H": ["H_selection_state", "H_local_boundary_operator"],
+      "K": ["Do not treat expanded equational reachability as operational causality"],
+      "V": "Public run 32683209277: ORIENTATION_ORDER_OBSTRUCTION; first witness compiled and replayed; census not truncated.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_boundary_interface_reachability_run_32683209277.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "evidence.0036-target-macro-negative",
+      "kind": "evidence",
+      "rho": "The selected 257-node two-step boundary macro compiles and replays, but none of five frozen arms reaches the target.",
+      "D": "Making the missing depth-two boundary equality explicit is not sufficient; another slightly richer local boundary lift is not warranted.",
+      "H": ["H_selection_state", "H_local_boundary_operator"],
+      "K": ["Reject sufficiency only; preserve the macro as a valid derived equality"],
+      "V": "Public run 32690664599: POST_MACRO_SEARCH_FAILURE with measurement_ok and official_enabled true.",
+      "E": [
+        "experiments/mathgraph/residual12/evidence/0036_target_bridge_macro_run_32690664599.json"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "hypothesis.0036-local-boundary-operator",
+      "kind": "hypothesis",
+      "H": "Residual 0036 is blocked chiefly by the absence of one local equality insertion or short boundary macro.",
+      "revocation_condition": "A replayed short boundary macro and activated contractor both fail while an existing ordinary-superposition proof succeeds under another clause state.",
+      "status": "refuted"
+    },
+    {
+      "id": "hypothesis.0036-selection-state-interface",
+      "kind": "hypothesis",
+      "H": "Residual 0036 is blocked by which clause representation and continuation interface becomes searchable and selected, not by absence of equational strength.",
+      "revocation_condition": "The recovered accepted ancestry requires a genuinely new inference primitive or cannot be reproduced from the frozen CN1 implementation.",
+      "status": "live"
+    },
+    {
+      "id": "residual.0036-proof-interface-localization",
+      "kind": "residual",
+      "rho": "The target is known provable and has an accepted CN1 certificate, but the exact first proof-ancestral clause absent from the cleanroom boundary closures has not been localized.",
+      "D": "The remaining scientific question is representation and selection localization inside an existing superposition proof.",
+      "H": ["H_selection_state_interface", "H_proof_translation"],
+      "K": ["Recover the accepted proof before proposing another operator", "Compare proof ancestry, not aggregate generated clauses"],
+      "V": "A public recovery artifact containing the raw trace, proof plan, Lean certificate, and ancestry table.",
+      "E": [
+        "experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json"
+      ],
+      "status": "frontier"
+    },
+    {
+      "id": "experiment.0036-cn1-certificate-recovery",
+      "kind": "experiment",
+      "rho": "A prior aggregate diagnostic contains a row-level accepted proof, but its certificate and clause ancestry are not preserved as a dedicated public artifact.",
+      "D": "Proof-interface localization is blocked on recovering the actual accepted trace.",
+      "H": ["H_selection_state_interface", "H_proof_shape_drift", "H_recovery_failure"],
+      "K": ["Exact frozen CN1 configuration", "Unlabelled input", "No production promotion claim"],
+      "Delta": "Re-run CN1 only on residual 0036 and emit the raw proof, translated plan, Lean certificate, and proof-ancestry table.",
+      "V": "Independent replay, external plan replay, official Lean acceptance, and frozen nine-node/seven-superposition/zero-demodulation ancestry checks.",
+      "B": "One row; two-second search timeout plus official Lean judging; 100 KB certificate bound.",
+      "E": [
+        "experiments/mathgraph/residual12/0036_cn1_certificate_recovery_preregistration.json#sha256=6c58b6ce9075669e09cc1dde856be800eadde1756fb5eb4a74df758135f07465"
+      ],
+      "status": "frozen"
     }
   ],
   "edges": [
@@ -163,6 +272,17 @@
     {"source": "experiment.existing-closure-census", "target": "residual.grounded-closed-nine", "type": "DERIVED_FROM"},
     {"source": "experiment.existing-closure-census", "target": "hypothesis.existing-closure", "type": "EVALUATES"},
     {"source": "experiment.existing-closure-census", "target": "hypothesis.shared-capability-gap", "type": "EVALUATES"},
-    {"source": "residual.grounded-closed-nine", "target": "experiment.existing-closure-census", "type": "SELECTS_NEXT"}
+    {"source": "residual.grounded-closed-nine", "target": "experiment.existing-closure-census", "type": "SELECTS_NEXT"},
+    {"source": "evidence.0036-external-short-proof", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-cn1-accepted-proof", "target": "evidence.0036-external-short-proof", "type": "SUPPORTS", "detail": "independent Lean-certified theorem evidence"},
+    {"source": "evidence.0036-cn1-accepted-proof", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-post-contractor-composition-failure", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "known contractor sufficiency"},
+    {"source": "evidence.0036-boundary-interface-order", "target": "hypothesis.0036-selection-state-interface", "type": "SUPPORTS"},
+    {"source": "evidence.0036-target-macro-negative", "target": "hypothesis.0036-local-boundary-operator", "type": "REFUTES", "scope": "selected complete depth-two boundary macro"},
+    {"source": "evidence.0036-target-macro-negative", "target": "residual.0036-proof-interface-localization", "type": "SELECTS_NEXT"},
+    {"source": "evidence.0036-cn1-accepted-proof", "target": "residual.0036-proof-interface-localization", "type": "DERIVED_FROM"},
+    {"source": "residual.0036-proof-interface-localization", "target": "experiment.0036-cn1-certificate-recovery", "type": "SELECTS_NEXT"},
+    {"source": "experiment.0036-cn1-certificate-recovery", "target": "evidence.0036-cn1-accepted-proof", "type": "DERIVED_FROM"},
+    {"source": "experiment.0036-cn1-certificate-recovery", "target": "hypothesis.0036-selection-state-interface", "type": "EVALUATES"}
   ]
 }
