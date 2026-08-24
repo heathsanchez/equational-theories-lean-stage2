@@ -1,0 +1,156 @@
+{
+  "schema": "mathgraph.developmental-experiment-graph.evidence-registry.v2",
+  "entries": [
+    {
+      "node_id": "scope-evaluation_normal_0036",
+      "problem_id": "evaluation_normal_0036",
+      "evidence_class": "SCOPE_ONLY",
+      "decision": null,
+      "source_path": null,
+      "run_id": null,
+      "provenance": "protocol-v2 scope; no scientific result asserted"
+    },
+    {
+      "node_id": "scope-evaluation_hard_0196",
+      "problem_id": "evaluation_hard_0196",
+      "evidence_class": "SCOPE_ONLY",
+      "decision": null,
+      "source_path": null,
+      "run_id": null,
+      "provenance": "protocol-v2 scope; no scientific result asserted"
+    },
+    {
+      "node_id": "scope-evaluation_order5_0014",
+      "problem_id": "evaluation_order5_0014",
+      "evidence_class": "SCOPE_ONLY",
+      "decision": null,
+      "source_path": null,
+      "run_id": null,
+      "provenance": "protocol-v2 scope; no scientific result asserted"
+    },
+    {
+      "node_id": "scope-evaluation_order5_0042",
+      "problem_id": "evaluation_order5_0042",
+      "evidence_class": "SCOPE_ONLY",
+      "decision": null,
+      "source_path": null,
+      "run_id": null,
+      "provenance": "protocol-v2 scope; no scientific result asserted"
+    },
+    {
+      "node_id": "normal0040-cut-contraction-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "REPO_EXPERIMENT_REFERENCE",
+      "decision": null,
+      "source_path": "experiments/mathgraph/run_normal0040_cut_contraction_gate.py",
+      "run_id": null,
+      "provenance": "repo experiment definition; result value not reasserted by v2 registry"
+    },
+    {
+      "node_id": "normal0040-distance2-frontier-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "REPO_EXPERIMENT_REFERENCE",
+      "decision": null,
+      "source_path": "experiments/mathgraph/run_normal0040_distance2_frontier_gate.py",
+      "run_id": null,
+      "provenance": "repo experiment definition; result value not reasserted by v2 registry"
+    },
+    {
+      "node_id": "normal0040-interface-quotient-audit-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "REPO_EXPERIMENT_REFERENCE",
+      "decision": null,
+      "source_path": "experiments/mathgraph/run_normal0040_interface_quotient_audit_gate.py",
+      "run_id": null,
+      "provenance": "repo experiment definition; result value not reasserted by v2 registry"
+    },
+    {
+      "node_id": "normal0040-interface-matrix-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "REPO_EXPERIMENT_REFERENCE",
+      "decision": null,
+      "source_path": "experiments/mathgraph/run_normal0040_interface_matrix_gate.py",
+      "run_id": null,
+      "provenance": "repo experiment definition; result value not reasserted by v2 registry"
+    },
+    {
+      "node_id": "normal0040-interface-transition-v2-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "REPO_EXPERIMENT_REFERENCE",
+      "decision": null,
+      "source_path": "experiments/mathgraph/run_normal0040_interface_transition_v2_gate.py",
+      "run_id": null,
+      "provenance": "repo experiment definition; result value not reasserted by v2 registry"
+    },
+    {
+      "node_id": "normal0040-interface-obstruction-factorization-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "SINGLE_OBLIGATION_FRONTIER",
+      "source_path": "experiments/mathgraph/run_normal0040_interface_obstruction_factorization_gate.py",
+      "run_id": 32552778502,
+      "provenance": "GitHub Actions run 32552778502 inspected in research trace"
+    },
+    {
+      "node_id": "normal0040-substitution-quotient-rival-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "COMMON_SPECIALIZATION_RESCUE",
+      "source_path": "experiments/mathgraph/run_normal0040_substitution_quotient_rival_gate.py",
+      "run_id": 32597022411,
+      "provenance": "GitHub Actions run 32597022411 inspected in research trace"
+    },
+    {
+      "node_id": "normal0040-common-specialization-matrix-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "COMMON_SPECIALIZATION_MATRIX_RESCUE",
+      "source_path": "experiments/mathgraph/run_normal0040_common_specialization_matrix_gate.py",
+      "run_id": 32599589158,
+      "provenance": "GitHub Actions run 32599589158 inspected in research trace"
+    },
+    {
+      "node_id": "normal0040-common-specialization-causal-attack-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "NO_REPLAYABLE_SPECIALIZATION",
+      "source_path": "experiments/mathgraph/run_normal0040_common_specialization_causal_attack_gate.py",
+      "run_id": 32601076161,
+      "provenance": "GitHub Actions run 32601076161 inspected in research trace"
+    },
+    {
+      "node_id": "normal0040-specialization-compilation-factorization-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "SPECIALIZATION_AGREES_BUT_ITEM_CONSTRUCTION_FAILS",
+      "source_path": "experiments/mathgraph/run_normal0040_specialization_compilation_factorization_gate.py",
+      "run_id": 32614171227,
+      "evidence": {
+        "pairs_examined": 6089846,
+        "common_specializations": 62756,
+        "specialized_assignments_agree": 62756,
+        "payload_contextual_items_constructible": 0
+      },
+      "provenance": "GitHub Actions run 32614171227 inspected in research trace"
+    },
+    {
+      "node_id": "normal0040-whole-context-specialization-rival-gate.json",
+      "problem_id": "evaluation_normal_0040",
+      "evidence_class": "CI_RUN_REFERENCE",
+      "decision": "WHOLE_CONTEXT_RESCUES_CONSTRUCTION_AND_REPLAY",
+      "source_path": "experiments/mathgraph/run_normal0040_whole_context_specialization_rival_gate.py",
+      "run_id": 32656249585,
+      "evidence": {
+        "common_specializations": 62756,
+        "payload_left_constructible": 0,
+        "payload_right_constructible": 0,
+        "whole_left_constructible": 62756,
+        "whole_right_constructible": 62756,
+        "whole_left_replay_valid": 62756,
+        "whole_right_replay_valid": 62756,
+        "whole_pair_replay_valid": 62756
+      },
+      "provenance": "GitHub Actions run 32656249585 inspected in research trace"
+    }
+  ]
+}
