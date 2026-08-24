@@ -1,0 +1,67 @@
+{
+  "schema": "mathgraph.residual12-full-800-compact-budget-ab.v1",
+  "status": "FROZEN_BEFORE_FULL_800_EXECUTION",
+  "created_date": "2026-08-24",
+  "parent_result": {
+    "workflow_run": "https://github.com/metalogiclabs/mathgraph/actions/runs/32682983088",
+    "artifact_digest": "sha256:3c4068fcd69d314b65ca611754b151a40986f1cc5362cdbd061c7074215f4bba",
+    "raw_result_sha256": "5c47a261b17795ffe5b9c180688779a4813e2db2dad959aab58f7fa8b90035ae",
+    "result": "67/76 TRUE hits at both budgets across Normal, Hard1, Hard2, and Hard3; 0/80 FALSE candidates; 65 source laws; zero 5-second-only hits."
+  },
+  "target": "Determine whether increasing only the production compact-fast wall-clock allocation from 3 to 5 seconds yields official marginal acceptances on the released 800 without losses, invalid attempts, or FALSE regression.",
+  "verifier": {
+    "terminal_success": "official Lean 4.32.2 judge acceptance",
+    "dataset": "SAIRfoundation/equational-theories-selected-problems",
+    "configurations": [
+      "evaluation_normal",
+      "evaluation_hard",
+      "evaluation_extra_hard",
+      "evaluation_order5"
+    ],
+    "expected_rows": 800
+  },
+  "arms": {
+    "compact3_control": {
+      "solver_sha256": "a92eae8cce4fdf7c787c3218fa4f7eb1158c92a6b57f2920199ddbe6e7726a08",
+      "code": "compact_seconds = min(configured_seconds, max(0.1, timeout / 40.0))",
+      "allocation_at_120_seconds": 3.0
+    },
+    "compact5_intervention": {
+      "solver_sha256": "652fba6799e9066368f135319023865a4a58399f7a7228f20b31ea59bdc8f39c",
+      "only_change": "Replace timeout / 40.0 with timeout / 24.0 at the unique COMPACT_SUPERPOSITION_FAST production allocation site.",
+      "allocation_at_120_seconds": 5.0
+    }
+  },
+  "controls": {
+    "paired_execution": "Both arms run on every row in one job.",
+    "arm_order": "Deterministically alternate by SHA-256(id) parity.",
+    "unchanged": [
+      "all search limits other than compact-fast seconds",
+      "all constructors and routing",
+      "problem order and content",
+      "120-second solver boundary",
+      "90-second Lean boundary",
+      "judge policy",
+      "Python standard-library-only submission",
+      "MathGraph-only branding"
+    ]
+  },
+  "live_rivals": {
+    "H_budget_margin": "The 5-second arm gains one or both released Order-5 residuals, or another valid TRUE row, with no loss.",
+    "H_no_budget_effect": "The paired accepted sets are identical; extra wall time is unnecessary.",
+    "H_timing_displacement": "One arm loses previously accepted cases or results depend on arm order, indicating resource displacement or infrastructure sensitivity.",
+    "H_soundness_constructor": "A judge call rejects, an accepted-set comparison contradicts the verifier trace, or the FALSE coverage falls below 400."
+  },
+  "resource_budget": "Two official runs per row, each with the normal 120-second solver boundary; one paired 800-row job with a 300-minute workflow cap.",
+  "metrics": {
+    "primary": "compact5 accepted-set minus compact3 accepted-set",
+    "required_floor": "at least 788/800 and 400 FALSE acceptances in both arms",
+    "safety": "zero compact5 losses, zero rejected/non-accepted judge calls, zero LLM calls"
+  },
+  "outcome_to_action": {
+    "strict_gain_no_loss": "Attack every marginal gain with isolated repetitions and metamorphic controls; promote the one-line scheduling change only if those pass.",
+    "identical_sets": "Reject the 5-second change and retain the 3-second production allocation.",
+    "loss_or_invalid_judge": "Stop promotion and diagnose displacement, timing, constructor, or infrastructure failure.",
+    "baseline_below_788": "Treat the paired run as infrastructure-sensitive and do not interpret the score difference until the baseline is reproduced."
+  }
+}
