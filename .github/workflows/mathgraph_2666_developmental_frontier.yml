@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - experiments/mathgraph/run_2666_developmental_frontier.py
+      - experiments/mathgraph/run_2666_role_aware_continuation.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
       - experiments/mathgraph/run_2666_developmental_frontier.py
+      - experiments/mathgraph/run_2666_role_aware_continuation.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -25,10 +27,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python experiments/mathgraph/run_2666_developmental_frontier.py
+      - name: Run role-aware continuation discriminator
+        run: python experiments/mathgraph/run_2666_role_aware_continuation.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-2666-developmental-frontier
-          path: experiments/mathgraph/results/2666-developmental-frontier.json
+          name: mathgraph-2666-role-aware-continuation-via-frontier
+          path: experiments/mathgraph/results/2666-role-aware-continuation.json
           if-no-files-found: warn
