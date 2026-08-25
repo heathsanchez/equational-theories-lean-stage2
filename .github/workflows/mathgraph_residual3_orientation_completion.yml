@@ -1,0 +1,32 @@
+name: MathGraph residual-3 orientation completion
+
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_residual3_orientation_completion.py'
+      - '.github/workflows/mathgraph_residual3_orientation_completion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  orientation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run orientation-completion diagnostic
+        run: python experiments/mathgraph/run_residual3_orientation_completion.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual3-orientation-completion
+          path: experiments/mathgraph/results/residual3-orientation-completion.json
+          if-no-files-found: error
