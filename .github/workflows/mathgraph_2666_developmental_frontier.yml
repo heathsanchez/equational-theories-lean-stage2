@@ -3,15 +3,13 @@ name: MathGraph 2666 Developmental Frontier
 on:
   pull_request:
     paths:
-      - experiments/mathgraph/run_3366_frontier_compression_sweep.py
-      - experiments/mathgraph/run_3366_dynamic_compatibility_basis.py
+      - experiments/mathgraph/run_3366_round8_interface_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
-      - experiments/mathgraph/run_3366_frontier_compression_sweep.py
-      - experiments/mathgraph/run_3366_dynamic_compatibility_basis.py
+      - experiments/mathgraph/run_3366_round8_interface_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -27,14 +25,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run 3366 frontier compression sweep
-        run: python experiments/mathgraph/run_3366_frontier_compression_sweep.py
+      - name: Run 3366 round-8 interface attribution
+        run: python experiments/mathgraph/run_3366_round8_interface_attribution.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-3366-frontier-compression-sweep
-          path: |
-            experiments/mathgraph/results/3366-frontier-compression-sweep.json
-            experiments/mathgraph/results/3366-dynamic-compatibility-basis.json
+          name: mathgraph-3366-round8-interface-attribution
+          path: experiments/mathgraph/results/3366-round8-interface-attribution.json
           if-no-files-found: warn
-# trigger: 3366-frontier-compression-v3-clean
+# trigger: 3366-round8-interface-attribution-v1
