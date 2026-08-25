@@ -1,0 +1,34 @@
+name: MathGraph normal0040 compatibility lift
+
+on:
+  push:
+    branches:
+      - mathgraph/normal0040-compatibility-lift-20260826
+  workflow_dispatch:
+
+jobs:
+  normal0040-compatibility-lift:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch public SAIR evaluation data
+        run: |
+          mkdir -p /tmp/sair_stage1_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          for f in evaluation_hard evaluation_normal evaluation_order5; do
+            curl -fL --retry 3 "$base/$f.jsonl" -o "/tmp/sair_stage1_eval/$f.jsonl"
+          done
+      - name: Compile separator
+        run: python -m py_compile experiments/mathgraph/run_normal0040_compatibility_lift.py
+      - name: Run separator
+        run: python experiments/mathgraph/run_normal0040_compatibility_lift.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: normal0040-compatibility-lift
+          path: experiments/mathgraph/results/normal0040-compatibility-lift.json
+          if-no-files-found: error
