@@ -47,7 +47,7 @@ jobs:
           if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
           V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
       - name: Run first-divergence diagnostic
-        run: python experiments/mathgraph/run_residual3_first_divergence.py
+        run: python experiments/mathgraph/run_residual3_first_divergence_cnf.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual3-first-divergence
