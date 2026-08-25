@@ -1,0 +1,36 @@
+name: MathGraph Compact Retry Pseudo Hidden AB
+
+on:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_compact_retry_pseudo_hidden_ab.py
+      - .github/workflows/mathgraph_compact_retry_pseudo_hidden_ab.yml
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_compact_retry_pseudo_hidden_ab.py
+      - .github/workflows/mathgraph_compact_retry_pseudo_hidden_ab.yml
+
+permissions:
+  contents: read
+
+jobs:
+  compact-retry-ab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run exact compact retry pseudo-hidden A/B
+        run: python experiments/mathgraph/run_compact_retry_pseudo_hidden_ab.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-compact-retry-pseudo-hidden-ab
+          path: experiments/mathgraph/results/compact-retry-pseudo-hidden-ab.json
+          if-no-files-found: warn
