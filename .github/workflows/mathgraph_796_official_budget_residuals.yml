@@ -1,0 +1,27 @@
+name: MathGraph 796 official-budget residual diagnostic
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_796_official_budget_residuals.py'
+      - '.github/workflows/mathgraph_796_official_budget_residuals.yml'
+  workflow_dispatch:
+jobs:
+  residuals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Run exact 796 at official Solo budget
+        run: python experiments/mathgraph/run_796_official_budget_residuals.py
+      - name: Show result
+        if: always()
+        run: cat experiments/mathgraph/results/residual-796-official-budget.json || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual-796-official-budget
+          path: experiments/mathgraph/results/residual-796-official-budget.json
