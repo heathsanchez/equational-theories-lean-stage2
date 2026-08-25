@@ -39,4 +39,4 @@ jobs:
             experiments/mathgraph/results/3366-plateau-handoff-attribution.json
             experiments/mathgraph/results/3366-round8-interface-attribution.json
           if-no-files-found: warn
-# trigger: 3366-plateau-handoff-attribution-v1
+# trigger: 3366-plateau-handoff-attribution-v2
