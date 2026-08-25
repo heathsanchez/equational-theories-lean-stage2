@@ -1,0 +1,36 @@
+name: MathGraph Evaluation Distribution Recon
+
+on:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_eval_distribution_recon.py
+      - .github/workflows/mathgraph_eval_distribution_recon.yml
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_eval_distribution_recon.py
+      - .github/workflows/mathgraph_eval_distribution_recon.yml
+
+permissions:
+  contents: read
+
+jobs:
+  distribution-recon:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reconstruct public evaluation distribution
+        run: python experiments/mathgraph/run_eval_distribution_recon.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-eval-distribution-recon
+          path: experiments/mathgraph/results/eval-distribution-recon.json
+          if-no-files-found: error
