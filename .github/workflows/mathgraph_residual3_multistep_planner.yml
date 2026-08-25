@@ -1,0 +1,28 @@
+name: MathGraph residual-3 multistep planner
+on:
+  push:
+    branches: [mathgraph/continuation-priority-window-20260826]
+    paths:
+      - 'experiments/mathgraph/run_multistep_corridor_planner.py'
+      - '.github/workflows/mathgraph_residual3_multistep_planner.yml'
+  workflow_dispatch:
+jobs:
+  multistep_planner:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax check
+        run: python -m py_compile experiments/mathgraph/run_multistep_corridor_planner.py
+      - name: Run multi-step corridor planner
+        run: python experiments/mathgraph/run_multistep_corridor_planner.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-multistep-planner
+          path: experiments/mathgraph/results/multistep-corridor-planner.json
+          if-no-files-found: error
