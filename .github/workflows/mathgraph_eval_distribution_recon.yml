@@ -6,10 +6,12 @@ on:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
       - experiments/mathgraph/run_eval_distribution_recon.py
+      - experiments/mathgraph/run_stage1_distribution_etp_gate.py
       - .github/workflows/mathgraph_eval_distribution_recon.yml
   pull_request:
     paths:
       - experiments/mathgraph/run_eval_distribution_recon.py
+      - experiments/mathgraph/run_stage1_distribution_etp_gate.py
       - .github/workflows/mathgraph_eval_distribution_recon.yml
 
 permissions:
@@ -18,6 +20,7 @@ permissions:
 jobs:
   distribution-recon:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,9 +31,13 @@ jobs:
           python-version: '3.11'
       - name: Reconstruct public evaluation distribution
         run: python experiments/mathgraph/run_eval_distribution_recon.py
+      - name: Run Stage1-distribution matched pseudo-private gate
+        run: python experiments/mathgraph/run_stage1_distribution_etp_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: mathgraph-eval-distribution-recon
-          path: experiments/mathgraph/results/eval-distribution-recon.json
-          if-no-files-found: error
+          path: |
+            experiments/mathgraph/results/eval-distribution-recon.json
+            experiments/mathgraph/results/stage1-distribution-etp-gate.json
+          if-no-files-found: warn
