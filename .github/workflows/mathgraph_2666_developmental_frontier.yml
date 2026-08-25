@@ -37,4 +37,4 @@ jobs:
           name: mathgraph-18-edge-contextual-crossover-gate
           path: experiments/mathgraph/results/18-edge-contextual-crossover-gate.json
           if-no-files-found: warn
-# trigger: 18-edge-contextual-crossover-v1
+# trigger: 18-edge-contextual-crossover-v2
