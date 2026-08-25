@@ -1,0 +1,33 @@
+name: MathGraph Pseudo Hidden Generalization Gate
+
+on:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
+      - .github/workflows/mathgraph_pseudo_hidden_generalization.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pseudo-hidden:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run pseudo-hidden generalization gate
+        run: python experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-pseudo-hidden-generalization
+          path: experiments/mathgraph/results/pseudo-hidden-generalization-gate.json
+          if-no-files-found: warn
