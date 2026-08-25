@@ -1,0 +1,55 @@
+name: MathGraph residual-3 first divergence
+
+on:
+  push:
+    branches:
+      - mathgraph/final-lineage-tournament-20260825
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  divergence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json'))
+          ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); s=0
+              if 'linux' in n: s+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): s+=6
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): s-=20
+              ranked.append((s,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit(ranked)
+          print(ranked[0][1])
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+          V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
+      - name: Run first-divergence diagnostic
+        run: python experiments/mathgraph/run_residual3_first_divergence.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-first-divergence
+          path: experiments/mathgraph/results/residual3-first-divergence.json
+          if-no-files-found: error
