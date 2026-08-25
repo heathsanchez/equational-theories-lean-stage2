@@ -1,4 +1,5 @@
 name: MathGraph residual-3 corridor separator
+# trigger registration: exact frozen 8-vs-5 corridor census
 on:
   push:
     branches: [mathgraph/continuation-priority-window-20260826]
