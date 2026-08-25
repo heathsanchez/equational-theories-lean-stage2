@@ -44,10 +44,19 @@ jobs:
           if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
           V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
       - name: Run continuation separator census
-        run: python experiments/mathgraph/run_residual3_continuation_separator_census.py
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('experiments/mathgraph/run_residual3_continuation_separator_census.py')
+          s=p.read_text()
+          s=s.replace("'target_score': float(search.target_score(qred)),", "'target_score': float(search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred)),")
+          s=s.replace("'delta_target_score': float(search.target_score(qred)-search.target_score(parent)),", "'delta_target_score': float((search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred))-(search.target_score(parent)[0] if isinstance(search.target_score(parent), tuple) else search.target_score(parent))),")
+          p.write_text(s)
+          PY
+          python experiments/mathgraph/run_residual3_continuation_separator_census.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual3-continuation-separator-census
           path: experiments/mathgraph/results/residual3-continuation-separator-census.json
           if-no-files-found: error
-# isolated census trigger
