@@ -1,4 +1,5 @@
 name: MathGraph residual-3 second-stage separator
+# residual: 8 productive vs 5 false positives inside normalized-size gate
 
 on:
   push:
