@@ -5,7 +5,7 @@ ROOT=Path(__file__).resolve().parents[2]
 COMMIT='211414fdcc48f7f76f1d4043ae9d3d7e0aa376f8'
 SOLVER='submissions/mathgraph/solver.py'
 IDS={'hard1_0067','hard2_0107','hard3_0208'}
-SKIP_INF={'cnf_transformation','ennf_transformation','skolemize','negated_conjecture','reorient_equations','definition_folding'}
+DERIVED_INF={'superposition','forward_demodulation','backward_demodulation','forward_subsumption_resolution','subsumption_resolution','equality_resolution','resolution'}
 
 def load_solver():
     text=subprocess.check_output(['git','show',f'{COMMIT}:{SOLVER}'],cwd=ROOT,text=True)
@@ -77,14 +77,12 @@ def parse_fof(line):
 def remove_quantifier(s):
     s=strip_outer(s)
     if s.startswith('!') or s.startswith('?'):
-        # ! [X,Y] : body
         k=s.find(':')
         if k>=0: s=s[k+1:].strip()
     return strip_outer(s)
 
 def find_top_equality(s):
     s=remove_quantifier(s)
-    # Only single positive equality literals are useful for exact lifecycle matching.
     dp=db=0
     for i,ch in enumerate(s):
         if ch=='(': dp+=1
@@ -103,7 +101,6 @@ def parse_tptp_term(s):
         inner=s[2:-1]; ps=split_top(inner,',')
         if len(ps)!=2: raise ValueError(s)
         return ('f',parse_tptp_term(ps[0]),parse_tptp_term(ps[1]))
-    # Vampire may rename variables to X0, X1, V_X, etc.
     return ('v',s)
 
 def term_key(t,names):
@@ -181,15 +178,18 @@ def main():
                 if k is None: continue
                 status=classify(k,snap)
                 eqs.append({'index':i,'formula':formula,'inference':inf,'status':status,'key':repr(k)})
-            rec={'id':r['id'],'vampire_equalities':len(eqs),'first_divergence':None,'class_counts':{}}
+            rec={'id':r['id'],'vampire_equalities':len(eqs),'first_derived_divergence':None,'class_counts':{},'derived_class_counts':{}}
             for e in eqs:
                 rec['class_counts'][e['status']]=rec['class_counts'].get(e['status'],0)+1
-                if rec['first_divergence'] is None and e['status'] in ('absent','generated-discarded','generated-unselected') and e['inference'] not in SKIP_INF:
-                    rec['first_divergence']=e
+                if e['inference'] in DERIVED_INF:
+                    rec['derived_class_counts'][e['status']]=rec['derived_class_counts'].get(e['status'],0)+1
+                    if rec['first_derived_divergence'] is None and e['status'] in ('absent','generated-discarded','generated-unselected'):
+                        rec['first_derived_divergence']=e
             rec['engine_counts']={k:len(v) for k,v in snap.items()}; rec['vampire_path']=eqs
             results.append(rec)
             print('DIVERGENCE',json.dumps({k:v for k,v in rec.items() if k!='vampire_path'},sort_keys=True),flush=True)
     finally: td.cleanup()
     out=ROOT/'experiments/mathgraph/results/residual3-first-divergence.json'; out.parent.mkdir(parents=True,exist_ok=True); out.write_text(json.dumps({'rows':results},indent=2,sort_keys=True)+'\n')
     if any(r['vampire_equalities']==0 for r in results): raise SystemExit('parser produced zero equalities')
+    if any(r['first_derived_divergence'] is None for r in results): raise SystemExit('no genuine derived divergence found for one or more residuals')
 if __name__=='__main__': main()
