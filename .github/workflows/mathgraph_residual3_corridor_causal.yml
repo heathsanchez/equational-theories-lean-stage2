@@ -1,4 +1,5 @@
 name: MathGraph residual-3 corridor causal
+# registration touch: causal corridor selector
 on:
   push:
     branches: [mathgraph/continuation-priority-window-20260826]
