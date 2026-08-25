@@ -50,3 +50,4 @@ jobs:
           name: residual3-continuation-separator-census
           path: experiments/mathgraph/results/residual3-continuation-separator-census.json
           if-no-files-found: error
+# isolated census trigger
