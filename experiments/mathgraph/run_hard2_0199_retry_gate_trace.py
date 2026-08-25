@@ -49,7 +49,6 @@ def main():
             ) and (nodes[root].lhs, nodes[root].rhs) == target[:2]
             trace['replay_passed'] = bool(replayed)
             if replayed:
-                code, _ = ns['make_dag_certificate'](target, nodes, root)
                 original_judge = ns['judge']
                 recorded = {'calls': 0, 'verdict': None}
                 def fake_judge(verdict, certificate):
@@ -80,3 +79,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+# trigger: retry-gate-trace-v1
