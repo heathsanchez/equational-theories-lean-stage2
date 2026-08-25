@@ -1,0 +1,25 @@
+name: Continuation priority window
+
+on:
+  push:
+    branches:
+      - mathgraph/continuation-priority-window-20260826
+  workflow_dispatch:
+
+jobs:
+  continuation-window:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run continuation priority window sweep
+        run: python experiments/mathgraph/run_continuation_priority_window.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: continuation-priority-window
+          path: experiments/mathgraph/results/continuation-priority-window.json
+          if-no-files-found: error
