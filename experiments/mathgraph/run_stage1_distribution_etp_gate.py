@@ -136,3 +136,5 @@ def main():
     cp.unlink(missing_ok=True)
     if summary['pseudo_private']['wrong'] or any(r['error'] for r in results): raise SystemExit('wrong answer or execution error')
 if __name__=='__main__': main()
+
+# trigger: stage1-distribution-etp-gate-v1
