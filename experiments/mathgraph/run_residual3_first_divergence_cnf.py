@@ -8,6 +8,8 @@ spec = importlib.util.spec_from_file_location('base_div', BASE)
 base = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(base)
 
+_seen = 0
+
 
 def vampire_trace(m, r):
     source = m.parse_equation(r['equation1'])
@@ -17,25 +19,33 @@ def vampire_trace(m, r):
         h.write(problem); h.flush()
         run = subprocess.run(['vampire','--mode','casc','--time_limit','20','--proof','tptp',h.name], capture_output=True, text=True, timeout=22)
     out = run.stdout + run.stderr
-    proof = [x for x in out.splitlines() if x.startswith(('fof(', 'cnf('))]
+    proof = [x.strip() for x in out.splitlines() if x.strip().startswith(('fof(', 'cnf('))]
     if not proof:
-        print('VAMPIRE_RAW_HEAD', '\n'.join(out.splitlines()[:80]), flush=True)
+        print('VAMPIRE_RAW_HEAD', '\n'.join(out.splitlines()[:100]), flush=True)
+    else:
+        print('VAMPIRE_PROOF_HEAD', r['id'], '\n'.join(proof[:30]), flush=True)
     return source, target, proof, out
 
 
 def parse_tptp(line):
+    global _seen
     if line.startswith('fof('): off = 4
     elif line.startswith('cnf('): off = 4
     else: return None
     body = line[off:]
     if body.endswith(').'): body = body[:-2]
     parts = base.split_top(body, ',')
-    if len(parts) < 3: return None
+    if len(parts) < 3:
+        print('PARSE_PARTS_FAIL', line, flush=True)
+        return None
     formula = base.strip_outer(parts[2])
     tail = ','.join(parts[3:])
     import re
     mm = re.search(r'inference\(([^,\]]+)', tail)
     inf = mm.group(1) if mm else None
+    if _seen < 60:
+        print('PROOF_FORMULA', repr(formula), 'INF', inf, 'EQ', base.find_top_equality(formula), flush=True)
+        _seen += 1
     return formula, inf
 
 base.vampire_trace = vampire_trace
