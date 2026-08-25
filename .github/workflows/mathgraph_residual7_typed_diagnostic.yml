@@ -1,0 +1,25 @@
+name: MathGraph residual-7 typed diagnostic
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_residual7_typed_diagnostic.py'
+      - '.github/workflows/mathgraph_residual7_typed_diagnostic.yml'
+  workflow_dispatch:
+jobs:
+  diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_residual7_typed_diagnostic.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual7-typed-diagnostic
+          path: experiments/mathgraph/results/residual7-typed-diagnostic.json
