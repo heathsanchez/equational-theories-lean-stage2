@@ -37,4 +37,4 @@ jobs:
             experiments/mathgraph/results/3366-frontier-compression-sweep.json
             experiments/mathgraph/results/3366-dynamic-compatibility-basis.json
           if-no-files-found: warn
-# trigger: 3366-frontier-compression-v2
+# trigger: 3366-frontier-compression-v3-clean
