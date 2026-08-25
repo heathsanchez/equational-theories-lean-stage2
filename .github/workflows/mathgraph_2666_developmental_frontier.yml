@@ -37,4 +37,4 @@ jobs:
           name: mathgraph-18-edge-future-action-ordering
           path: experiments/mathgraph/results/18-edge-future-action-ordering.json
           if-no-files-found: warn
-# trigger: future-action-ordering-v1
+# trigger: future-action-ordering-v2
