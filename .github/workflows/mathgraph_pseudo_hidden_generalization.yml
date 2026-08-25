@@ -31,3 +31,4 @@ jobs:
           name: mathgraph-pseudo-hidden-generalization
           path: experiments/mathgraph/results/pseudo-hidden-generalization-gate.json
           if-no-files-found: warn
+# trigger: pseudo-hidden-generalization-v2
