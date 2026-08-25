@@ -1,0 +1,29 @@
+name: MathGraph residual-3 pipeline separator
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_residual3_pipeline_separator.py'
+      - '.github/workflows/mathgraph_residual3_pipeline_separator.yml'
+  workflow_dispatch:
+jobs:
+  separator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Vampire
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y vampire
+      - name: Run separator
+        run: python experiments/mathgraph/run_residual3_pipeline_separator.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-pipeline-separator
+          path: experiments/mathgraph/results/residual3-pipeline-separator.json
