@@ -1,0 +1,30 @@
+name: MathGraph structural continuation gate
+
+on:
+  push:
+    branches: [mathgraph/continuation-priority-window-20260826]
+    paths:
+      - 'experiments/mathgraph/run_structural_continuation_gate.py'
+      - '.github/workflows/mathgraph_structural_continuation_gate.yml'
+  workflow_dispatch:
+
+jobs:
+  structural-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax check
+        run: python -m py_compile experiments/mathgraph/run_structural_continuation_gate.py
+      - name: Run structural continuation gate
+        run: python experiments/mathgraph/run_structural_continuation_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: structural-continuation-gate
+          path: experiments/mathgraph/results/structural-continuation-gate.json
+          if-no-files-found: error
