@@ -1,0 +1,25 @@
+name: MathGraph residual-3 side-complete superposition
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_residual3_side_complete_superposition.py'
+      - '.github/workflows/mathgraph_residual3_side_complete_superposition.yml'
+  workflow_dispatch:
+jobs:
+  side_complete:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_residual3_side_complete_superposition.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: residual3-side-complete-superposition
+          path: experiments/mathgraph/results/residual3-side-complete-superposition.json
