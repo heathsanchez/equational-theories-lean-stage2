@@ -1,0 +1,109 @@
+name: MathGraph residual-3 normalized separator reconciliation
+on:
+  push:
+    branches: [mathgraph/continuation-priority-window-20260826]
+    paths:
+      - '.github/workflows/mathgraph_residual3_normalized_separator_reconcile.yml'
+  workflow_dispatch:
+jobs:
+  reconcile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json'))
+          ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); s=0
+              if 'linux' in n: s+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): s+=6
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): s-=20
+              ranked.append((s,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit(ranked)
+          print(ranked[0][1])
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+          V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
+      - name: Run aligned normalized separator census
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('experiments/mathgraph/run_residual3_continuation_separator_census.py')
+          s=p.read_text()
+          s=s.replace("'target_score': float(search.target_score(qred)),", "'target_score': float(search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred)),")
+          s=s.replace("'delta_target_score': float(search.target_score(qred)-search.target_score(parent)),", "'delta_target_score': float((search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred))-(search.target_score(parent)[0] if isinstance(search.target_score(parent), tuple) else search.target_score(parent))),")
+          s=s.replace("'raw_size': raw_size,", "'raw_size': raw_size,\n        'parent_size': psize,\n        'raw_minus_parent': raw_size-psize,\n        'raw_parent_ratio': raw_size/max(psize,1),")
+          s=s.replace("numeric=['target_score','delta_target_score','raw_size','reduced_size'", "numeric=['target_score','delta_target_score','raw_size','parent_size','raw_minus_parent','raw_parent_ratio','reduced_size'")
+          s=s.replace("'id':r['id'],'status':'COMPLETE','first_vampire_path_index':first_i,", "'id':r['id'],'status':'COMPLETE','first_vampire_path_position':first_i,'first_vampire_statement_index':vpath[first_i]['index'],")
+          s=s.replace("'positive_feature_rows':[rw['features'] for rw in rows if rw['positive']][:20],", "'positive_feature_rows':[rw['features'] for rw in rows if rw['positive']][:20],\n        'all_rows': rows,")
+          p.write_text(s)
+          PY
+          python experiments/mathgraph/run_residual3_continuation_separator_census.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/mathgraph/results/residual3-continuation-separator-census.json')
+          data=json.loads(p.read_text())
+          expected={
+            'hard1_0067':'! [X0] : (sK1 = f(f(sK3,sF5),f(X0,sK1)))',
+            'hard3_0208':'! [X2,X0,X1] : (f(X2,X0) = f(f(X1,X0),f(X1,f(X2,X0))))',
+          }
+          aligned=True
+          pooled=[]
+          for r in data['rows']:
+            ok=(r.get('first_vampire_statement_index')==16 and r.get('rescue_formula')==expected[r['id']])
+            r['boundary_matches_prior_lifecycle']=ok
+            aligned = aligned and ok
+            for x in r.get('all_rows',[]):
+              pooled.append((r['id'],bool(x['positive']),x['features']))
+          def best(key):
+            vals=sorted({float(f[key]) for _,_,f in pooled})
+            cuts=[vals[0]-1e-9]+[(a+b)/2 for a,b in zip(vals,vals[1:])]+[vals[-1]+1e-9]
+            out=None
+            for cut in cuts:
+              for d in ('le','gt'):
+                tp=tn=fp=fn=0
+                for _,y,f in pooled:
+                  pred=(float(f[key])<=cut) if d=='le' else (float(f[key])>cut)
+                  if pred and y: tp+=1
+                  elif pred and not y: fp+=1
+                  elif not pred and y: fn+=1
+                  else: tn+=1
+                rec=tp/(tp+fn) if tp+fn else 0
+                spec=tn/(tn+fp) if tn+fp else 0
+                bal=(rec+spec)/2
+                prec=tp/(tp+fp) if tp+fp else 0
+                z={'feature':key,'direction':d,'cut':cut,'balanced_accuracy':bal,'precision':prec,'recall':rec,'tp':tp,'fp':fp,'tn':tn,'fn':fn}
+                if out is None or (bal,prec,rec)>(out['balanced_accuracy'],out['precision'],out['recall']): out=z
+            return out
+          keys=['raw_minus_parent','raw_parent_ratio','raw_size','interreduce_contraction','reduced_size','target_score']
+          result={'status':'COMPLETE' if aligned else 'BOUNDARY_MISMATCH','boundary_aligned':aligned,'pooled_candidates':len(pooled),'pooled_positives':sum(y for _,y,_ in pooled),'pooled_separators':sorted([best(k) for k in keys],key=lambda z:(z['balanced_accuracy'],z['precision']),reverse=True),'rows':data['rows']}
+          out=Path('experiments/mathgraph/results/residual3-normalized-separator-reconcile.json')
+          out.write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          print('NORMALIZED_SEPARATOR_RECONCILE',json.dumps({k:v for k,v in result.items() if k!='rows'},sort_keys=True))
+          if not aligned: raise SystemExit('boundary mismatch')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-normalized-separator-reconcile
+          path: experiments/mathgraph/results/residual3-normalized-separator-reconcile.json
+          if-no-files-found: error
