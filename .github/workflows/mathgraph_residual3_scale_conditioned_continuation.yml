@@ -1,0 +1,49 @@
+name: MathGraph residual-3 scale-conditioned continuation
+on:
+  push:
+    branches: [mathgraph/continuation-priority-window-20260826]
+    paths:
+      - '.github/workflows/mathgraph_residual3_scale_conditioned_continuation.yml'
+  workflow_dispatch:
+jobs:
+  causal-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build scale-conditioned continuation variant
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('experiments/mathgraph/run_continuation_priority_window.py')
+          dst=Path('experiments/mathgraph/run_scale_conditioned_continuation.py')
+          s=src.read_text()
+          s=s.replace("OUT=Path(__file__).parent/'results/continuation-priority-window.json'", "OUT=Path(__file__).parent/'results/scale-conditioned-continuation.json'")
+          marker="def search_with_window(m,search,window,maximum_given=1024):"
+          helper='''def term_size(t):\n    if getattr(t,'is_var',False): return 1\n    if isinstance(t,tuple):\n        if t and t[0] in ('var','v'): return 1\n        if len(t)>=3: return 1+term_size(t[1])+term_size(t[2])\n    for lr in ((\"left\",\"right\"),(\"lhs\",\"rhs\")):\n        if hasattr(t,lr[0]) and hasattr(t,lr[1]): return 1+term_size(getattr(t,lr[0]))+term_size(getattr(t,lr[1]))\n    if hasattr(t,'args'): return 1+sum(term_size(x) for x in t.args)\n    return 1\n\n'''
+          s=s.replace(marker, helper+marker)
+          s=s.replace("proposals=[]\n", "proposals=[]; raw_gate={}; parent_size=term_size(selected.lhs)+term_size(selected.rhs)\n")
+          old="qr=search.interreduce(q,rules); proposals.append((search.target_score(qr),qr))"
+          new="qr=search.interreduce(q,rules); kk=ckey(m,qr); rs=term_size(q.lhs)+term_size(q.rhs); raw_gate[kk]=min(raw_gate.get(kk,10**18),rs); proposals.append((search.target_score(qr),qr))"
+          s=s.replace(old,new)
+          old2="qr=eng.search.interreduce(q,rules); proposals.append((eng.search.target_score(qr),qr))"
+          new2="qr=eng.search.interreduce(q,rules); kk=ckey(m,qr); rs=term_size(q.lhs)+term_size(q.rhs); raw_gate[kk]=min(raw_gate.get(kk,10**18),rs); proposals.append((eng.search.target_score(qr),qr))"
+          s=s.replace(old2,new2)
+          s=s.replace("accepted_total+=1; descendants.add(k)", "accepted_total+=1;\n                    if raw_gate.get(k,10**18) <= parent_size+1: descendants.add(k)")
+          if 'raw_gate' not in s or 'parent_size+1' not in s: raise SystemExit('patch failed')
+          dst.write_text(s)
+          PY
+          python -m py_compile experiments/mathgraph/run_scale_conditioned_continuation.py
+      - name: Run causal proof/replay sweep
+        run: python experiments/mathgraph/run_scale_conditioned_continuation.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-scale-conditioned-continuation
+          path: experiments/mathgraph/results/scale-conditioned-continuation.json
+          if-no-files-found: error
