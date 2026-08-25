@@ -1,0 +1,95 @@
+name: MathGraph residual-6 Vampire microscope
+
+on:
+  push:
+    branches:
+      - mathgraph/final-lineage-tournament-20260825
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  microscope:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json'))
+          ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); s=0
+              if 'linux' in n: s+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): s+=6
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): s-=20
+              ranked.append((s,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit(ranked)
+          print(ranked[0][1])
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+          V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
+      - name: Recover committed diagnostic and prepare three residuals
+        shell: bash
+        run: |
+          set -euxo pipefail
+          git show origin/mathgraph/vampire-six-repro-20260820:experiments/mathgraph/run_vampire_residual_research.py > /tmp/run_vampire_residual_research.py
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          wanted={'hard1_0067','hard2_0107','hard3_0208'}
+          found=[]
+          for split in ('hard1','hard2','hard3'):
+              for line in Path(f'examples/problems/{split}.jsonl').read_text().splitlines():
+                  if not line.strip(): continue
+                  r=json.loads(line)
+                  if r.get('id') in wanted: found.append(r)
+          if {r['id'] for r in found} != wanted: raise SystemExit(('missing', wanted-{r['id'] for r in found}))
+          Path('/tmp/residual3.json').write_text(json.dumps(found,indent=2))
+          PY
+          cp /tmp/run_vampire_residual_research.py experiments/mathgraph/run_vampire_residual_research_tmp.py
+      - name: Run Vampire proof microscope
+        shell: bash
+        run: |
+          set -euxo pipefail
+          python experiments/mathgraph/run_vampire_residual_research_tmp.py --input /tmp/residual3.json --output /tmp/residual3-vampire.json --seconds 20
+          python - <<'PY'
+          import json,re,collections
+          p=json.load(open('/tmp/residual3-vampire.json'))
+          out=[]
+          for r in p['rows']:
+              proof=r.get('proof') or ''
+              inf=collections.Counter(re.findall(r'inference\(([^,\]]+)',proof))
+              eq_lines=[x for x in proof.splitlines() if x.startswith('fof(')]
+              rec={k:r.get(k) for k in ('id','theorem','seconds','proof_lines','superposition_steps','demodulation_steps','peak_memory_mb')}
+              rec['inference_histogram']=dict(sorted(inf.items()))
+              rec['proof_fof_lines']=eq_lines
+              out.append(rec)
+              print('MICROSCOPE',json.dumps({k:v for k,v in rec.items() if k!='proof_fof_lines'},sort_keys=True))
+          json.dump({'rows':out},open('/tmp/residual3-microscope.json','w'),indent=2)
+          if not all(r['theorem'] for r in out): raise SystemExit('Vampire did not prove all residual TRUEs')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-vampire-microscope
+          path: |
+            /tmp/residual3-vampire.json
+            /tmp/residual3-microscope.json
+          if-no-files-found: error
