@@ -41,7 +41,7 @@ def gc_trial(m,r,name,focus,max_given,seconds,term=65,depth=12,clauses=12000,new
     return {'kind':'true-gc','id':r['id'],'trial':name,'focus_per_age':focus,'max_given':max_given,'found':found,'proof_nodes':proof_nodes,'code_bytes':code_bytes,'seconds':time.monotonic()-st,'error':error}
 
 def stair_trial(m,r,name,seconds,**kw):
-    source,target=parsed(m,r); problem={'id':r['id'],'equation1':r['equation1'],'equation2':r['equation2']}; st=time.monotonic(); found=False; result_meta={}; error=None
+    problem={'id':r['id'],'equation1':r['equation1'],'equation2':r['equation2']}; st=time.monotonic(); found=False; result_meta={}; error=None
     try:
         engine,replay=m._load_stair_specialist(); base=dict(max_clauses=8000,max_weight=36,max_term_size=30,pair_budget=300,timeout=seconds,translate=True,unordered=False,neg_bias=0,old_rules_first=False,tautology_prune=False,forward_subsumption=False); base.update(kw)
         args=engine['argparse'].Namespace(**base)
@@ -55,9 +55,7 @@ def false_trial(m,r,order,seconds,canonical_only=False):
     source,target=parsed(m,r); st=time.monotonic(); found=False; cert=None; err=None
     try:
         ans=m.find_finite_countermodel(order,source,target,time.monotonic()+seconds,canonical_only=canonical_only)
-        if ans is not None:
-            # Return shape is implementation-specific; successful construction is still independently replayed by production finish path.
-            found=True; cert=str(type(ans).__name__)
+        if ans is not None: found=True; cert=str(type(ans).__name__)
     except Exception as e: err=f'{type(e).__name__}:{e}'
     return {'kind':'false-model','id':r['id'],'order':order,'seconds_budget':seconds,'canonical_only':canonical_only,'found':found,'answer_type':cert,'elapsed':time.monotonic()-st,'error':err}
 
@@ -84,3 +82,4 @@ def main():
     print('DIAG_SUMMARY',json.dumps(summary,sort_keys=True),flush=True)
     (ROOT/'experiments/mathgraph/results').mkdir(parents=True,exist_ok=True); (ROOT/'experiments/mathgraph/results/residual7-typed-diagnostic.json').write_text(json.dumps({'summary':summary,'results':results},indent=2,sort_keys=True)+'\n')
 if __name__=='__main__': main()
+
