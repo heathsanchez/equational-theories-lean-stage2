@@ -1,4 +1,5 @@
 name: MathGraph final solver lineage tournament
+# trigger 2026-08-25
 
 on:
   workflow_dispatch:
