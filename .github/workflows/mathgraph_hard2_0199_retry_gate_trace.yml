@@ -1,0 +1,36 @@
+name: MathGraph hard2_0199 Retry Gate Trace
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_hard2_0199_retry_gate_trace.py
+      - .github/workflows/mathgraph_hard2_0199_retry_gate_trace.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_hard2_0199_retry_gate_trace.py
+      - .github/workflows/mathgraph_hard2_0199_retry_gate_trace.yml
+
+permissions:
+  contents: read
+
+jobs:
+  retry-gate-trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Trace hard2_0199 retry gates
+        run: python experiments/mathgraph/run_hard2_0199_retry_gate_trace.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-hard2-0199-retry-gate-trace
+          path: experiments/mathgraph/results/hard2-0199-retry-gate-trace.json
+          if-no-files-found: warn
