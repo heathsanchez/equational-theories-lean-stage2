@@ -3,13 +3,13 @@ name: MathGraph 2666 Developmental Frontier
 on:
   pull_request:
     paths:
-      - experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
+      - experiments/mathgraph/run_pseudo_hidden_residual_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
-      - experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
+      - experiments/mathgraph/run_pseudo_hidden_residual_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -26,12 +26,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run pseudo-hidden generalization gate
-        run: python experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
+      - name: Run pseudo-hidden residual attribution gate
+        run: python experiments/mathgraph/run_pseudo_hidden_residual_attribution.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-pseudo-hidden-generalization
-          path: experiments/mathgraph/results/pseudo-hidden-generalization-gate.json
+          name: mathgraph-pseudo-hidden-residual-attribution
+          path: experiments/mathgraph/results/pseudo-hidden-residual-attribution.json
           if-no-files-found: warn
-# trigger: pseudo-hidden-generalization-v3
+# trigger: pseudo-hidden-residual-attribution-v1
