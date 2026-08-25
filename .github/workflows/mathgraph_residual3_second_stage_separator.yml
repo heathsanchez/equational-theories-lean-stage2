@@ -1,5 +1,4 @@
 name: MathGraph residual-3 second-stage separator
-# residual: 8 productive vs 5 false positives inside normalized-size gate
 
 on:
   push:
@@ -20,10 +19,47 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install Vampire
+        shell: bash
+        run: |
+          set -euxo pipefail
+          sudo apt-get update
+          sudo apt-get install -y curl jq unzip file
+          curl -fsSL https://api.github.com/repos/vprover/vampire/releases/latest -o /tmp/vampire-release.json
+          python - <<'PY' >/tmp/vampire-url.txt
+          import json
+          r=json.load(open('/tmp/vampire-release.json'))
+          ranked=[]
+          for a in r.get('assets',[]):
+              n=a['name'].lower(); s=0
+              if 'linux' in n: s+=10
+              if any(x in n for x in ('x86_64','amd64','x64')): s+=6
+              if any(x in n for x in ('source','src','darwin','mac','windows','cygwin')): s-=20
+              ranked.append((s,a['browser_download_url'],a['name']))
+          ranked.sort(reverse=True)
+          if not ranked or ranked[0][0] < 10: raise SystemExit(ranked)
+          print(ranked[0][1])
+          PY
+          curl -fL "$(cat /tmp/vampire-url.txt)" -o /tmp/vampire-asset
+          mkdir -p /tmp/vampire-bin
+          kind="$(file -b /tmp/vampire-asset)"
+          if echo "$kind" | grep -qi 'Zip archive'; then unzip -q /tmp/vampire-asset -d /tmp/vampire-bin; elif echo "$kind" | grep -Eqi 'gzip|tar archive|XZ compressed'; then tar -xf /tmp/vampire-asset -C /tmp/vampire-bin; else cp /tmp/vampire-asset /tmp/vampire-bin/vampire; fi
+          V="$(find /tmp/vampire-bin -type f -name 'vampire*' | head -1)"; chmod +x "$V"; sudo install -m0755 "$V" /usr/local/bin/vampire
+          vampire --version || true
       - name: Syntax check
         run: python -m py_compile experiments/mathgraph/run_residual3_second_stage_separator.py
       - name: Run second-stage separator census
-        run: python experiments/mathgraph/run_residual3_second_stage_separator.py
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('experiments/mathgraph/run_residual3_continuation_separator_census.py')
+          s=p.read_text()
+          s=s.replace("'target_score': float(search.target_score(qred)),", "'target_score': float(search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred)),")
+          s=s.replace("'delta_target_score': float(search.target_score(qred)-search.target_score(parent)),", "'delta_target_score': float((search.target_score(qred)[0] if isinstance(search.target_score(qred), tuple) else search.target_score(qred))-(search.target_score(parent)[0] if isinstance(search.target_score(parent), tuple) else search.target_score(parent))),")
+          p.write_text(s)
+          PY
+          python experiments/mathgraph/run_residual3_second_stage_separator.py
       - uses: actions/upload-artifact@v4
         with:
           name: residual3-second-stage-separator
