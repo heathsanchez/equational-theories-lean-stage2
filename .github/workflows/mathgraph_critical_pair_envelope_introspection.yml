@@ -1,0 +1,20 @@
+name: MathGraph critical-pair envelope introspection
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/run_critical_pair_envelope_introspection.py'
+      - '.github/workflows/mathgraph_critical_pair_envelope_introspection.yml'
+  workflow_dispatch:
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_critical_pair_envelope_introspection.py
