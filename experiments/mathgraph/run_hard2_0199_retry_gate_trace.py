@@ -5,7 +5,7 @@ import time
 from pathlib import Path
 
 SOLVER = Path('submissions/mathgraph/solver.py')
-DATA = Path('data/hard2.jsonl')
+DATA = Path('examples/problems/hard2.jsonl')
 OUT = Path('experiments/mathgraph/results/hard2-0199-retry-gate-trace.json')
 
 
@@ -80,4 +80,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# trigger: retry-gate-trace-v1
+# trigger: retry-gate-trace-v2
