@@ -1,6 +1,7 @@
 import contextlib, importlib.util, io, json, subprocess, sys, tempfile, time
 from pathlib import Path
 
+# Exact 796 solver, exact production ordering, official Solo timeout budget.
 ROOT=Path(__file__).resolve().parents[2]
 COMMIT='211414fdcc48f7f76f1d4043ae9d3d7e0aa376f8'
 SOLVER='submissions/mathgraph/solver.py'
