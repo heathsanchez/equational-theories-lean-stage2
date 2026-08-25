@@ -1,4 +1,5 @@
 name: MathGraph residual-3 scale-conditioned continuation
+# causal test: normalized non-expansion separator
 on:
   push:
     branches: [mathgraph/continuation-priority-window-20260826]
