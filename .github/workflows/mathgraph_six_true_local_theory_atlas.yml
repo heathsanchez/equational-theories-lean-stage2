@@ -1,0 +1,35 @@
+name: MathGraph six-TRUE local-theory atlas
+on:
+  push:
+    branches: [mathgraph/continuation-priority-window-20260826]
+    paths:
+      - 'experiments/mathgraph/run_six_true_local_theory_atlas.py'
+      - '.github/workflows/mathgraph_six_true_local_theory_atlas.yml'
+  workflow_dispatch:
+jobs:
+  local_theory_atlas:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch public Stage-1 evaluation rows
+        run: |
+          mkdir -p /tmp/sair_stage1_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          for f in evaluation_hard evaluation_normal evaluation_order5; do
+            curl -fL --retry 3 "$base/$f.jsonl" -o "/tmp/sair_stage1_eval/$f.jsonl"
+          done
+      - name: Syntax check
+        run: python -m py_compile experiments/mathgraph/run_six_true_local_theory_atlas.py
+      - name: Run six-TRUE local-theory atlas
+        run: python experiments/mathgraph/run_six_true_local_theory_atlas.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: six-true-local-theory-atlas
+          path: experiments/mathgraph/results/six-true-local-theory-atlas.json
+          if-no-files-found: error
