@@ -1,0 +1,23 @@
+name: MathGraph residual-3 fairness proof sweep
+on:
+  push:
+    branches:
+      - mathgraph/final-lineage-tournament-20260825
+jobs:
+  proof-sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run proof-success sweep
+        run: python experiments/mathgraph/run_residual3_fairness_proof_sweep.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: residual3-fairness-proof-sweep
+          path: experiments/mathgraph/results/residual3-fairness-proof-sweep.json
+          if-no-files-found: error
