@@ -1,0 +1,19 @@
+name: MathGraph 796 search surface
+on:
+  push:
+    branches: [mathgraph/final-lineage-tournament-20260825]
+    paths:
+      - 'experiments/mathgraph/introspect_796_search_surface.py'
+      - '.github/workflows/mathgraph_796_search_surface.yml'
+  workflow_dispatch:
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/introspect_796_search_surface.py
