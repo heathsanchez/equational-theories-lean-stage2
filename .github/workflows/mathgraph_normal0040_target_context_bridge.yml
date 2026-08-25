@@ -1,0 +1,30 @@
+name: MathGraph normal0040 target context bridge
+
+on:
+  push:
+    branches:
+      - mathgraph/continuation-priority-window-20260826
+  workflow_dispatch:
+
+jobs:
+  context_bridge:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch public Stage-1 normal evaluation rows
+        run: |
+          mkdir -p /tmp/sair_stage1_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_stage1_eval/evaluation_normal.jsonl
+      - name: Syntax check
+        run: python -m py_compile experiments/mathgraph/run_normal0040_target_context_bridge.py
+      - name: Run normal0040 target context bridge
+        run: python experiments/mathgraph/run_normal0040_target_context_bridge.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: normal0040-target-context-bridge
+          path: experiments/mathgraph/results/normal0040-target-context-bridge.json
+          if-no-files-found: error
