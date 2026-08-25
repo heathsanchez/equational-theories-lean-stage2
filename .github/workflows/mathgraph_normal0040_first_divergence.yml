@@ -1,0 +1,34 @@
+name: MathGraph normal0040 first divergence
+
+on:
+  push:
+    branches:
+      - mathgraph/normal0040-first-divergence-20260826
+  workflow_dispatch:
+
+jobs:
+  normal0040-first-divergence:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch normal evaluation data
+        run: |
+          mkdir -p /tmp/sair_stage1_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_stage1_eval/evaluation_normal.jsonl
+      - name: Compile audit
+        run: python -m py_compile experiments/mathgraph/run_normal0040_vampire_first_divergence.py
+      - name: Run audit
+        run: |
+          python experiments/mathgraph/run_normal0040_vampire_first_divergence.py \
+            --input /tmp/sair_stage1_eval/evaluation_normal.jsonl \
+            --output experiments/mathgraph/results/normal0040-vampire-first-divergence.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: normal0040-vampire-first-divergence
+          path: experiments/mathgraph/results/normal0040-vampire-first-divergence.json
+          if-no-files-found: error
