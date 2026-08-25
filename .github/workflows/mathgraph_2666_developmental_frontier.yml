@@ -3,7 +3,7 @@ name: MathGraph 2666 Developmental Frontier
 on:
   pull_request:
     paths:
-      - experiments/mathgraph/run_3366_contextual_bridge_lookahead.py
+      - experiments/mathgraph/run_3366_plateau_handoff_attribution.py
       - experiments/mathgraph/run_3366_iterated_contextual_contraction.py
       - experiments/mathgraph/run_3366_round8_interface_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
@@ -11,7 +11,7 @@ on:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
-      - experiments/mathgraph/run_3366_contextual_bridge_lookahead.py
+      - experiments/mathgraph/run_3366_plateau_handoff_attribution.py
       - experiments/mathgraph/run_3366_iterated_contextual_contraction.py
       - experiments/mathgraph/run_3366_round8_interface_attribution.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
@@ -29,14 +29,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run 3366 contextual bridge lookahead
-        run: python experiments/mathgraph/run_3366_contextual_bridge_lookahead.py
+      - name: Run 3366 distance-100 plateau handoff attribution
+        run: python experiments/mathgraph/run_3366_plateau_handoff_attribution.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-3366-contextual-bridge-lookahead
+          name: mathgraph-3366-plateau-handoff-attribution
           path: |
-            experiments/mathgraph/results/3366-contextual-bridge-lookahead.json
+            experiments/mathgraph/results/3366-plateau-handoff-attribution.json
             experiments/mathgraph/results/3366-round8-interface-attribution.json
           if-no-files-found: warn
-# trigger: 3366-contextual-bridge-lookahead-v1
+# trigger: 3366-plateau-handoff-attribution-v1
