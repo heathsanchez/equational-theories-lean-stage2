@@ -3,19 +3,13 @@ name: MathGraph 2666 Developmental Frontier
 on:
   pull_request:
     paths:
-      - experiments/mathgraph/run_18_edge_future_controller_gate.py
-      - experiments/mathgraph/run_18_edge_future_action_ordering.py
-      - experiments/mathgraph/run_3366_iterated_contextual_contraction.py
-      - experiments/mathgraph/run_3366_round8_interface_attribution.py
+      - experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
   push:
     branches:
       - mathgraph/18-edge-constructor-separator-20260824
     paths:
-      - experiments/mathgraph/run_18_edge_future_controller_gate.py
-      - experiments/mathgraph/run_18_edge_future_action_ordering.py
-      - experiments/mathgraph/run_3366_iterated_contextual_contraction.py
-      - experiments/mathgraph/run_3366_round8_interface_attribution.py
+      - experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
       - .github/workflows/mathgraph_2666_developmental_frontier.yml
 
 permissions:
@@ -24,6 +18,7 @@ permissions:
 jobs:
   developmental-frontier:
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,12 +26,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Run decisive 18-edge future-relative controller gate
-        run: python experiments/mathgraph/run_18_edge_future_controller_gate.py
+      - name: Run pseudo-hidden generalization gate
+        run: python experiments/mathgraph/run_pseudo_hidden_generalization_gate.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mathgraph-18-edge-future-controller-gate
-          path: experiments/mathgraph/results/18-edge-future-controller-gate.json
+          name: mathgraph-pseudo-hidden-generalization
+          path: experiments/mathgraph/results/pseudo-hidden-generalization-gate.json
           if-no-files-found: warn
-# trigger: future-controller-gate-v1
+# trigger: pseudo-hidden-generalization-v3
