@@ -72,26 +72,33 @@ def main():
         p130,_=derive(p123,p126,'f130'); p148,_=derive(mats['f20'],p126,'f148'); p150,_=derive(p130,p130,'f150'); p196,p196meta=derive(p148,p150,'f196')
         native19=mats['f19']; native196=p196
         exact19=m.Recipe(*wanted['f19'],'separator',()); exact196=m.Recipe(*wanted['f196'],'separator',())
+        def expand_term(term):
+            if term[0]=='var' and term[1] in engine.reverse_constants:
+                return expand_term(engine.reverse_constants[term[1]])
+            if term[0]=='op': return ('op',expand_term(term[1]),expand_term(term[2]))
+            return term
+        def expand_recipe(recipe,cache=None):
+            cache={} if cache is None else cache
+            if id(recipe) in cache: return cache[id(recipe)]
+            parents=tuple(expand_recipe(p,cache) for p in recipe.parents)
+            data=recipe.data
+            if recipe.kind=='source':
+                sub,rev=data; data=(tuple((v,expand_term(t)) for v,t in sub),rev)
+            elif recipe.kind=='instantiate': data=tuple((v,expand_term(t)) for v,t in data)
+            elif recipe.kind=='congruence': data=(data[0],expand_term(data[1]))
+            out=m.Recipe(expand_term(recipe.lhs),expand_term(recipe.rhs),recipe.kind,parents,data); cache[id(recipe)]=out; return out
         def known_overlap(left,right):
             a1=orient(left,True); b1=orient(right,True)
             q=engine.search.critical_pair(a1,b1,0,1,('L',))
-            if q is None: return {'child':None,'alpha_hit':False}
-            x,y=inline(q)
-            return {'child':[m.render_term(x),m.render_term(y)],'alpha_hit':alpha_sig(rigid,x,y)==alpha_sig(rigid,*wanted['f217'])}
+            if q is None: return {'child':None,'alpha_hit':False,'replay':False,'nodes':0}
+            x,y=inline(q); ok,n=replay(q)
+            return {'child':[m.render_term(x),m.render_term(y)],'alpha_hit':alpha_sig(rigid,x,y)==alpha_sig(rigid,*wanted['f217']),'replay':ok,'nodes':n}
         def describe(c,fid):
             x,y=inline(c); gx,gy=wanted[fid]
             sub={}; forward=rigid.match_term(x,gx,sub) and rigid.match_term(y,gy,sub)
             return {'native':[m.render_term(x),m.render_term(y)],'raw_native':[m.render_term(c.lhs),m.render_term(c.rhs)],'vampire':[m.render_term(gx),m.render_term(gy)],'alpha_exact':alpha_sig(rigid,x,y)==alpha_sig(rigid,gx,gy),'native_covers_vampire':forward,'cover_substitution':{k:m.render_term(v) for k,v in sub.items()}}
-        def critical_trace(left,right):
-            a1=orient(left,True); b1=orient(right,True)
-            fl=engine.search.freshen(a1,'o0_'); fr=engine.search.freshen(b1,'i1_')
-            selected=m.get_subterm(fl.lhs,('L',)); unifier=m.unify_terms(selected,fr.lhs)
-            out={'oriented_left':[m.render_term(a1.lhs),m.render_term(a1.rhs)],'oriented_right':[m.render_term(b1.lhs),m.render_term(b1.rhs)],'fresh_left':[m.render_term(fl.lhs),m.render_term(fl.rhs)],'fresh_right':[m.render_term(fr.lhs),m.render_term(fr.rhs)],'selected':m.render_term(selected),'right_lhs':m.render_term(fr.lhs),'unifier':None if unifier is None else {k:m.render_term(v) for k,v in unifier.items()}}
-            if unifier is not None:
-                il=engine.search.instantiate(fl,unifier); ir=engine.search.instantiate(fr,unifier); changed=m.replace_subterm(il.lhs,('L',),ir.rhs)
-                out.update({'instantiated_left':[m.render_term(il.lhs),m.render_term(il.rhs)],'instantiated_right':[m.render_term(ir.lhs),m.render_term(ir.rhs)],'changed':m.render_term(changed),'changed_equals_left_rhs':changed==il.rhs})
-            return out
-        out={'id':RID,'f19_cover_meta':meta['f19'],'f196_derivation':p196meta,'f19':describe(native19,'f19'),'f196':describe(native196,'f196'),'known_overlap_native':known_overlap(native19,native196),'known_overlap_exact':known_overlap(exact19,exact196),'critical_trace_native':critical_trace(native19,native196),'critical_trace_exact':critical_trace(exact19,exact196)}
-        Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print('F217_PARENT_REPRESENTATION',json.dumps(out,sort_keys=True),flush=True)
+        expanded19=expand_recipe(native19); expanded196=expand_recipe(native196)
+        out={'id':RID,'f19_cover_meta':meta['f19'],'f196_derivation':p196meta,'f19':describe(native19,'f19'),'f196':describe(native196,'f196'),'known_overlap_native':known_overlap(native19,native196),'known_overlap_expanded':known_overlap(expanded19,expanded196),'expanded_f196_raw':[m.render_term(expanded196.lhs),m.render_term(expanded196.rhs)],'known_overlap_exact':known_overlap(exact19,exact196)}
+        Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print('F217_RIGID_EXPANSION',json.dumps(out,sort_keys=True),flush=True)
     finally: hp.unlink(missing_ok=True)
 if __name__=='__main__': main()
