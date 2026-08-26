@@ -47,7 +47,7 @@ def main():
             if kind=='definition':
                 if x[0]=='var' and x[1].startswith('sF'): defs[x[1]]=y
                 elif y[0]=='var' and y[1].startswith('sF'): defs[y[1]]=x
-            elif fid in ('f81','f95'):
+            elif fid in ('f81','f95','f123','f126','f130'):
                 wanted[fid]=(h.map_rigids(h.inline_defs(x,defs),target[2]), h.map_rigids(h.inline_defs(y,defs),target[2]))
         f81,f95=wanted['f81'],wanted['f95']
         cover=sub=None; rev=False
@@ -57,7 +57,7 @@ def main():
                 s={}
                 if rigid.match_term(u,f81[0],s) and rigid.match_term(v,f81[1],s): cover=c; sub=s; rev=bool(r); break
             if cover: break
-        out={'id':RID,'baseline_found':bool(baseline),'cover_found':bool(cover),'f95_found':False,'f95_replay':False,'continued_recipe':False,'continued_replay':False}
+        out={'id':RID,'baseline_found':bool(baseline),'cover_found':bool(cover),'f95_found':False,'f95_replay':False,'continued_recipe':False,'continued_replay':False,'descendants':{k:False for k in ('f123','f126','f130')}}
         if cover:
             base=cover if not rev else m.Recipe(cover.rhs,cover.lhs,'symmetry',(cover,))
             mat=engine.search.instantiate(base,sub)
@@ -79,6 +79,12 @@ def main():
                     out['continued_nodes']=len(nodes2)
                     out['continued_replay']=bool(m.replay_dag(source,nodes2,root2,maximum_term_size=260,maximum_nodes=50000))
                 break
+            for c in engine.search.clauses:
+                x=h.inline_engine_names(c.lhs,engine.reverse_constants); y=h.inline_engine_names(c.rhs,engine.reverse_constants)
+                sig=alpha_sig(rigid,x,y)
+                for fid in ('f123','f126','f130'):
+                    if fid in wanted and sig==alpha_sig(rigid,wanted[fid][0],wanted[fid][1]):
+                        out['descendants'][fid]=True
         Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
         print('MATERIALIZE_OVERLAP_CONTINUE',json.dumps(out,sort_keys=True),flush=True)
     finally:
