@@ -47,46 +47,78 @@ def main():
             if kind=='definition':
                 if x[0]=='var' and x[1].startswith('sF'): defs[x[1]]=y
                 elif y[0]=='var' and y[1].startswith('sF'): defs[y[1]]=x
-            elif fid in ('f81','f95','f123','f126','f130'):
+            elif fid in ('f15','f27','f81','f95','f123','f126','f130'):
                 wanted[fid]=(h.map_rigids(h.inline_defs(x,defs),target[2]), h.map_rigids(h.inline_defs(y,defs),target[2]))
-        f81,f95=wanted['f81'],wanted['f95']
-        cover=sub=None; rev=False
-        for c in engine.search.clauses:
-            x=h.inline_engine_names(c.lhs,engine.reverse_constants); y=h.inline_engine_names(c.rhs,engine.reverse_constants)
-            for r,(u,v) in enumerate(((x,y),(y,x))):
-                s={}
-                if rigid.match_term(u,f81[0],s) and rigid.match_term(v,f81[1],s): cover=c; sub=s; rev=bool(r); break
-            if cover: break
-        out={'id':RID,'baseline_found':bool(baseline),'cover_found':bool(cover),'f95_found':False,'f95_replay':False,'continued_recipe':False,'continued_replay':False,'descendants':{k:False for k in ('f123','f126','f130')}}
-        if cover:
-            base=cover if not rev else m.Recipe(cover.rhs,cover.lhs,'symmetry',(cover,))
-            mat=engine.search.instantiate(base,sub)
-            for path in rigid.nonvariable_positions(mat.lhs, maximum_depth=limits['maximum_depth'], include_root=True):
-                p=engine.search.critical_pair(mat,mat,0,0,path)
+
+        def inline_clause(c):
+            return (h.inline_engine_names(c.lhs,engine.reverse_constants), h.inline_engine_names(c.rhs,engine.reverse_constants))
+
+        def materialized_cover(fid):
+            goal = wanted[fid]
+            for c in engine.search.clauses:
+                x,y=inline_clause(c)
+                for rev,(u,v) in enumerate(((x,y),(y,x))):
+                    sub={}
+                    if rigid.match_term(u,goal[0],sub) and rigid.match_term(v,goal[1],sub):
+                        base=c if not rev else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
+                        return engine.search.instantiate(base,sub), True
+            return None, False
+
+        f81mat, f81cover = materialized_cover('f81')
+        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False},'pair_replay':{'f123':False,'f126':False},'continued_recipe':False,'continued_replay':False}
+        p95=None
+        if f81mat:
+            for path in rigid.nonvariable_positions(f81mat.lhs, maximum_depth=limits['maximum_depth'], include_root=True):
+                p=engine.search.critical_pair(f81mat,f81mat,0,0,path)
                 if p is None: continue
-                x=h.inline_engine_names(p.lhs,engine.reverse_constants); y=h.inline_engine_names(p.rhs,engine.reverse_constants)
-                if alpha_sig(rigid,x,y)!=alpha_sig(rigid,f95[0],f95[1]): continue
-                out['f95_found']=True
+                x,y=inline_clause(p)
+                if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted['f95'][0],wanted['f95'][1]): continue
+                p95=p; out['f95_found']=True
                 nodes,root=engine.search.compile(p)
                 out['f95_replay']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
-                added=engine.search.add_clause(p)
-                out['f95_added']=bool(added)
-                engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
-                recipe=engine.search.solve()
-                out['continued_recipe']=bool(recipe)
-                if recipe:
-                    nodes2,root2=engine.search.compile(recipe)
-                    out['continued_nodes']=len(nodes2)
-                    out['continued_replay']=bool(m.replay_dag(source,nodes2,root2,maximum_term_size=260,maximum_nodes=50000))
+                out['f95_added']=bool(engine.search.add_clause(p))
                 break
-            for c in engine.search.clauses:
-                x=h.inline_engine_names(c.lhs,engine.reverse_constants); y=h.inline_engine_names(c.rhs,engine.reverse_constants)
-                sig=alpha_sig(rigid,x,y)
-                for fid in ('f123','f126','f130'):
-                    if fid in wanted and sig==alpha_sig(rigid,wanted[fid][0],wanted[fid][1]):
-                        out['descendants'][fid]=True
+
+        if p95:
+            mats={}
+            for fid in ('f15','f27'):
+                mats[fid], out['covers'][fid] = materialized_cover(fid)
+            targets=(('f27','f123'),('f15','f126'))
+            for parent_fid, child_fid in targets:
+                parent=mats.get(parent_fid)
+                if parent is None: continue
+                found=None
+                # Try both parent orders, both orientations, and every legal overlap position.
+                for left,right in ((parent,p95),(p95,parent)):
+                    if found: break
+                    for oi in (0,1):
+                        if found: break
+                        oriented = left.lhs if oi==0 else left.rhs
+                        for path in rigid.nonvariable_positions(oriented, maximum_depth=limits['maximum_depth'], include_root=True):
+                            if found: break
+                            for oj in (0,1):
+                                q=engine.search.critical_pair(left,right,oi,oj,path)
+                                if q is None: continue
+                                x,y=inline_clause(q)
+                                if alpha_sig(rigid,x,y)==alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]):
+                                    found=q; break
+                if found:
+                    out['pair_descendants'][child_fid]=True
+                    nodes,root=engine.search.compile(found)
+                    ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
+                    out['pair_replay'][child_fid]=ok
+                    if ok: engine.search.add_clause(found)
+
+            engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
+            recipe=engine.search.solve()
+            out['continued_recipe']=bool(recipe)
+            if recipe:
+                nodes2,root2=engine.search.compile(recipe)
+                out['continued_nodes']=len(nodes2)
+                out['continued_replay']=bool(m.replay_dag(source,nodes2,root2,maximum_term_size=260,maximum_nodes=50000))
+
         Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
-        print('MATERIALIZE_OVERLAP_CONTINUE',json.dumps(out,sort_keys=True),flush=True)
+        print('MATERIALIZED_PARENT_PAIR_0040',json.dumps(out,sort_keys=True),flush=True)
     finally:
         hp.unlink(missing_ok=True)
 if __name__=='__main__': main()
