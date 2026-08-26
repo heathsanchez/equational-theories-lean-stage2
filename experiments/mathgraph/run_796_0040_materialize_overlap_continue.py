@@ -71,8 +71,27 @@ def main():
                         return engine.search.instantiate(orient(c,bool(rev)),sub), True
             return None, False
 
+        def derive_pair(left_base, right_base, child_fid, labels=('left-right','right-left')):
+            details=[]
+            for base_left,base_right,label in ((left_base,right_base,labels[0]),(right_base,left_base,labels[1])):
+                for left_rev in (False,True):
+                    left=orient(base_left,left_rev)
+                    paths=tuple(rigid.nonvariable_positions(left.lhs, maximum_depth=limits['maximum_depth'], include_root=True))
+                    for right_rev in (False,True):
+                        right=orient(base_right,right_rev)
+                        for path in paths:
+                            q=engine.search.critical_pair(left,right,0,1,path)
+                            if q is None: continue
+                            x,y=inline_clause(q)
+                            if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]): continue
+                            ok,ncount=replay_recipe(q)
+                            details.append({'order':label,'left_rev':left_rev,'right_rev':right_rev,'path':list(path),'replay':ok,'nodes':ncount})
+                            if ok:
+                                return q,details
+            return None,details
+
         f81mat, f81cover = materialized_cover('f81')
-        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False},'pair_replay':{'f123':False,'f126':False},'pair_details':{},'continued_recipe':False,'continued_replay':False}
+        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False,'f130':False},'pair_replay':{'f123':False,'f126':False,'f130':False},'pair_details':{},'continued_recipe':False,'continued_replay':False}
         p95=None
         if f81mat:
             for outer_rev in (False,True):
@@ -94,34 +113,26 @@ def main():
             mats={}
             for fid in ('f15','f27'):
                 mats[fid], out['covers'][fid] = materialized_cover(fid)
+            derived={}
             targets=(('f27','f123'),('f15','f126'))
             for parent_fid, child_fid in targets:
                 parent=mats.get(parent_fid)
                 if parent is None: continue
-                found=None; details=[]
-                for base_left,base_right,label in ((parent,p95,'parent-p95'),(p95,parent,'p95-parent')):
-                    if found: break
-                    for left_rev in (False,True):
-                        if found: break
-                        left=orient(base_left,left_rev)
-                        paths=tuple(rigid.nonvariable_positions(left.lhs, maximum_depth=limits['maximum_depth'], include_root=True))
-                        for right_rev in (False,True):
-                            if found: break
-                            right=orient(base_right,right_rev)
-                            for path in paths:
-                                q=engine.search.critical_pair(left,right,0,1,path)
-                                if q is None: continue
-                                x,y=inline_clause(q)
-                                if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]): continue
-                                ok,ncount=replay_recipe(q)
-                                details.append({'order':label,'left_rev':left_rev,'right_rev':right_rev,'path':list(path),'replay':ok,'nodes':ncount})
-                                if ok:
-                                    found=q; break
+                found,details=derive_pair(parent,p95,child_fid,(f'{parent_fid}-f95',f'f95-{parent_fid}'))
                 out['pair_details'][child_fid]=details
                 if details: out['pair_descendants'][child_fid]=True
                 if found:
+                    derived[child_fid]=found
                     out['pair_replay'][child_fid]=True
                     engine.search.add_clause(found)
+
+            if derived.get('f123') is not None and derived.get('f126') is not None:
+                f130,details=derive_pair(derived['f123'],derived['f126'],'f130',('f123-f126','f126-f123'))
+                out['pair_details']['f130']=details
+                if details: out['pair_descendants']['f130']=True
+                if f130:
+                    out['pair_replay']['f130']=True
+                    out['f130_added']=bool(engine.search.add_clause(f130))
 
             engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
             recipe=engine.search.solve()
