@@ -1,0 +1,43 @@
+name: MathGraph 796 four-residual census
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - experiments/mathgraph/run_796_four_residual_census.py
+      - .github/workflows/mathgraph_796_four_residual_census.yml
+permissions:
+  contents: read
+jobs:
+  census:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependency used by pipeline proxy
+        run: python -m pip install 'openai>=1,<2'
+      - name: Set up Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Fetch official evaluation sets
+        run: |
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/evaluation_normal.jsonl" -o /tmp/sair_eval/evaluation_normal.jsonl
+          curl -fL --retry 3 "$base/evaluation_order5.jsonl" -o /tmp/sair_eval/evaluation_order5.jsonl
+      - name: Run final-four residual census
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_four_residual_census.py \
+            --normal /tmp/sair_eval/evaluation_normal.jsonl \
+            --order5 /tmp/sair_eval/evaluation_order5.jsonl \
+            --seconds 6 \
+            --output experiments/mathgraph/results/796-four-residual-census.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-796-four-residual-census
+          path: experiments/mathgraph/results/796-four-residual-census.json
+          if-no-files-found: error
