@@ -1,0 +1,42 @@
+name: MathGraph 796 0040 fair given sweep
+
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - experiments/mathgraph/run_796_0040_fair_given_sweep.py
+      - .github/workflows/mathgraph_796_0040_fair_given_sweep.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - run: bash scripts/setup.sh
+        env:
+          SKIP_DOCKER: '1'
+      - name: Download official normal evaluation
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Sweep fair given-clause ratios on 0040
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_fair_given_sweep.py \
+            --normal /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 20 \
+            --output experiments/mathgraph/results/796-0040-fair-given-sweep.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-796-0040-fair-given-sweep
+          path: experiments/mathgraph/results/796-0040-fair-given-sweep.json
