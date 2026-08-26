@@ -33,6 +33,19 @@ jobs:
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_f126_replay_diagnostic.py --input /tmp/sair_eval/evaluation_normal.jsonl --output experiments/mathgraph/results/796-0040-f126-replay-diagnostic.json
+      - name: Introspect compact superposition compiler
+        run: |
+          python - <<'PY'
+          import importlib.util, inspect
+          from pathlib import Path
+          p=Path('submissions/mathgraph/solver.py')
+          spec=importlib.util.spec_from_file_location('mg',p); m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          for name in sorted(n for n in dir(m) if 'Superposition' in n or 'Refutation' in n or n == 'Recipe'):
+              obj=getattr(m,name)
+              print('\n===== '+name+' =====')
+              try: print(inspect.getsource(obj))
+              except Exception as e: print('NO_SOURCE',repr(e))
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-0040-separators
