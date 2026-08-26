@@ -1,4 +1,4 @@
 #!/usr/bin/env python3
-from run_normal0040_f244_attachment import main
+from run_normal0040_postf244_divergence import main
 if __name__=='__main__':
     main()
