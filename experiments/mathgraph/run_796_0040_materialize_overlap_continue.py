@@ -56,6 +56,11 @@ def main():
         def orient(c, reverse):
             return c if not reverse else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
 
+        def replay_recipe(recipe):
+            inlined = engine.inline_recipe(recipe)
+            nodes, root = engine.search.compile(inlined)
+            return bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)), len(nodes)
+
         def materialized_cover(fid):
             goal = wanted[fid]
             for c in engine.search.clauses:
@@ -80,8 +85,7 @@ def main():
                         x,y=inline_clause(p)
                         if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted['f95'][0],wanted['f95'][1]): continue
                         p95=p; out['f95_found']=True
-                        nodes,root=engine.search.compile(p)
-                        out['f95_replay']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
+                        out['f95_replay'], _ = replay_recipe(p)
                         out['f95_added']=bool(engine.search.add_clause(p))
                         break
                     if p95: break
@@ -109,9 +113,8 @@ def main():
                                 if q is None: continue
                                 x,y=inline_clause(q)
                                 if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]): continue
-                                nodes,root=engine.search.compile(q)
-                                ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
-                                details.append({'order':label,'left_rev':left_rev,'right_rev':right_rev,'path':list(path),'replay':ok,'nodes':len(nodes)})
+                                ok,ncount=replay_recipe(q)
+                                details.append({'order':label,'left_rev':left_rev,'right_rev':right_rev,'path':list(path),'replay':ok,'nodes':ncount})
                                 if ok:
                                     found=q; break
                 out['pair_details'][child_fid]=details
@@ -124,7 +127,8 @@ def main():
             recipe=engine.search.solve()
             out['continued_recipe']=bool(recipe)
             if recipe:
-                nodes2,root2=engine.search.compile(recipe)
+                inlined2=engine.inline_recipe(recipe)
+                nodes2,root2=engine.search.compile(inlined2)
                 out['continued_nodes']=len(nodes2)
                 out['continued_replay']=bool(m.replay_dag(source,nodes2,root2,maximum_term_size=260,maximum_nodes=50000))
 
