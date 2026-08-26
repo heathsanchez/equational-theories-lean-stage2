@@ -1,34 +1,66 @@
-name: MathGraph 796 0040 materialize overlap
+name: MathGraph 796 production parity + 0040
 on:
   push:
     branches: [mathgraph/residual-router-796-20260826]
   workflow_dispatch:
 jobs:
-  materialize_overlap:
+  production_parity:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - run: python -m pip install 'openai>=1,<2'
-      - name: Setup Lean judge
+      - name: Pin official Stage 2 Lean and Mathlib in CI workspace
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          s=s.replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c')
+          p.write_text(s)
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+          cat lean-toolchain
+          grep -n 'mathlib4.git' -A1 lakefile.lean
+      - name: Setup official-pinned Lean judge
         env:
           SKIP_DOCKER: '1'
         run: bash scripts/setup.sh
-      - name: Download official normal evaluation
+      - name: Assert production pins
+        run: |
+          lean --version
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.32.2'
+          grep -q '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
+      - name: Download public evaluation calibration sets
         run: |
           mkdir -p /tmp/sair_eval
-          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Run materialize-overlap continuation on 0040
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/evaluation_normal.jsonl" -o /tmp/sair_eval/evaluation_normal.jsonl
+          curl -fL --retry 3 "$base/evaluation_hard.jsonl" -o /tmp/sair_eval/evaluation_hard.jsonl
+          curl -fL --retry 3 "$base/evaluation_order5.jsonl" -o /tmp/sair_eval/evaluation_order5.jsonl
+      - name: Run historical six under official judge pins
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_six_residual_probe.py \
+            --normal /tmp/sair_eval/evaluation_normal.jsonl \
+            --hard /tmp/sair_eval/evaluation_hard.jsonl \
+            --order5 /tmp/sair_eval/evaluation_order5.jsonl \
+            --timeout 60 \
+            --output experiments/mathgraph/results/796-six-production-parity.json
+      - name: Run current 0040 materialize-overlap continuation
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_materialize_overlap_continue.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/796-0040-materialize-overlap-continue.json
+            --output experiments/mathgraph/results/796-0040-production-parity.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-796-0040-materialize-overlap
-          path: experiments/mathgraph/results/796-0040-materialize-overlap-continue.json
+          name: mathgraph-796-production-parity
+          path: |
+            experiments/mathgraph/results/796-six-production-parity.json
+            experiments/mathgraph/results/796-0040-production-parity.json
           if-no-files-found: error
