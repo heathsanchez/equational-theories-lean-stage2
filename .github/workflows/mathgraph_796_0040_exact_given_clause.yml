@@ -70,6 +70,12 @@ jobs:
           python experiments/mathgraph/run_796_0040_f217_parent_representation.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --output experiments/mathgraph/results/796-0040-f217-parent-representation.json
+      - name: Run generic rigid-definition expansion corridor
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_generic_expansion_corridor.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --output experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -78,4 +84,5 @@ jobs:
             experiments/mathgraph/results/796-0040-production-parity.json
             experiments/mathgraph/results/796-0040-f217-exact-separator.json
             experiments/mathgraph/results/796-0040-f217-parent-representation.json
+            experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
           if-no-files-found: error
