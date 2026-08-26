@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
-"""Run the 0040 corridor with target-grounded rigid names expanded before overlap.
+"""Run the verified 0040 corridor, expanding rigid parent names only at f217.
 
-This is diagnostic only: it rewrites the experiment driver at runtime, not solver.py.
-Every critical_pair receives replayable parent recipes after TargetGroundedRefutation.inline_recipe,
-so named rigid target subterms are structural trees during overlap rather than atomic @L/@R names.
+Diagnostic only. The established f81->...->f196 derivation is unchanged. At the
+f217 rematerialization retry, both replayable parent recipes are expanded with
+TargetGroundedRefutation.inline_recipe before derive_pair enumerates overlap paths.
 """
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'experiments/mathgraph/run_796_0040_materialize_overlap_continue.py'
 source = BASE.read_text()
-needle = 'q=engine.search.critical_pair(left,right,0,1,path)'
-replacement = 'q=engine.search.critical_pair(engine.inline_recipe(left),engine.inline_recipe(right),0,1,path)'
+needle = "q,details=derive_pair(mats.get('f19'),f196mat,'f217',('f19-f196-remat','f196-remat-f19'))"
+replacement = "q,details=derive_pair(engine.inline_recipe(mats.get('f19')),engine.inline_recipe(f196mat),'f217',('f19-inline-f196-inline-remat','f196-inline-remat-f19-inline'))"
 count = source.count(needle)
 if count != 1:
-    raise SystemExit(f'expected one derive_pair critical_pair site, found {count}')
+    raise SystemExit(f'expected one f217 rematerialized derive site, found {count}')
 source = source.replace(needle, replacement)
-code = compile(source, str(BASE) + ':inline-parent', 'exec')
+code = compile(source, str(BASE) + ':inline-parent-f217', 'exec')
 exec(code, {'__name__': '__main__', '__file__': str(BASE)})
