@@ -58,11 +58,17 @@ jobs:
           python experiments/mathgraph/run_796_0040_materialize_overlap_continue.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --output experiments/mathgraph/results/796-0040-production-parity.json
+      - name: Run exact f217 structural separator
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_f217_exact_separator.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --output experiments/mathgraph/results/796-0040-f217-exact-separator.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
           path: |
             experiments/mathgraph/results/796-six-production-parity.json
             experiments/mathgraph/results/796-0040-production-parity.json
+            experiments/mathgraph/results/796-0040-f217-exact-separator.json
           if-no-files-found: error
-# parity rerun trigger 2026-08-27
