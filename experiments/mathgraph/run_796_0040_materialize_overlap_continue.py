@@ -62,6 +62,19 @@ def main():
             nodes, root = engine.search.compile(inlined)
             return bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)), len(nodes)
 
+        def materialize_recipe(recipe, fid):
+            goal = wanted[fid]
+            x,y=inline_clause(recipe)
+            for rev,(u,v) in enumerate(((x,y),(y,x))):
+                sub={}
+                if rigid.match_term(u,goal[0],sub) and rigid.match_term(v,goal[1],sub):
+                    return engine.search.instantiate(orient(recipe,bool(rev)),sub), True, {
+                        'reverse': bool(rev),
+                        'substitution': {k:m.render_term(v) for k,v in sub.items()},
+                        'before': [m.render_term(x),m.render_term(y)],
+                    }
+            return None, False, {'before':[m.render_term(x),m.render_term(y)]}
+
         def materialized_cover(fid):
             goal = wanted[fid]
             for c in engine.search.clauses:
@@ -94,7 +107,7 @@ def main():
         f81mat, f81cover = materialized_cover('f81')
         child_ids=('f123','f126','f130','f148','f150','f196','f217','f229','f231','f244','f258','f259','f278')
         cover_ids=('f15','f17','f18','f19','f20','f27','f81')
-        out={'id':RID,'baseline_found':bool(baseline),'covers':{fid:False for fid in cover_ids},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{fid:False for fid in child_ids},'pair_replay':{fid:False for fid in child_ids},'pair_details':{},'continued_recipe':False,'continued_replay':False}
+        out={'id':RID,'baseline_found':bool(baseline),'covers':{fid:False for fid in cover_ids},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{fid:False for fid in child_ids},'pair_replay':{fid:False for fid in child_ids},'pair_details':{},'continued_recipe':False,'continued_replay':False,'f196_rematerialized':False,'f217_after_rematerialize':False}
         out['covers']['f81']=f81cover
         p95=None
         if f81mat:
@@ -135,8 +148,29 @@ def main():
             derive_and_add(derived.get('f123'),derived.get('f126'),'f130',('f123-f126','f126-f123'))
             derive_and_add(mats.get('f20'),derived.get('f126'),'f148',('f20-f126','f126-f20'))
             derive_and_add(derived.get('f130'),derived.get('f130'),'f150',('f130-f130-a','f130-f130-b'))
-            derive_and_add(derived.get('f148'),derived.get('f150'),'f196',('f148-f150','f150-f148'))
-            derive_and_add(mats.get('f19'),derived.get('f196'),'f217',('f19-f196','f196-f19'))
+            f196=derive_and_add(derived.get('f148'),derived.get('f150'),'f196',('f148-f150','f150-f148'))
+            derive_and_add(mats.get('f19'),f196,'f217',('f19-f196','f196-f19'))
+
+            # Structural separator showed exact f19^T x exact f196^T at path L reaches f217.
+            # Test the generic missing operator: explicitly materialize a replay-derived
+            # schematic consequence to the strategically relevant concrete instance
+            # before reusing it as a superposition parent.
+            if f196 is not None:
+                f196mat,ok,diag=materialize_recipe(f196,'f196')
+                out['f196_rematerialized']=ok
+                out['f196_rematerialize_detail']=diag
+                if f196mat is not None:
+                    x,y=inline_clause(f196mat)
+                    out['f196_rematerialized_clause']=[m.render_term(x),m.render_term(y)]
+                    q,details=derive_pair(mats.get('f19'),f196mat,'f217',('f19-f196-remat','f196-remat-f19'))
+                    out['f217_rematerialized_details']=details
+                    if q is not None:
+                        out['f217_after_rematerialize']=True
+                        out['pair_descendants']['f217']=True
+                        out['pair_replay']['f217']=True
+                        derived['f217']=q
+                        out['f217_added']=bool(engine.search.add_clause(q))
+
             derive_and_add(mats.get('f18'),derived.get('f217'),'f229',('f18-f217','f217-f18'))
             derive_and_add(derived.get('f229'),derived.get('f126'),'f231',('f229-f126','f126-f229'))
             derive_and_add(derived.get('f148'),derived.get('f231'),'f244',('f148-f231','f231-f148'))
