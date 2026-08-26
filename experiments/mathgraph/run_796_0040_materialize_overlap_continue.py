@@ -53,6 +53,9 @@ def main():
         def inline_clause(c):
             return (h.inline_engine_names(c.lhs,engine.reverse_constants), h.inline_engine_names(c.rhs,engine.reverse_constants))
 
+        def orient(c, reverse):
+            return c if not reverse else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
+
         def materialized_cover(fid):
             goal = wanted[fid]
             for c in engine.search.clauses:
@@ -60,24 +63,28 @@ def main():
                 for rev,(u,v) in enumerate(((x,y),(y,x))):
                     sub={}
                     if rigid.match_term(u,goal[0],sub) and rigid.match_term(v,goal[1],sub):
-                        base=c if not rev else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
-                        return engine.search.instantiate(base,sub), True
+                        return engine.search.instantiate(orient(c,bool(rev)),sub), True
             return None, False
 
         f81mat, f81cover = materialized_cover('f81')
-        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False},'pair_replay':{'f123':False,'f126':False},'continued_recipe':False,'continued_replay':False}
+        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False},'pair_replay':{'f123':False,'f126':False},'pair_details':{},'continued_recipe':False,'continued_replay':False}
         p95=None
         if f81mat:
-            for path in rigid.nonvariable_positions(f81mat.lhs, maximum_depth=limits['maximum_depth'], include_root=True):
-                p=engine.search.critical_pair(f81mat,f81mat,0,0,path)
-                if p is None: continue
-                x,y=inline_clause(p)
-                if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted['f95'][0],wanted['f95'][1]): continue
-                p95=p; out['f95_found']=True
-                nodes,root=engine.search.compile(p)
-                out['f95_replay']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
-                out['f95_added']=bool(engine.search.add_clause(p))
-                break
+            for outer_rev in (False,True):
+                if p95: break
+                for inner_rev in (False,True):
+                    left=orient(f81mat,outer_rev); right=orient(f81mat,inner_rev)
+                    for path in rigid.nonvariable_positions(left.lhs, maximum_depth=limits['maximum_depth'], include_root=True):
+                        p=engine.search.critical_pair(left,right,0,1,path)
+                        if p is None: continue
+                        x,y=inline_clause(p)
+                        if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted['f95'][0],wanted['f95'][1]): continue
+                        p95=p; out['f95_found']=True
+                        nodes,root=engine.search.compile(p)
+                        out['f95_replay']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
+                        out['f95_added']=bool(engine.search.add_clause(p))
+                        break
+                    if p95: break
 
         if p95:
             mats={}
@@ -87,32 +94,31 @@ def main():
             for parent_fid, child_fid in targets:
                 parent=mats.get(parent_fid)
                 if parent is None: continue
-                found=None
-                for left,right in ((parent,p95),(p95,parent)):
+                found=None; details=[]
+                for base_left,base_right,label in ((parent,p95,'parent-p95'),(p95,parent,'p95-parent')):
                     if found: break
-                    for oi in (0,1):
+                    for left_rev in (False,True):
                         if found: break
-                        # critical_pair standardizes parents apart internally, so enumerate
-                        # paths against the exact oriented left parent used by the call.
-                        oriented_left = left.lhs if oi == 0 else left.rhs
-                        paths = tuple(rigid.nonvariable_positions(oriented_left, maximum_depth=limits['maximum_depth'], include_root=True))
-                        for oj in (0,1):
+                        left=orient(base_left,left_rev)
+                        paths=tuple(rigid.nonvariable_positions(left.lhs, maximum_depth=limits['maximum_depth'], include_root=True))
+                        for right_rev in (False,True):
                             if found: break
+                            right=orient(base_right,right_rev)
                             for path in paths:
-                                try:
-                                    q=engine.search.critical_pair(left,right,oi,oj,path)
-                                except ValueError:
-                                    continue
+                                q=engine.search.critical_pair(left,right,0,1,path)
                                 if q is None: continue
                                 x,y=inline_clause(q)
-                                if alpha_sig(rigid,x,y)==alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]):
+                                if alpha_sig(rigid,x,y)!=alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]): continue
+                                nodes,root=engine.search.compile(q)
+                                ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
+                                details.append({'order':label,'left_rev':left_rev,'right_rev':right_rev,'path':list(path),'replay':ok,'nodes':len(nodes)})
+                                if ok:
                                     found=q; break
+                out['pair_details'][child_fid]=details
+                if details: out['pair_descendants'][child_fid]=True
                 if found:
-                    out['pair_descendants'][child_fid]=True
-                    nodes,root=engine.search.compile(found)
-                    ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
-                    out['pair_replay'][child_fid]=ok
-                    if ok: engine.search.add_clause(found)
+                    out['pair_replay'][child_fid]=True
+                    engine.search.add_clause(found)
 
             engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
             recipe=engine.search.solve()
