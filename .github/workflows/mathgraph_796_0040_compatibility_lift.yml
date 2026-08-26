@@ -33,18 +33,22 @@ jobs:
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_f126_replay_diagnostic.py --input /tmp/sair_eval/evaluation_normal.jsonl --output experiments/mathgraph/results/796-0040-f126-replay-diagnostic.json
-      - name: Extract compact compiler source text
+      - name: Extract compact compiler source text literally
         run: |
           python - <<'PY'
           from pathlib import Path
           lines=Path('submissions/mathgraph/solver.py').read_text().splitlines()
-          needles=('class CompactSuperposition', 'def compile(', 'def instantiate(', 'class Recipe', 'class TargetGroundedRefutation')
+          needles=('CompactSuperposition', 'def compile(', 'def instantiate(', 'Recipe', 'TargetGroundedRefutation')
           hits=[]
           for i,line in enumerate(lines):
               if any(n in line for n in needles): hits.append(i)
           print('SOURCE_HITS', [(i+1, lines[i].strip()) for i in hits])
+          shown=set()
           for i in hits:
-              lo=max(0,i-12); hi=min(len(lines),i+140)
+              lo=max(0,i-18); hi=min(len(lines),i+180)
+              key=(lo,hi)
+              if key in shown: continue
+              shown.add(key)
               print(f'===== SOURCE {lo+1}:{hi} around {i+1} =====')
               for j in range(lo,hi): print(f'{j+1:05d}: {lines[j]}')
           PY
