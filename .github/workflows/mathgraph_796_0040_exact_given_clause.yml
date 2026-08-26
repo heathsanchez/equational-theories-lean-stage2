@@ -65,3 +65,4 @@ jobs:
             experiments/mathgraph/results/796-six-production-parity.json
             experiments/mathgraph/results/796-0040-production-parity.json
           if-no-files-found: error
+# parity rerun trigger 2026-08-27
