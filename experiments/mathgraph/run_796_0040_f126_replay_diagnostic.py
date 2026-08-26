@@ -69,7 +69,8 @@ def main():
                             nodes,root=engine.search.compile(q)
                             first_bad=None; prefix=[]
                             for i,node in enumerate(nodes):
-                                ok=bool(m.replay_dag(source,nodes,i,maximum_term_size=260,maximum_nodes=50000))
+                                # Validate the actual derivation prefix, not the full DAG with a different root.
+                                ok=bool(m.replay_dag(source,nodes[:i+1],i,maximum_term_size=260,maximum_nodes=50000))
                                 prefix.append(ok)
                                 if not ok and first_bad is None:
                                     first_bad={'index':i,'kind':getattr(node,'kind',None),'parents':list(getattr(node,'parents',())),'lhs':m.render_term(node.lhs),'rhs':m.render_term(node.rhs),'orientation':getattr(node,'orientation',None),'substitution':[(k,m.render_term(v)) for k,v in getattr(node,'substitution',())],'context':getattr(node,'context',None),'context_record':repr(getattr(node,'context_record',None)),'overlap_record':repr(getattr(node,'overlap_record',None))}
