@@ -66,7 +66,7 @@ def main():
                     if same:
                         rec={'direction':label,'path':list(path),'lhs':m.render_term(x),'rhs':m.render_term(y)}; out['matches'].append(rec); out['alpha_match_f95']=True
                         try:
-                            nodes,root=m.recipe_to_dag(p); out['replay_ok']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000))
+                            nodes,root=engine.search.compile(p); out['replay_ok']=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)); out['proof_nodes']=len(m.proof_node_ids(nodes,root))
                         except Exception as e: out['replay_error']=type(e).__name__+': '+str(e)
         Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print('STANDARDIZED_APART_0040',json.dumps(out,sort_keys=True),flush=True)
     finally:
