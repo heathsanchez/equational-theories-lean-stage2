@@ -1,4 +1,4 @@
-name: MathGraph 796 0040 f196 rematerialization fast
+name: MathGraph 796 0040 inline-parent fast
 on:
   push:
     branches: [mathgraph/residual-router-796-20260826]
@@ -15,13 +15,13 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Run f196 rematerialization separator
+      - name: Run inline-parent separator
         run: |
-          python experiments/mathgraph/run_796_0040_materialize_overlap_continue.py \
+          python experiments/mathgraph/run_796_0040_inline_parent_separator.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/796-0040-f196-remat-fast.json
+            --output experiments/mathgraph/results/796-0040-inline-parent-fast.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-796-0040-f196-remat-fast
-          path: experiments/mathgraph/results/796-0040-f196-remat-fast.json
+          name: mathgraph-796-0040-inline-parent-fast
+          path: experiments/mathgraph/results/796-0040-inline-parent-fast.json
           if-no-files-found: error
