@@ -88,16 +88,21 @@ def main():
                 parent=mats.get(parent_fid)
                 if parent is None: continue
                 found=None
-                # Try both parent orders, both orientations, and every legal overlap position.
                 for left,right in ((parent,p95),(p95,parent)):
                     if found: break
                     for oi in (0,1):
                         if found: break
-                        oriented = left.lhs if oi==0 else left.rhs
-                        for path in rigid.nonvariable_positions(oriented, maximum_depth=limits['maximum_depth'], include_root=True):
+                        # critical_pair standardizes parents apart internally, so enumerate
+                        # paths against the exact oriented left parent used by the call.
+                        oriented_left = left.lhs if oi == 0 else left.rhs
+                        paths = tuple(rigid.nonvariable_positions(oriented_left, maximum_depth=limits['maximum_depth'], include_root=True))
+                        for oj in (0,1):
                             if found: break
-                            for oj in (0,1):
-                                q=engine.search.critical_pair(left,right,oi,oj,path)
+                            for path in paths:
+                                try:
+                                    q=engine.search.critical_pair(left,right,oi,oj,path)
+                                except ValueError:
+                                    continue
                                 if q is None: continue
                                 x,y=inline_clause(q)
                                 if alpha_sig(rigid,x,y)==alpha_sig(rigid,wanted[child_fid][0],wanted[child_fid][1]):
