@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-import argparse, json
+import argparse, json, sys
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from pipeline.proxy import load_config, load_problems, run_solver
 
@@ -41,7 +45,7 @@ def main():
     for rid in CASES:
         trace = []
         result = run_solver(
-            Path("submissions/mathgraph"), rows[rid], config,
+            ROOT / "submissions/mathgraph", rows[rid], config,
             trace_hook=lambda event, trace=trace: trace.append(event),
         )
         judge_events = [x for x in trace if x.get("type") == "judge"]
