@@ -20,16 +20,16 @@ jobs:
           mkdir -p /tmp/sair_stage1_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_stage1_eval/evaluation_normal.jsonl
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_hard.jsonl' -o /tmp/sair_stage1_eval/evaluation_hard.jsonl
-      - name: Compile source-reentry scheduler
-        run: python -m py_compile experiments/mathgraph/run_source_reentry_scheduler_transfer.py
-      - name: Run narrow source-reentry scheduler transfer
+      - name: Compile post-reentry divergence audit
+        run: python -m py_compile experiments/mathgraph/run_source_reentry_divergence_audit.py
+      - name: Run post-reentry divergence audit
         run: |
-          python experiments/mathgraph/run_source_reentry_scheduler_transfer.py \
+          python experiments/mathgraph/run_source_reentry_divergence_audit.py \
             --normal-input /tmp/sair_stage1_eval/evaluation_normal.jsonl \
             --hard-input /tmp/sair_stage1_eval/evaluation_hard.jsonl \
-            --output experiments/mathgraph/results/source-reentry-scheduler-transfer.json
+            --output experiments/mathgraph/results/source-reentry-divergence-audit.json
       - uses: actions/upload-artifact@v4
         with:
-          name: source-reentry-scheduler-transfer
-          path: experiments/mathgraph/results/source-reentry-scheduler-transfer.json
+          name: source-reentry-divergence-audit
+          path: experiments/mathgraph/results/source-reentry-divergence-audit.json
           if-no-files-found: error
