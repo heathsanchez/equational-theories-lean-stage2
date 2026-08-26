@@ -17,6 +17,20 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Extract exact Vampire f217 inference
+        run: |
+          python - <<'PY'
+          import json,re,urllib.request
+          u='https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/mathgraph/vampire-six-repro-20260820/experiments/mathgraph/results/vampire-six-20260820/mathgraph-six-vampire.json'
+          data=json.load(urllib.request.urlopen(u))
+          proof=next(r['proof'] for r in data['rows'] if r['id']=='evaluation_normal_0040')
+          for fid in ('f19','f196','f217'):
+              m=re.search(r'fof\('+fid+r',.*?\n\s*inference\([^\n]+\)\)\.',proof,re.S)
+              if not m:
+                  m=re.search(r'fof\('+fid+r',.*?\)\.',proof,re.S)
+              print('VAMPIRE_BLOCK_'+fid)
+              print(m.group(0) if m else 'NOT_FOUND')
+          PY
       - name: Run compatibility lift on 0040
         run: |
           source .env.judge
