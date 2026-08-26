@@ -1,15 +1,52 @@
 #!/usr/bin/env python3
-"""Trace the known winning f217 overlap on actual replayable parents."""
+"""Test rigid-preserving expansion of target aliases at the f217 boundary."""
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / 'experiments/mathgraph/run_796_0040_materialize_overlap_continue.py'
 source = BASE.read_text()
+
+marker = 'def main():\n'
+helper = r'''
+def expand_rigid_recipe_for_overlap(recipe, engine, m, cache=None):
+    cache = {} if cache is None else cache
+    if id(recipe) in cache:
+        return cache[id(recipe)]
+
+    def expand(term):
+        if term[0] == "var":
+            name = term[1]
+            if name in engine.reverse_constants:
+                return expand(engine.reverse_constants[name])
+            # Preserve encoded rigid leaves such as @x/@y/@z.
+            return term
+        return ("op", expand(term[1]), expand(term[2]))
+
+    parents = tuple(
+        expand_rigid_recipe_for_overlap(parent, engine, m, cache)
+        for parent in recipe.parents
+    )
+    data = recipe.data
+    if recipe.kind == "source":
+        substitution, reverse = data
+        data = (tuple((variable, expand(value)) for variable, value in substitution), reverse)
+    elif recipe.kind == "instantiate":
+        data = tuple((variable, expand(value)) for variable, value in data)
+    elif recipe.kind == "congruence":
+        data = (data[0], expand(data[1]))
+    result = m.Recipe(expand(recipe.lhs), expand(recipe.rhs), recipe.kind, parents, data)
+    cache[id(recipe)] = result
+    return result
+
+'''
+if marker not in source:
+    raise SystemExit('main marker missing')
+source = source.replace(marker, helper + marker, 1)
+
 needle = "q,details=derive_pair(mats.get('f19'),f196mat,'f217',('f19-f196-remat','f196-remat-f19'))"
-replacement = "f19e=engine.inline_recipe(mats.get('f19')); f196e=engine.inline_recipe(f196mat); out['forced_parent_trace']={'f19_internal':[m.render_term(mats.get('f19').lhs),m.render_term(mats.get('f19').rhs)],'f19_expanded':[m.render_term(f19e.lhs),m.render_term(f19e.rhs)],'f196_internal':[m.render_term(f196mat.lhs),m.render_term(f196mat.rhs)],'f196_expanded':[m.render_term(f196e.lhs),m.render_term(f196e.rhs)]}; forced=engine.search.critical_pair(orient(f19e,True),orient(f196e,True),0,1,('L',)); out['forced_parent_trace']['forced_none']=forced is None; out['forced_parent_trace']['forced_clause']=None if forced is None else [m.render_term(engine.inline_recipe(forced).lhs),m.render_term(engine.inline_recipe(forced).rhs)]; out['forced_parent_trace']['forced_alpha']=False if forced is None else alpha_sig(rigid,engine.inline_recipe(forced).lhs,engine.inline_recipe(forced).rhs)==alpha_sig(rigid,wanted['f217'][0],wanted['f217'][1]); q,details=derive_pair(f19e,f196e,'f217',('f19-inline-f196-inline-remat','f196-inline-remat-f19-inline'))"
-count = source.count(needle)
-if count != 1:
-    raise SystemExit(f'expected one f217 rematerialized derive site, found {count}')
-source = source.replace(needle, replacement)
-code = compile(source, str(BASE) + ':forced-f217-trace', 'exec')
+replacement = "f19e=expand_rigid_recipe_for_overlap(mats.get('f19'),engine,m); f196e=expand_rigid_recipe_for_overlap(f196mat,engine,m); out['rigid_expand_trace']={'f19':[m.render_term(f19e.lhs),m.render_term(f19e.rhs)],'f196':[m.render_term(f196e.lhs),m.render_term(f196e.rhs)]}; forced=engine.search.critical_pair(orient(f19e,True),orient(f196e,True),0,1,('L',)); out['rigid_expand_trace']['forced_none']=forced is None; out['rigid_expand_trace']['forced_clause']=None if forced is None else [m.render_term(engine.inline_recipe(forced).lhs),m.render_term(engine.inline_recipe(forced).rhs)]; out['rigid_expand_trace']['forced_alpha']=False if forced is None else alpha_sig(rigid,engine.inline_recipe(forced).lhs,engine.inline_recipe(forced).rhs)==alpha_sig(rigid,wanted['f217'][0],wanted['f217'][1]); out['rigid_expand_trace']['forced_replay']=False if forced is None else replay_recipe(forced)[0]; q,details=derive_pair(f19e,f196e,'f217',('f19-rigid-expand-f196-rigid-expand','f196-rigid-expand-f19-rigid-expand'))"
+if source.count(needle) != 1:
+    raise SystemExit('expected one f217 rematerialized derive site')
+source = source.replace(needle, replacement, 1)
+code = compile(source, str(BASE) + ':rigid-expand-f217', 'exec')
 exec(code, {'__name__': '__main__', '__file__': str(BASE)})
