@@ -20,26 +20,29 @@ def main():
     lim=dict(m.COMPACT_SUPERPOSITION_PROBE)
     lim.update({'seconds':45.0,'maximum_term_size':65,'maximum_replay_term_size':260,'maximum_depth':12,'maximum_rules':768,'maximum_rounds':64,'new_clauses_per_round':512,'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':50000})
 
-    # Keep the baseline probe diagnostic and bounded. It must not consume the
-    # continuation scheduler's experimental budget.
+    # Short independent baseline diagnostic.
     baseline_deadline=time.monotonic()+6.0
     baseline_limits=dict(lim); baseline_limits['seconds']=6.0
     be=m.TargetGroundedRefutation(source,target,baseline_deadline,baseline_limits)
     base=be.solve()
 
-    # Fresh engine and fresh budget for the actual oracle-free intervention.
-    deadline=time.monotonic()+45.0
-    e=m.TargetGroundedRefutation(source,target,deadline,lim)
+    # Build the intervention engine through the exact native solve path, but
+    # only for a short warm-up. Then reset deadlines and continue from that
+    # live native clause state under the oracle-free scheduling intervention.
+    warm_deadline=time.monotonic()+6.0
+    warm_limits=dict(lim); warm_limits['seconds']=6.0
+    e=m.TargetGroundedRefutation(source,target,warm_deadline,warm_limits)
+    warm=e.solve()
     r=m.RigidSuperpositionModule()
-    out={'id':RID,'baseline_found':bool(base),'oracle_free':True,'policy':'retain-new-pair-immediately-simplify','fresh_scheduler_budget':True}
-    if base:
-        nodes,root=base; out.update(found=True,round=0,proof_nodes=len(m.proof_node_ids(nodes,root)),replay_ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)))
+    out={'id':RID,'baseline_found':bool(base),'warm_found':bool(warm),'oracle_free':True,'policy':'retain-new-pair-immediately-simplify','fresh_scheduler_budget':True}
+    if warm:
+        nodes,root=warm; out.update(found=True,round=-1,proof_nodes=len(m.proof_node_ids(nodes,root)),replay_ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)))
         Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print('NORMAL0040_GENERIC_CONTINUATION',json.dumps(out,sort_keys=True),flush=True); return
 
-    # Populate the fresh engine's ordinary local theory before applying the
-    # intervention. This preserves the original search basis without spending
-    # the intervention deadline on a full failed solve.
-    e.search.prepare()
+    deadline=time.monotonic()+45.0
+    e.deadline=deadline
+    if hasattr(e.search,'deadline'): e.search.deadline=deadline
+    if hasattr(e.search,'seconds'): e.search.seconds=45.0
 
     target_terms=[]
     for side in target[:2]: target_terms.extend(m.walk_subterms(side))
