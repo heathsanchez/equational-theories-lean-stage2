@@ -33,18 +33,20 @@ jobs:
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_f126_replay_diagnostic.py --input /tmp/sair_eval/evaluation_normal.jsonl --output experiments/mathgraph/results/796-0040-f126-replay-diagnostic.json
-      - name: Introspect compact superposition compiler
+      - name: Extract compact compiler source text
         run: |
           python - <<'PY'
-          import importlib.util, inspect
           from pathlib import Path
-          p=Path('submissions/mathgraph/solver.py')
-          spec=importlib.util.spec_from_file_location('mg',p); m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-          for name in sorted(n for n in dir(m) if 'Superposition' in n or 'Refutation' in n or n == 'Recipe'):
-              obj=getattr(m,name)
-              print('\n===== '+name+' =====')
-              try: print(inspect.getsource(obj))
-              except Exception as e: print('NO_SOURCE',repr(e))
+          lines=Path('submissions/mathgraph/solver.py').read_text().splitlines()
+          needles=('class CompactSuperposition', 'def compile(', 'def instantiate(', 'class Recipe', 'class TargetGroundedRefutation')
+          hits=[]
+          for i,line in enumerate(lines):
+              if any(n in line for n in needles): hits.append(i)
+          print('SOURCE_HITS', [(i+1, lines[i].strip()) for i in hits])
+          for i in hits:
+              lo=max(0,i-12); hi=min(len(lines),i+140)
+              print(f'===== SOURCE {lo+1}:{hi} around {i+1} =====')
+              for j in range(lo,hi): print(f'{j+1:05d}: {lines[j]}')
           PY
       - uses: actions/upload-artifact@v4
         with:
