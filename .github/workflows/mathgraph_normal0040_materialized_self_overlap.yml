@@ -20,16 +20,16 @@ jobs:
           mkdir -p /tmp/sair_stage1_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_stage1_eval/evaluation_normal.jsonl
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_hard.jsonl' -o /tmp/sair_stage1_eval/evaluation_hard.jsonl
-      - name: Compile transfer
-        run: python -m py_compile experiments/mathgraph/run_six_true_fair_pair_transfer.py
-      - name: Run frozen fair-pair transfer
+      - name: Compile divergence audit
+        run: python -m py_compile experiments/mathgraph/run_fair_pair_transfer_divergence_audit.py
+      - name: Run divergence audit
         run: |
-          python experiments/mathgraph/run_six_true_fair_pair_transfer.py \
+          python experiments/mathgraph/run_fair_pair_transfer_divergence_audit.py \
             --normal-input /tmp/sair_stage1_eval/evaluation_normal.jsonl \
             --hard-input /tmp/sair_stage1_eval/evaluation_hard.jsonl \
-            --output experiments/mathgraph/results/six-true-fair-pair-transfer.json
+            --output experiments/mathgraph/results/fair-pair-transfer-divergence.json
       - uses: actions/upload-artifact@v4
         with:
-          name: six-true-fair-pair-transfer
-          path: experiments/mathgraph/results/six-true-fair-pair-transfer.json
+          name: fair-pair-transfer-divergence
+          path: experiments/mathgraph/results/fair-pair-transfer-divergence.json
           if-no-files-found: error
