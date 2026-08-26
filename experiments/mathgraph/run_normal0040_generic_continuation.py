@@ -19,13 +19,27 @@ def main():
     source=m.parse_equation(row['equation1']); target=m.parse_equation(row['equation2'])
     lim=dict(m.COMPACT_SUPERPOSITION_PROBE)
     lim.update({'seconds':45.0,'maximum_term_size':65,'maximum_replay_term_size':260,'maximum_depth':12,'maximum_rules':768,'maximum_rounds':64,'new_clauses_per_round':512,'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':50000})
+
+    # Keep the baseline probe diagnostic and bounded. It must not consume the
+    # continuation scheduler's experimental budget.
+    baseline_deadline=time.monotonic()+6.0
+    baseline_limits=dict(lim); baseline_limits['seconds']=6.0
+    be=m.TargetGroundedRefutation(source,target,baseline_deadline,baseline_limits)
+    base=be.solve()
+
+    # Fresh engine and fresh budget for the actual oracle-free intervention.
     deadline=time.monotonic()+45.0
     e=m.TargetGroundedRefutation(source,target,deadline,lim)
-    base=e.solve(); r=m.RigidSuperpositionModule()
-    out={'id':RID,'baseline_found':bool(base),'oracle_free':True,'policy':'retain-new-pair-immediately-simplify'}
+    r=m.RigidSuperpositionModule()
+    out={'id':RID,'baseline_found':bool(base),'oracle_free':True,'policy':'retain-new-pair-immediately-simplify','fresh_scheduler_budget':True}
     if base:
         nodes,root=base; out.update(found=True,round=0,proof_nodes=len(m.proof_node_ids(nodes,root)),replay_ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)))
         Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n'); print('NORMAL0040_GENERIC_CONTINUATION',json.dumps(out,sort_keys=True),flush=True); return
+
+    # Populate the fresh engine's ordinary local theory before applying the
+    # intervention. This preserves the original search basis without spending
+    # the intervention deadline on a full failed solve.
+    e.search.prepare()
 
     target_terms=[]
     for side in target[:2]: target_terms.extend(m.walk_subterms(side))
@@ -49,9 +63,7 @@ def main():
         return made
 
     retained=list(e.search.clauses)
-    # Phase 0: materialize every bounded self-overlap once. This is the smallest
-    # generic operation needed to expose latent schematic continuations such as
-    # the one that opened the observed 0040 corridor.
+    out['initial_clauses']=len(retained)
     candidates=[]
     for c in list(retained):
         if time.monotonic()>=deadline: break
@@ -60,15 +72,13 @@ def main():
     frontier=[]; added0=0
     for p in candidates:
         if e.search.add_clause(p): frontier.append(p); retained.append(p); added0+=1
+    out['self_overlap_candidates']=len(candidates)
     out['self_overlap_added']=added0
     found=e.solve()
     if found:
         nodes,root=found; out.update(found=True,round=0,proof_nodes=len(m.proof_node_ids(nodes,root)),replay_ok=bool(m.replay_dag(source,nodes,root,maximum_term_size=260,maximum_nodes=50000)))
     else:
         out['round_stats']=[]
-        # Continuation closure: newly materialized clauses get priority to pair
-        # against a target-ranked retained bank, then all survivors are kept for
-        # the next round. No clause IDs or external proof trace are consulted.
         for rnd in range(1,9):
             if time.monotonic()>=deadline or not frontier: break
             bank=sorted(retained,key=score)[:320]
