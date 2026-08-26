@@ -29,6 +29,10 @@ jobs:
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_materialize_overlap_continue.py --input /tmp/sair_eval/evaluation_normal.jsonl --output experiments/mathgraph/results/796-0040-materialize-overlap-continue.json
+      - name: Diagnose f126 replay boundary
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_f126_replay_diagnostic.py --input /tmp/sair_eval/evaluation_normal.jsonl --output experiments/mathgraph/results/796-0040-f126-replay-diagnostic.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-0040-separators
@@ -36,3 +40,4 @@ jobs:
             experiments/mathgraph/results/796-0040-compatibility-lift.json
             experiments/mathgraph/results/796-0040-standardized-apart.json
             experiments/mathgraph/results/796-0040-materialize-overlap-continue.json
+            experiments/mathgraph/results/796-0040-f126-replay-diagnostic.json
