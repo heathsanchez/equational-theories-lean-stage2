@@ -32,7 +32,8 @@ jobs:
         run: bash scripts/setup.sh
       - name: Assert production pins
         run: |
-          lean --version
+          source .env.judge
+          "$HOME/.elan/bin/lean" --version
           test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.32.2'
           grep -q '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
       - name: Download public evaluation calibration sets
