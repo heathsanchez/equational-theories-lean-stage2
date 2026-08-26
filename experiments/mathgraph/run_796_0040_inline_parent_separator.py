@@ -13,8 +13,8 @@ source = BASE.read_text()
 needle = 'q=engine.search.critical_pair(left,right,0,1,path)'
 replacement = 'q=engine.search.critical_pair(engine.inline_recipe(left),engine.inline_recipe(right),0,1,path)'
 count = source.count(needle)
-if count < 2:
-    raise SystemExit(f'expected at least two critical_pair sites, found {count}')
+if count != 1:
+    raise SystemExit(f'expected one derive_pair critical_pair site, found {count}')
 source = source.replace(needle, replacement)
 code = compile(source, str(BASE) + ':inline-parent', 'exec')
 exec(code, {'__name__': '__main__', '__file__': str(BASE)})
