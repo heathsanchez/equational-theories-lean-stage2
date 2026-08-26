@@ -36,6 +36,7 @@ def main():
         rigid = m.RigidSuperpositionModule()
         trace = json.load(urllib.request.urlopen(TRACE_URL)); proof = next(r['proof'] for r in trace['rows'] if r['id']==RID)
         defs={}; wanted={}
+        wanted_ids = ('f15','f17','f18','f19','f20','f27','f81','f95','f123','f126','f130','f148','f150','f196','f217','f229','f231','f244','f258','f259','f278')
         for block in h.fof_blocks(proof):
             q=h.parse_fof(block)
             if not q: continue
@@ -47,7 +48,7 @@ def main():
             if kind=='definition':
                 if x[0]=='var' and x[1].startswith('sF'): defs[x[1]]=y
                 elif y[0]=='var' and y[1].startswith('sF'): defs[y[1]]=x
-            elif fid in ('f15','f20','f27','f81','f95','f123','f126','f130','f148','f150','f196'):
+            elif fid in wanted_ids:
                 wanted[fid]=(h.map_rigids(h.inline_defs(x,defs),target[2]), h.map_rigids(h.inline_defs(y,defs),target[2]))
 
         def inline_clause(c):
@@ -91,7 +92,10 @@ def main():
             return None,details
 
         f81mat, f81cover = materialized_cover('f81')
-        out={'id':RID,'baseline_found':bool(baseline),'covers':{'f81':f81cover,'f15':False,'f20':False,'f27':False},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{'f123':False,'f126':False,'f130':False,'f148':False,'f150':False,'f196':False},'pair_replay':{'f123':False,'f126':False,'f130':False,'f148':False,'f150':False,'f196':False},'pair_details':{},'continued_recipe':False,'continued_replay':False}
+        child_ids=('f123','f126','f130','f148','f150','f196','f217','f229','f231','f244','f258','f259','f278')
+        cover_ids=('f15','f17','f18','f19','f20','f27','f81')
+        out={'id':RID,'baseline_found':bool(baseline),'covers':{fid:False for fid in cover_ids},'f95_found':False,'f95_replay':False,'f95_added':False,'pair_descendants':{fid:False for fid in child_ids},'pair_replay':{fid:False for fid in child_ids},'pair_details':{},'continued_recipe':False,'continued_replay':False}
+        out['covers']['f81']=f81cover
         p95=None
         if f81mat:
             for outer_rev in (False,True):
@@ -111,56 +115,34 @@ def main():
 
         if p95:
             mats={}
-            for fid in ('f15','f20','f27'):
+            for fid in ('f15','f17','f18','f19','f20','f27'):
                 mats[fid], out['covers'][fid] = materialized_cover(fid)
             derived={}
-            targets=(('f27','f123'),('f15','f126'))
-            for parent_fid, child_fid in targets:
-                parent=mats.get(parent_fid)
-                if parent is None: continue
-                found,details=derive_pair(parent,p95,child_fid,(f'{parent_fid}-f95',f'f95-{parent_fid}'))
-                out['pair_details'][child_fid]=details
-                if details: out['pair_descendants'][child_fid]=True
+
+            def derive_and_add(left, right, child, labels):
+                if left is None or right is None: return None
+                found,details=derive_pair(left,right,child,labels)
+                out['pair_details'][child]=details
+                if details: out['pair_descendants'][child]=True
                 if found:
-                    derived[child_fid]=found
-                    out['pair_replay'][child_fid]=True
-                    engine.search.add_clause(found)
+                    derived[child]=found
+                    out['pair_replay'][child]=True
+                    out[f'{child}_added']=bool(engine.search.add_clause(found))
+                return found
 
-            if derived.get('f123') is not None and derived.get('f126') is not None:
-                f130,details=derive_pair(derived['f123'],derived['f126'],'f130',('f123-f126','f126-f123'))
-                out['pair_details']['f130']=details
-                if details: out['pair_descendants']['f130']=True
-                if f130:
-                    derived['f130']=f130
-                    out['pair_replay']['f130']=True
-                    out['f130_added']=bool(engine.search.add_clause(f130))
-
-            if mats.get('f20') is not None and derived.get('f126') is not None:
-                f148,details=derive_pair(mats['f20'],derived['f126'],'f148',('f20-f126','f126-f20'))
-                out['pair_details']['f148']=details
-                if details: out['pair_descendants']['f148']=True
-                if f148:
-                    derived['f148']=f148
-                    out['pair_replay']['f148']=True
-                    out['f148_added']=bool(engine.search.add_clause(f148))
-
-            if derived.get('f130') is not None:
-                f150,details=derive_pair(derived['f130'],derived['f130'],'f150',('f130-f130-a','f130-f130-b'))
-                out['pair_details']['f150']=details
-                if details: out['pair_descendants']['f150']=True
-                if f150:
-                    derived['f150']=f150
-                    out['pair_replay']['f150']=True
-                    out['f150_added']=bool(engine.search.add_clause(f150))
-
-            if derived.get('f148') is not None and derived.get('f150') is not None:
-                f196,details=derive_pair(derived['f148'],derived['f150'],'f196',('f148-f150','f150-f148'))
-                out['pair_details']['f196']=details
-                if details: out['pair_descendants']['f196']=True
-                if f196:
-                    derived['f196']=f196
-                    out['pair_replay']['f196']=True
-                    out['f196_added']=bool(engine.search.add_clause(f196))
+            derive_and_add(mats.get('f27'),p95,'f123',('f27-f95','f95-f27'))
+            derive_and_add(mats.get('f15'),p95,'f126',('f15-f95','f95-f15'))
+            derive_and_add(derived.get('f123'),derived.get('f126'),'f130',('f123-f126','f126-f123'))
+            derive_and_add(mats.get('f20'),derived.get('f126'),'f148',('f20-f126','f126-f20'))
+            derive_and_add(derived.get('f130'),derived.get('f130'),'f150',('f130-f130-a','f130-f130-b'))
+            derive_and_add(derived.get('f148'),derived.get('f150'),'f196',('f148-f150','f150-f148'))
+            derive_and_add(mats.get('f19'),derived.get('f196'),'f217',('f19-f196','f196-f19'))
+            derive_and_add(mats.get('f18'),derived.get('f217'),'f229',('f18-f217','f217-f18'))
+            derive_and_add(derived.get('f229'),derived.get('f126'),'f231',('f229-f126','f126-f229'))
+            derive_and_add(derived.get('f148'),derived.get('f231'),'f244',('f148-f231','f231-f148'))
+            derive_and_add(mats.get('f17'),derived.get('f244'),'f258',('f17-f244','f244-f17'))
+            derive_and_add(derived.get('f258'),derived.get('f217'),'f259',('f258-f217','f217-f258'))
+            derive_and_add(mats.get('f15'),derived.get('f259'),'f278',('f15-f259','f259-f15'))
 
             engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
             recipe=engine.search.solve()
