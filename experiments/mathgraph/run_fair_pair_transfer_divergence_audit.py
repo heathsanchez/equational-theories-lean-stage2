@@ -23,11 +23,15 @@ def run_case(rid,input_path,proof,m,h):
     for block in h.fof_blocks(proof):
         q=h.parse_fof(block)
         if not q: continue
-        fid,kind,formula,_=q
-        if kind in ('plain','axiom') and fid.startswith('f'):
-            try:
-                if h.formula_equality(formula) is not None: ids.append(fid)
-            except Exception: pass
+        fid,kind,formula,rest=q
+        if kind!='plain' or not fid.startswith('f'): continue
+        blob=' '.join(rest)
+        # Derived equality clauses only: exclude CNF/source plumbing, definitions, and conjecture transforms.
+        if 'inference(' not in blob: continue
+        if any(tag in blob for tag in ('cnf_transformation','definition_folding','reorient_equations','skolemize','ennf_transformation','negated_conjecture')): continue
+        try:
+            if h.formula_equality(formula) is not None: ids.append(fid)
+        except Exception: pass
     wanted=h.extract_wanted(proof,target[2],m,ids)
     def alpha_pair(a,b):
         n={}; x=r.alpha_canonical_term(a,n); y=r.alpha_canonical_term(b,n); return min((x,y),(y,x))
@@ -81,12 +85,11 @@ def run_case(rid,input_path,proof,m,h):
 
     def earliest_missing(pres):
         s=set(pres)
-        # ignore source/definition-era clauses already preceding derived corridor by requiring first derived clause absent after last present prefix
         for fid in ordered:
             if fid not in s: return fid
         return None
     return {
-      'id':rid,'warm_found':False,'vampire_equality_ids':ordered,
+      'id':rid,'warm_found':False,'vampire_derived_equality_ids':ordered,
       'initial_present':initial_present,'bootstrap_present':bootstrap_present,
       'round1_pair_attempts':pair_attempts,'round1_raw_count':len(raw),
       'round1_raw_present':raw_present,'round1_ranked_present':ranked_present,'round1_retained_present':retained_present,
@@ -98,12 +101,12 @@ def run_case(rid,input_path,proof,m,h):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--normal-input',required=True); ap.add_argument('--hard-input',required=True); ap.add_argument('--output',required=True); a=ap.parse_args()
-    m=load(SOLVER,'mg_transfer_div'); h=load(Path(__file__).with_name('run_normal0040_alpha_helpers.py'),'h_transfer_div')
+    m=load(SOLVER,'mg_transfer_div2'); h=load(Path(__file__).with_name('run_normal0040_alpha_helpers.py'),'h_transfer_div2')
     trace=json.load(urllib.request.urlopen(TRACE_URL)); proofs={x['id']:x['proof'] for x in trace['rows']}
     rows=[]
     for rid in CASES:
         inp=a.normal_input if 'normal_' in rid else a.hard_input
         res=run_case(rid,inp,proofs[rid],m,h); rows.append(res); print('FAIR_PAIR_DIVERGENCE',json.dumps(res,sort_keys=True),flush=True)
-    out={'policy':'frozen-fair-pair','diagnostic_oracle_only':True,'rows':rows}
+    out={'policy':'frozen-fair-pair','diagnostic_oracle_only':True,'derived_only':True,'rows':rows}
     Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
 if __name__=='__main__': main()
