@@ -66,10 +66,10 @@ def main():
                         for path in paths:
                             q=engine.search.critical_pair(L,R,0,1,path)
                             if q is None or alpha_sig(rigid,*inline_clause(q))!=alpha_sig(rigid,*wanted['f126']): continue
-                            nodes,root=engine.search.compile(q)
+                            inlined=engine.inline_recipe(q)
+                            nodes,root=engine.search.compile(inlined)
                             first_bad=None; prefix=[]
                             for i,node in enumerate(nodes):
-                                # Validate the actual derivation prefix, not the full DAG with a different root.
                                 ok=bool(m.replay_dag(source,nodes[:i+1],i,maximum_term_size=260,maximum_nodes=50000))
                                 prefix.append(ok)
                                 if not ok and first_bad is None:
