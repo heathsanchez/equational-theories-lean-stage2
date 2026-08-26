@@ -69,8 +69,7 @@ def main():
         def derive(left,right,fid,expand=False):
             if left is None or right is None: return None,[]
             details=[]
-            pairs=((left,right,'lr'),(right,left,'rl'))
-            for A,B,label in pairs:
+            for A,B,label in ((left,right,'lr'),(right,left,'rl')):
                 if expand: A,B=expand_recipe(A),expand_recipe(B)
                 for ar in (False,True):
                     aa=orient(A,ar)
@@ -103,6 +102,23 @@ def main():
         p278,d=derive(mats['f15'],p259,'f278',True); out['steps']['f278']=d
         out['reached']=[fid for fid in ('f95','f123','f126','f130','f148','f150','f196','f217','f229','f231','f244','f258','f259','f278') if out['steps'].get(fid)]
         out['furthest']=out['reached'][-1] if out['reached'] else None
+
+        out['f278_target_hit']=False; out['f278_judge_status']=None; out['f278_certificate_bytes']=None; out['f278_proof_nodes']=None
+        if p278 is not None:
+            rr=engine.inline_recipe(p278)
+            nodes,root=engine.search.compile(rr)
+            replayed=bool(m.replay_dag(source,nodes,root,maximum_term_size=300,maximum_nodes=60000))
+            out['f278_replay']=replayed
+            out['f278_target_hit']=(nodes[root].lhs,nodes[root].rhs)==target[:2]
+            out['f278_root']=[m.render_term(nodes[root].lhs),m.render_term(nodes[root].rhs)]
+            if replayed and out['f278_target_hit']:
+                code,proof_nodes=m.make_dag_certificate(target,nodes,root)
+                if hasattr(m,'_mg_elide_have_types'): code=m._mg_elide_have_types(code)
+                out['f278_proof_nodes']=proof_nodes
+                out['f278_certificate_bytes']=len(code.encode('utf-8'))
+                if out['f278_certificate_bytes']<=100000:
+                    out['f278_judge_status']=m.judge('true',code).get('status')
+
         engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
         recipe=engine.search.solve(); out['continued_recipe']=bool(recipe)
         if recipe:
