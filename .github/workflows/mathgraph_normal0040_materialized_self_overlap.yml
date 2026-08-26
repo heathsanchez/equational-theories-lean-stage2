@@ -15,19 +15,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Fetch normal evaluation data
+      - name: Fetch evaluation data
         run: |
           mkdir -p /tmp/sair_stage1_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_stage1_eval/evaluation_normal.jsonl
-      - name: Compile separator
-        run: python -m py_compile experiments/mathgraph/run_normal0040_materialized_self_overlap.py
-      - name: Run separator
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_hard.jsonl' -o /tmp/sair_stage1_eval/evaluation_hard.jsonl
+      - name: Compile transfer
+        run: python -m py_compile experiments/mathgraph/run_six_true_fair_pair_transfer.py
+      - name: Run frozen fair-pair transfer
         run: |
-          python experiments/mathgraph/run_normal0040_materialized_self_overlap.py \
-            --input /tmp/sair_stage1_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/normal0040-materialized-self-overlap.json
+          python experiments/mathgraph/run_six_true_fair_pair_transfer.py \
+            --normal-input /tmp/sair_stage1_eval/evaluation_normal.jsonl \
+            --hard-input /tmp/sair_stage1_eval/evaluation_hard.jsonl \
+            --output experiments/mathgraph/results/six-true-fair-pair-transfer.json
       - uses: actions/upload-artifact@v4
         with:
-          name: normal0040-materialized-self-overlap
-          path: experiments/mathgraph/results/normal0040-materialized-self-overlap.json
+          name: six-true-fair-pair-transfer
+          path: experiments/mathgraph/results/six-true-fair-pair-transfer.json
           if-no-files-found: error
