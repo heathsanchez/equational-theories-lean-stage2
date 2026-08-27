@@ -98,6 +98,14 @@ jobs:
             --seconds 120 \
             --batch 128 \
             --output experiments/mathgraph/results/796-0040-bounded-frontier-search.json
+      - name: Census corridor ranking in streaming frontier
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_frontier_rank_census.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --batch 128 \
+            --output experiments/mathgraph/results/796-0040-frontier-rank-census.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -110,4 +118,5 @@ jobs:
             experiments/mathgraph/results/796-0040-generic-expansion-search.json
             experiments/mathgraph/results/796-0040-search-corridor-census.json
             experiments/mathgraph/results/796-0040-bounded-frontier-search.json
+            experiments/mathgraph/results/796-0040-frontier-rank-census.json
           if-no-files-found: error
