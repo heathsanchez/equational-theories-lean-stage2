@@ -83,6 +83,13 @@ jobs:
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --seconds 120 \
             --output experiments/mathgraph/results/796-0040-generic-expansion-search.json
+      - name: Census unguided corridor loss boundary
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_search_corridor_census.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --output experiments/mathgraph/results/796-0040-search-corridor-census.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -93,4 +100,5 @@ jobs:
             experiments/mathgraph/results/796-0040-f217-parent-representation.json
             experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
             experiments/mathgraph/results/796-0040-generic-expansion-search.json
+            experiments/mathgraph/results/796-0040-search-corridor-census.json
           if-no-files-found: error
