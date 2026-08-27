@@ -106,6 +106,10 @@ def main():
         out['f278_target_hit']=False; out['f278_judge_status']=None; out['f278_certificate_bytes']=None; out['f278_proof_nodes']=None
         if p278 is not None:
             rr=engine.inline_recipe(p278)
+            # Equality goals are symmetric. Orient the replay-valid f278 root to the
+            # exact parsed target before certificate generation if necessary.
+            if (rr.lhs,rr.rhs)==(target[1],target[0]):
+                rr=m.Recipe(rr.rhs,rr.lhs,'symmetry',(rr,))
             nodes,root=engine.search.compile(rr)
             replayed=bool(m.replay_dag(source,nodes,root,maximum_term_size=300,maximum_nodes=60000))
             out['f278_replay']=replayed
