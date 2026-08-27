@@ -52,60 +52,12 @@ jobs:
             --order5 /tmp/sair_eval/evaluation_order5.jsonl \
             --timeout 60 \
             --output experiments/mathgraph/results/796-six-production-parity.json
-      - name: Run current 0040 materialize-overlap continuation
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_materialize_overlap_continue.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/796-0040-production-parity.json
-      - name: Run exact f217 structural separator
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_f217_exact_separator.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/796-0040-f217-exact-separator.json
-      - name: Diagnose f217 parent representation
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_f217_parent_representation.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --output experiments/mathgraph/results/796-0040-f217-parent-representation.json
       - name: Run generic rigid-definition expansion corridor
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_generic_expansion_corridor.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --output experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
-      - name: Run generic expansion search promotion gate
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_generic_expansion_search.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --seconds 120 \
-            --output experiments/mathgraph/results/796-0040-generic-expansion-search.json
-      - name: Census unguided corridor loss boundary
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_search_corridor_census.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --seconds 120 \
-            --output experiments/mathgraph/results/796-0040-search-corridor-census.json
-      - name: Run bounded-frontier generic search gate
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_bounded_frontier_search.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --seconds 120 \
-            --batch 128 \
-            --output experiments/mathgraph/results/796-0040-bounded-frontier-search.json
-      - name: Census corridor ranking in streaming frontier
-        run: |
-          source .env.judge
-          python experiments/mathgraph/run_796_0040_frontier_rank_census.py \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --seconds 120 \
-            --batch 128 \
-            --output experiments/mathgraph/results/796-0040-frontier-rank-census.json
       - name: Run incremental given-clause generic search gate
         run: |
           source .env.judge
@@ -131,20 +83,21 @@ jobs:
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --seconds 120 \
             --output experiments/mathgraph/results/796-0040-f258-to-f259-separator.json
+      - name: Run hybrid frontier and given-clause shared-pool closure
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_hybrid_pool_closure.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 180 \
+            --output experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
           path: |
             experiments/mathgraph/results/796-six-production-parity.json
-            experiments/mathgraph/results/796-0040-production-parity.json
-            experiments/mathgraph/results/796-0040-f217-exact-separator.json
-            experiments/mathgraph/results/796-0040-f217-parent-representation.json
             experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
-            experiments/mathgraph/results/796-0040-generic-expansion-search.json
-            experiments/mathgraph/results/796-0040-search-corridor-census.json
-            experiments/mathgraph/results/796-0040-bounded-frontier-search.json
-            experiments/mathgraph/results/796-0040-frontier-rank-census.json
             experiments/mathgraph/results/796-0040-given-clause-search.json
             experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
             experiments/mathgraph/results/796-0040-f258-to-f259-separator.json
+            experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
           if-no-files-found: error
