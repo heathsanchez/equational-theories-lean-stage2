@@ -90,6 +90,14 @@ jobs:
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --seconds 180 \
             --output experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
+      - name: Test independent frontier and given-clause cross-portfolio bridge
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_cross_portfolio_bridge.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --frontier-seconds 120 \
+            --given-seconds 10 \
+            --output experiments/mathgraph/results/796-0040-cross-portfolio-bridge.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -100,4 +108,5 @@ jobs:
             experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
             experiments/mathgraph/results/796-0040-f258-to-f259-separator.json
             experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
+            experiments/mathgraph/results/796-0040-cross-portfolio-bridge.json
           if-no-files-found: error
