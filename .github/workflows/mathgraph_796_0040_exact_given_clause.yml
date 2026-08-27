@@ -90,6 +90,14 @@ jobs:
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --seconds 120 \
             --output experiments/mathgraph/results/796-0040-search-corridor-census.json
+      - name: Run bounded-frontier generic search gate
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_bounded_frontier_search.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --batch 128 \
+            --output experiments/mathgraph/results/796-0040-bounded-frontier-search.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -101,4 +109,5 @@ jobs:
             experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
             experiments/mathgraph/results/796-0040-generic-expansion-search.json
             experiments/mathgraph/results/796-0040-search-corridor-census.json
+            experiments/mathgraph/results/796-0040-bounded-frontier-search.json
           if-no-files-found: error
