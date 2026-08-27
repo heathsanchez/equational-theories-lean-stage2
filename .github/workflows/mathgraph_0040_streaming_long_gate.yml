@@ -1,0 +1,52 @@
+name: MathGraph 0040 streaming long gate
+on:
+  push:
+    branches: [mathgraph/residual-router-796-20260826]
+  workflow_dispatch:
+jobs:
+  long_gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          s=p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c')
+          p.write_text(s)
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+      - name: Setup official-pinned Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Assert production pins
+        run: |
+          source .env.judge
+          "$HOME/.elan/bin/lean" --version
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.32.2'
+          grep -q '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
+      - name: Download evaluation normal calibration set
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Run streaming expansion search for 600 seconds
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_bounded_frontier_search.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 600 \
+            --batch 128 \
+            --output experiments/mathgraph/results/796-0040-streaming-600s.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0040-streaming-600s
+          path: experiments/mathgraph/results/796-0040-streaming-600s.json
+          if-no-files-found: error
