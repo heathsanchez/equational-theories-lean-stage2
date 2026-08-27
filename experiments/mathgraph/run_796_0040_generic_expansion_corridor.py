@@ -19,6 +19,18 @@ def load(path,name):
 def alpha_sig(rigid,a,b):
     n={}; x=rigid.alpha_canonical_term(a,n); y=rigid.alpha_canonical_term(b,n); return min((x,y),(y,x))
 
+def compact_certificate(m,code):
+    if not hasattr(m,'_mg_elide_have_types'):
+        return code
+    original=code.splitlines()
+    compact=m._mg_elide_have_types(code).splitlines()
+    if len(original)!=len(compact):
+        return code
+    for i,(before,after) in enumerate(zip(original,compact)):
+        if after.lstrip().startswith('have ') and after.rstrip().endswith(':= rfl') and ' : ' in before and ' := ' in before:
+            compact[i]=before
+    return '\n'.join(compact)+'\n'
+
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--input',required=True); ap.add_argument('--output',required=True); a=ap.parse_args()
     m=load(SOLVER,'mg796expandcorr'); rigid=m.RigidSuperpositionModule()
@@ -120,7 +132,7 @@ def main():
             out['f278_root']=[m.render_term(nodes[root].lhs),m.render_term(nodes[root].rhs)]
             if replayed and out['f278_target_hit']:
                 code,proof_nodes=m.make_dag_certificate(target,nodes,root)
-                if hasattr(m,'_mg_elide_have_types'): code=m._mg_elide_have_types(code)
+                code=compact_certificate(m,code)
                 out['f278_proof_nodes']=proof_nodes
                 out['f278_certificate_bytes']=len(code.encode('utf-8'))
                 if out['f278_certificate_bytes']<=100000:
