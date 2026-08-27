@@ -21,7 +21,8 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--input',required=True); ap.add_argument('--output',required=True); ap.add_argument('--seconds',type=float,default=180.0); a=ap.parse_args()
     m=load(SOLVER,'mg_hybrid'); row=row_for(a.input); source=m.parse_equation(row['equation1']); target=m.parse_equation(row['equation2'])
     limits=dict(m.COMPACT_SUPERPOSITION_PROBE); limits.update({'seconds':a.seconds,'maximum_term_size':65,'maximum_replay_term_size':300,'maximum_depth':12,'maximum_rules':768,'maximum_rounds':100000,'new_clauses_per_round':64,'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':60000})
-    engine=m.TargetGroundedRefutation(source,target,time.monotonic()+a.seconds,limits); s=engine.search
+    start=time.monotonic(); end=start+a.seconds
+    engine=m.TargetGroundedRefutation(source,target,end,limits); s=engine.search
     def expand_term(t):
         if t[0]=='var' and t[1] in engine.reverse_constants: return expand_term(engine.reverse_constants[t[1]])
         if t[0]=='op': return ('op',expand_term(t[1]),expand_term(t[2]))
@@ -46,9 +47,9 @@ def main():
         if c.rhs[0]!='var': z.append(m.Recipe(c.rhs,c.lhs,'symmetry',(c,)))
         return z
     def rkey(r): return (s.alpha_signature(r.lhs,r.rhs),r.lhs,r.rhs)
-    start=time.monotonic(); phase=max(20.0,min(60.0,a.seconds/3))
+    phase=max(20.0,min(60.0,a.seconds/3))
     # Phase A: streaming frontier batches, preserving all retained clauses.
-    s.deadline=min(engine.deadline,start+phase)
+    s.deadline=min(end,start+phase)
     batch=128
     rounds=0; enumA=0
     while not s.expired() and rounds<3:
@@ -77,7 +78,7 @@ def main():
         if not complete: break
     frontier_count=len(s.clauses)
     # Phase B: reset deadline and run incremental given-clause from the shared pool.
-    s.deadline=engine.deadline
+    s.deadline=end
     pending=[]; queued=set(); processed=set(); active=[]
     def enqueue(r):
         k=rkey(r)
