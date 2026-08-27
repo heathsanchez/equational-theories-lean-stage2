@@ -32,7 +32,7 @@ def main():
     source=m.parse_equation(row['equation1']); target=m.parse_equation(row['equation2'])
     limits=dict(m.COMPACT_SUPERPOSITION_PROBE); limits.update({'seconds':a.seconds,'maximum_term_size':65,'maximum_replay_term_size':300,'maximum_depth':12,'maximum_rules':768,'maximum_rounds':128,'new_clauses_per_round':64,'maximum_clauses':12000,'normalization_steps':256,'maximum_proof_nodes':60000})
     engine=m.TargetGroundedRefutation(source,target,time.monotonic()+a.seconds,limits); search=engine.search
-    original_cp=search.critical_pair; expansion_calls=0; expansion_changed=0; flushes=0; enumerated=0
+    original_cp=search.critical_pair; expansion_calls=0; expansion_changed=0; flushes=0; enumerated=0; completed_rounds=0
     def expand_term(t):
         if t[0]=='var' and t[1] in engine.reverse_constants: return expand_term(engine.reverse_constants[t[1]])
         if t[0]=='op': return ('op',expand_term(t[1]),expand_term(t[2]))
@@ -62,11 +62,11 @@ def main():
                 if added>=limits['new_clauses_per_round']: break
         return added
     def bounded_solve():
-        nonlocal enumerated
+        nonlocal enumerated, completed_rounds
         for ri in range(limits['maximum_rounds']):
             search.rounds=ri+1; rules=search.rules(); goal=search.target_proof(rules)
             if goal is not None: return goal
-            snapshot=rules; proposals=[]; round_added=0; restart=False
+            snapshot=rules; proposals=[]; round_added=0
             for oi,outer in enumerate(snapshot):
                 for ii,inner in enumerate(snapshot):
                     for path in m.nonvariable_positions(outer.lhs,maximum_depth=limits['maximum_depth'],include_root=True):
@@ -77,16 +77,18 @@ def main():
                         if p is None: continue
                         p=search.interreduce(p,rules); proposals.append((search.target_score(p),p)); enumerated+=1
                         if len(proposals)>=a.batch:
-                            round_added += flush(proposals); proposals=[]; restart=True; break
-                    if restart: break
-                if restart: break
-            round_added += flush(proposals)
+                            round_added += flush(proposals); proposals=[]
+                            goal=search.target_proof(search.rules())
+                            if goal is not None: return goal
+                            if len(search.clauses)>=limits['maximum_clauses']:
+                                return search.target_proof(search.rules())
+            round_added += flush(proposals); completed_rounds += 1
             goal=search.target_proof(search.rules())
             if goal is not None: return goal
             if not round_added or len(search.clauses)>=limits['maximum_clauses']: break
         return search.target_proof(search.rules())
     start=time.monotonic(); recipe=bounded_solve(); elapsed=time.monotonic()-start
-    out={'id':RID,'found_recipe':bool(recipe),'seconds':elapsed,'batch':a.batch,'rounds':search.rounds,'clauses':len(search.clauses),'generated':search.generated,'superpositions':search.superpositions,'reductions':search.reductions,'enumerated':enumerated,'flushes':flushes,'expansion_calls':expansion_calls,'expansion_changed':expansion_changed,'target_hit':False,'replay':False,'proof_nodes':None,'certificate_bytes':None,'judge_status':None,'judge_error_code':None}
+    out={'id':RID,'found_recipe':bool(recipe),'seconds':elapsed,'batch':a.batch,'rounds':search.rounds,'completed_rounds':completed_rounds,'clauses':len(search.clauses),'generated':search.generated,'superpositions':search.superpositions,'reductions':search.reductions,'enumerated':enumerated,'flushes':flushes,'expansion_calls':expansion_calls,'expansion_changed':expansion_changed,'target_hit':False,'replay':False,'proof_nodes':None,'certificate_bytes':None,'judge_status':None,'judge_error_code':None}
     if recipe is not None:
         rr=engine.inline_recipe(recipe)
         if (rr.lhs,rr.rhs)==(target[1],target[0]): rr=m.Recipe(rr.rhs,rr.lhs,'symmetry',(rr,))
