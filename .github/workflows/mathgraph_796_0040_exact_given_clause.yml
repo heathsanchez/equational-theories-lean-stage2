@@ -6,7 +6,7 @@ on:
 jobs:
   production_parity:
     runs-on: ubuntu-24.04
-    timeout-minutes: 45
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -115,6 +115,15 @@ jobs:
             --keep 64 \
             --partners 256 \
             --output experiments/mathgraph/results/796-0040-given-clause-search.json
+      - name: Census corridor under given-clause search
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_given_clause_corridor_census.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --keep 64 \
+            --partners 256 \
+            --output experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
       - uses: actions/upload-artifact@v4
         with:
           name: mathgraph-796-production-parity
@@ -129,4 +138,5 @@ jobs:
             experiments/mathgraph/results/796-0040-bounded-frontier-search.json
             experiments/mathgraph/results/796-0040-frontier-rank-census.json
             experiments/mathgraph/results/796-0040-given-clause-search.json
+            experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
           if-no-files-found: error
