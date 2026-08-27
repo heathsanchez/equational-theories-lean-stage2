@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
-import argparse, importlib.util, json, time, urllib.request
+import argparse, importlib.util, json, sys, time, urllib.request
+from dataclasses import replace
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0,str(ROOT))
+from judge.verify import _resolve_config, verify_answer
+
 SOLVER=ROOT/'submissions/mathgraph/solver.py'
 HELPER_URL='https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/mathgraph/normal0040-alpha-self-overlap-20260826/experiments/mathgraph/run_normal0040_materialized_self_overlap.py'
 TRACE_URL='https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/mathgraph/vampire-six-repro-20260820/experiments/mathgraph/results/vampire-six-20260820/mathgraph-six-vampire.json'
@@ -103,11 +108,9 @@ def main():
         out['reached']=[fid for fid in ('f95','f123','f126','f130','f148','f150','f196','f217','f229','f231','f244','f258','f259','f278') if out['steps'].get(fid)]
         out['furthest']=out['reached'][-1] if out['reached'] else None
 
-        out['f278_target_hit']=False; out['f278_judge_status']=None; out['f278_certificate_bytes']=None; out['f278_proof_nodes']=None
+        out['f278_target_hit']=False; out['f278_judge_status']=None; out['f278_judge_error_code']=None; out['f278_certificate_bytes']=None; out['f278_proof_nodes']=None
         if p278 is not None:
             rr=engine.inline_recipe(p278)
-            # Equality goals are symmetric. Orient the replay-valid f278 root to the
-            # exact parsed target before certificate generation if necessary.
             if (rr.lhs,rr.rhs)==(target[1],target[0]):
                 rr=m.Recipe(rr.rhs,rr.lhs,'symmetry',(rr,))
             nodes,root=engine.search.compile(rr)
@@ -121,7 +124,11 @@ def main():
                 out['f278_proof_nodes']=proof_nodes
                 out['f278_certificate_bytes']=len(code.encode('utf-8'))
                 if out['f278_certificate_bytes']<=100000:
-                    out['f278_judge_status']=m.judge('true',code).get('status')
+                    official_cfg=replace(_resolve_config(None),max_code_length=100000)
+                    judge_result=verify_answer(row,json.dumps({'verdict':'true','code':code}),config=official_cfg)
+                    out['f278_judge_status']=judge_result.get('status')
+                    out['f278_judge_error_code']=judge_result.get('error_code')
+                    out['f278_judge_message']=judge_result.get('message')
 
         engine.deadline=time.monotonic()+30.0; engine.search.deadline=engine.deadline
         recipe=engine.search.solve(); out['continued_recipe']=bool(recipe)
