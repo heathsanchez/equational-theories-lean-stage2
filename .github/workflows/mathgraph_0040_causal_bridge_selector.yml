@@ -36,7 +36,7 @@ jobs:
       - name: Test fast post-hoc f278 census
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_fast_f278_census.py \
+          python experiments/mathgraph/run_796_0040_fast_f278_census_compat.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
