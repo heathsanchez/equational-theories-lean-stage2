@@ -1,26 +1,23 @@
 #!/usr/bin/env python3
-"""Post-hoc localization for the failed 0040 causal bridge selector.
+"""Fast post-hoc localization of the 0040 bridge in the full raw cross pool.
 
-This is deliberately NOT an autonomy result.  It leaves candidate generation and
-causal scoring unchanged, then—only after the generic candidate set has been
-constructed and scored—uses the known Vampire proof trace to label f259/f15/f278.
-It asks four causal questions:
+This is NOT an autonomy result. Candidate/world generation runs unchanged and
+without hidden intermediate identities. Only after *all* raw cross inferences
+have been generated, target-scored, sorted, deduplicated, and shortlisted do we
+load the known Vampire trace for diagnosis.
 
-1. Was an alpha-equivalent of f259 generated at all?
-2. If so, where did the generic causal selector rank/retain it?
-3. With that bridge force-retained, can the unchanged raw live pool close 0040?
-4. If raw closure fails, is the known downstream f15 capability nevertheless
-   coverable from the frontier and does materializing only that diagnostic cover
-   restore verified closure?
-
-Hidden proof IDs never affect candidate generation or generic scoring.  They are
-used only after scoring for diagnosis and forced-ablation controls.
+The decisive question is whether f259 is:
+  (A) absent from the full raw cross language,
+  (B) generated but ranked outside the bounded shortlist, or
+  (C) already in the shortlist (which would contradict the prior diagnostic).
+We also diagnose whether the known parent capabilities f217/f258 and downstream
+f15 are live in the independently generated worlds.
 """
 import argparse, subprocess, sys, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-SRC = ROOT / 'experiments/mathgraph/run_796_0040_causal_bridge_selector.py'
+SRC = ROOT / 'experiments/mathgraph/run_796_0040_behavioural_separator_exchange.py'
 
 ap = argparse.ArgumentParser()
 ap.add_argument('--input', required=True)
@@ -35,13 +32,9 @@ ap.add_argument('--probe-partners', type=int, default=10)
 a = ap.parse_args()
 
 s = SRC.read_text()
-
-# Inject only after generic candidate generation + mixed-world scoring is complete.
-needle = """        scored.sort(key=lambda x:x[0])\n        causal_top=[]\n"""
-inject = r"""        scored.sort(key=lambda x:x[0])
-
-        # POST-HOC DIAGNOSTIC ONLY.  Everything above this line is the unchanged
-        # generic selector.  The hidden proof trace is loaded only now.
+needle = """        retained=[]; behavioural_tests=0; future_calls=0; novelty_sizes=[]; target_recipe=None; target_origin=None\n"""
+inject = r"""        # POST-HOC ONLY: raw generation, target sorting, deduplication and
+        # shortlist construction are complete before hidden trace identities load.
         TRACE_URL='https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/mathgraph/vampire-six-repro-20260820/experiments/mathgraph/results/vampire-six-20260820/mathgraph-six-vampire.json'
         trace=json.load(urllib.request.urlopen(TRACE_URL)); proof=next(r['proof'] for r in trace['rows'] if r['id']==RID)
         rigid=m.RigidSuperpositionModule(); defs={}; wanted={}
@@ -56,102 +49,81 @@ inject = r"""        scored.sort(key=lambda x:x[0])
             if kind=='definition':
                 if x[0]=='var' and x[1].startswith('sF'):defs[x[1]]=y
                 elif y[0]=='var' and y[1].startswith('sF'):defs[y[1]]=x
-            elif fid in {'f15','f259','f278'}:
+            elif fid in {'f15','f217','f258','f259','f278'}:
                 wanted[fid]=(h.map_rigids(h.inline_defs(x,defs),target[2]),h.map_rigids(h.inline_defs(y,defs),target[2]))
         def alpha_pair(a,b):
             names={}; x=rigid.alpha_canonical_term(a,names); y=rigid.alpha_canonical_term(b,names); return min((x,y),(y,x))
         wsig={fid:alpha_pair(*eq) for fid,eq in wanted.items()}
-        def inline_pair(r):return (h.inline_engine_names(r.lhs,ef.reverse_constants),h.inline_engine_names(r.rhs,ef.reverse_constants))
-        def diag_match(r,fid):return fid in wsig and alpha_pair(*inline_pair(r))==wsig[fid]
+        def inline_pair(r,eng):return (h.inline_engine_names(r.lhs,eng.reverse_constants),h.inline_engine_names(r.rhs,eng.reverse_constants))
+        def diag_match(r,fid,eng=ef):
+            if fid not in wsig:return False
+            try:return alpha_pair(*inline_pair(r,eng))==wsig[fid]
+            except Exception:return False
 
-        generated_bridge=None; generated_bridge_candidate_rank=None
-        for rank,(_,q) in enumerate(candidates,1):
-            if diag_match(q,'f259'):
-                generated_bridge=q; generated_bridge_candidate_rank=rank; break
-        scored_bridge_rank=None; scored_bridge_key=None
-        for rank,item in enumerate(scored,1):
-            if diag_match(item[1],'f259'):
-                scored_bridge_rank=rank; scored_bridge_key=item[0]; break
+        # Full raw rank: raw is already target-score sorted but not deduplicated.
+        raw_hits=[]
+        for rank,(score,q) in enumerate(raw,1):
+            if diag_match(q,'f259',ef):raw_hits.append((rank,score,q))
 
-        # Is f15 already explicitly live, or only latent/coverable in the frontier?
-        raw_f15_frontier=next((expf(c) for c in sf.clauses if diag_match(expf(c),'f15')),None)
-        f15_cover=None
-        if 'f15' in wanted:
-            goal=wanted['f15']
-            for c0 in sf.clauses:
-                c=expf(c0); x,y=inline_pair(c)
-                for rev,(u,v) in enumerate(((x,y),(y,x))):
-                    sub={}
-                    if rigid.match_term(u,goal[0],sub) and rigid.match_term(v,goal[1],sub):
-                        basec=c if not rev else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
-                        f15_cover=sf.instantiate(basec,sub); break
-                if f15_cover is not None:break
+        # Full deduplicated rank across the entire raw pool, without the 192 cap.
+        unique_rank=None; unique_score=None; unique_total=0; seen_all=set()
+        for score,q in raw:
+            k=(sf.alpha_signature(q.lhs,q.rhs),q.lhs,q.rhs)
+            if k in seen_all:continue
+            seen_all.add(k); unique_total+=1
+            if unique_rank is None and diag_match(q,'f259',ef):
+                unique_rank=unique_total; unique_score=score
 
-        def close_with_partners(bridge,partners):
-            if bridge is None:return None,0
-            enumerated=0
-            for pi,P in enumerate(partners):
-                for A,B in ((bridge,P),(P,bridge)):
-                    for ar in (False,True):
-                        aa=orient(A,ar)
-                        for br in (False,True):
-                            bb=orient(B,br)
-                            for path in m.nonvariable_positions(aa.lhs,maximum_depth=12,include_root=True):
-                                z=origf(aa,bb,0,pi,path)
-                                if z is None:continue
-                                enumerated+=1
-                                if exact_target(z):return z,enumerated
-            return None,enumerated
+        shortlist_rank=next((i for i,(_,q) in enumerate(candidates,1) if diag_match(q,'f259',ef)),None)
+        def world_hits(clauses,exp,eng,fid):
+            return [i for i,c0 in enumerate(clauses) if diag_match(exp(c0),fid,eng)]
+        frontier_hits={fid:world_hits(sf.clauses,expf,ef,fid) for fid in ('f15','f217','f258','f259')}
+        given_hits={fid:world_hits(sg.clauses,expg,eg,fid) for fid in ('f15','f217','f258','f259')}
 
-        # Forced bridge + unchanged raw live pool: sharp selector-vs-scaffolding test.
-        forced_raw_target,forced_raw_enumerated=close_with_partners(generated_bridge,pool)
-        forced_raw_judge=finish(ef,sf,forced_raw_target) if forced_raw_target is not None else None
+        # Inspect the provenance of the first f259 raw hit, if any, without using
+        # it to change generation or ranking.
+        parent_labels=[]
+        if raw_hits:
+            q=raw_hits[0][2]
+            for p in q.parents:
+                labels=[]
+                for fid in ('f217','f258'):
+                    if diag_match(p,fid,ef) or diag_match(p,fid,eg):labels.append(fid)
+                parent_labels.append(labels)
 
-        # Diagnostic materialization control.  This is intentionally guided and
-        # cannot support an autonomy claim; it tests whether the missing issue is
-        # that a necessary continuation exists only latently as an instantiable
-        # frontier capability rather than as a raw pool clause.
-        forced_materialized_target=None; forced_materialized_enumerated=0; forced_materialized_judge=None
-        if generated_bridge is not None and f15_cover is not None:
-            forced_materialized_target,forced_materialized_enumerated=close_with_partners(generated_bridge,[f15_cover])
-            forced_materialized_judge=finish(ef,sf,forced_materialized_target) if forced_materialized_target is not None else None
-
-        diagnostic={
+        diag={
             'posthoc_hidden_trace_only':True,
-            'generated_f259':generated_bridge is not None,
-            'f259_candidate_rank':generated_bridge_candidate_rank,
-            'f259_causal_scored_rank':scored_bridge_rank,
-            'f259_causal_score':scored_bridge_key,
-            'raw_f15_frontier':raw_f15_frontier is not None,
-            'f15_coverable_from_frontier':f15_cover is not None,
-            'forced_bridge_raw_pool_target_found':forced_raw_target is not None,
-            'forced_bridge_raw_pool_enumerated':forced_raw_enumerated,
-            'forced_bridge_raw_pool_judge':forced_raw_judge,
-            'forced_bridge_materialized_f15_target_found':forced_materialized_target is not None,
-            'forced_bridge_materialized_f15_enumerated':forced_materialized_enumerated,
-            'forced_bridge_materialized_f15_judge':forced_materialized_judge,
+            'cross_enumerated':cross_enum,
+            'raw_cross_count':len(raw),
+            'unique_cross_count':unique_total,
+            'candidate_budget':len(candidates),
+            'f259_in_full_raw':bool(raw_hits),
+            'f259_raw_first_rank':raw_hits[0][0] if raw_hits else None,
+            'f259_raw_hit_count':len(raw_hits),
+            'f259_raw_first_score':raw_hits[0][1] if raw_hits else None,
+            'f259_unique_rank':unique_rank,
+            'f259_unique_score':unique_score,
+            'f259_shortlist_rank':shortlist_rank,
+            'f259_first_raw_parent_labels':parent_labels,
+            'frontier_hits':frontier_hits,
+            'given_hits':given_hits,
+            'frontier_clauses':len(sf.clauses),
+            'given_clauses':len(sg.clauses),
+            'frontier_enumerated':enumf,
+            'given_enumerated':enumg,
+            'given_steps':givens,
         }
-        causal_top=[]
+        Path(a.output).parent.mkdir(parents=True,exist_ok=True); Path(a.output).write_text(json.dumps(diag,indent=2,sort_keys=True)+'\n')
+        print('FULL_RAW_BRIDGE_SCAN',json.dumps(diag,sort_keys=True),flush=True)
+        return
+
+        retained=[]; behavioural_tests=0; future_calls=0; novelty_sizes=[]; target_recipe=None; target_origin=None
 """
 if needle not in s:
-    raise SystemExit('causal scored marker not found')
+    raise SystemExit('post-candidate marker not found')
 s=s.replace(needle,inject,1)
 
-# After generic retention, record whether the diagnostically known bridge survived.
-needle2 = """            if target_recipe is None and child is not None:\n                target_recipe=child; target_origin='mixed-protected-future'\n\n"""
-inject2 = """            if target_recipe is None and child is not None:\n                target_recipe=child; target_origin='mixed-protected-future'\n        diagnostic['f259_retained_rank']=next((i for i,q in enumerate(retained,1) if diag_match(q,'f259')),None)\n\n"""
-if needle2 not in s:
-    raise SystemExit('causal retention marker not found')
-s=s.replace(needle2,inject2,1)
-
-# Persist the diagnostic alongside the unchanged causal-selector metrics.
-needle3 = """new_out = \"\"\"'behavioural_retained':len(retained),'novelty_sizes':novelty_sizes,'causal_top':causal_top[:12],'closure_enumerated':closure_enum\"\"\"\n"""
-replace3 = """new_out = \"\"\"'behavioural_retained':len(retained),'novelty_sizes':novelty_sizes,'causal_top':causal_top[:12],'diagnostic':diagnostic,'closure_enumerated':closure_enum\"\"\"\n"""
-if needle3 not in s:
-    raise SystemExit('causal output marker not found')
-s=s.replace(needle3,replace3,1)
-
-with tempfile.NamedTemporaryFile(mode='w', suffix='_causal_bridge_diagnostic_runtime.py', prefix='_mg_', dir=SRC.parent, delete=False) as fh:
+with tempfile.NamedTemporaryFile(mode='w', suffix='_full_raw_bridge_runtime.py', prefix='_mg_', dir=SRC.parent, delete=False) as fh:
     fh.write(s); patched=Path(fh.name)
 try:
     cmd=[sys.executable,str(patched),
