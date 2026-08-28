@@ -151,14 +151,17 @@ def main():
             A=expf(A0)
             for bi,B0 in enumerate(sg.clauses):
                 B=expf(expg(B0))
-                for ar in (False,True):
-                    aa=orient(A,ar)
-                    for br in (False,True):
-                        bb=orient(B,br)
-                        for path in m.nonvariable_positions(aa.lhs,maximum_depth=12,include_root=True):
-                            q=origf(aa,bb,ai,bi,path)
-                            if q is None:continue
-                            cross_enum+=1; raw.append((sf.target_score(q),q))
+                # Cross-world superposition is directional: a redex can live in
+                # either parent. Enumerate both parent orders generically.
+                for X,Y,oi,ii in ((A,B,ai,bi),(B,A,bi,ai)):
+                    for ar in (False,True):
+                        aa=orient(X,ar)
+                        for br in (False,True):
+                            bb=orient(Y,br)
+                            for path in m.nonvariable_positions(aa.lhs,maximum_depth=12,include_root=True):
+                                q=origf(aa,bb,oi,ii,path)
+                                if q is None:continue
+                                cross_enum+=1; raw.append((sf.target_score(q),q))
         raw.sort(key=lambda x:x[0]); candidates=[]; seen=set()
         for score,q in raw:
             k=(sf.alpha_signature(q.lhs,q.rhs),q.lhs,q.rhs)
