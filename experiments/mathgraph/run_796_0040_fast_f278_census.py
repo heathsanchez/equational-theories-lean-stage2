@@ -44,8 +44,12 @@ if old not in s:
     raise SystemExit('promotion marker not found')
 s = s.replace(old, new, 1)
 
-old = "        judged=finish(ef,sf,target_recipe) if target_recipe is not None else None\\n"
-new = r'''        # POST-HOC ONLY. All autonomous closure generation and promotion is finished.
+# Inject the hidden-trace census into the generated runtime *after* the entire
+# autonomous recursive closure loop, but before the wrapper closes its f-string.
+old = "                partners=partners+frontier\\n'''\n"
+posthoc = r'''                partners=partners+frontier
+
+        # POST-HOC ONLY. Autonomous generation and promotion are already complete.
         TRACE_URL='https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/mathgraph/vampire-six-repro-20260820/experiments/mathgraph/results/vampire-six-20260820/mathgraph-six-vampire.json'
         trace=json.load(urllib.request.urlopen(TRACE_URL)); proof=next(r['proof'] for r in trace['rows'] if r['id']==RID)
         rigid=m.RigidSuperpositionModule(); defs={}; wanted={}
@@ -74,10 +78,10 @@ new = r'''        # POST-HOC ONLY. All autonomous closure generation and promoti
         f278_generated=[{'round':rnd,'index':i+1} for i,(rnd,q) in enumerate(closure_all) if is_f278(q)]
         f278_promoted=[{'round':rnd,'index':i+1} for i,(rnd,q) in enumerate(closure_promoted) if is_f278(q)]
         f278_census={'posthoc_hidden_trace_only':True,'generated_hits':f278_generated,'generated_count':len(f278_generated),'promoted_hits':f278_promoted,'promoted_count':len(f278_promoted)}
-        judged=finish(ef,sf,target_recipe) if target_recipe is not None else None
 '''
+new = posthoc + "'''\n"
 if old not in s:
-    raise SystemExit('judge marker not found')
+    raise SystemExit('recursive-tail marker not found')
 s = s.replace(old, new, 1)
 
 old = "'closure_generated':closure_generated,'target_found':target_recipe is not None"
