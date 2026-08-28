@@ -43,7 +43,7 @@ jobs:
             --frontier-rounds 3 \
             --given-steps 16 \
             --candidate-budget 512 \
-            --behavioural-keep 64 \
+            --behavioural-keep 256 \
             --probe-partners 64 \
             --output experiments/mathgraph/results/796-0040-behavioural-separator-exchange.json
       - uses: actions/upload-artifact@v4
