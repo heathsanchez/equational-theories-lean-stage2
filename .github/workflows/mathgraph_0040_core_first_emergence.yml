@@ -9,7 +9,7 @@ permissions:
 jobs:
   core-first:
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,6 +39,7 @@ jobs:
           python experiments/mathgraph/run_796_0040_core_first_emergence.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --seconds 150 \
+            --navigation-seconds 150 \
             --seed-rounds 4 \
             --states 96 \
             --continuations 96 \
