@@ -1,4 +1,4 @@
-name: MathGraph 0040 causal bridge diagnostic
+name: MathGraph 0040 causal bridge admission test
 on:
   push:
     branches:
@@ -33,20 +33,20 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Run causal bridge localization diagnostic
+      - name: Run autonomous bridge admission and retention test
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_causal_bridge_diagnostic.py \
+          python experiments/mathgraph/run_796_0040_behavioural_separator_exchange.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
             --frontier-rounds 3 \
             --given-steps 16 \
-            --candidate-budget 192 \
-            --behavioural-keep 32 \
-            --probe-partners 10 \
-            --output experiments/mathgraph/results/796-0040-causal-bridge-diagnostic.json
+            --candidate-budget 512 \
+            --behavioural-keep 64 \
+            --probe-partners 64 \
+            --output experiments/mathgraph/results/796-0040-causal-bridge-admission.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-causal-bridge-diagnostic
-          path: experiments/mathgraph/results/796-0040-causal-bridge-diagnostic.json
+          name: mathgraph-0040-causal-bridge-admission
+          path: experiments/mathgraph/results/796-0040-causal-bridge-admission.json
