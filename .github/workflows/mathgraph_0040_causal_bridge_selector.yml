@@ -1,4 +1,4 @@
-name: MathGraph 0040 full causal bridge evaluation
+name: MathGraph 0040 retention-rank diagnostic
 on:
   push:
     branches:
@@ -33,10 +33,10 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Evaluate full autonomous causal candidate window
+      - name: Measure generic candidate retention ranks
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_behavioural_separator_exchange.py \
+          python experiments/mathgraph/run_796_0040_retention_rank_diagnostic.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
@@ -45,8 +45,8 @@ jobs:
             --candidate-budget 512 \
             --behavioural-keep 512 \
             --probe-partners 64 \
-            --output experiments/mathgraph/results/796-0040-full-causal-evaluation.json
+            --output experiments/mathgraph/results/796-0040-retention-rank-diagnostic.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-full-causal-evaluation
-          path: experiments/mathgraph/results/796-0040-full-causal-evaluation.json
+          name: mathgraph-0040-retention-rank-diagnostic
+          path: experiments/mathgraph/results/796-0040-retention-rank-diagnostic.json
