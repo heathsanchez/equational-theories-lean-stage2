@@ -1,4 +1,4 @@
-name: MathGraph 0040 retained bridge closure diagnostic
+name: MathGraph 0040 bounded recursive closure
 on:
   push:
     branches:
@@ -33,10 +33,10 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Diagnose retained bridge closure against available partner
+      - name: Test bounded recursive retained-interface closure
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_retained_bridge_closure_diagnostic.py \
+          python experiments/mathgraph/run_796_0040_recursive_closure_diagnostic.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
@@ -45,8 +45,10 @@ jobs:
             --candidate-budget 512 \
             --behavioural-keep 512 \
             --probe-partners 64 \
-            --output experiments/mathgraph/results/796-0040-retained-bridge-closure-diagnostic.json
+            --closure-rounds 3 \
+            --closure-new-per-round 128 \
+            --output experiments/mathgraph/results/796-0040-recursive-closure-diagnostic.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-retained-bridge-closure-diagnostic
-          path: experiments/mathgraph/results/796-0040-retained-bridge-closure-diagnostic.json
+          name: mathgraph-0040-recursive-closure-diagnostic
+          path: experiments/mathgraph/results/796-0040-recursive-closure-diagnostic.json
