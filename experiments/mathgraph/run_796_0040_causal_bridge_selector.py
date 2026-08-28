@@ -65,7 +65,7 @@ new_select = r"""        # Higher-order protected future: candidate must mediate
                                 if len(out)>=cap:return out,calls
             return out,calls
         def mixed_future(rule):
-            sigs=set(); target_child=None; calls=0; improving=0; best=float('inf')
+            sigs=set(); target_child=None; calls=0; improving=0; best=None
             base_score=sf.target_score(rule)
             for first_world,second_world in ((fprobes,gprobes),(gprobes,fprobes)):
                 first,n=first_children(rule,first_world); calls+=n
@@ -81,9 +81,12 @@ new_select = r"""        # Higher-order protected future: candidate must mediate
                                         if z is None:continue
                                         calls+=1; sigs.add(sig_of(z))
                                         zs=sf.target_score(z)
-                                        if zs < best:best=zs
+                                        if best is None or zs < best:best=zs
                                         if zs < base_score:improving+=1
                                         if exact_target(z):target_child=z
+            # No mixed continuation means this candidate has no protected future.
+            # Keep the score type homogeneous with sf.target_score (a tuple).
+            if best is None:best=base_score
             return sigs,target_child,calls,best,improving
 
         retained=[]; behavioural_tests=0; future_calls=0; novelty_sizes=[]; target_recipe=None; target_origin=None
