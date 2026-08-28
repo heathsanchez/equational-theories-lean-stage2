@@ -1,4 +1,4 @@
-name: MathGraph 0040 bounded recursive closure
+name: MathGraph 0040 fast bridge-tail closure
 on:
   push:
     branches:
@@ -9,7 +9,7 @@ permissions:
 jobs:
   causal:
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Test bounded recursive retained-interface closure
+      - name: Test fast low-novelty bridge-tail closure
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_recursive_closure_diagnostic.py \
@@ -45,10 +45,11 @@ jobs:
             --candidate-budget 512 \
             --behavioural-keep 512 \
             --probe-partners 64 \
-            --closure-rounds 3 \
-            --closure-new-per-round 128 \
-            --output experiments/mathgraph/results/796-0040-recursive-closure-diagnostic.json
+            --closure-rounds 2 \
+            --closure-new-per-round 64 \
+            --tail-novelty-max 80 \
+            --output experiments/mathgraph/results/796-0040-fast-bridge-tail-closure.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-recursive-closure-diagnostic
-          path: experiments/mathgraph/results/796-0040-recursive-closure-diagnostic.json
+          name: mathgraph-0040-fast-bridge-tail-closure
+          path: experiments/mathgraph/results/796-0040-fast-bridge-tail-closure.json
