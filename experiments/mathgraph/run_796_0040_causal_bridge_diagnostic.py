@@ -6,12 +6,9 @@ without hidden intermediate identities. Only after *all* raw cross inferences
 have been generated, target-scored, sorted, deduplicated, and shortlisted do we
 load the known Vampire trace for diagnosis.
 
-The decisive question is whether f259 is:
-  (A) absent from the full raw cross language,
-  (B) generated but ranked outside the bounded shortlist, or
-  (C) already in the shortlist (which would contradict the prior diagnostic).
-We also diagnose whether the known parent capabilities f217/f258 and downstream
-f15 are live in the independently generated worlds.
+The diagnostic now also takes the independently-live f217/f258 parent recipes
+and, post-hoc only, asks whether alternate cross-world projections change their
+ability to produce f259 under the exact same critical-pair operator family.
 """
 import argparse, subprocess, sys, tempfile
 from pathlib import Path
@@ -60,12 +57,10 @@ inject = r"""        # POST-HOC ONLY: raw generation, target sorting, deduplicat
             try:return alpha_pair(*inline_pair(r,eng))==wsig[fid]
             except Exception:return False
 
-        # Full raw rank: raw is already target-score sorted but not deduplicated.
         raw_hits=[]
         for rank,(score,q) in enumerate(raw,1):
             if diag_match(q,'f259',ef):raw_hits.append((rank,score,q))
 
-        # Full deduplicated rank across the entire raw pool, without the 192 cap.
         unique_rank=None; unique_score=None; unique_total=0; seen_all=set()
         for score,q in raw:
             k=(sf.alpha_signature(q.lhs,q.rhs),q.lhs,q.rhs)
@@ -80,8 +75,6 @@ inject = r"""        # POST-HOC ONLY: raw generation, target sorting, deduplicat
         frontier_hits={fid:world_hits(sf.clauses,expf,ef,fid) for fid in ('f15','f217','f258','f259')}
         given_hits={fid:world_hits(sg.clauses,expg,eg,fid) for fid in ('f15','f217','f258','f259')}
 
-        # Inspect the provenance of the first f259 raw hit, if any, without using
-        # it to change generation or ranking.
         parent_labels=[]
         if raw_hits:
             q=raw_hits[0][2]
@@ -90,6 +83,45 @@ inject = r"""        # POST-HOC ONLY: raw generation, target sorting, deduplicat
                 for fid in ('f217','f258'):
                     if diag_match(p,fid,ef) or diag_match(p,fid,eg):labels.append(fid)
                 parent_labels.append(labels)
+
+        # Post-hoc paired-parent localization. Hidden identities select the two
+        # already-live diagnostic parents only after autonomous generation ends.
+        # They do not affect generation, ranking, retention, or any autonomy claim.
+        pair_probe={}
+        if frontier_hits['f217'] and given_hits['f258']:
+            fa0=sf.clauses[frontier_hits['f217'][0]]
+            gb0=sg.clauses[given_hits['f258'][0]]
+            projections={}
+            def add_projection(label,af,bf,match_eng):
+                try:
+                    projections[label]=(af(fa0),bf(gb0),match_eng)
+                except Exception as e:
+                    pair_probe[label]={'error':'projection:'+repr(e),'enumerated':0,'f259':False}
+            add_projection('current_cross',expf,lambda r:expf(expg(r)),ef)
+            add_projection('frontier_projection_both',expf,expf,ef)
+            add_projection('native_given_projection',expf,expg,eg)
+
+            def probe_bridge(A,B,match_eng):
+                enum=0; hits=[]; errors=0
+                for order,(X,Y) in enumerate(((A,B),(B,A))):
+                    for ar in (False,True):
+                        aa=orient(X,ar)
+                        for br in (False,True):
+                            bb=orient(Y,br)
+                            for path in m.nonvariable_positions(aa.lhs,maximum_depth=12,include_root=True):
+                                try:q=origf(aa,bb,9000+order,9100+order,path)
+                                except Exception:
+                                    errors+=1; continue
+                                if q is None:continue
+                                enum+=1
+                                # q is produced by the frontier engine; prefer ef
+                                # for matching, with the requested projection engine
+                                # as a fallback diagnostic only.
+                                if diag_match(q,'f259',ef) or diag_match(q,'f259',match_eng):
+                                    hits.append({'order':order,'ar':ar,'br':br,'path':list(path)})
+                return {'enumerated':enum,'errors':errors,'f259':bool(hits),'hits':hits[:8]}
+            for label,(A,B,eng) in projections.items():
+                pair_probe[label]=probe_bridge(A,B,eng)
 
         diag={
             'posthoc_hidden_trace_only':True,
@@ -107,6 +139,7 @@ inject = r"""        # POST-HOC ONLY: raw generation, target sorting, deduplicat
             'f259_first_raw_parent_labels':parent_labels,
             'frontier_hits':frontier_hits,
             'given_hits':given_hits,
+            'paired_parent_projection_probe':pair_probe,
             'frontier_clauses':len(sf.clauses),
             'given_clauses':len(sg.clauses),
             'frontier_enumerated':enumf,
