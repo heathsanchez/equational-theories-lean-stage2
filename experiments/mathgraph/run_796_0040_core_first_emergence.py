@@ -28,7 +28,7 @@ def load(path,name):
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--input',required=True); ap.add_argument('--output',required=True)
-    ap.add_argument('--seconds',type=float,default=150); ap.add_argument('--seed-rounds',type=int,default=4)
+    ap.add_argument('--seconds',type=float,default=150); ap.add_argument('--navigation-seconds',type=float,default=150); ap.add_argument('--seed-rounds',type=int,default=4)
     ap.add_argument('--states',type=int,default=96); ap.add_argument('--continuations',type=int,default=96)
     ap.add_argument('--max-separators',type=int,default=24); ap.add_argument('--closure-rounds',type=int,default=5)
     a=ap.parse_args(); m=load(SOLVER,'mg_core_first')
@@ -120,6 +120,10 @@ def main():
             if target_recipe is not None or found is None:break
             protected.append(found[2])
 
+        # Give navigation its own fresh budget. The representation is now frozen:
+        # no separator, feature, score, or proof-search heuristic is added here.
+        s.deadline=time.monotonic()+a.navigation_seconds
+
         # Dynamics on the learned quotient. Add legal children, then only retain a
         # child when its protected fingerprint is a new interface state. This is
         # quotient navigation, not clause scoring.
@@ -168,7 +172,7 @@ def main():
                     judged={'status':jr.get('status'),'error_code':jr.get('error_code'),'proof_nodes':len(nodes),'certificate_bytes':len(code.encode())}
 
         final_classes=len({fingerprint(x) for x in population})
-        out={'id':RID,'principle':'quotient+continuation+verified-separator only','seed_enumerated':enum,'population':len(population),'candidate_continuations':len(contexts),'protected_separators':len(protected),'protected_separator_signatures':[sig(c) for c in protected],'final_population_classes':final_classes,'future_calls':calls,'closure_enumerated':closure_enum,'interface_states_after_navigation':len(reps),'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged,'history':histories}
+        out={'id':RID,'principle':'quotient+continuation+verified-separator only','seed_enumerated':enum,'population':len(population),'candidate_continuations':len(contexts),'protected_separators':len(protected),'protected_separator_signatures':[sig(c) for c in protected],'final_population_classes':final_classes,'future_calls':calls,'closure_enumerated':closure_enum,'navigation_seconds':a.navigation_seconds,'interface_states_after_navigation':len(reps),'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged,'history':histories}
         Path(a.output).parent.mkdir(parents=True,exist_ok=True);Path(a.output).write_text(json.dumps(out,indent=2,sort_keys=True)+'\n');print('CORE_FIRST_EMERGENCE',json.dumps(out,sort_keys=True),flush=True)
     finally:hp.unlink(missing_ok=True)
 if __name__=='__main__':main()
