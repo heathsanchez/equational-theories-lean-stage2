@@ -1,4 +1,4 @@
-name: MathGraph 0040 causal bridge selector
+name: MathGraph 0040 causal bridge diagnostic
 on:
   push:
     branches:
@@ -33,10 +33,10 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Run causal bridge selector
+      - name: Run causal bridge localization diagnostic
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_causal_bridge_selector.py \
+          python experiments/mathgraph/run_796_0040_causal_bridge_diagnostic.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
@@ -45,8 +45,8 @@ jobs:
             --candidate-budget 192 \
             --behavioural-keep 32 \
             --probe-partners 10 \
-            --output experiments/mathgraph/results/796-0040-causal-bridge-selector.json
+            --output experiments/mathgraph/results/796-0040-causal-bridge-diagnostic.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-causal-bridge-selector
-          path: experiments/mathgraph/results/796-0040-causal-bridge-selector.json
+          name: mathgraph-0040-causal-bridge-diagnostic
+          path: experiments/mathgraph/results/796-0040-causal-bridge-diagnostic.json
