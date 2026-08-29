@@ -1,0 +1,227 @@
+[
+  {
+    "id": "chain_direct_instance",
+    "eq1_id": 910001,
+    "eq2_id": 910002,
+    "elapsed_seconds": 11.41,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h ((x ◇ y)) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h ((x ◇ y)) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 11.38
+      }
+    ]
+  },
+  {
+    "id": "chain_two_source_transitivity",
+    "eq1_id": 910003,
+    "eq2_id": 910004,
+    "elapsed_seconds": 1.21,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have p0 : (x ◇ x) = (x ◇ y) := h (x) (y)\n  have p1 : (x ◇ x) = (x ◇ z) := h (x) (z)\n  have p2 : (x ◇ y) = (x ◇ x) := Eq.symm p0\n  have p3 : (x ◇ y) = (x ◇ z) := Eq.trans p2 p1\n  exact p3\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have p0 : (x ◇ x) = (x ◇ y) := h (x) (y)\n  have p1 : (x ◇ x) = (x ◇ z) := h (x) (z)\n  have p2 : (x ◇ y) = (x ◇ x) := Eq.symm p0\n  have p3 : (x ◇ y) = (x ◇ z) := Eq.trans p2 p1\n  exact p3\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.16
+      }
+    ]
+  },
+  {
+    "id": "chain_reversed_source",
+    "eq1_id": 910005,
+    "eq2_id": 910006,
+    "elapsed_seconds": 1.17,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro z x\n  exact (h (x) (z)).symm\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro z x\n  exact (h (x) (z)).symm\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.12
+      }
+    ]
+  },
+  {
+    "id": "chain_left_congruence",
+    "eq1_id": 910007,
+    "eq2_id": 910008,
+    "elapsed_seconds": 1.13,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x z\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : ((x ◇ x) ◇ z) = (x ◇ z) := congrArg (fun t => t ◇ z) p0\n  exact p1\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x z\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : ((x ◇ x) ◇ z) = (x ◇ z) := congrArg (fun t => t ◇ z) p0\n  exact p1\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.09
+      }
+    ]
+  },
+  {
+    "id": "chain_right_congruence",
+    "eq1_id": 910009,
+    "eq2_id": 910010,
+    "elapsed_seconds": 1.12,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro z x\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : (z ◇ (x ◇ x)) = (z ◇ x) := congrArg (fun t => z ◇ t) p0\n  exact p1\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro z x\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : (z ◇ (x ◇ x)) = (z ◇ x) := congrArg (fun t => z ◇ t) p0\n  exact p1\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.09
+      }
+    ]
+  },
+  {
+    "id": "chain_nested_congruence",
+    "eq1_id": 910011,
+    "eq2_id": 910012,
+    "elapsed_seconds": 1.13,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro w x z\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : ((x ◇ x) ◇ z) = (x ◇ z) := congrArg (fun t => t ◇ z) p0\n  have p2 : (w ◇ ((x ◇ x) ◇ z)) = (w ◇ (x ◇ z)) := congrArg (fun t => w ◇ t) p1\n  exact p2\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro w x z\n  have p0 : (x ◇ x) = x := h (x)\n  have p1 : ((x ◇ x) ◇ z) = (x ◇ z) := congrArg (fun t => t ◇ z) p0\n  have p2 : (w ◇ ((x ◇ x) ◇ z)) = (w ◇ (x ◇ z)) := congrArg (fun t => w ◇ t) p1\n  exact p2\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.09
+      }
+    ]
+  },
+  {
+    "id": "chain_convergent_intermediate",
+    "eq1_id": 910013,
+    "eq2_id": 910014,
+    "elapsed_seconds": 1.13,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have p0 : (x ◇ x) = (x ◇ y) := h (x) (y)\n  have p1 : (x ◇ x) = (x ◇ z) := h (x) (z)\n  have p2 : (x ◇ y) = (x ◇ x) := Eq.symm p0\n  have p3 : (x ◇ y) = (x ◇ z) := Eq.trans p2 p1\n  exact p3\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  have p0 : (x ◇ x) = (x ◇ y) := h (x) (y)\n  have p1 : (x ◇ x) = (x ◇ z) := h (x) (z)\n  have p2 : (x ◇ y) = (x ◇ x) := Eq.symm p0\n  have p3 : (x ◇ y) = (x ◇ z) := Eq.trans p2 p1\n  exact p3\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.1
+      }
+    ]
+  },
+  {
+    "id": "chain_false_idempotent_commutative",
+    "eq1_id": 910015,
+    "eq2_id": 910016,
+    "elapsed_seconds": 1.66,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.62
+      }
+    ]
+  },
+  {
+    "id": "chain_false_associative_commutative",
+    "eq1_id": 910017,
+    "eq2_id": 910018,
+    "elapsed_seconds": 1.64,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.61
+      }
+    ]
+  }
+]

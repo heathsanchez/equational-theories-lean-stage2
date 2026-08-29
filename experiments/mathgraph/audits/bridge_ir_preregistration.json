@@ -1,0 +1,75 @@
+{
+  "audit_version": "bridge-ir-external-audit-v1",
+  "authoritative_head": "f9430e5d6210e1e0fe5b8878a5b3b35b3c86d0ce",
+  "created_before_development_execution": true,
+  "frozen_baseline": {
+    "accepted_false": 96,
+    "accepted_true": 66,
+    "solver_bytes": 177344,
+    "solver_sha256": "b096ebef09a5cc11de9ad22f37a196111d29979beb8f759463643bba44f6b231"
+  },
+  "development_grid": {
+    "rankings": [
+      "activation",
+      "distance"
+    ],
+    "bridge_depths": [
+      1,
+      2
+    ],
+    "nonorientable_evidence": [
+      false,
+      true
+    ],
+    "reverse_expansion": [
+      false,
+      true
+    ],
+    "anti_unification": [
+      false,
+      true
+    ],
+    "portfolios": [
+      "bridge-probe",
+      "bridge-probe-plus-fast"
+    ],
+    "fixed_variants": [
+      "activation-depth1-probe",
+      "distance-depth1-probe",
+      "activation-depth2-probe-fast",
+      "activation-depth2-no-nonorientable",
+      "activation-depth2-no-reverse",
+      "activation-depth2-anti-unification"
+    ],
+    "selection_order": [
+      "official_true_gain",
+      "no_match_to_match_activations",
+      "activation_to_proof_conversion",
+      "zero_invalid_outcomes",
+      "runtime",
+      "smaller_depth_and_rulebook"
+    ]
+  },
+  "promotion_rule": {
+    "external_unused_true_minimum": 20,
+    "gain_minimum": "max(3, ceil(0.10 * external TRUE opportunities))",
+    "no_match_activation_rate_minimum": 0.2,
+    "activation_to_proof_rate_minimum": 0.25,
+    "bootstrap_lower_bound_above_zero_where_sample_permits": true,
+    "minimum_source_families": 3,
+    "maximum_single_source_fraction": 0.3333333333333333,
+    "invalid_false_control_outcomes_maximum": 0,
+    "all_traces_must_replay": true,
+    "external_seconds_per_gain_maximum": 20,
+    "production_floor": 162,
+    "full_sample_true_gain_minimum": 1
+  },
+  "seed_derivation": "SHA256(authoritative_head || 'bridge-ir-external-audit-v1')",
+  "external_comparators": [
+    "production-without-bridge-ir",
+    "bridge-probe",
+    "bridge-probe-plus-fast",
+    "bridge-medium-diagnostic",
+    "bridge-deep-diagnostic-capped"
+  ]
+}

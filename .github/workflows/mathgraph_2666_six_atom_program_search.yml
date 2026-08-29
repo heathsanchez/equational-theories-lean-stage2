@@ -1,0 +1,34 @@
+name: MathGraph 2666 Six Atom Program Search
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_six_atom_program_search.py
+      - .github/workflows/mathgraph_2666_six_atom_program_search.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_six_atom_program_search.py
+      - .github/workflows/mathgraph_2666_six_atom_program_search.yml
+
+permissions:
+  contents: read
+
+jobs:
+  six-atom-program-search:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_2666_six_atom_program_search.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-2666-six-atom-program-search
+          path: experiments/mathgraph/results/2666-six-atom-program-search.json
+          if-no-files-found: warn

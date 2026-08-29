@@ -1,0 +1,38 @@
+name: MathGraph 18 Edge Binary Congruence Macro
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_18_edge_binary_congruence_macro.py
+      - .github/workflows/mathgraph_18_edge_binary_congruence_macro.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_18_edge_binary_congruence_macro.py
+      - .github/workflows/mathgraph_18_edge_binary_congruence_macro.yml
+
+permissions:
+  contents: read
+
+jobs:
+  binary-congruence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run binary congruence macro separator
+        run: python experiments/mathgraph/run_18_edge_binary_congruence_macro.py
+      - name: Upload binary congruence artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-18-edge-binary-congruence-macro
+          path: experiments/mathgraph/results/18-edge-binary-congruence-macro.json
+          if-no-files-found: warn

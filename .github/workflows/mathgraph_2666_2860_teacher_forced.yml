@@ -1,0 +1,35 @@
+name: MathGraph 2666 2860 Teacher Forced
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - experiments/mathgraph/run_2666_2860_teacher_forced.py
+      - .github/workflows/mathgraph_2666_2860_teacher_forced.yml
+
+permissions:
+  contents: read
+
+jobs:
+  teacher-forced:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout separator branch
+        uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run teacher-forced constructor test
+        run: python experiments/mathgraph/run_2666_2860_teacher_forced.py
+      - name: Upload teacher artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-2666-2860-teacher-forced
+          path: experiments/mathgraph/results/2666-2860-teacher-forced.json
+          if-no-files-found: error
+          retention-days: 30

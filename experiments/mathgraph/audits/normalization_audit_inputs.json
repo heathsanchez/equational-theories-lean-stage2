@@ -1,0 +1,2843 @@
+{
+  "audit_version": "equational-normalization-external-audit-v1",
+  "rows": [
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "d1778c8d5357e4ec11602aaa43f7231cbf845e033f863a69f7cdb04705794d73",
+      "eq1_id": 4538,
+      "eq2_id": 4505,
+      "equation1": "(x \u25c7 (y \u25c7 z)) = ((y \u25c7 w) \u25c7 w)",
+      "equation2": "(x \u25c7 (y \u25c7 y)) = ((z \u25c7 w) \u25c7 u)",
+      "id": "norm_1842dd7bc31cfecb70d7",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 9,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 9,
+        "target_variables": 5
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "b75e439171ccd21bd744325f1b97af98775c942827426805f01ca112f57f8f4f",
+      "eq1_id": 2009,
+      "eq2_id": 4146,
+      "equation1": "x = ((y \u25c7 (z \u25c7 w)) \u25c7 (x \u25c7 x))",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 z) \u25c7 z) \u25c7 y)",
+      "id": "norm_7b1b367a7c3575209257",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "05d583809648d1036500cece6d355eb7dd114a885cf0503365ef64fd4ff1aa15",
+      "eq1_id": 2495,
+      "eq2_id": 4606,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 x) \u25c7 x)) \u25c7 z)",
+      "equation2": "((x \u25c7 x) \u25c7 y) = ((y \u25c7 x) \u25c7 y)",
+      "id": "norm_02c7f02eed2a5c2681fa",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          4,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "5754abeaf6107e7e319b80b3d89ce3151ec612371afbcfc00a7877dc691db476",
+      "eq1_id": 2760,
+      "eq2_id": 1770,
+      "equation1": "x = (((y \u25c7 y) \u25c7 (z \u25c7 y)) \u25c7 w)",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 w) \u25c7 w))",
+      "id": "norm_db17814284d3a173c153",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ea32a2d926b4edccf6441600941fcb2de1f75906ab430f99b12841d071d53344",
+      "eq1_id": 830,
+      "eq2_id": 1229,
+      "equation1": "x = (x \u25c7 ((x \u25c7 y) \u25c7 (z \u25c7 z)))",
+      "equation2": "x = (x \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 y))",
+      "id": "norm_be986fa6599ac285c45a",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "4cdbf6b0031f1bbb8cf9aaab6c5eaff3c50adc43c0b4498705f9cd8ecc58d84d",
+      "eq1_id": 898,
+      "eq2_id": 949,
+      "equation1": "x = (y \u25c7 ((x \u25c7 z) \u25c7 (z \u25c7 y)))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 x) \u25c7 (y \u25c7 z)))",
+      "id": "norm_6cebf7c398e7806abde5",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c32207cb367fab1f393a0bd8f576e0695ca6b73224f480b9919ca08162a493d5",
+      "eq1_id": 2878,
+      "eq2_id": 2894,
+      "equation1": "x = (((x \u25c7 (y \u25c7 y)) \u25c7 z) \u25c7 x)",
+      "equation2": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 w) \u25c7 x)",
+      "id": "norm_7fb8c83cc23edbce9c26",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "2ee159b7c6a410d615604c73bef33c52f22b047af9eab66566266217c59b898d",
+      "eq1_id": 286,
+      "eq2_id": 532,
+      "equation1": "x = (((y \u25c7 y) \u25c7 z) \u25c7 x)",
+      "equation2": "x = (y \u25c7 (y \u25c7 (z \u25c7 (w \u25c7 x))))",
+      "id": "norm_3cec0261c13b2106f010",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          2,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "9c13fce204b76058891a74102c45899701407e7a5d2a06118bca85f976a2c069",
+      "eq1_id": 1170,
+      "eq2_id": 275,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (y \u25c7 y)) \u25c7 w))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 y) \u25c7 z)",
+      "id": "norm_6d6e96c395eff8e3d2ae",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          2,
+          2,
+          1
+        ],
+        "target_subterms": 6,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "b4e89f4228adc501cb3d9a3f574525127342d9f7e5ba93aa74b9d2897b9166a3",
+      "eq1_id": 3265,
+      "eq2_id": 4269,
+      "equation1": "(x \u25c7 x) = (x \u25c7 (y \u25c7 (z \u25c7 y)))",
+      "equation2": "(x \u25c7 (x \u25c7 x)) = (x \u25c7 (y \u25c7 x))",
+      "id": "norm_aa6da2a5ff396e65bbb3",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 6,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "4ca929e554c574961cde5267806162c383446c6a5e7be8ef32371b3b4f2a5a1c",
+      "eq1_id": 953,
+      "eq2_id": 2994,
+      "equation1": "x = (y \u25c7 ((z \u25c7 x) \u25c7 (z \u25c7 z)))",
+      "equation2": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 x)",
+      "id": "norm_96aaa58050ed815442cf",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "7cdbd0f4fe4b6e170662c3465336d404d1ff219a2ac999eaf77b750001abffb4",
+      "eq1_id": 2780,
+      "eq2_id": 4363,
+      "equation1": "x = (((y \u25c7 z) \u25c7 (x \u25c7 z)) \u25c7 z)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (y \u25c7 (x \u25c7 w))",
+      "id": "norm_86d8d9409ef4e44548b2",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c0220eb9c45e72c3bc414f00765a67e310a93308f667e0cb8cb1183c996bd439",
+      "eq1_id": 3959,
+      "eq2_id": 3573,
+      "equation1": "(x \u25c7 y) = ((y \u25c7 (x \u25c7 z)) \u25c7 z)",
+      "equation2": "(x \u25c7 y) = (y \u25c7 ((z \u25c7 z) \u25c7 x))",
+      "id": "norm_f1cae9346ef772be4c7e",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "aea3914b9ba44f2eb37150637492d2ffed028571aebd45376a21dcb01a3cadd2",
+      "eq1_id": 1147,
+      "eq2_id": 641,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (x \u25c7 x)) \u25c7 y))",
+      "equation2": "x = (x \u25c7 (y \u25c7 ((y \u25c7 x) \u25c7 z)))",
+      "id": "norm_caad9cb7253aa22fc347",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "19c6b609c4d9662ffc05d2828d7b38540509cf7ef701026905f9b211bd21ea40",
+      "eq1_id": 2738,
+      "eq2_id": 159,
+      "equation1": "x = (((y \u25c7 y) \u25c7 (x \u25c7 y)) \u25c7 z)",
+      "equation2": "x = ((x \u25c7 y) \u25c7 (y \u25c7 x))",
+      "id": "norm_62ccbf12989e2069d49b",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_subterms": 5,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "398b2d9bcaba537ba547d9acb047abe6e30346b59896dfd8231edffa61e7e661",
+      "eq1_id": 2045,
+      "eq2_id": 3257,
+      "equation1": "x = (((x \u25c7 x) \u25c7 y) \u25c7 (y \u25c7 z))",
+      "equation2": "(x \u25c7 x) = (x \u25c7 (x \u25c7 (y \u25c7 z)))",
+      "id": "norm_daa3ac0a8d659381d6af",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "68d919a84753ccc91cb3593b6a30154c81d451b2d67d86314a18fe099d7806f8",
+      "eq1_id": 2690,
+      "eq2_id": 2870,
+      "equation1": "x = (((x \u25c7 y) \u25c7 (z \u25c7 z)) \u25c7 w)",
+      "equation2": "x = (((x \u25c7 (y \u25c7 x)) \u25c7 z) \u25c7 z)",
+      "id": "norm_6c84d4bd83ad809286f3",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "935a8236d5bebdd1b16b8e15001f019428a5a49a80c2369d879503026951b066",
+      "eq1_id": 2215,
+      "eq2_id": 3622,
+      "equation1": "x = (((y \u25c7 z) \u25c7 w) \u25c7 (x \u25c7 w))",
+      "equation2": "(x \u25c7 y) = (z \u25c7 ((z \u25c7 y) \u25c7 z))",
+      "id": "norm_6225e0a6e435440a2632",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "77187a1fd28002fe7ba014c8e24f318ecdf5585e4862592a3cd07b9825da39bf",
+      "eq1_id": 1336,
+      "eq2_id": 419,
+      "equation1": "x = (y \u25c7 (((y \u25c7 z) \u25c7 y) \u25c7 x))",
+      "equation2": "x = (x \u25c7 (x \u25c7 (y \u25c7 (y \u25c7 x))))",
+      "id": "norm_4dbd6b1b0662e0aa2cae",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "cd5c5a25445d4a9f050ae96c127bf91438cd9bb95b43b6a44d0c20dc242f9b1d",
+      "eq1_id": 646,
+      "eq2_id": 2858,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y)))",
+      "equation2": "x = (((x \u25c7 (x \u25c7 y)) \u25c7 z) \u25c7 x)",
+      "id": "norm_9edd895fede0d0c69bf3",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "171660abec97a9d7198500b4ec9cb2c8062e44857c3af4607eef60422a3152f5",
+      "eq1_id": 2604,
+      "eq2_id": 2863,
+      "equation1": "x = ((y \u25c7 ((z \u25c7 z) \u25c7 x)) \u25c7 w)",
+      "equation2": "x = (((x \u25c7 (y \u25c7 x)) \u25c7 x) \u25c7 y)",
+      "id": "norm_1aaec5209fc7c3c4fdc7",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "6fa3acb8f6b5ec59dff019940820ad2eb55518f56423b7dd871b46921241aceb",
+      "eq1_id": 2998,
+      "eq2_id": 3870,
+      "equation1": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 z) \u25c7 x)",
+      "equation2": "(x \u25c7 x) = ((x \u25c7 (y \u25c7 y)) \u25c7 x)",
+      "id": "norm_fd48dd60699a5f046be9",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 3,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "de271c1816e9ca8b76e40773fe14e82c92a423b3614ba694f28c06b36e11c933",
+      "eq1_id": 2386,
+      "eq2_id": 2512,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (y \u25c7 y))) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 ((x \u25c7 y) \u25c7 z)) \u25c7 w)",
+      "id": "norm_fe485a3e2b830170d085",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          4,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "dd356a723b2c5c6a7a6b97d1cd26fdb01e47d13dea4b01c56ce8d692a20655da",
+      "eq1_id": 1587,
+      "eq2_id": 562,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (z \u25c7 (x \u25c7 y)))",
+      "equation2": "x = (y \u25c7 (z \u25c7 (y \u25c7 (z \u25c7 x))))",
+      "id": "norm_1f5ca936e2f9ea028d11",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "a43aa4e5a9776d5086cef45eb0eeee07a6f30eaf5b5f4a04bf155175d4856449",
+      "eq1_id": 665,
+      "eq2_id": 4600,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((z \u25c7 w) \u25c7 u)))",
+      "equation2": "((x \u25c7 x) \u25c7 y) = ((x \u25c7 y) \u25c7 z)",
+      "id": "norm_83f6c42c2c1cb4bee71e",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "bf11611f31ec36f031ad8b8461ed9e36e066fb6c5283cf67db903b80a2a4e6fd",
+      "eq1_id": 644,
+      "eq2_id": 2462,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 y) \u25c7 z)))",
+      "equation2": "x = ((x \u25c7 ((y \u25c7 x) \u25c7 z)) \u25c7 x)",
+      "id": "norm_89bce4be78ab98078ab4",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "2abb2ccd576b425005a42462621438be22ced7566214ef80171d5b18eb17d878",
+      "eq1_id": 1205,
+      "eq2_id": 450,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (w \u25c7 y)) \u25c7 w))",
+      "equation2": "x = (x \u25c7 (y \u25c7 (z \u25c7 (y \u25c7 x))))",
+      "id": "norm_ea5a7d3f1d5577e87c87",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "7d041092df771af03d3d27a35c81b7e1bd4e3cb7a61adac01963e00cfb7f585f",
+      "eq1_id": 899,
+      "eq2_id": 4591,
+      "equation1": "x = (y \u25c7 ((x \u25c7 z) \u25c7 (z \u25c7 z)))",
+      "equation2": "((x \u25c7 x) \u25c7 x) = ((y \u25c7 y) \u25c7 y)",
+      "id": "norm_3d6403e2b194e47ac444",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "01b0920143ed9ff94bf0a2d85d7087155b662010849b3c3335bee4653e1fefc7",
+      "eq1_id": 3290,
+      "eq2_id": 3264,
+      "equation1": "(x \u25c7 x) = (y \u25c7 (z \u25c7 (x \u25c7 z)))",
+      "equation2": "(x \u25c7 x) = (x \u25c7 (y \u25c7 (z \u25c7 x)))",
+      "id": "norm_507baa3bcdadae381325",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "5cccd7b667ff3400cbff49e94e9625f24560a20b5983bb60b6455f7eaa5b8aeb",
+      "eq1_id": 2301,
+      "eq2_id": 4303,
+      "equation1": "x = ((y \u25c7 (x \u25c7 (y \u25c7 x))) \u25c7 y)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (z \u25c7 (y \u25c7 x))",
+      "id": "norm_156c3216c892f5e57d9a",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "cfd65599f272a74e8a420c7f95bc78faea256f3caf566d872b94f68c0ee0179b",
+      "eq1_id": 139,
+      "eq2_id": 1775,
+      "equation1": "x = (y \u25c7 ((z \u25c7 y) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((y \u25c7 x) \u25c7 w))",
+      "id": "norm_cc0787993f7f091966c1",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "3225dae55a3b5fba6885daa6223ee6b1104d5c7412285e855e02c2692d09f8e0",
+      "eq1_id": 1368,
+      "eq2_id": 4358,
+      "equation1": "x = (y \u25c7 (((z \u25c7 y) \u25c7 x) \u25c7 z))",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (x \u25c7 (z \u25c7 y))",
+      "id": "norm_72477e9b7dac5306e4d9",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "88dc7cc3d8dffa5ed6d24f51094da9cb7375559a3a412be638e38a044f17034c",
+      "eq1_id": 898,
+      "eq2_id": 2673,
+      "equation1": "x = (y \u25c7 ((x \u25c7 z) \u25c7 (z \u25c7 y)))",
+      "equation2": "x = (((x \u25c7 y) \u25c7 (y \u25c7 y)) \u25c7 y)",
+      "id": "norm_5f70d4895aae93ff6c3e",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "66ba387d8fa632a39e94c7c4a0a8bb89d2306ff8428bc2c5591603526bc1e216",
+      "eq1_id": 1368,
+      "eq2_id": 4612,
+      "equation1": "x = (y \u25c7 (((z \u25c7 y) \u25c7 x) \u25c7 z))",
+      "equation2": "((x \u25c7 x) \u25c7 y) = ((y \u25c7 z) \u25c7 z)",
+      "id": "norm_9c250f171fa1d3babea5",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "d9e2a602c80d329b8b5118bfd40f7b4d2f02957f3a67f834ca9062f0ee868e66",
+      "eq1_id": 2531,
+      "eq2_id": 1230,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = (x \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 z))",
+      "id": "norm_ab0d67844a1c70352490",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c504e6c6add2af9729b0a19ede9bbae4a27b3fcb6e7b80e056802c827f4df0ea",
+      "eq1_id": 2380,
+      "eq2_id": 4422,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (x \u25c7 w))) \u25c7 u)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = ((z \u25c7 y) \u25c7 w)",
+      "id": "norm_c2b2ddf3b2e79d84826b",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "2f1cab824dded881e127a1bc3f2861b81fe98cfd7945375977ac30e8af2617f3",
+      "eq1_id": 3175,
+      "eq2_id": 4518,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 z) \u25c7 w) \u25c7 u)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = ((x \u25c7 w) \u25c7 x)",
+      "id": "norm_1f1ffed280eec86fa4e5",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "f52339d42d85f935c425ced136ed4a998375cfd47e5474cddb832061a843c0f2",
+      "eq1_id": 646,
+      "eq2_id": 2855,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y)))",
+      "equation2": "x = (((x \u25c7 (x \u25c7 y)) \u25c7 y) \u25c7 x)",
+      "id": "norm_d4ac60078fcba675a3b7",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "655f5deb280db08a2abec2020f75540495f20393dabeb1d20ac4b0e857850b36",
+      "eq1_id": 4414,
+      "eq2_id": 4623,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((y \u25c7 z) \u25c7 w)",
+      "equation2": "((x \u25c7 x) \u25c7 y) = ((z \u25c7 z) \u25c7 w)",
+      "id": "norm_27f186b24df7b4c37bda",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "944962298d11e51b5c3d23c7ca029817b2969718d05974f16a0bc1537d3deb47",
+      "eq1_id": 550,
+      "eq2_id": 2965,
+      "equation1": "x = (y \u25c7 (z \u25c7 (x \u25c7 (w \u25c7 y))))",
+      "equation2": "x = (((y \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 y)",
+      "id": "norm_3f4741fcbcb38131a1d0",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "14d7b751c1fc5a6ef8eac1d1472b5df94983229544a07eb167fc887bac9a6f75",
+      "eq1_id": 3360,
+      "eq2_id": 379,
+      "equation1": "(x \u25c7 y) = (y \u25c7 (y \u25c7 (z \u25c7 z)))",
+      "equation2": "(x \u25c7 y) = ((x \u25c7 y) \u25c7 z)",
+      "id": "norm_e21c47d42ddb9e356ca9",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 5,
+        "target_repetition": [
+          2,
+          2,
+          1
+        ],
+        "target_subterms": 5,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "0ec7113a73833c282b576436d7932529bec07d2b4a93a650ab14d64214dfa33c",
+      "eq1_id": 778,
+      "eq2_id": 676,
+      "equation1": "x = (y \u25c7 (z \u25c7 ((z \u25c7 y) \u25c7 x)))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((y \u25c7 x) \u25c7 x)))",
+      "id": "norm_9c2fb4cc3425db1557de",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 3,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c422219380ceb3f42ef8254ad9c00e7c17a2bdbc24880699405872368c5feac0",
+      "eq1_id": 4431,
+      "eq2_id": 4362,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((z \u25c7 w) \u25c7 u)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (y \u25c7 (x \u25c7 z))",
+      "id": "norm_a909b85d52ed93bcd967",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "1a16973f67218377b73e1bc5e498c9283c2560bef04e431abb2c8a83103fb898",
+      "eq1_id": 3013,
+      "eq2_id": 1094,
+      "equation1": "x = (((y \u25c7 (z \u25c7 z)) \u25c7 y) \u25c7 z)",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (z \u25c7 x)) \u25c7 z))",
+      "id": "norm_b32334363f2f6a76c13c",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "7e2d757740e9fcf24c9358b40105e24850c3a285ae968eae4fef8018127cf32e",
+      "eq1_id": 1167,
+      "eq2_id": 1763,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (y \u25c7 y)) \u25c7 x))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 ((x \u25c7 z) \u25c7 x))",
+      "id": "norm_d3852cc05111c813383f",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ce90ddd8e6a0ec82ff97ee1ede5036a3a6c46740d53a4be97bd6ad28db49f6ec",
+      "eq1_id": 3156,
+      "eq2_id": 3621,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 y) \u25c7 z) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (z \u25c7 ((z \u25c7 y) \u25c7 y))",
+      "id": "norm_d944c5a88247a70b7eeb",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          4,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "eccdb6489f30194df9fcb42be8a18841450f78d3ea932bc570b5ee97285e1465",
+      "eq1_id": 2248,
+      "eq2_id": 4079,
+      "equation1": "x = ((x \u25c7 (x \u25c7 (y \u25c7 y))) \u25c7 z)",
+      "equation2": "(x \u25c7 x) = (((x \u25c7 y) \u25c7 z) \u25c7 w)",
+      "id": "norm_5889d1b36ebb051f7ef8",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "b69df434b6cfdf81c16e33cb19df85f3bb5c102291241cfa654955228fe3e1e4",
+      "eq1_id": 853,
+      "eq2_id": 160,
+      "equation1": "x = (x \u25c7 ((y \u25c7 z) \u25c7 (x \u25c7 y)))",
+      "equation2": "x = ((x \u25c7 y) \u25c7 (y \u25c7 y))",
+      "id": "norm_ccc402c5fa527b5d1d51",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_subterms": 5,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "43c93b9989f2ed1901556d0105ad6f60ab34b1198da780e9b23c6ee759ad6c72",
+      "eq1_id": 2531,
+      "eq2_id": 2314,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 (x \u25c7 (z \u25c7 y))) \u25c7 x)",
+      "id": "norm_703f47ce8e36cb757bfd",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "cf36e4db7e92028dc034160d4b7581eed84ef616d9f1176ec85fdf0c48bf0add",
+      "eq1_id": 4422,
+      "eq2_id": 4297,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((z \u25c7 y) \u25c7 w)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (y \u25c7 (z \u25c7 z))",
+      "id": "norm_2d4ca68dbe3e2d254214",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "183bff3d06363d1195894e4e5d71ebf7f5fa88fb403d94e8fdf4f0a3cbf471ad",
+      "eq1_id": 475,
+      "eq2_id": 3275,
+      "equation1": "x = (y \u25c7 (x \u25c7 (y \u25c7 (x \u25c7 z))))",
+      "equation2": "(x \u25c7 x) = (y \u25c7 (x \u25c7 (z \u25c7 y)))",
+      "id": "norm_c0cbf179471ad3b24d38",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c02384fb22fb05a52e591b66d35b1dafb6badc0a95e0a0b9413aa97799fb04a7",
+      "eq1_id": 2994,
+      "eq2_id": 2623,
+      "equation1": "x = (((y \u25c7 (z \u25c7 y)) \u25c7 y) \u25c7 x)",
+      "equation2": "x = ((y \u25c7 ((z \u25c7 w) \u25c7 y)) \u25c7 x)",
+      "id": "norm_18c976e93310c485bcab",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "cb3d1880d3c96d1f70b7d3ddfb4dfabe360a4b649d10ac9565db38c7983e93e3",
+      "eq1_id": 2126,
+      "eq2_id": 1071,
+      "equation1": "x = (((y \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 z))",
+      "equation2": "x = (x \u25c7 ((y \u25c7 (z \u25c7 w)) \u25c7 u))",
+      "id": "norm_430d85eac242e294f1f7",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 9,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 9,
+        "target_variables": 5
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "316a876a8d72fbf7370e0c85d7e2f43f036fb4268971e2b17d09080fcbed6615",
+      "eq1_id": 652,
+      "eq2_id": 3266,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((z \u25c7 x) \u25c7 w)))",
+      "equation2": "(x \u25c7 x) = (x \u25c7 (y \u25c7 (z \u25c7 z)))",
+      "id": "norm_b38e169e3e4b3ff68a0c",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "69ad6c3eeab0715de498bec797a429cb6d2e7c81b7fb7405c752434155d893ba",
+      "eq1_id": 646,
+      "eq2_id": 4144,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y)))",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 z) \u25c7 y) \u25c7 w)",
+      "id": "norm_b3f54c5e5c58f58cfb09",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "4076136285daa951d9cbaea3222339944b45b8c350840e71570e44c50f38debb",
+      "eq1_id": 646,
+      "eq2_id": 4286,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y)))",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (x \u25c7 (z \u25c7 x))",
+      "id": "norm_bfca6ac61163b9dce230",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "392bcc2b0859e996464a4add8367ff71db9b73c602efc80ddb21afd0029e2ea9",
+      "eq1_id": 1401,
+      "eq2_id": 629,
+      "equation1": "x = (y \u25c7 (((z \u25c7 w) \u25c7 x) \u25c7 y))",
+      "equation2": "x = (x \u25c7 (y \u25c7 ((x \u25c7 x) \u25c7 x)))",
+      "id": "norm_84edf8bb9d2da9e6aaa5",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ee3280c5ccd621b01ad6fb226a18af3c91ca1285f40ec8c779cdab0f8b2b6585",
+      "eq1_id": 1676,
+      "eq2_id": 4138,
+      "equation1": "x = ((x \u25c7 y) \u25c7 ((z \u25c7 w) \u25c7 x))",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 z) \u25c7 x) \u25c7 y)",
+      "id": "norm_4c8119507334caf5f4ba",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "20c47865a089860d52f89deacf5e2722149e82a47a0379558ec472bda93f5c95",
+      "eq1_id": 1954,
+      "eq2_id": 1000,
+      "equation1": "x = ((y \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 y))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 w) \u25c7 (y \u25c7 y)))",
+      "id": "norm_7d1e15b1dccbe82cd37e",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "4556dd1b166190c1f4b241bd7ab2a1e40e9863d171ee38a538889a6fb0a0a99e",
+      "eq1_id": 3008,
+      "eq2_id": 1131,
+      "equation1": "x = (((y \u25c7 (z \u25c7 z)) \u25c7 x) \u25c7 y)",
+      "equation2": "x = (y \u25c7 ((y \u25c7 (z \u25c7 x)) \u25c7 z))",
+      "id": "norm_8e7190b74248c6272c7b",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "3149025cc32b81f53941c8d8a6a55430e9e6038adecd02175c694dd5cbf2e0ac",
+      "eq1_id": 2656,
+      "eq2_id": 2863,
+      "equation1": "x = (((x \u25c7 x) \u25c7 (y \u25c7 z)) \u25c7 y)",
+      "equation2": "x = (((x \u25c7 (y \u25c7 x)) \u25c7 x) \u25c7 y)",
+      "id": "norm_0ca4e8dea31d78e7eebb",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "c4eb9de1ccc4bf3977ce3b5cd4b7845e006f09a886567c7aa051809419a6782a",
+      "eq1_id": 811,
+      "eq2_id": 4642,
+      "equation1": "x = (y \u25c7 (z \u25c7 ((w \u25c7 u) \u25c7 x)))",
+      "equation2": "((x \u25c7 y) \u25c7 x) = ((z \u25c7 x) \u25c7 x)",
+      "id": "norm_147bca84f3aa6e2ad684",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "88ad08176f972d16f1320042a9336f540f6f0110c251472f21644e3a6828de6f",
+      "eq1_id": 4581,
+      "eq2_id": 4539,
+      "equation1": "(x \u25c7 (y \u25c7 z)) = ((w \u25c7 u) \u25c7 u)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = ((y \u25c7 w) \u25c7 u)",
+      "id": "norm_d121830f11b35ee6536c",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 9,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_subterms": 9,
+        "target_variables": 5
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "badd02e68810418039af7b5f08464e4f3cccf176787f72b4a933e6b0556cf7e9",
+      "eq1_id": 1359,
+      "eq2_id": 210,
+      "equation1": "x = (y \u25c7 (((z \u25c7 x) \u25c7 z) \u25c7 z))",
+      "equation2": "x = ((x \u25c7 (y \u25c7 x)) \u25c7 z)",
+      "id": "norm_0bfd5a4832e54ecd8d9f",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          1,
+          1
+        ],
+        "target_subterms": 6,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "6fe5e7697cd25d71e421dabcd521b3789d05603934c42ca4ec8da8b969270b6d",
+      "eq1_id": 2126,
+      "eq2_id": 124,
+      "equation1": "x = (((y \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((y \u25c7 x) \u25c7 x))",
+      "id": "norm_10f875c4d2cc320b1aee",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_subterms": 5,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "8519c80f31bc7a5a1dc183bad19ac949c8dfefe867335e85a1c4b9fd35112630",
+      "eq1_id": 2434,
+      "eq2_id": 2002,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (w \u25c7 w))) \u25c7 u)",
+      "equation2": "x = ((y \u25c7 (z \u25c7 z)) \u25c7 (z \u25c7 z))",
+      "id": "norm_93dbf5082106e436231b",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 6,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "eeaac9c8a9ff2cd0b857a383ab87aedef9034b13615710a35318dd73c2035c1b",
+      "eq1_id": 964,
+      "eq2_id": 4192,
+      "equation1": "x = (y \u25c7 ((z \u25c7 y) \u25c7 (y \u25c7 x)))",
+      "equation2": "(x \u25c7 y) = (((z \u25c7 x) \u25c7 x) \u25c7 y)",
+      "id": "norm_b2c91f253344bc6603b0",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ec03504d129a4cdea6b52f34b5ffee3205e1c1677bf6e83720386745f1d2eb5a",
+      "eq1_id": 3550,
+      "eq2_id": 3282,
+      "equation1": "(x \u25c7 y) = (y \u25c7 ((x \u25c7 y) \u25c7 z))",
+      "equation2": "(x \u25c7 x) = (y \u25c7 (y \u25c7 (y \u25c7 y)))",
+      "id": "norm_7b26598dd498c6df4df9",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "1987181c8cd540a2202d6969180c1b48011ec0ada01c7e15ae183e7eaaeee3b8",
+      "eq1_id": 4676,
+      "eq2_id": 4282,
+      "equation1": "((x \u25c7 y) \u25c7 z) = ((x \u25c7 w) \u25c7 u)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (x \u25c7 (x \u25c7 z))",
+      "id": "norm_3a825c2ff675d106bd9e",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 2,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "b57a5a78520bab34981f31815401b87bc91f7c5fbd942abc94358815a2b7a868",
+      "eq1_id": 4422,
+      "eq2_id": 4460,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((z \u25c7 y) \u25c7 w)",
+      "equation2": "(x \u25c7 (y \u25c7 x)) = ((z \u25c7 z) \u25c7 x)",
+      "id": "norm_69bae06eb8c1e7417fa3",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "f1f502550d1fb56f00d4cfd8ae68663679e95d5a344233ecc7e2804d94e94072",
+      "eq1_id": 4686,
+      "eq2_id": 4625,
+      "equation1": "((x \u25c7 y) \u25c7 z) = ((z \u25c7 w) \u25c7 x)",
+      "equation2": "((x \u25c7 x) \u25c7 y) = ((z \u25c7 w) \u25c7 y)",
+      "id": "norm_5f3650a9a62ea6866c03",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "0e742721ef16514098224d3ec891c602f7425e6ee4c7e551f0bc9f6cbb34a8bc",
+      "eq1_id": 3242,
+      "eq2_id": 1251,
+      "equation1": "x = ((((y \u25c7 z) \u25c7 w) \u25c7 w) \u25c7 x)",
+      "equation2": "x = (x \u25c7 (((y \u25c7 y) \u25c7 y) \u25c7 x))",
+      "id": "norm_550dbd0037004ad23203",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "3fe4d62c182a325f3a365aa50e655574a0ea82f1d64e2debe166ecc99f48f25c",
+      "eq1_id": 1879,
+      "eq2_id": 4675,
+      "equation1": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 x))",
+      "equation2": "((x \u25c7 y) \u25c7 z) = ((x \u25c7 w) \u25c7 z)",
+      "id": "norm_42488f559848df337f6a",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_subterms": 8,
+        "target_variables": 4
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "89f28a559d10075a0e856f82a63ee6d214926d9728f097dbac624fe605ebfc9b",
+      "eq1_id": 460,
+      "eq2_id": 2449,
+      "equation1": "x = (x \u25c7 (y \u25c7 (z \u25c7 (w \u25c7 z))))",
+      "equation2": "x = ((x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 x)",
+      "id": "norm_3122b339410414f7902b",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ebd34779e6df6a17f6100d85a84c6dc9fc693fae00c5471791fee07bfa4502bb",
+      "eq1_id": 3958,
+      "eq2_id": 4128,
+      "equation1": "(x \u25c7 y) = ((y \u25c7 (x \u25c7 z)) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 y) \u25c7 x) \u25c7 y)",
+      "id": "norm_55df92f52425c443bee7",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 4,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_subterms": 5,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "2e2ffd068fa6f7f7177ff9388906c46dd47dd118ef56c672f1c4a93b5b2782a3",
+      "eq1_id": 4555,
+      "eq2_id": 4437,
+      "equation1": "(x \u25c7 (y \u25c7 z)) = ((z \u25c7 w) \u25c7 w)",
+      "equation2": "(x \u25c7 (y \u25c7 x)) = ((x \u25c7 y) \u25c7 z)",
+      "id": "norm_390caadd4c31f7fe7226",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "cde504e601f84ec1b79d0c1b43acfb0a4b5c5ad3e59b7223b4ba3e287ea9d7b8",
+      "eq1_id": 2539,
+      "eq2_id": 2541,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 z)) \u25c7 w)",
+      "equation2": "x = ((y \u25c7 ((y \u25c7 y) \u25c7 x)) \u25c7 y)",
+      "id": "norm_2bcf30fe97290b8c7047",
+      "stratum": {
+        "direct_source_instances": 1,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 4,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "ce59ff4af9b9eab0859499feac6b584500bfa2029f0779b5262ea6fa98a018de",
+      "eq1_id": 556,
+      "eq2_id": 4396,
+      "equation1": "x = (y \u25c7 (z \u25c7 (y \u25c7 (x \u25c7 z))))",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = ((x \u25c7 x) \u25c7 y)",
+      "id": "norm_e603378891b1a0267173",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 2,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_subterms": 6,
+        "target_variables": 2
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "d9a7ff0b464a685e2470decbcf64a8cc591a2aeb69d0a03a7ae465695abd82e9",
+      "eq1_id": 259,
+      "eq2_id": 2684,
+      "equation1": "x = (((x \u25c7 x) \u25c7 y) \u25c7 z)",
+      "equation2": "x = (((x \u25c7 y) \u25c7 (z \u25c7 y)) \u25c7 y)",
+      "id": "norm_2ff4f80cb8a6f354f231",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 1,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    },
+    {
+      "baseline": {
+        "judge_calls": 0,
+        "solved": false,
+        "verdict": null
+      },
+      "content_sha256": "f9ac5d5dce7d4a134d29b118d4ffe931fb1c1058c05381d718a6c5120158a22a",
+      "eq1_id": 2732,
+      "eq2_id": 3404,
+      "equation1": "x = (((y \u25c7 x) \u25c7 (z \u25c7 w)) \u25c7 u)",
+      "equation2": "(x \u25c7 y) = (z \u25c7 (y \u25c7 (z \u25c7 x)))",
+      "id": "norm_3b9c124113e499bb0463",
+      "stratum": {
+        "direct_source_instances": 0,
+        "fin2_countermodels": 0,
+        "fin2_source_models": 0,
+        "source_depth": 3,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_subterms": 7,
+        "target_variables": 3
+      }
+    }
+  ],
+  "seed_sha256": "4b938d37735f527f09ee5bf78ad091b24f62fd9a7ee894498b3eceb31399c4e9"
+}

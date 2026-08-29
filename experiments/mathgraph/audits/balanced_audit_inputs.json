@@ -1,0 +1,2850 @@
+{
+  "audit_version": "finite-model-balanced-audit-v1",
+  "built_at_utc": "2026-07-24T10:42:16.226595+00:00",
+  "rows": [
+    {
+      "content_sha256": "535020ebbc5e6ea4ab3a8f47bb4eaa772daf1a0e21e6bf8c8f080aa6654509b6",
+      "eq1_id": 6420000,
+      "eq2_id": 16429182,
+      "equation1": "x = ((x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 z)",
+      "equation2": "x = ((x \u25c7 (x \u25c7 (x \u25c7 y))) \u25c7 x)",
+      "id": "audit_035af0c3adfbd372cf20",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "2f39e74c08d6cc5f8ec79705731d75c1499f39df83603ac6cca0a8046b8aa742",
+      "eq1_id": 4055015,
+      "eq2_id": 5962998,
+      "equation1": "x = ((y \u25c7 (y \u25c7 x)) \u25c7 (y \u25c7 x))",
+      "equation2": "(x \u25c7 y) = (((z \u25c7 y) \u25c7 w) \u25c7 y)",
+      "id": "audit_ffb5fa71903fd2c9caaa",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 5,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "5b8b5983b6f2ee41208120f9c870fb559687df4fadf460069fd831977a8979fd",
+      "eq1_id": 6959449,
+      "eq2_id": 9612050,
+      "equation1": "(x \u25c7 y) = (((y \u25c7 y) \u25c7 x) \u25c7 x)",
+      "equation2": "(x \u25c7 y) = ((x \u25c7 (y \u25c7 y)) \u25c7 x)",
+      "id": "audit_112d35beaa0d613e1564",
+      "stratum": {
+        "direct_root_constraints": 9,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 6,
+        "fin3_countermodel": false,
+        "fin3_source_models": 9,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 9,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "f918ac5a62d7c515780e0e5a5635c9d6b9b005aff78887bb6cff7d5ca844a6a3",
+      "eq1_id": 17284780,
+      "eq2_id": 6903543,
+      "equation1": "(x \u25c7 y) = ((y \u25c7 x) \u25c7 (z \u25c7 w))",
+      "equation2": "(x \u25c7 x) = ((x \u25c7 y) \u25c7 (y \u25c7 x))",
+      "id": "audit_fd845e88d0d8c04c291d",
+      "stratum": {
+        "direct_root_constraints": 81,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 81,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "2df58e092da0feeffc325708af4b4141d4dbecfd47d80ab67748d8fa4a6f6ba0",
+      "eq1_id": 3971982,
+      "eq2_id": 1581504,
+      "equation1": "(x \u25c7 x) = (y \u25c7 (z \u25c7 (y \u25c7 w)))",
+      "equation2": "(x \u25c7 x) = (y \u25c7 (z \u25c7 (x \u25c7 z)))",
+      "id": "audit_b048814ff425d35f0d4a",
+      "stratum": {
+        "direct_root_constraints": 81,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 81,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "0a2a4650b1a97f5a1c562b064543979608e8827961063404b283b47173b2acd9",
+      "eq1_id": 1626182,
+      "eq2_id": 6268361,
+      "equation1": "(x \u25c7 y) = ((z \u25c7 y) \u25c7 (z \u25c7 y))",
+      "equation2": "(x \u25c7 y) = ((z \u25c7 w) \u25c7 (w \u25c7 y))",
+      "id": "audit_6ea07cec134bacb4633c",
+      "stratum": {
+        "direct_root_constraints": 27,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 3,
+        "fin3_countermodel": false,
+        "fin3_source_models": 3,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 27,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 2,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "53a38fd2467f1fc9c3c38bf0507ccacd365b1ce95bcc1c5a163466a55a902866",
+      "eq1_id": 6441359,
+      "eq2_id": 14760607,
+      "equation1": "x = ((((y \u25c7 x) \u25c7 z) \u25c7 z) \u25c7 x)",
+      "equation2": "x = (((y \u25c7 x) \u25c7 z) \u25c7 (w \u25c7 x))",
+      "id": "audit_40b6c5425444cafff02d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "eeaaeb966b50c4dddaa8dfa368972717bff056d040e9b6d945d55b34ff038d28",
+      "eq1_id": 16601323,
+      "eq2_id": 10837872,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 y) \u25c7 y)) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (z \u25c7 ((w \u25c7 y) \u25c7 u))",
+      "id": "audit_6610952ee79705ac0023",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          5,
+          1
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 9,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 5
+      }
+    },
+    {
+      "content_sha256": "b57e78014f837380678daadeceef9761efd49a2f1d70dfde19e2cb888a98c016",
+      "eq1_id": 12854392,
+      "eq2_id": 1065891,
+      "equation1": "x = ((((y \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 x)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = ((y \u25c7 x) \u25c7 z)",
+      "id": "audit_6c902f445e73c5ecd678",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "07427ad88705225872c331f5e8c5c4fbc0e9a61892e31d816f5df556cb95ca15",
+      "eq1_id": 1435770,
+      "eq2_id": 15170341,
+      "equation1": "x = ((y \u25c7 x) \u25c7 (x \u25c7 z))",
+      "equation2": "(x \u25c7 y) = ((x \u25c7 (z \u25c7 x)) \u25c7 y)",
+      "id": "audit_cf4a0e758c7a8156c341",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 2,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "b08efd13fd75cb7fe2a65cddc6b06a565533479a9bd58a44f63d38835e56b2c0",
+      "eq1_id": 12530941,
+      "eq2_id": 2290069,
+      "equation1": "x = ((((y \u25c7 y) \u25c7 z) \u25c7 y) \u25c7 z)",
+      "equation2": "(x \u25c7 y) = ((x \u25c7 (z \u25c7 z)) \u25c7 x)",
+      "id": "audit_43da6162219b4ac34db2",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "121585a1624f23ef8b4ca84d1951e219d7ea15442cc00a06d017a46c78e2b3b7",
+      "eq1_id": 2145157,
+      "eq2_id": 11556463,
+      "equation1": "x = (y \u25c7 (z \u25c7 (x \u25c7 (z \u25c7 x))))",
+      "equation2": "x = ((x \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 x))",
+      "id": "audit_d532c365216d0c1bab0d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 4,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "45e0c1b1d3857d1cc535d9502dda82cdc9c59a502f8c312de9420ef336bf379e",
+      "eq1_id": 5539521,
+      "eq2_id": 12634021,
+      "equation1": "x = (y \u25c7 (y \u25c7 (x \u25c7 (y \u25c7 x))))",
+      "equation2": "x = (y \u25c7 ((z \u25c7 (x \u25c7 w)) \u25c7 x))",
+      "id": "audit_1d00408599b4563dbd0b",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "a97da59c8d7613d9540560a73f7edadc44ed767063d33fb6f0c603bf80d064dd",
+      "eq1_id": 12067749,
+      "eq2_id": 11239830,
+      "equation1": "x = (y \u25c7 ((y \u25c7 y) \u25c7 (y \u25c7 z)))",
+      "equation2": "x = ((y \u25c7 z) \u25c7 (w \u25c7 (x \u25c7 z)))",
+      "id": "audit_e840ef884455d5480286",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          4,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "344de98d639d1b8cb2107c822cb27b89d1007215bcd7f1af4e16778fdc8c5baa",
+      "eq1_id": 4387817,
+      "eq2_id": 10246077,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = ((((x \u25c7 y) \u25c7 x) \u25c7 x) \u25c7 x)",
+      "id": "audit_3820e25a354ea4119969",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "e59970aa94131174b3515ae1d35698183bd0bc74ff6d6ca18355ff193436f4be",
+      "eq1_id": 16007024,
+      "eq2_id": 12159027,
+      "equation1": "x = ((((x \u25c7 y) \u25c7 y) \u25c7 x) \u25c7 y)",
+      "equation2": "(x \u25c7 x) = (x \u25c7 ((y \u25c7 z) \u25c7 x))",
+      "id": "audit_16c1c3600b27e37e76a9",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "38c568877fd1d91ac3573fffdcc29b7679c486390c38a1e47d2c0a07477d3c53",
+      "eq1_id": 4680552,
+      "eq2_id": 9860081,
+      "equation1": "x = (y \u25c7 (y \u25c7 ((x \u25c7 y) \u25c7 x)))",
+      "equation2": "x = (x \u25c7 ((y \u25c7 z) \u25c7 (z \u25c7 x)))",
+      "id": "audit_0267c12e399f025ed48d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "6bf7dbbeb73cf9dad00458454f1606477f05dfd0b9eda5f9c099d40f3165d781",
+      "eq1_id": 8035803,
+      "eq2_id": 13478748,
+      "equation1": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 x)",
+      "equation2": "x = (((x \u25c7 x) \u25c7 (y \u25c7 y)) \u25c7 x)",
+      "id": "audit_6096c670a9fac2a1c1e9",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 7,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "456383bfe96f97b6e23346c05373f3e815b4715a6880106897a37dab79f6cbd4",
+      "eq1_id": 5507459,
+      "eq2_id": 13557135,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((z \u25c7 y) \u25c7 w)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (y \u25c7 (z \u25c7 y))",
+      "id": "audit_b05306a46c46bb5f8012",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 162,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "9585cd98b01fa5e9527d57d0d1b60aa90595969b51d9247271aeac8124f65edc",
+      "eq1_id": 10759117,
+      "eq2_id": 10986559,
+      "equation1": "x = ((((y \u25c7 x) \u25c7 z) \u25c7 y) \u25c7 x)",
+      "equation2": "(x \u25c7 y) = ((y \u25c7 (y \u25c7 x)) \u25c7 y)",
+      "id": "audit_67ba90fadd61aac46bb6",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "e118139513fd7c862389d9ff3056039bc3e9a58be259c40ff131f6f1beabbed5",
+      "eq1_id": 15711763,
+      "eq2_id": 10749981,
+      "equation1": "x = (((y \u25c7 x) \u25c7 y) \u25c7 (z \u25c7 x))",
+      "equation2": "(x \u25c7 y) = (((y \u25c7 z) \u25c7 w) \u25c7 y)",
+      "id": "audit_fd315c8655c17d2aaef2",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "b8a890500068c22ef78669ebe5da0617803a74d8ee9c225e64554e54b81c8707",
+      "eq1_id": 13061776,
+      "eq2_id": 6222984,
+      "equation1": "x = (y \u25c7 (y \u25c7 (x \u25c7 (x \u25c7 z))))",
+      "equation2": "x = (((y \u25c7 x) \u25c7 y) \u25c7 x)",
+      "id": "audit_c362d1bce627ad840805",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "21ae365c7e5a4aac2b2cbaecede1e7ca510d3884eb2e37947185e189164e233c",
+      "eq1_id": 3167286,
+      "eq2_id": 7041658,
+      "equation1": "x = (x \u25c7 (y \u25c7 (z \u25c7 (x \u25c7 y))))",
+      "equation2": "x = (x \u25c7 (((y \u25c7 x) \u25c7 z) \u25c7 w))",
+      "id": "audit_a42cd5f0604b88f1b2aa",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "6a9c088e30f318d76a1d3793220db9f2e568518191861e433f436db681c1392a",
+      "eq1_id": 7946760,
+      "eq2_id": 10298643,
+      "equation1": "x = ((((x \u25c7 y) \u25c7 z) \u25c7 z) \u25c7 z)",
+      "equation2": "x = ((x \u25c7 ((y \u25c7 x) \u25c7 z)) \u25c7 w)",
+      "id": "audit_1e57c592bc86f46dadeb",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "d24acd47872503ef58c13418b99a8ab26b8ec674dae44741b61221457bbd0d0d",
+      "eq1_id": 14741709,
+      "eq2_id": 5667653,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = ((y \u25c7 (x \u25c7 (y \u25c7 x))) \u25c7 y)",
+      "id": "audit_4294f433fcbc4c86eeec",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "177950e8ce2ccdeace910e70fd31ede50db12efeabf4c35b37b43742824dcfa4",
+      "eq1_id": 2498384,
+      "eq2_id": 16237132,
+      "equation1": "x = (y \u25c7 ((x \u25c7 (x \u25c7 x)) \u25c7 x))",
+      "equation2": "x = (x \u25c7 ((y \u25c7 y) \u25c7 x))",
+      "id": "audit_53247453720047cf5a67",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          5,
+          1
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "550a83805a828bbebaa9ee0b233b045c4ed6014b585706f95382f6fda960493c",
+      "eq1_id": 6533251,
+      "eq2_id": 9391778,
+      "equation1": "(x \u25c7 y) = ((z \u25c7 w) \u25c7 w)",
+      "equation2": "((x \u25c7 y) \u25c7 y) = ((y \u25c7 x) \u25c7 z)",
+      "id": "audit_b6511b1fe29f60d6cf86",
+      "stratum": {
+        "direct_root_constraints": 81,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 81,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 2,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "a1f2809a6e91de3ec019a81a1eb882391b1fc2d138fbc1b61f3c083d9f9f900e",
+      "eq1_id": 11573376,
+      "eq2_id": 11100849,
+      "equation1": "(x \u25c7 y) = (((z \u25c7 y) \u25c7 z) \u25c7 y)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (y \u25c7 (x \u25c7 z))",
+      "id": "audit_87bff02ff5fae0d484b2",
+      "stratum": {
+        "direct_root_constraints": 27,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 4,
+        "fin3_countermodel": false,
+        "fin3_source_models": 7,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 27,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "d928c0bf9b2fe0b05929fdb58a25083c4122da06ba9462c347600d9acea4952f",
+      "eq1_id": 15191744,
+      "eq2_id": 13537103,
+      "equation1": "x = (((y \u25c7 x) \u25c7 x) \u25c7 (y \u25c7 y))",
+      "equation2": "((x \u25c7 y) \u25c7 x) = ((z \u25c7 x) \u25c7 y)",
+      "id": "audit_a7eaa839fc561d8ea7f8",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "dfbf5130c93d7a13afea2f61ddf590610c372716a80a453e599e81e28ffd8b64",
+      "eq1_id": 15623505,
+      "eq2_id": 4177245,
+      "equation1": "x = ((y \u25c7 (y \u25c7 (x \u25c7 y))) \u25c7 y)",
+      "equation2": "x = ((x \u25c7 ((x \u25c7 x) \u25c7 x)) \u25c7 x)",
+      "id": "audit_aad9c6f1c575a07f348e",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          4,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 5,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "e2a7a77757359f801e4040bb161febb47fb99ca4a7f8731bdf9853bdd8c8ef8b",
+      "eq1_id": 15814055,
+      "eq2_id": 8801109,
+      "equation1": "x = ((x \u25c7 (x \u25c7 x)) \u25c7 y)",
+      "equation2": "x = ((x \u25c7 x) \u25c7 (x \u25c7 (x \u25c7 x)))",
+      "id": "audit_fec537e2b51d85d43983",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 5,
+        "source_repetition": [
+          4,
+          1
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 4,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "b0ed629e57382d8836ed7c0f4c0a3eccab98b3a517f37dc30775049bf69d8578",
+      "eq1_id": 12555106,
+      "eq2_id": 11357016,
+      "equation1": "x = (y \u25c7 ((y \u25c7 x) \u25c7 (x \u25c7 y)))",
+      "equation2": "x = ((y \u25c7 (x \u25c7 y)) \u25c7 x)",
+      "id": "audit_6032aef228c91eee3ae3",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "c3d945f80e13005454b8c0be502e5a24e72cfbb3c652e6011e0eacd35ce6a38d",
+      "eq1_id": 13795141,
+      "eq2_id": 17236531,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 y) \u25c7 y))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((y \u25c7 y) \u25c7 y)))",
+      "id": "audit_c1e4b3abd74a25d5d5ec",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          4,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "91f4b9b4b13a48042b53065a0f51a5b6fbcaa6c493545704fa5a4941f57aeb76",
+      "eq1_id": 10525369,
+      "eq2_id": 12821850,
+      "equation1": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 y)",
+      "equation2": "x = ((((x \u25c7 x) \u25c7 x) \u25c7 x) \u25c7 x)",
+      "id": "audit_24fbc49bd81148ea24aa",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          2,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 5,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "bffdb18ae3c4f99630217d40a6f8c66bcf6192c5df8e2fd55c5df1c2d3b7b624",
+      "eq1_id": 13542321,
+      "eq2_id": 10082276,
+      "equation1": "x = (x \u25c7 (((y \u25c7 y) \u25c7 y) \u25c7 y))",
+      "equation2": "x = (x \u25c7 ((x \u25c7 (x \u25c7 x)) \u25c7 x))",
+      "id": "audit_8c93a1aea4c2fc859849",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 5,
+        "fin3_countermodel": false,
+        "fin3_source_models": 45,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          4,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 5,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "e4765a61e87fdf246fce216b616ffb2359fc4ab755fde9a0025c1c478d538d6c",
+      "eq1_id": 15932506,
+      "eq2_id": 7396511,
+      "equation1": "x = ((y \u25c7 (z \u25c7 (z \u25c7 x))) \u25c7 y)",
+      "equation2": "x = ((x \u25c7 (x \u25c7 x)) \u25c7 (x \u25c7 x))",
+      "id": "audit_2ab920d3e32f18eac0ac",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 4,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "0954eb89656e71beb9e95e9744b90fa65a0afb0c8ab5caed2a27a998f7882133",
+      "eq1_id": 1571563,
+      "eq2_id": 9984398,
+      "equation1": "(x \u25c7 x) = (y \u25c7 (x \u25c7 (z \u25c7 w)))",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (y \u25c7 (z \u25c7 w))",
+      "id": "audit_810ff544f2302826b630",
+      "stratum": {
+        "direct_root_constraints": 81,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 81,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "4e6505036590a82ab1fc514c57626a0eadccf9f72566aa81608e6af8f5f1d93f",
+      "eq1_id": 6097669,
+      "eq2_id": 1202608,
+      "equation1": "x = (y \u25c7 ((y \u25c7 (x \u25c7 y)) \u25c7 x))",
+      "equation2": "x = ((x \u25c7 (y \u25c7 x)) \u25c7 (x \u25c7 x))",
+      "id": "audit_d42e011bc3896137e3a6",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "8c485870ec491350bc11cee3766f1f06f972c466efb3766909eb1f93c62f1cde",
+      "eq1_id": 10153560,
+      "eq2_id": 8380521,
+      "equation1": "x = (((y \u25c7 (x \u25c7 y)) \u25c7 x) \u25c7 y)",
+      "equation2": "x = (((y \u25c7 (z \u25c7 w)) \u25c7 u) \u25c7 z)",
+      "id": "audit_3978d51f3842bcf6e17b",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 9,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 5
+      }
+    },
+    {
+      "content_sha256": "7078f07a65b7d9bcd788d818b53325361a76dd2282b63ef88aa0b89c4c2597cb",
+      "eq1_id": 8330992,
+      "eq2_id": 9001431,
+      "equation1": "x = (y \u25c7 ((y \u25c7 (x \u25c7 x)) \u25c7 z))",
+      "equation2": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 y)",
+      "id": "audit_a5221e06ecb446548207",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "1e83cf757a58289062270cbde4bc2f053f8a25675f092f511a03d4bf151def62",
+      "eq1_id": 2959823,
+      "eq2_id": 8679032,
+      "equation1": "x = (y \u25c7 ((y \u25c7 (y \u25c7 x)) \u25c7 x))",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (y \u25c7 (x \u25c7 y))",
+      "id": "audit_6a6505a2e612f819ad8c",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 2,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "6c4086fabb48977cd551ef2eb9464c7b130b058c384d45738a2cc1304de1454c",
+      "eq1_id": 8054406,
+      "eq2_id": 17411944,
+      "equation1": "x = (((y \u25c7 x) \u25c7 z) \u25c7 (z \u25c7 y))",
+      "equation2": "x = (y \u25c7 (x \u25c7 ((z \u25c7 y) \u25c7 z)))",
+      "id": "audit_afb7f84c107c3128e28b",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "b4e3f1e15ddce0f83fbfe43f6e9b3bbbcc4b608bfde1348a745f2ae91f9939c9",
+      "eq1_id": 12814833,
+      "eq2_id": 15749628,
+      "equation1": "x = ((x \u25c7 (y \u25c7 (y \u25c7 x))) \u25c7 z)",
+      "equation2": "(x \u25c7 y) = (x \u25c7 (z \u25c7 (w \u25c7 x)))",
+      "id": "audit_bf6a3e356b91e41bc91d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "1ded792de9c2c6a85c7e52bf694e3d2661c44ab4b8fbcf733968774f109733fb",
+      "eq1_id": 2921337,
+      "eq2_id": 3988962,
+      "equation1": "x = (y \u25c7 ((y \u25c7 (z \u25c7 z)) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 y)) \u25c7 w)",
+      "id": "audit_9b40de72b044ba150263",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "da1a6a30f7440253ea51cac9e1c38f6c7c9846128d70d248497f399e62114f67",
+      "eq1_id": 15253610,
+      "eq2_id": 4189028,
+      "equation1": "x = ((((x \u25c7 x) \u25c7 y) \u25c7 z) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (x \u25c7 (x \u25c7 y))",
+      "id": "audit_889fe402b9d3cc772183",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 4,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "cb855b179ed70d05c48e1a53f5a080db775b502a825f3fd34df07e29cd22419d",
+      "eq1_id": 14297947,
+      "eq2_id": 2527991,
+      "equation1": "(x \u25c7 x) = (y \u25c7 (z \u25c7 (w \u25c7 u)))",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (y \u25c7 (y \u25c7 x))",
+      "id": "audit_522cdf9269377f1a3dd9",
+      "stratum": {
+        "direct_root_constraints": 243,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 243,
+        "source_assignments_fin2": 32,
+        "source_assignments_fin3": 243,
+        "source_depth": 3,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "52e697169678ff9276e6ed3af54c85a09d783df8616d9971464cc8eba2a8c653",
+      "eq1_id": 6392983,
+      "eq2_id": 2460312,
+      "equation1": "x = ((y \u25c7 (z \u25c7 x)) \u25c7 (z \u25c7 x))",
+      "equation2": "x = (((y \u25c7 z) \u25c7 z) \u25c7 (w \u25c7 x))",
+      "id": "audit_a169b1873134cee56bb0",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "9bfd822c602b2a4f4b1ca9798605ce74721bb04946b19bf8d518cde31a2eb6ae",
+      "eq1_id": 11182978,
+      "eq2_id": 3888203,
+      "equation1": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 y) \u25c7 z))",
+      "equation2": "x = (y \u25c7 (((z \u25c7 z) \u25c7 y) \u25c7 x))",
+      "id": "audit_6859df700216520519f6",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "f808aac0c5d2b5faa7b8d6b61bca3908a2428332f6e489fe70f1dd463b9dfca0",
+      "eq1_id": 17215146,
+      "eq2_id": 13613554,
+      "equation1": "x = (y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 y))",
+      "equation2": "x = ((y \u25c7 (z \u25c7 z)) \u25c7 w)",
+      "id": "audit_19ae312d4c5f81cba71f",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "6ff785ddae16c8f58224db46ee4ab49b342f3d7d890dc85ad1176e64e8616634",
+      "eq1_id": 8297861,
+      "eq2_id": 15508022,
+      "equation1": "x = ((y \u25c7 x) \u25c7 (x \u25c7 (x \u25c7 z)))",
+      "equation2": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 w))",
+      "id": "audit_400379b28561242cc06b",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          4,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "63f7b7141c534416359548b9e804d33611cd797be4031f195844d08df01e2280",
+      "eq1_id": 7511479,
+      "eq2_id": 2297971,
+      "equation1": "x = ((y \u25c7 y) \u25c7 (y \u25c7 z))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 y) \u25c7 (z \u25c7 y)))",
+      "id": "audit_034328fabf14c23c6488",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 2,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          1,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "6804c56a78777c05cd6eee37735a09c15ee88c3259f77aa268fc72871a5b7941",
+      "eq1_id": 7776965,
+      "eq2_id": 7957655,
+      "equation1": "x = (((y \u25c7 z) \u25c7 z) \u25c7 x)",
+      "equation2": "x = (x \u25c7 ((y \u25c7 (y \u25c7 x)) \u25c7 x))",
+      "id": "audit_717f4384bd95859d3d4c",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          2,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "5b3c43829477c2b8df07af37e4f6a6b1a38b5c0fcb98740296d2c02fb9193dcc",
+      "eq1_id": 6939203,
+      "eq2_id": 9537687,
+      "equation1": "x = ((x \u25c7 (y \u25c7 z)) \u25c7 (w \u25c7 w))",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 x) \u25c7 z) \u25c7 z)",
+      "id": "audit_b5094d0932d62af490a1",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 162,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "312e3f43454bb3d2d98fe6bef8a0b93a2ba1d647b2d826b6eb2ce1573514ebbf",
+      "eq1_id": 4183103,
+      "eq2_id": 5388651,
+      "equation1": "x = ((y \u25c7 z) \u25c7 (z \u25c7 x))",
+      "equation2": "x = (y \u25c7 ((x \u25c7 (x \u25c7 y)) \u25c7 x))",
+      "id": "audit_1d155d0af58a11968186",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 2,
+        "source_nodes": 6,
+        "source_repetition": [
+          2,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "3090cd7059291fa78aec5b306bd1f10c054c8f3e38d221560a390fe5aea21481",
+      "eq1_id": 4142797,
+      "eq2_id": 8342857,
+      "equation1": "x = (((y \u25c7 y) \u25c7 (z \u25c7 y)) \u25c7 x)",
+      "equation2": "x = (x \u25c7 ((y \u25c7 x) \u25c7 (y \u25c7 x)))",
+      "id": "audit_e8036fc519d67945da54",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "e32599af00e737cc1f4af3020ff1bd70712af65ade4fdc4f73f31c59e56ea811",
+      "eq1_id": 15846297,
+      "eq2_id": 12449031,
+      "equation1": "x = (y \u25c7 ((z \u25c7 (y \u25c7 x)) \u25c7 y))",
+      "equation2": "((x \u25c7 y) \u25c7 y) = ((y \u25c7 z) \u25c7 x)",
+      "id": "audit_2fac1783406293f31179",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "2b451ec70311271d45f3d897f334b430b05be60465f98c96be3b9aece51ea7d9",
+      "eq1_id": 3795742,
+      "eq2_id": 14022449,
+      "equation1": "x = ((y \u25c7 x) \u25c7 (y \u25c7 x))",
+      "equation2": "x = (((x \u25c7 y) \u25c7 x) \u25c7 (z \u25c7 x))",
+      "id": "audit_35f0135e199076f749e6",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 2,
+        "source_nodes": 4,
+        "source_repetition": [
+          3,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          4,
+          1,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "a3967e5fc0619b197c3cb2683cdc8722cc0766573df109682473a240c9698f01",
+      "eq1_id": 11680894,
+      "eq2_id": 7255169,
+      "equation1": "x = ((x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (((x \u25c7 z) \u25c7 x) \u25c7 w)",
+      "id": "audit_8d5e699b08080b1a5306",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "9fec35cbd13f02f9061d041bdee8688a22d213a607b7750488d8392dae7773b2",
+      "eq1_id": 11440693,
+      "eq2_id": 14337375,
+      "equation1": "x = (y \u25c7 (((x \u25c7 y) \u25c7 x) \u25c7 y))",
+      "equation2": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 z) \u25c7 y)",
+      "id": "audit_2240343a014c279e04be",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "76ec37bf833ef28feb911682ed8a7bb079e6396cfaa01d2d83bd2d5c7a250c16",
+      "eq1_id": 8753719,
+      "eq2_id": 13530974,
+      "equation1": "x = ((y \u25c7 y) \u25c7 ((x \u25c7 y) \u25c7 z))",
+      "equation2": "x = (x \u25c7 (y \u25c7 (x \u25c7 y)))",
+      "id": "audit_25f7b3ce9cb22a5c4b51",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          3,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "6cc11f41afbad43c742b1c0d6073b62fc4d83001f0987f12166b9ce4e286d2c0",
+      "eq1_id": 8087327,
+      "eq2_id": 5284826,
+      "equation1": "x = ((y \u25c7 (y \u25c7 x)) \u25c7 (y \u25c7 x))",
+      "equation2": "(x \u25c7 y) = (x \u25c7 (z \u25c7 (w \u25c7 y)))",
+      "id": "audit_af3b7e504b4d402b3a75",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 5,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "fc06c19da9af1e2d36410337ee09c06e6e3b50107780271113109f4998e423ef",
+      "eq1_id": 17476801,
+      "eq2_id": 11312591,
+      "equation1": "x = ((x \u25c7 (x \u25c7 y)) \u25c7 y)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = (x \u25c7 (z \u25c7 y))",
+      "id": "audit_06572d9b6637962e38a5",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 5,
+        "source_repetition": [
+          3,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "dda883fb3b46a8693317dc8b9cd6f9cc7d28d952c7fd418b45835165a6acdc10",
+      "eq1_id": 15486595,
+      "eq2_id": 17444710,
+      "equation1": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 x) \u25c7 z)",
+      "equation2": "x = (((x \u25c7 x) \u25c7 y) \u25c7 (y \u25c7 z))",
+      "id": "audit_f2b0db425785d9136308",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "9171735dc7595588fb1dc1b4e20b5b09c0a2cdde8729bd8a86e94a8bfe87ee10",
+      "eq1_id": 10491763,
+      "eq2_id": 7125881,
+      "equation1": "x = ((y \u25c7 (x \u25c7 (z \u25c7 y))) \u25c7 z)",
+      "equation2": "x = ((x \u25c7 x) \u25c7 (y \u25c7 (x \u25c7 y)))",
+      "id": "audit_60275fef92fa5d7974d2",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "0965f89356e89261f2443891b35923142e512216e499f0630e11f5f15842c765",
+      "eq1_id": 1575928,
+      "eq2_id": 10636040,
+      "equation1": "(x \u25c7 (y \u25c7 z)) = ((z \u25c7 y) \u25c7 y)",
+      "equation2": "(x \u25c7 (y \u25c7 z)) = ((y \u25c7 z) \u25c7 w)",
+      "id": "audit_a0bc1d972d2898b3ce3d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 2,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "5cf2fcfc587feff849d5410e71fe44d57d5683c628fe22c2405d2487f3626c87",
+      "eq1_id": 7051516,
+      "eq2_id": 17517727,
+      "equation1": "x = ((y \u25c7 ((y \u25c7 x) \u25c7 x)) \u25c7 y)",
+      "equation2": "x = (x \u25c7 ((y \u25c7 y) \u25c7 (z \u25c7 y)))",
+      "id": "audit_08d25a2f0e40326fbd12",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          3,
+          3
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "ffb2756fba78bfbd877b3b77b622b018ab66770a53c9ea0049346dd94d8ab684",
+      "eq1_id": 17717365,
+      "eq2_id": 8302232,
+      "equation1": "x = ((y \u25c7 ((x \u25c7 y) \u25c7 z)) \u25c7 z)",
+      "equation2": "(x \u25c7 (y \u25c7 y)) = ((x \u25c7 z) \u25c7 z)",
+      "id": "audit_9ddf7527fe7f604a918c",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          2,
+          2,
+          2
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "80e7b1984709dd4d5aa451e71423a364e6fba7f0bc6db7474cf7198cdaf919d3",
+      "eq1_id": 9407921,
+      "eq2_id": 10959657,
+      "equation1": "(x \u25c7 (x \u25c7 y)) = ((x \u25c7 z) \u25c7 w)",
+      "equation2": "(x \u25c7 (y \u25c7 x)) = ((x \u25c7 x) \u25c7 y)",
+      "id": "audit_c16917a2408450892417",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 3,
+        "fin3_countermodel": false,
+        "fin3_source_models": 4,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 162,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 2,
+        "source_nodes": 8,
+        "source_repetition": [
+          3,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "5d22ba98fe25b815131c6522974b00a9a4dfd287c681e7b9c71c9fcd5f4375b9",
+      "eq1_id": 7063738,
+      "eq2_id": 11006533,
+      "equation1": "x = (((y \u25c7 x) \u25c7 (x \u25c7 x)) \u25c7 x)",
+      "equation2": "x = ((x \u25c7 (x \u25c7 x)) \u25c7 x)",
+      "id": "audit_cda2cc7ea145b6234a1e",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 3,
+        "fin3_countermodel": false,
+        "fin3_source_models": 41,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 6,
+        "source_repetition": [
+          5,
+          1
+        ],
+        "source_variables": 2,
+        "target_depth": 3,
+        "target_nodes": 4,
+        "target_repetition": [
+          5
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "cd20d954a24236842ef3751d09063c0a13a59165087cdd51003524fd838bc10e",
+      "eq1_id": 14403289,
+      "eq2_id": 6526562,
+      "equation1": "(x \u25c7 y) = (((z \u25c7 w) \u25c7 x) \u25c7 u)",
+      "equation2": "(x \u25c7 (y \u25c7 y)) = ((x \u25c7 x) \u25c7 x)",
+      "id": "audit_dd1868fa61a68f74b381",
+      "stratum": {
+        "direct_root_constraints": 243,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 243,
+        "source_assignments_fin2": 32,
+        "source_assignments_fin3": 243,
+        "source_depth": 3,
+        "source_nodes": 9,
+        "source_repetition": [
+          2,
+          1,
+          1,
+          1,
+          1
+        ],
+        "source_variables": 5,
+        "target_depth": 2,
+        "target_nodes": 6,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "f28619c4647b5cc38e75b9d364a08ff1178342064006732857bdf0529172c490",
+      "eq1_id": 16854041,
+      "eq2_id": 13850779,
+      "equation1": "x = (((y \u25c7 x) \u25c7 x) \u25c7 y)",
+      "equation2": "(x \u25c7 (x \u25c7 y)) = (z \u25c7 (z \u25c7 y))",
+      "id": "audit_7e977708aaf75f980263",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 3,
+        "source_nodes": 5,
+        "source_repetition": [
+          3,
+          2
+        ],
+        "source_variables": 2,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          2,
+          2,
+          2
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "149c6516f3d08d59714204a52a035c624c3d84f78ea9b35b5307bb1641800cd6",
+      "eq1_id": 2310757,
+      "eq2_id": 2484208,
+      "equation1": "x = (y \u25c7 (y \u25c7 ((y \u25c7 y) \u25c7 y)))",
+      "equation2": "x = ((x \u25c7 ((x \u25c7 y) \u25c7 y)) \u25c7 y)",
+      "id": "audit_8562fc1a058af21d9dde",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 18,
+        "source_assignments_fin2": 4,
+        "source_assignments_fin3": 9,
+        "source_depth": 4,
+        "source_nodes": 6,
+        "source_repetition": [
+          5,
+          1
+        ],
+        "source_variables": 2,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          3,
+          3
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "cc082996bf6a3b598fb49eb87a5c8a9d2943ccfcf051e0f396d09666aeefdef7",
+      "eq1_id": 14331433,
+      "eq2_id": 10859402,
+      "equation1": "x = (x \u25c7 ((y \u25c7 (y \u25c7 x)) \u25c7 z))",
+      "equation2": "x = ((x \u25c7 y) \u25c7 (z \u25c7 (x \u25c7 z)))",
+      "id": "audit_1b931e88882773bdbf6d",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "48f291c3ac0dbd77435d26a86ede3d71bc5413ab225abde5b8b0800d00746a76",
+      "eq1_id": 5740689,
+      "eq2_id": 13803565,
+      "equation1": "x = (((x \u25c7 (y \u25c7 z)) \u25c7 y) \u25c7 y)",
+      "equation2": "(x \u25c7 y) = (x \u25c7 ((x \u25c7 z) \u25c7 z))",
+      "id": "audit_e19457f7b8c9f43fa49c",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 2,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "9a6b2110d38ee29557d25db8c7d6e279e2e54783647b8a6c7df58ca70538c2bf",
+      "eq1_id": 11079969,
+      "eq2_id": 2082734,
+      "equation1": "x = (y \u25c7 (((y \u25c7 x) \u25c7 y) \u25c7 z))",
+      "equation2": "x = (x \u25c7 ((x \u25c7 (x \u25c7 x)) \u25c7 y))",
+      "id": "audit_0c6411c11d6c1754588c",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 6,
+        "target_repetition": [
+          5,
+          1
+        ],
+        "target_variables": 2
+      }
+    },
+    {
+      "content_sha256": "9061e736be07699824d1d308ff1ad6e4604822701bd97fde3186b32675d69b0e",
+      "eq1_id": 10422247,
+      "eq2_id": 4567591,
+      "equation1": "x = (x \u25c7 (((y \u25c7 z) \u25c7 z) \u25c7 z))",
+      "equation2": "x = ((x \u25c7 x) \u25c7 (x \u25c7 (x \u25c7 x)))",
+      "id": "audit_05058c5f8acd5edb7cc7",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 4,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "27bd40effad251d1a95271bce9da23a6a31bc8f41f3cdd90a7d04f2ed75e8338",
+      "eq1_id": 3564352,
+      "eq2_id": 16707314,
+      "equation1": "x = ((y \u25c7 (y \u25c7 x)) \u25c7 (y \u25c7 z))",
+      "equation2": "(x \u25c7 (y \u25c7 y)) = ((z \u25c7 z) \u25c7 z)",
+      "id": "audit_275f35de238672471882",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 2,
+        "target_nodes": 7,
+        "target_repetition": [
+          3,
+          2,
+          1
+        ],
+        "target_variables": 3
+      }
+    },
+    {
+      "content_sha256": "61cfdaa5ee3177202fe24c20fc6ee0f36478947d5c1e3a30548b3223c5ced249",
+      "eq1_id": 7370202,
+      "eq2_id": 11854417,
+      "equation1": "x = (x \u25c7 (y \u25c7 ((y \u25c7 z) \u25c7 y)))",
+      "equation2": "x = (x \u25c7 ((x \u25c7 (x \u25c7 x)) \u25c7 x))",
+      "id": "audit_bafd1616e610a3c8b883",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 1,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 4,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 4,
+        "target_nodes": 5,
+        "target_repetition": [
+          6
+        ],
+        "target_variables": 1
+      }
+    },
+    {
+      "content_sha256": "a90295c27edcc2d4fefecc893ac375cea08ce56134d39ab19693bad0d57cf82c",
+      "eq1_id": 12036245,
+      "eq2_id": 13726460,
+      "equation1": "(x \u25c7 y) = (((z \u25c7 y) \u25c7 z) \u25c7 w)",
+      "equation2": "(x \u25c7 y) = ((y \u25c7 z) \u25c7 (x \u25c7 w))",
+      "id": "audit_771e74554744f51ac01d",
+      "stratum": {
+        "direct_root_constraints": 81,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "source_models_target_holds",
+        "fin2_source_models": 2,
+        "fin3_countermodel": false,
+        "fin3_source_models": 1,
+        "fin3_source_phenotype": "source_models_target_holds",
+        "nested_root_constraints": 81,
+        "source_assignments_fin2": 16,
+        "source_assignments_fin3": 81,
+        "source_depth": 3,
+        "source_nodes": 8,
+        "source_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "source_variables": 4,
+        "target_depth": 2,
+        "target_nodes": 8,
+        "target_repetition": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "target_variables": 4
+      }
+    },
+    {
+      "content_sha256": "769bc742869d16d256f2f33b2ec21688d35bfe6f0a172a6a6ca510199d7862ca",
+      "eq1_id": 8733127,
+      "eq2_id": 5339837,
+      "equation1": "x = (((y \u25c7 y) \u25c7 x) \u25c7 (x \u25c7 z))",
+      "equation2": "x = ((y \u25c7 x) \u25c7 ((y \u25c7 x) \u25c7 x))",
+      "id": "audit_8dea10c448ad7f8da138",
+      "stratum": {
+        "direct_root_constraints": 0,
+        "fin2_countermodels": 0,
+        "fin2_phenotype": "no_source_model",
+        "fin2_source_models": 0,
+        "fin3_countermodel": false,
+        "fin3_source_models": 0,
+        "fin3_source_phenotype": "no_source_model",
+        "nested_root_constraints": 54,
+        "source_assignments_fin2": 8,
+        "source_assignments_fin3": 27,
+        "source_depth": 3,
+        "source_nodes": 7,
+        "source_repetition": [
+          3,
+          2,
+          1
+        ],
+        "source_variables": 3,
+        "target_depth": 3,
+        "target_nodes": 5,
+        "target_repetition": [
+          4,
+          2
+        ],
+        "target_variables": 2
+      }
+    }
+  ],
+  "seed_sha256": "fa92d10462bbf183fc17dc47dedc69902d8a7e8c20287e4a5e237826ee67cc90"
+}

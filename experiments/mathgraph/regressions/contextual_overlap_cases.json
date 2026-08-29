@@ -1,0 +1,114 @@
+[
+  {
+    "id": "overlap_source_lhs_left_child",
+    "eq1_id": 930001,
+    "eq2_id": 930002,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = (a ◇ b) ◇ ((a ◇ b) ◇ (a ◇ b))"
+  },
+  {
+    "id": "overlap_source_lhs_right_child",
+    "eq1_id": 930003,
+    "eq2_id": 930004,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = ((a ◇ b) ◇ (a ◇ b)) ◇ (a ◇ b)"
+  },
+  {
+    "id": "overlap_source_rhs",
+    "eq1_id": 930005,
+    "eq2_id": 930006,
+    "equation1": "x ◇ x = x",
+    "equation2": "(((a ◇ b) ◇ (a ◇ b)) ◇ ((a ◇ b) ◇ (a ◇ b))) = ((a ◇ b) ◇ (a ◇ b)) ◇ (a ◇ b)"
+  },
+  {
+    "id": "overlap_reversed_inner",
+    "eq1_id": 930007,
+    "eq2_id": 930008,
+    "equation1": "x ◇ x = x",
+    "equation2": "(a ◇ b) = ((a ◇ b) ◇ (a ◇ b)) ◇ (a ◇ b)"
+  },
+  {
+    "id": "overlap_reversed_outer",
+    "eq1_id": 930009,
+    "eq2_id": 930010,
+    "equation1": "x = x ◇ x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = (a ◇ b) ◇ ((a ◇ b) ◇ (a ◇ b))"
+  },
+  {
+    "id": "overlap_nested_context",
+    "eq1_id": 930011,
+    "eq2_id": 930012,
+    "equation1": "x ◇ x = x",
+    "equation2": "(((a ◇ b) ◇ (a ◇ b)) ◇ c) = (((a ◇ b) ◇ c) ◇ (((a ◇ b) ◇ (a ◇ b)) ◇ c))"
+  },
+  {
+    "id": "overlap_self_different_substitutions",
+    "eq1_id": 930013,
+    "eq2_id": 930014,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = (a ◇ b) ◇ ((a ◇ b) ◇ (a ◇ b))"
+  },
+  {
+    "id": "target_side_narrowing",
+    "eq1_id": 930015,
+    "eq2_id": 930016,
+    "equation1": "x ◇ x = x",
+    "equation2": "z ◇ ((x ◇ x) ◇ y) = z ◇ (x ◇ y)"
+  },
+  {
+    "id": "bidirectional_narrowing_meet",
+    "eq1_id": 930017,
+    "eq2_id": 930018,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) ◇ c = (a ◇ b) ◇ (c ◇ c)"
+  },
+  {
+    "id": "narrowing_expand_then_contract",
+    "eq1_id": 930019,
+    "eq2_id": 930020,
+    "equation1": "x ◇ x = x",
+    "equation2": "(a ◇ b) = ((a ◇ b) ◇ (a ◇ b)) ◇ (a ◇ b)"
+  },
+  {
+    "id": "critical_pair_trans_after_congruence",
+    "eq1_id": 930021,
+    "eq2_id": 930022,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = (a ◇ b) ◇ ((a ◇ b) ◇ (a ◇ b))"
+  },
+  {
+    "id": "contextual_false_control_commutativity",
+    "eq1_id": 930023,
+    "eq2_id": 930024,
+    "equation1": "x ◇ x = x",
+    "equation2": "a ◇ b = b ◇ a"
+  },
+  {
+    "id": "contextual_false_control_associativity",
+    "eq1_id": 930025,
+    "eq2_id": 930026,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = a"
+  },
+  {
+    "id": "variable_position_overlap_suppressed",
+    "eq1_id": 930027,
+    "eq2_id": 930028,
+    "equation1": "x ◇ y = x",
+    "equation2": "a ◇ b = b ◇ a"
+  },
+  {
+    "id": "contextual_growth_pathological_abstain",
+    "eq1_id": 930029,
+    "eq2_id": 930030,
+    "equation1": "a = (b ◇ (c ◇ (d ◇ (e ◇ (f ◇ (g ◇ (h ◇ (i ◇ (j ◇ (k ◇ (l ◇ (m ◇ (n ◇ (o ◇ (p ◇ (q ◇ (r ◇ (s ◇ (t ◇ (u ◇ (v ◇ (w ◇ (x ◇ (y ◇ z))))))))))))))))))))))))",
+    "equation2": "x = y"
+  },
+  {
+    "id": "contextual_complete_prefix_before_timeout",
+    "eq1_id": 930031,
+    "eq2_id": 930032,
+    "equation1": "x ◇ x = x",
+    "equation2": "((a ◇ b) ◇ (a ◇ b)) = (a ◇ b) ◇ ((a ◇ b) ◇ (a ◇ b))"
+  }
+]

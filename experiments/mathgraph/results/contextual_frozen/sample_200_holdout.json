@@ -1,0 +1,2629 @@
+[
+  {
+    "id": "true_3875_3865",
+    "eq1_id": 3875,
+    "eq2_id": 3865,
+    "elapsed_seconds": 11.9,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (x) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (x) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 11.83
+      }
+    ]
+  },
+  {
+    "id": "true_2739_2736",
+    "eq1_id": 2739,
+    "eq2_id": 2736,
+    "elapsed_seconds": 1.39,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      }
+    ]
+  },
+  {
+    "id": "false_1634_3867",
+    "eq1_id": 1634,
+    "eq2_id": 3867,
+    "elapsed_seconds": 2.07,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.02
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":18},\"equality_nodes\":162,\"graph_edges\":162,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_13_4167",
+    "eq1_id": 13,
+    "eq2_id": 4167,
+    "elapsed_seconds": 2.07,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":80},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_3684_1834",
+    "eq1_id": 3684,
+    "eq2_id": 1834,
+    "elapsed_seconds": 2.05,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.98
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":20},\"equality_nodes\":730,\"graph_edges\":730,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_282_2133",
+    "eq1_id": 282,
+    "eq2_id": 2133,
+    "elapsed_seconds": 1.51,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) ((z ◇ w))\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) ((z ◇ w))\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.42
+      }
+    ]
+  },
+  {
+    "id": "true_4318_4314",
+    "eq1_id": 4318,
+    "eq2_id": 4314,
+    "elapsed_seconds": 1.34,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "false_2659_3272",
+    "eq1_id": 2659,
+    "eq2_id": 3272,
+    "elapsed_seconds": 2.05,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":18},\"equality_nodes\":162,\"graph_edges\":162,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_1788_1700",
+    "eq1_id": 1788,
+    "eq2_id": 1700,
+    "elapsed_seconds": 1.38,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (x) (z) (w)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (x) (z) (w)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      }
+    ]
+  },
+  {
+    "id": "false_1925_1435",
+    "eq1_id": 1925,
+    "eq2_id": 1435,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.01
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":36},\"equality_nodes\":180,\"graph_edges\":180,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_2925_3674",
+    "eq1_id": 2925,
+    "eq2_id": 3674,
+    "elapsed_seconds": 2.19,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.09
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":88},\"equality_nodes\":376,\"graph_edges\":376,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_608_593",
+    "eq1_id": 608,
+    "eq2_id": 593,
+    "elapsed_seconds": 1.35,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (w) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (w) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "true_3481_3456",
+    "eq1_id": 3481,
+    "eq2_id": 3456,
+    "elapsed_seconds": 1.36,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      }
+    ]
+  },
+  {
+    "id": "false_1322_2469",
+    "eq1_id": 1322,
+    "eq2_id": 2469,
+    "elapsed_seconds": 2.01,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.96
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_2327_4629",
+    "eq1_id": 2327,
+    "eq2_id": 4629,
+    "elapsed_seconds": 2.09,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.04
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_3286_3278",
+    "eq1_id": 3286,
+    "eq2_id": 3278,
+    "elapsed_seconds": 1.41,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      }
+    ]
+  },
+  {
+    "id": "false_4271_4598",
+    "eq1_id": 4271,
+    "eq2_id": 4598,
+    "elapsed_seconds": 0.18,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":450},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":0,\"graph_edges\":0,\"max_term_size\":0,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":0,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":0,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":450},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_4458_3867",
+    "eq1_id": 4458,
+    "eq2_id": 3867,
+    "elapsed_seconds": 2.03,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.95
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":420},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2061_307",
+    "eq1_id": 2061,
+    "eq2_id": 307,
+    "elapsed_seconds": 0.05,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":2},\"equality_nodes\":10,\"graph_edges\":10,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":9,\"graph_edges\":4,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":8,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":161,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":1,\"source_instances\":{\"0\":2},\"equality_nodes\":10,\"graph_edges\":10,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_1865_1454",
+    "eq1_id": 1865,
+    "eq2_id": 1454,
+    "elapsed_seconds": 1.97,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.91
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":104},\"equality_nodes\":388,\"graph_edges\":388,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_643_614",
+    "eq1_id": 643,
+    "eq2_id": 614,
+    "elapsed_seconds": 1.37,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "false_3315_2247",
+    "eq1_id": 3315,
+    "eq2_id": 2247,
+    "elapsed_seconds": 2.0,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.93
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":30},\"equality_nodes\":950,\"graph_edges\":950,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2789_898",
+    "eq1_id": 2789,
+    "eq2_id": 898,
+    "elapsed_seconds": 0.32,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":432},\"equality_nodes\":2430,\"graph_edges\":2430,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":112,\"graph_edges\":56,\"max_term_size\":17,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":40,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3244,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":432},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_4150_4134",
+    "eq1_id": 4150,
+    "eq2_id": 4134,
+    "elapsed_seconds": 1.36,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      }
+    ]
+  },
+  {
+    "id": "false_452_255",
+    "eq1_id": 452,
+    "eq2_id": 255,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.01
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":6},\"equality_nodes\":16,\"graph_edges\":16,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2034_2032",
+    "eq1_id": 2034,
+    "eq2_id": 2032,
+    "elapsed_seconds": 1.37,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  exact h (x) (y) (z) (w) (u) (w)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  exact h (x) (y) (z) (w) (u) (w)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "false_3068_4074",
+    "eq1_id": 3068,
+    "eq2_id": 4074,
+    "elapsed_seconds": 2.02,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.96
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_616_614",
+    "eq1_id": 616,
+    "eq2_id": 614,
+    "elapsed_seconds": 1.37,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      }
+    ]
+  },
+  {
+    "id": "false_1983_1021",
+    "eq1_id": 1983,
+    "eq2_id": 1021,
+    "elapsed_seconds": 2.03,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":72},\"equality_nodes\":360,\"graph_edges\":360,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1861_1479",
+    "eq1_id": 1861,
+    "eq2_id": 1479,
+    "elapsed_seconds": 2.05,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.0
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":36},\"equality_nodes\":178,\"graph_edges\":178,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_561_559",
+    "eq1_id": 561,
+    "eq2_id": 559,
+    "elapsed_seconds": 1.39,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      }
+    ]
+  },
+  {
+    "id": "true_1676_1672",
+    "eq1_id": 1676,
+    "eq2_id": 1672,
+    "elapsed_seconds": 1.39,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.34
+      }
+    ]
+  },
+  {
+    "id": "true_2860_3458",
+    "eq1_id": 2860,
+    "eq2_id": 3458,
+    "elapsed_seconds": 0.26,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":104,\"graph_edges\":52,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":64,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":4888,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_3108_4642",
+    "eq1_id": 3108,
+    "eq2_id": 4642,
+    "elapsed_seconds": 0.31,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":243},\"equality_nodes\":2403,\"graph_edges\":2403,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":144,\"graph_edges\":72,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":72,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":6164,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":243},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_5_2866",
+    "eq1_id": 5,
+    "eq2_id": 2866,
+    "elapsed_seconds": 2.22,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.12
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":155},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_1874_1871",
+    "eq1_id": 1874,
+    "eq2_id": 1871,
+    "elapsed_seconds": 1.49,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.41
+      }
+    ]
+  },
+  {
+    "id": "false_4507_2507",
+    "eq1_id": 4507,
+    "eq2_id": 2507,
+    "elapsed_seconds": 2.16,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.08
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":514},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_3749_4320",
+    "eq1_id": 3749,
+    "eq2_id": 4320,
+    "elapsed_seconds": 0.14,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":20},\"equality_nodes\":740,\"graph_edges\":740,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":143,\"graph_edges\":75,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":72,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":96,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":20,\"1\":2},\"equality_nodes\":742,\"graph_edges\":742,\"max_term_size\":15,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_1232_73",
+    "eq1_id": 1232,
+    "eq2_id": 73,
+    "elapsed_seconds": 2.0,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.95
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_4508_1657",
+    "eq1_id": 4508,
+    "eq2_id": 1657,
+    "elapsed_seconds": 2.07,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":519},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1491_2866",
+    "eq1_id": 1491,
+    "eq2_id": 2866,
+    "elapsed_seconds": 2.08,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.0
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_4072_1120",
+    "eq1_id": 4072,
+    "eq2_id": 1120,
+    "elapsed_seconds": 2.11,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":224},\"equality_nodes\":2718,\"graph_edges\":2718,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1117_4688",
+    "eq1_id": 1117,
+    "eq2_id": 4688,
+    "elapsed_seconds": 2.32,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.25
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":1200},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1045_910",
+    "eq1_id": 1045,
+    "eq2_id": 910,
+    "elapsed_seconds": 2.14,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.08
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_172_169",
+    "eq1_id": 172,
+    "eq2_id": 169,
+    "elapsed_seconds": 1.4,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (y) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.35
+      }
+    ]
+  },
+  {
+    "id": "false_378_1275",
+    "eq1_id": 378,
+    "eq2_id": 1275,
+    "elapsed_seconds": 2.11,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":68},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1507_1526",
+    "eq1_id": 1507,
+    "eq2_id": 1526,
+    "elapsed_seconds": 0.17,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":104},\"equality_nodes\":392,\"graph_edges\":392,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":64,\"graph_edges\":32,\"max_term_size\":17,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":32,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":2624,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":104},\"equality_nodes\":392,\"graph_edges\":392,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_450_2087",
+    "eq1_id": 450,
+    "eq2_id": 2087,
+    "elapsed_seconds": 2.08,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.02
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_58_1860",
+    "eq1_id": 58,
+    "eq2_id": 1860,
+    "elapsed_seconds": 0.3,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":224},\"equality_nodes\":2720,\"graph_edges\":2720,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":240,\"graph_edges\":186,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":104,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3836,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":224},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_4443_2737",
+    "eq1_id": 4443,
+    "eq2_id": 2737,
+    "elapsed_seconds": 2.18,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.1
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":48},\"equality_nodes\":3264,\"graph_edges\":3264,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_203_2673",
+    "eq1_id": 203,
+    "eq2_id": 2673,
+    "elapsed_seconds": 2.05,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":2},\"equality_nodes\":330,\"graph_edges\":330,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_2699_3474",
+    "eq1_id": 2699,
+    "eq2_id": 3474,
+    "elapsed_seconds": 2.1,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.05
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_3539_3536",
+    "eq1_id": 3539,
+    "eq2_id": 3536,
+    "elapsed_seconds": 1.38,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      }
+    ]
+  },
+  {
+    "id": "false_395_3271",
+    "eq1_id": 395,
+    "eq2_id": 3271,
+    "elapsed_seconds": 0.4,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":672},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":1733,\"graph_edges\":1530,\"max_term_size\":15,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\",\"narrowing_successors\":1092,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":0,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":672,\"1\":84,\"2\":16},\"equality_nodes\":1900,\"graph_edges\":1900,\"max_term_size\":15,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_4428_3343",
+    "eq1_id": 4428,
+    "eq2_id": 3343,
+    "elapsed_seconds": 0.33,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":1600},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":2764,\"graph_edges\":2050,\"max_term_size\":17,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":1105,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":0,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":1200},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_2425_2351",
+    "eq1_id": 2425,
+    "eq2_id": 2351,
+    "elapsed_seconds": 1.32,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.27
+      }
+    ]
+  },
+  {
+    "id": "false_872_2444",
+    "eq1_id": 872,
+    "eq2_id": 2444,
+    "elapsed_seconds": 2.01,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.96
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_4364_3474",
+    "eq1_id": 4364,
+    "eq2_id": 3474,
+    "elapsed_seconds": 1.98,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.91
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":594},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1922_125",
+    "eq1_id": 1922,
+    "eq2_id": 125,
+    "elapsed_seconds": 0.08,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":20,\"graph_edges\":10,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":8,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":181,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_3533_3871",
+    "eq1_id": 3533,
+    "eq2_id": 3871,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.93
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":240},\"equality_nodes\":2752,\"graph_edges\":2752,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2111_1755",
+    "eq1_id": 2111,
+    "eq2_id": 1755,
+    "elapsed_seconds": 0.29,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":216},\"equality_nodes\":2052,\"graph_edges\":2052,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":90,\"graph_edges\":45,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":36,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3302,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":216},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_1120_714",
+    "eq1_id": 1120,
+    "eq2_id": 714,
+    "elapsed_seconds": 0.07,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":20},\"equality_nodes\":164,\"graph_edges\":164,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":40,\"graph_edges\":20,\"max_term_size\":17,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":16,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":252,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":20},\"equality_nodes\":164,\"graph_edges\":164,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_3541_3537",
+    "eq1_id": 3541,
+    "eq2_id": 3537,
+    "elapsed_seconds": 1.36,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      }
+    ]
+  },
+  {
+    "id": "true_773_768",
+    "eq1_id": 773,
+    "eq2_id": 768,
+    "elapsed_seconds": 1.47,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (z) (w)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (z) (w)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.43
+      }
+    ]
+  },
+  {
+    "id": "true_2942_5",
+    "eq1_id": 2942,
+    "eq2_id": 5,
+    "elapsed_seconds": 0.19,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":40,\"graph_edges\":20,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":40,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3040,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_3120_4406",
+    "eq1_id": 3120,
+    "eq2_id": 4406,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.0
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":88},\"equality_nodes\":376,\"graph_edges\":376,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1764_616",
+    "eq1_id": 1764,
+    "eq2_id": 616,
+    "elapsed_seconds": 2.09,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.03
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":72},\"equality_nodes\":360,\"graph_edges\":360,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_28_4081",
+    "eq1_id": 28,
+    "eq2_id": 4081,
+    "elapsed_seconds": 2.1,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":70},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2055_2656",
+    "eq1_id": 2055,
+    "eq2_id": 2656,
+    "elapsed_seconds": 0.3,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":216},\"equality_nodes\":2052,\"graph_edges\":2052,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":145,\"graph_edges\":91,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":58,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3664,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":216},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_3068_503",
+    "eq1_id": 3068,
+    "eq2_id": 503,
+    "elapsed_seconds": 2.03,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.95
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_4480_3684",
+    "eq1_id": 4480,
+    "eq2_id": 3684,
+    "elapsed_seconds": 2.08,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":62},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_640_3150",
+    "eq1_id": 640,
+    "eq2_id": 3150,
+    "elapsed_seconds": 2.02,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_1117_4658",
+    "eq1_id": 1117,
+    "eq2_id": 4658,
+    "elapsed_seconds": 2.41,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.34
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":88},\"equality_nodes\":372,\"graph_edges\":372,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_825_2663",
+    "eq1_id": 825,
+    "eq2_id": 2663,
+    "elapsed_seconds": 2.03,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2074_2082",
+    "eq1_id": 2074,
+    "eq2_id": 2082,
+    "elapsed_seconds": 0.3,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":480},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":112,\"graph_edges\":56,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":40,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":3648,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":480},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_2230_2205",
+    "eq1_id": 2230,
+    "eq2_id": 2205,
+    "elapsed_seconds": 1.37,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.32
+      }
+    ]
+  },
+  {
+    "id": "false_619_1322",
+    "eq1_id": 619,
+    "eq2_id": 1322,
+    "elapsed_seconds": 2.01,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.95
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":18},\"equality_nodes\":162,\"graph_edges\":162,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_4391_4382",
+    "eq1_id": 4391,
+    "eq2_id": 4382,
+    "elapsed_seconds": 1.36,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (x) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  exact h (x) (x) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      }
+    ]
+  },
+  {
+    "id": "false_280_833",
+    "eq1_id": 280,
+    "eq2_id": 833,
+    "elapsed_seconds": 1.95,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.89
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":20},\"equality_nodes\":740,\"graph_edges\":740,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_4520_4476",
+    "eq1_id": 4520,
+    "eq2_id": 4476,
+    "elapsed_seconds": 1.33,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.26
+      }
+    ]
+  },
+  {
+    "id": "false_1039_4291",
+    "eq1_id": 1039,
+    "eq2_id": 4291,
+    "elapsed_seconds": 2.0,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.94
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_430_2263",
+    "eq1_id": 430,
+    "eq2_id": 2263,
+    "elapsed_seconds": 1.99,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.93
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":12},\"equality_nodes\":124,\"graph_edges\":124,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_1874_4357",
+    "eq1_id": 1874,
+    "eq2_id": 4357,
+    "elapsed_seconds": 0.27,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":1600},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":100,\"graph_edges\":50,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":80,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":4800,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":1200},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_1000_894",
+    "eq1_id": 1000,
+    "eq2_id": 894,
+    "elapsed_seconds": 1.35,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (x) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (x) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "false_2070_2699",
+    "eq1_id": 2070,
+    "eq2_id": 2699,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,0],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.96
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":96},\"equality_nodes\":448,\"graph_edges\":448,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_2623_2517",
+    "eq1_id": 2623,
+    "eq2_id": 2517,
+    "elapsed_seconds": 1.31,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (x) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (x) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.26
+      }
+    ]
+  },
+  {
+    "id": "false_3943_503",
+    "eq1_id": 3943,
+    "eq2_id": 503,
+    "elapsed_seconds": 2.09,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.97
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":248},\"equality_nodes\":2776,\"graph_edges\":2776,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_504_670",
+    "eq1_id": 504,
+    "eq2_id": 670,
+    "elapsed_seconds": 2.04,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.98
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":28},\"equality_nodes\":172,\"graph_edges\":172,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_1617_1615",
+    "eq1_id": 1617,
+    "eq2_id": 1615,
+    "elapsed_seconds": 1.56,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (w) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  exact h (x) (y) (z) (w) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.51
+      }
+    ]
+  },
+  {
+    "id": "true_3268_3253",
+    "eq1_id": 3268,
+    "eq2_id": 3253,
+    "elapsed_seconds": 2.2,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x\n  exact h (x) (x)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.12
+      }
+    ]
+  },
+  {
+    "id": "true_4530_4576",
+    "eq1_id": 4530,
+    "eq2_id": 4576,
+    "elapsed_seconds": 1.74,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 2\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  have p0 : (x ◇ (w ◇ z)) = ((w ◇ w) ◇ u) := h (x) (w) (z) (u)\n  have p1 : (x ◇ (w ◇ z)) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := h (x) (w) (z) ((y ◇ (y ◇ z)))\n  have p2 : (x ◇ (y ◇ z)) = ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) := h (x) (y) (z) (((w ◇ w) ◇ (u ◇ (y ◇ z))))\n  have p3 : ((w ◇ w) ◇ (y ◇ (y ◇ z))) = ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) := h ((w ◇ w)) (y) ((y ◇ z)) (((w ◇ w) ◇ (u ◇ (y ◇ z))))\n  have p4 : ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := Eq.symm p3\n  have p5 : ((w ◇ w) ◇ (y ◇ (y ◇ z))) = (x ◇ (w ◇ z)) := Eq.symm p1\n  have p6 : (x ◇ (y ◇ z)) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := Eq.trans p2 p4\n  have p7 : (x ◇ (y ◇ z)) = (x ◇ (w ◇ z)) := Eq.trans p6 p5\n  have p8 : (x ◇ (y ◇ z)) = ((w ◇ w) ◇ u) := Eq.trans p7 p0\n  exact p8\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 2\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  have p0 : (x ◇ (w ◇ z)) = ((w ◇ w) ◇ u) := h (x) (w) (z) (u)\n  have p1 : (x ◇ (w ◇ z)) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := h (x) (w) (z) ((y ◇ (y ◇ z)))\n  have p2 : (x ◇ (y ◇ z)) = ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) := h (x) (y) (z) (((w ◇ w) ◇ (u ◇ (y ◇ z))))\n  have p3 : ((w ◇ w) ◇ (y ◇ (y ◇ z))) = ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) := h ((w ◇ w)) (y) ((y ◇ z)) (((w ◇ w) ◇ (u ◇ (y ◇ z))))\n  have p4 : ((y ◇ y) ◇ ((w ◇ w) ◇ (u ◇ (y ◇ z)))) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := Eq.symm p3\n  have p5 : ((w ◇ w) ◇ (y ◇ (y ◇ z))) = (x ◇ (w ◇ z)) := Eq.symm p1\n  have p6 : (x ◇ (y ◇ z)) = ((w ◇ w) ◇ (y ◇ (y ◇ z))) := Eq.trans p2 p4\n  have p7 : (x ◇ (y ◇ z)) = (x ◇ (w ◇ z)) := Eq.trans p6 p5\n  have p8 : (x ◇ (y ◇ z)) = ((w ◇ w) ◇ u) := Eq.trans p7 p0\n  exact p8\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.5
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":1600},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":400,\"graph_edges\":200,\"max_term_size\":5,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":400,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":0,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":2,\"source_instances\":{\"0\":1200,\"1\":420,\"2\":330},\"equality_nodes\":3035,\"graph_edges\":3030,\"max_term_size\":15,\"certificate_bytes\":1034,\"replay_seconds\":0.006759,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_674_668",
+    "eq1_id": 674,
+    "eq2_id": 668,
+    "elapsed_seconds": 0.29,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":216},\"equality_nodes\":2052,\"graph_edges\":2052,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":72,\"graph_edges\":36,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":18,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":1331,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":216},\"equality_nodes\":1800,\"graph_edges\":1800,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "true_2930_2914",
+    "eq1_id": 2930,
+    "eq2_id": 2914,
+    "elapsed_seconds": 1.39,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (y) (z)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.34
+      }
+    ]
+  },
+  {
+    "id": "true_3291_3304",
+    "eq1_id": 3291,
+    "eq2_id": 3304,
+    "elapsed_seconds": 1.45,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: equality-chain\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  have p0 : (u ◇ u) = (u ◇ (w ◇ (u ◇ u))) := h (u) (u) (w) (u)\n  have p1 : (u ◇ u) = (u ◇ (x ◇ (u ◇ u))) := h (u) (u) (x) (u)\n  have p2 : (w ◇ w) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := h (w) (u) (u) ((u ◇ u))\n  have p3 : (w ◇ w) = (y ◇ (z ◇ (w ◇ u))) := h (w) (y) (z) (u)\n  have p4 : (x ◇ x) = (u ◇ (u ◇ (x ◇ (u ◇ u)))) := h (x) (u) (u) ((u ◇ u))\n  have p5 : (u ◇ (u ◇ u)) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := congrArg (fun t => u ◇ t) p0\n  have p6 : (u ◇ (u ◇ u)) = (u ◇ (u ◇ (x ◇ (u ◇ u)))) := congrArg (fun t => u ◇ t) p1\n  have p7 : (u ◇ (u ◇ (x ◇ (u ◇ u)))) = (u ◇ (u ◇ u)) := Eq.symm p6\n  have p8 : (u ◇ (u ◇ (w ◇ (u ◇ u)))) = (w ◇ w) := Eq.symm p2\n  have p9 : (x ◇ x) = (u ◇ (u ◇ u)) := Eq.trans p4 p7\n  have p10 : (x ◇ x) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := Eq.trans p9 p5\n  have p11 : (x ◇ x) = (w ◇ w) := Eq.trans p10 p8\n  have p12 : (x ◇ x) = (y ◇ (z ◇ (w ◇ u))) := Eq.trans p11 p3\n  exact p12\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: equality-chain\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w u\n  have p0 : (u ◇ u) = (u ◇ (w ◇ (u ◇ u))) := h (u) (u) (w) (u)\n  have p1 : (u ◇ u) = (u ◇ (x ◇ (u ◇ u))) := h (u) (u) (x) (u)\n  have p2 : (w ◇ w) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := h (w) (u) (u) ((u ◇ u))\n  have p3 : (w ◇ w) = (y ◇ (z ◇ (w ◇ u))) := h (w) (y) (z) (u)\n  have p4 : (x ◇ x) = (u ◇ (u ◇ (x ◇ (u ◇ u)))) := h (x) (u) (u) ((u ◇ u))\n  have p5 : (u ◇ (u ◇ u)) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := congrArg (fun t => u ◇ t) p0\n  have p6 : (u ◇ (u ◇ u)) = (u ◇ (u ◇ (x ◇ (u ◇ u)))) := congrArg (fun t => u ◇ t) p1\n  have p7 : (u ◇ (u ◇ (x ◇ (u ◇ u)))) = (u ◇ (u ◇ u)) := Eq.symm p6\n  have p8 : (u ◇ (u ◇ (w ◇ (u ◇ u)))) = (w ◇ w) := Eq.symm p2\n  have p9 : (x ◇ x) = (u ◇ (u ◇ u)) := Eq.trans p4 p7\n  have p10 : (x ◇ x) = (u ◇ (u ◇ (w ◇ (u ◇ u)))) := Eq.trans p9 p5\n  have p11 : (x ◇ x) = (w ◇ w) := Eq.trans p10 p8\n  have p12 : (x ◇ x) = (y ◇ (z ◇ (w ◇ u))) := Eq.trans p11 p3\n  exact p12\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.37
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":true,\"generations\":0,\"source_instances\":{\"0\":1600},\"equality_nodes\":4006,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":1134,\"replay_seconds\":0.005525,\"exhaustion\":\"term budget exhausted\"}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_4157_39",
+    "eq1_id": 4157,
+    "eq2_id": 39,
+    "elapsed_seconds": 2.09,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,0],[0,1]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 2.0
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":20},\"equality_nodes\":740,\"graph_edges\":740,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "false_2917_28",
+    "eq1_id": 2917,
+    "eq2_id": 28,
+    "elapsed_seconds": 2.06,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.99
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":88},\"equality_nodes\":376,\"graph_edges\":376,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_193_191",
+    "eq1_id": 193,
+    "eq2_id": 191,
+    "elapsed_seconds": 1.34,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (y)\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z\n  exact h (x) (y) (z) (y)\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.3
+      }
+    ]
+  },
+  {
+    "id": "false_2584_3078",
+    "eq1_id": 2584,
+    "eq2_id": 3078,
+    "elapsed_seconds": 0.14,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"target-narrowing\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":32,\"graph_edges\":16,\"max_term_size\":19,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null,\"narrowing_successors\":8,\"overlap_candidates\":0,\"overlaps_added\":0,\"overlap_depths\":{},\"missing_target_introduced\":0,\"components_joined\":0,\"term_size_rejections\":636,\"variable_overlap_suppressed\":0}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":2,\"source_instances\":{\"0\":68},\"equality_nodes\":356,\"graph_edges\":356,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "false_731_2663",
+    "eq1_id": 731,
+    "eq2_id": 2663,
+    "elapsed_seconds": 1.94,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[0,1],[1,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.88
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":72},\"equality_nodes\":360,\"graph_edges\":360,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "true_404_4236",
+    "eq1_id": 404,
+    "eq2_id": 4236,
+    "elapsed_seconds": 1.34,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: equality-chain\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  have p0 : (x ◇ y) = ((w ◇ w) ◇ w) := h (x) (y) (w)\n  have p1 : (((z ◇ z) ◇ z) ◇ w) = ((w ◇ w) ◇ w) := h (((z ◇ z) ◇ z)) (w) (w)\n  have p2 : ((w ◇ w) ◇ w) = (((z ◇ z) ◇ z) ◇ w) := Eq.symm p1\n  have p3 : (x ◇ y) = (((z ◇ z) ◇ z) ◇ w) := Eq.trans p0 p2\n  exact p3\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: equality-chain\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y z w\n  have p0 : (x ◇ y) = ((w ◇ w) ◇ w) := h (x) (y) (w)\n  have p1 : (((z ◇ z) ◇ z) ◇ w) = ((w ◇ w) ◇ w) := h (((z ◇ z) ◇ z)) (w) (w)\n  have p2 : ((w ◇ w) ◇ w) = (((z ◇ z) ◇ z) ◇ w) := Eq.symm p1\n  have p3 : (x ◇ y) = (((z ◇ z) ◇ z) ◇ w) := Eq.trans p0 p2\n  exact p3\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.26
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":true,\"generations\":0,\"source_instances\":{\"0\":848},\"equality_nodes\":850,\"graph_edges\":848,\"max_term_size\":11,\"certificate_bytes\":421,\"replay_seconds\":0.001277,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  }
+]

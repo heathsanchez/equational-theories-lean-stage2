@@ -1,0 +1,59 @@
+{
+  "constructor": "proof-producing equality-class source matcher",
+  "starting_head": "c1e23ab86f24ed1105b5c3157e7859d77178e298",
+  "starting_solver": {
+    "sha256": "68729dde1e27c544e5d3e12504ea5878d57ad0af70cf16c80bb238433976dcf8",
+    "bytes": 211218,
+    "sample_200_true": 66,
+    "sample_200_false": 96,
+    "sample_200_total": 162,
+    "seconds": 318.92
+  },
+  "promoted_solver": {
+    "bytes": 226612,
+    "sample_20_true": 1,
+    "sample_20_false": 10,
+    "sample_200_true": 72,
+    "sample_200_false": 96,
+    "sample_200_total": 168,
+    "sample_200_seconds": 416.5,
+    "llm_calls": 0,
+    "rejected_judge_calls": 0
+  },
+  "public_hits": [
+    "true_1120_714",
+    "true_3083_3094",
+    "true_1022_99",
+    "true_425_1630",
+    "true_4082_4109",
+    "true_1874_4357"
+  ],
+  "external_bridge_audit": {
+    "label_hidden_rows": 80,
+    "true_opportunities": 40,
+    "matched_false_controls": 40,
+    "official_true_acceptances": 11,
+    "false_control_true_candidates": 0,
+    "invalid_outcomes": 0,
+    "true_recall": 0.275
+  },
+  "configuration": {
+    "normalizer": "norm-fast consequence generation",
+    "verified_equality_edge_cap": 256,
+    "candidate_collection_cap": 4096,
+    "source_instances_per_generation": 128,
+    "generations": 2,
+    "wall_seconds": 3.0,
+    "term_size_cap": 17
+  },
+  "runtime": {
+    "marginal_seconds": 97.58,
+    "seconds_per_added_acceptance": 16.2633333333
+  },
+  "gates": {
+    "focused_suite": "6 TRUE accepted; 2 FALSE controls abstained",
+    "solo_solver_cases": "66/66",
+    "solo_unrelated_submit_cli_failures": 2,
+    "marathon": "25/25"
+  }
+}

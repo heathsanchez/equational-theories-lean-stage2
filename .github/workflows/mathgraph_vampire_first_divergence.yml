@@ -1,0 +1,50 @@
+name: MathGraph Vampire First Divergence
+
+on:
+  push:
+    branches:
+      - mathgraph/superposition-selector-tournament-20260820
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/superposition-selector-tournament-20260820
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dataset tooling
+        run: python -m pip install 'datasets>=3,<5'
+      - name: Extract order5 residual
+        run: |
+          python - <<'PY'
+          import json
+          from datasets import load_dataset
+          wanted='evaluation_order5_0014'
+          rows=[dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems','evaluation_order5',split='train') if r.get('id')==wanted]
+          if len(rows)!=1: raise SystemExit(f'expected one row, got {len(rows)}')
+          json.dump(rows,open('/tmp/order5.json','w'),indent=2)
+          PY
+      - name: Run first-divergence audit
+        run: |
+          python experiments/mathgraph/run_vampire_first_divergence.py --input /tmp/order5.json --output experiments/mathgraph/results/vampire-first-divergence-0014.json
+      - name: Upload audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: vampire-first-divergence-0014
+          path: experiments/mathgraph/results/vampire-first-divergence-0014.json
+      - name: Persist audit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/mathgraph/results/vampire-first-divergence-0014.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'chore(research): persist Vampire first-divergence audit [skip ci]'
+          git push origin HEAD:mathgraph/superposition-selector-tournament-20260820

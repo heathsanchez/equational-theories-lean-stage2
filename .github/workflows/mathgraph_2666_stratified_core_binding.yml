@@ -1,0 +1,34 @@
+name: MathGraph 2666 Stratified Core Binding
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_stratified_core_binding.py
+      - .github/workflows/mathgraph_2666_stratified_core_binding.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_stratified_core_binding.py
+      - .github/workflows/mathgraph_2666_stratified_core_binding.yml
+
+permissions:
+  contents: read
+
+jobs:
+  core-binding:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_2666_stratified_core_binding.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-2666-stratified-core-binding
+          path: experiments/mathgraph/results/2666-stratified-core-binding.json
+          if-no-files-found: warn

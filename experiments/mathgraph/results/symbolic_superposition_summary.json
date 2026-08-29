@@ -1,0 +1,57 @@
+{
+  "constructor": "replayable symbolic superposition",
+  "starting_head": "544e4e0612b338ddf4fb86e62527d7917e647bf9",
+  "diagnostic_oracle": {
+    "name": "Vampire",
+    "version": "5.0.1",
+    "production_dependency": false,
+    "current_true_residuals_proved": 25,
+    "current_true_residuals_total": 25,
+    "median_proof_lines": 20,
+    "maximum_proof_lines": 75
+  },
+  "promoted_bounded_layer": {
+    "symbolic_critical_pairs_first": true,
+    "concrete_source_substitutions": 0,
+    "auxiliary_proof_parameter_specialization": true,
+    "candidate_equalities": 1200,
+    "replayed_rules": 400,
+    "selected_rules": 128,
+    "overlap_candidates": 800,
+    "maximum_term_size": 27,
+    "maximum_proof_nodes": 3000,
+    "seconds": 0.35
+  },
+  "external_bridge_audit": {
+    "true_opportunities": 40,
+    "accepted_true": 4,
+    "matched_false_controls": 40,
+    "false_candidates": 0,
+    "official_acceptances": 4,
+    "replay_failures": 0
+  },
+  "sample_20": {
+    "before": "5 TRUE + 10 FALSE = 15/20",
+    "after": "6 TRUE + 10 FALSE = 16/20",
+    "rejected_judge_calls": 0
+  },
+  "sample_200": {
+    "before": "75 TRUE + 96 FALSE = 171/200",
+    "after": "78 TRUE + 96 FALSE = 174/200",
+    "new_hits": [
+      "true_2942_5",
+      "true_130_1759",
+      "true_674_668"
+    ],
+    "seconds": 504.3,
+    "rejected_judge_calls": 0
+  },
+  "gates": {
+    "focused_official": "3/3 accepted",
+    "solo_solver_cases": "66/66",
+    "solo_unrelated_submit_cli_failures": 2,
+    "marathon": "25/25",
+    "llm_calls": 0
+  },
+  "next": "Iterate symbolic superposition and demodulation while retaining explicit proof-DAG replay; Vampire proves all 22 remaining TRUE residuals."
+}

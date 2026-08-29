@@ -1,0 +1,40 @@
+{
+  "audit_version": "finite-model-balanced-audit-v1",
+  "authoritative_head": "1e2d896f0bedc682cb1bee21717ce2d6ed3f48c8",
+  "created_before_solver_execution": true,
+  "deep_diagnostic_subset": {
+    "maximum_rows": 10,
+    "selection": "ten lexicographically smallest content hashes in the complete label-hidden audit; deep runs only after probe, fast, and medium miss"
+  },
+  "frozen_comparators": [
+    "production-without-fin4",
+    "fin4-probe",
+    "fin4-probe-plus-fast",
+    "fin4-medium-diagnostic",
+    "fin4-deep-diagnostic-capped"
+  ],
+  "frozen_solver_sha256": "ddb646624106d143a6b0882b1ec46fa9e047dc40214310010b5dda89f55f2eb7",
+  "input_sha256": "42f3680536f5bdcfe0e63b9d4eb977be4515ac978ea49088c86f4011c144c30c",
+  "promotion_rule": {
+    "external_unused_false_minimum": 10,
+    "gain_minimum": "max(2, ceil(0.10 * baseline-unresolved FALSE audit rows))",
+    "bootstrap_lower_bound_above_zero_where_sample_permits": true,
+    "invalid_outcomes_maximum": 0,
+    "lean_rejections_maximum": 0,
+    "marginal_runtime_seconds_per_gain_maximum": 20,
+    "minimum_structural_strata_with_gain": 2,
+    "single_source_or_duplicate_family_may_not_explain_all_gains": true,
+    "production_regression_floor": {
+      "accepted_false": 94,
+      "accepted_true": 66,
+      "total": 160
+    }
+  },
+  "statistical_plan": {
+    "primary_denominator": "baseline-unresolved FALSE audit rows",
+    "point_interval": "Wilson two-sided 95%",
+    "precision_interval": "one-sided 95% rule-of-three exact bound",
+    "bootstrap": "10000 deterministic source-cluster bootstrap replicates",
+    "bootstrap_seed": "first 64 bits of audit seed SHA-256"
+  }
+}

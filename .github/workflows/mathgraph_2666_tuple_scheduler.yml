@@ -1,0 +1,34 @@
+name: MathGraph 2666 Tuple Scheduler
+
+on:
+  pull_request:
+    paths:
+      - experiments/mathgraph/run_2666_tuple_scheduler.py
+      - .github/workflows/mathgraph_2666_tuple_scheduler.yml
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_tuple_scheduler.py
+      - .github/workflows/mathgraph_2666_tuple_scheduler.yml
+
+permissions:
+  contents: read
+
+jobs:
+  tuple-scheduler:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_2666_tuple_scheduler.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-2666-tuple-scheduler
+          path: experiments/mathgraph/results/2666-tuple-scheduler.json
+          if-no-files-found: warn

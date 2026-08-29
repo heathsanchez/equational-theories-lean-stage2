@@ -1,0 +1,320 @@
+[
+  {
+    "id": "reentry_one_generation",
+    "eq1_id": 920001,
+    "eq2_id": 920002,
+    "elapsed_seconds": 12.22,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ (y ◇ x)) = x := h (x) ((y ◇ x))\n  have p1 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p2 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p2\n  have p4 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p5 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p4\n  have p6 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p0 p5\n  have p7 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p6 p3\n  exact p7\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ (y ◇ x)) = x := h (x) ((y ◇ x))\n  have p1 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p2 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p2\n  have p4 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p5 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p4\n  have p6 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p0 p5\n  have p7 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p6 p3\n  exact p7\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 12.07
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":78,\"1\":26},\"equality_nodes\":1829,\"graph_edges\":1826,\"max_term_size\":15,\"certificate_bytes\":889,\"replay_seconds\":0.001104,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_two_generations",
+    "eq1_id": 920003,
+    "eq2_id": 920004,
+    "elapsed_seconds": 1.54,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 2\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ y) = x := h (x) (y)\n  have p1 : ((y ◇ y) ◇ x) = y := h (y) (x)\n  have p2 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((x ◇ x) ◇ y) := congrArg (fun t => (x ◇ x) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) = x := h (x) (((x ◇ x) ◇ ((x ◇ y) ◇ y)))\n  have p4 : x = ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) := Eq.symm p3\n  have p5 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = x := Eq.trans p2 p0\n  have p6 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) := Eq.trans p5 p4\n  exact p6\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 2\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ y) = x := h (x) (y)\n  have p1 : ((y ◇ y) ◇ x) = y := h (y) (x)\n  have p2 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((x ◇ x) ◇ y) := congrArg (fun t => (x ◇ x) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) = x := h (x) (((x ◇ x) ◇ ((x ◇ y) ◇ y)))\n  have p4 : x = ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) := Eq.symm p3\n  have p5 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = x := Eq.trans p2 p0\n  have p6 : ((x ◇ x) ◇ ((y ◇ y) ◇ x)) = ((x ◇ x) ◇ ((x ◇ x) ◇ ((x ◇ y) ◇ y))) := Eq.trans p5 p4\n  exact p6\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":2,\"source_instances\":{\"0\":78,\"1\":15,\"2\":4},\"equality_nodes\":1822,\"graph_edges\":1819,\"max_term_size\":15,\"certificate_bytes\":717,\"replay_seconds\":0.000695,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_after_congruence",
+    "eq1_id": 920005,
+    "eq2_id": 920006,
+    "elapsed_seconds": 1.4,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p2 : (x ◇ ((x ◇ x) ◇ x)) = (x ◇ x) := congrArg (fun t => x ◇ t) p0\n  have p3 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p4 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ x) := congrArg (fun t => t ◇ x) p2\n  have p5 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p3\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p7 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p6\n  have p8 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = x := Eq.trans p4 p0\n  have p9 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p8 p7\n  have p10 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p9 p5\n  exact p10\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p2 : (x ◇ ((x ◇ x) ◇ x)) = (x ◇ x) := congrArg (fun t => x ◇ t) p0\n  have p3 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p4 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ x) := congrArg (fun t => t ◇ x) p2\n  have p5 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p3\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p7 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p6\n  have p8 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = x := Eq.trans p4 p0\n  have p9 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p8 p7\n  have p10 : ((x ◇ ((x ◇ x) ◇ x)) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p9 p5\n  exact p10\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.25
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":70},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":70,\"1\":20},\"equality_nodes\":1824,\"graph_edges\":1820,\"max_term_size\":13,\"certificate_bytes\":1143,\"replay_seconds\":0.000656,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_reversed_source_orientation",
+    "eq1_id": 920007,
+    "eq2_id": 920008,
+    "elapsed_seconds": 1.48,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : x = ((x ◇ x) ◇ (y ◇ x)) := h (x) ((y ◇ x))\n  have p1 : y = ((y ◇ y) ◇ y) := h (y) (y)\n  have p2 : ((x ◇ y) ◇ y) = ((x ◇ y) ◇ ((y ◇ y) ◇ y)) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ y) ◇ y)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := congrArg (fun t => (x ◇ x) ◇ t) p2\n  have p4 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p5 : ((x ◇ x) ◇ (y ◇ x)) = x := Eq.symm p0\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.symm p3\n  have p7 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p5 p4\n  have p8 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p7 p6\n  exact p8\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : x = ((x ◇ x) ◇ (y ◇ x)) := h (x) ((y ◇ x))\n  have p1 : y = ((y ◇ y) ◇ y) := h (y) (y)\n  have p2 : ((x ◇ y) ◇ y) = ((x ◇ y) ◇ ((y ◇ y) ◇ y)) := congrArg (fun t => (x ◇ y) ◇ t) p1\n  have p3 : ((x ◇ x) ◇ ((x ◇ y) ◇ y)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := congrArg (fun t => (x ◇ x) ◇ t) p2\n  have p4 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p5 : ((x ◇ x) ◇ (y ◇ x)) = x := Eq.symm p0\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.symm p3\n  have p7 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p5 p4\n  have p8 : ((x ◇ x) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p7 p6\n  exact p8\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.32
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":78,\"1\":26},\"equality_nodes\":1830,\"graph_edges\":1826,\"max_term_size\":15,\"certificate_bytes\":977,\"replay_seconds\":0.001159,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_convergent_intermediate",
+    "eq1_id": 920009,
+    "eq2_id": 920010,
+    "elapsed_seconds": 1.4,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ (x ◇ x)) = x := h (x) ((x ◇ x))\n  have p1 : ((x ◇ x) ◇ (y ◇ x)) = x := h (x) ((y ◇ x))\n  have p2 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p3 : (((x ◇ x) ◇ (x ◇ x)) ◇ y) = (x ◇ x) := h ((x ◇ x)) (y)\n  have p4 : (((x ◇ x) ◇ (x ◇ x)) ◇ y) = (x ◇ y) := congrArg (fun t => t ◇ y) p0\n  have p5 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p2\n  have p6 : ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ (y ◇ x)) := congrArg (fun t => t ◇ (y ◇ x)) p3\n  have p7 : ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) = ((x ◇ y) ◇ (y ◇ x)) := congrArg (fun t => t ◇ (y ◇ x)) p4\n  have p8 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p5\n  have p9 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p10 : ((x ◇ y) ◇ (y ◇ x)) = ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) := Eq.symm p7\n  have p11 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p9\n  have p12 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ (y ◇ x)) := Eq.trans p10 p6\n  have p13 : ((x ◇ y) ◇ (y ◇ x)) = x := Eq.trans p12 p1\n  have p14 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p13 p11\n  have p15 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p14 p8\n  exact p15\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ (x ◇ x)) = x := h (x) ((x ◇ x))\n  have p1 : ((x ◇ x) ◇ (y ◇ x)) = x := h (x) ((y ◇ x))\n  have p2 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p3 : (((x ◇ x) ◇ (x ◇ x)) ◇ y) = (x ◇ x) := h ((x ◇ x)) (y)\n  have p4 : (((x ◇ x) ◇ (x ◇ x)) ◇ y) = (x ◇ y) := congrArg (fun t => t ◇ y) p0\n  have p5 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p2\n  have p6 : ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ (y ◇ x)) := congrArg (fun t => t ◇ (y ◇ x)) p3\n  have p7 : ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) = ((x ◇ y) ◇ (y ◇ x)) := congrArg (fun t => t ◇ (y ◇ x)) p4\n  have p8 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p5\n  have p9 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p10 : ((x ◇ y) ◇ (y ◇ x)) = ((((x ◇ x) ◇ (x ◇ x)) ◇ y) ◇ (y ◇ x)) := Eq.symm p7\n  have p11 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p9\n  have p12 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ (y ◇ x)) := Eq.trans p10 p6\n  have p13 : ((x ◇ y) ◇ (y ◇ x)) = x := Eq.trans p12 p1\n  have p14 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p13 p11\n  have p15 : ((x ◇ y) ◇ (y ◇ x)) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p14 p8\n  exact p15\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.25
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":78,\"1\":26},\"equality_nodes\":1832,\"graph_edges\":1826,\"max_term_size\":15,\"certificate_bytes\":1647,\"replay_seconds\":0.001068,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_collapse_law",
+    "eq1_id": 920011,
+    "eq2_id": 920012,
+    "elapsed_seconds": 1.46,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ x)))\n  have p2 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) := Eq.symm p1\n  have p3 : ((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) := Eq.trans p0 p2\n  exact p3\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ x)))\n  have p2 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) := Eq.symm p1\n  have p3 : ((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ x))) := Eq.trans p0 p2\n  exact p3\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.31
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":78,\"1\":2},\"equality_nodes\":1804,\"graph_edges\":1802,\"max_term_size\":13,\"certificate_bytes\":478,\"replay_seconds\":0.000574,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_projection_absorption",
+    "eq1_id": 920013,
+    "eq2_id": 920014,
+    "elapsed_seconds": 1.42,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : x = ((x ◇ x) ◇ x) := h (x) (x)\n  have p1 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p2 : ((x ◇ x) ◇ x) = x := Eq.symm p0\n  have p3 : ((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p2 p1\n  exact p3\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : x = ((x ◇ x) ◇ x) := h (x) (x)\n  have p1 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p2 : ((x ◇ x) ◇ x) = x := Eq.symm p0\n  have p3 : ((x ◇ x) ◇ x) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p2 p1\n  exact p3\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.26
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":78,\"1\":2},\"equality_nodes\":1804,\"graph_edges\":1802,\"max_term_size\":13,\"certificate_bytes\":446,\"replay_seconds\":0.000584,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_false_control_one",
+    "eq1_id": 920015,
+    "eq2_id": 920016,
+    "elapsed_seconds": 2.02,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.93
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":86},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_false_control_two",
+    "eq1_id": 920017,
+    "eq2_id": 920018,
+    "elapsed_seconds": 1.95,
+    "solved": true,
+    "verdict": "false",
+    "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "false",
+          "code": "import JudgeProblem\nimport JudgeDecide.DecideBang\nimport JudgeFinOp.MemoFinOp\nopen MemoFinOp\n\ndef submission : Goal := by\n  let candidateMagma : Magma (Fin 2) := {\n    op := finOpTable \"[[1,1],[0,0]]\"\n  }\n  refine ⟨Fin 2, candidateMagma, ?_⟩\n  decideFin!\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.87
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":78},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  },
+  {
+    "id": "reentry_growth_pathological_abstain",
+    "eq1_id": 920019,
+    "eq2_id": 920020,
+    "elapsed_seconds": 3.22,
+    "solved": false,
+    "verdict": null,
+    "code": null,
+    "llm_calls": 0,
+    "judge_calls": 0,
+    "log": [
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":0,\"graph_edges\":0,\"max_term_size\":0,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"timeout\"}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":false,\"generations\":0,\"source_instances\":{},\"equality_nodes\":0,\"graph_edges\":0,\"max_term_size\":0,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":null}\n",
+        "returncode": 0
+      }
+    ]
+  },
+  {
+    "id": "reentry_complete_prefix_before_timeout",
+    "eq1_id": 920021,
+    "eq2_id": 920022,
+    "elapsed_seconds": 1.48,
+    "solved": true,
+    "verdict": "true",
+    "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((x ◇ x) ◇ y) = x := h (x) (y)\n  have p2 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p3 : (x ◇ ((x ◇ x) ◇ x)) = (x ◇ x) := congrArg (fun t => x ◇ t) p0\n  have p4 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p2\n  have p5 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ y) := congrArg (fun t => t ◇ y) p3\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p4\n  have p7 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p8 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p7\n  have p9 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = x := Eq.trans p5 p1\n  have p10 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p9 p8\n  have p11 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p10 p6\n  exact p11\n",
+    "llm_calls": 0,
+    "judge_calls": 1,
+    "log": [
+      {
+        "type": "judge",
+        "request": {
+          "verdict": "true",
+          "code": "import JudgeProblem\n-- mathgraph constructor: source-reentry generation 1\n\ndef submission : Goal := by\n  intro G _ h\n  intro x y\n  have p0 : ((x ◇ x) ◇ x) = x := h (x) (x)\n  have p1 : ((x ◇ x) ◇ y) = x := h (x) (y)\n  have p2 : ((y ◇ y) ◇ y) = y := h (y) (y)\n  have p3 : (x ◇ ((x ◇ x) ◇ x)) = (x ◇ x) := congrArg (fun t => x ◇ t) p0\n  have p4 : ((x ◇ y) ◇ ((y ◇ y) ◇ y)) = ((x ◇ y) ◇ y) := congrArg (fun t => (x ◇ y) ◇ t) p2\n  have p5 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ y) := congrArg (fun t => t ◇ y) p3\n  have p6 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := congrArg (fun t => (x ◇ x) ◇ t) p4\n  have p7 : ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) = x := h (x) (((x ◇ y) ◇ ((y ◇ y) ◇ y)))\n  have p8 : x = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.symm p7\n  have p9 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = x := Eq.trans p5 p1\n  have p10 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ ((x ◇ y) ◇ ((y ◇ y) ◇ y))) := Eq.trans p9 p8\n  have p11 : ((x ◇ ((x ◇ x) ◇ x)) ◇ y) = ((x ◇ x) ◇ ((x ◇ y) ◇ y)) := Eq.trans p10 p6\n  exact p11\n"
+        },
+        "response": {
+          "status": "accepted",
+          "message": "certificate accepted"
+        },
+        "elapsed": 1.33
+      },
+      {
+        "type": "solver_stderr",
+        "tail": "MATHGRAPH_METRICS {\"portfolio\":\"initial-chain\",\"found\":false,\"generations\":0,\"source_instances\":{\"0\":70},\"equality_nodes\":4000,\"graph_edges\":4000,\"max_term_size\":13,\"certificate_bytes\":0,\"replay_seconds\":0.0,\"exhaustion\":\"term budget exhausted\"}\nMATHGRAPH_METRICS {\"portfolio\":\"medium\",\"found\":true,\"generations\":1,\"source_instances\":{\"0\":70,\"1\":20},\"equality_nodes\":1824,\"graph_edges\":1820,\"max_term_size\":13,\"certificate_bytes\":1192,\"replay_seconds\":0.000655,\"exhaustion\":null}\n",
+        "returncode": -15
+      }
+    ]
+  }
+]

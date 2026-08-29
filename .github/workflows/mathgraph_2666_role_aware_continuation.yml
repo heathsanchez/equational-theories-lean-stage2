@@ -1,0 +1,32 @@
+name: MathGraph 2666 Role Aware Continuation
+
+on:
+  push:
+    branches:
+      - mathgraph/18-edge-constructor-separator-20260824
+    paths:
+      - experiments/mathgraph/run_2666_role_aware_continuation.py
+      - .github/workflows/mathgraph_2666_role_aware_continuation.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  role-aware-continuation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/18-edge-constructor-separator-20260824
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python experiments/mathgraph/run_2666_role_aware_continuation.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-2666-role-aware-continuation
+          path: experiments/mathgraph/results/2666-role-aware-continuation.json
+
+# trigger marker: 2026-08-25 role-aware continuation

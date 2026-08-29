@@ -1,0 +1,41 @@
+{
+  "constructor_hits": {
+    "Fin 2 countermodel": 84,
+    "direct source instance": 57,
+    "equality-chain": 7,
+    "source-reentry generation 2": 1,
+    "target-narrowing depth 2": 5,
+    "target-narrowing depth 3": 1,
+    "unresolved": 45
+  },
+  "largest_certificate_bytes": 2041,
+  "largest_search": {
+    "edges": 2250,
+    "median_edges_unresolved_true": 1800,
+    "nodes": 2250
+  },
+  "llm_calls": 0,
+  "only_one_target_side": 23,
+  "phenotypes": {
+    "both enter graph but remain disconnected": 4,
+    "neither target side enters graph": 2,
+    "only left target side enters graph": 23
+  },
+  "primary_causal_metric": {
+    "recorded_baseline_only_one": 21,
+    "recorded_bucket_after_solved_cases": 16,
+    "solved_former_one_side": 5,
+    "strict_exact_side_after": 23,
+    "strict_exact_side_baseline": 28
+  },
+  "rejected_judge_attempts": {},
+  "resource_exhaustion": {
+    "instance budget exhausted": 1
+  },
+  "runtime_seconds": {
+    "maximum": 35.07,
+    "median": 1.995,
+    "total": 561.84
+  },
+  "unresolved_true": 29
+}
