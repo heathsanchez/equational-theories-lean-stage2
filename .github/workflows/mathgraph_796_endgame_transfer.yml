@@ -1,0 +1,65 @@
+name: MathGraph 796 endgame transfer
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - experiments/mathgraph/run_796_endgame_transfer.py
+      - .github/workflows/mathgraph_796_endgame_transfer.yml
+permissions:
+  contents: read
+jobs:
+  endgame:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: evaluation_normal_0036
+            dataset: evaluation_normal
+          - rid: evaluation_order5_0014
+            dataset: evaluation_order5
+          - rid: evaluation_order5_0042
+            dataset: evaluation_order5
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Set up Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Fetch official evaluation set
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/${{ matrix.dataset }}.jsonl" -o "/tmp/sair_eval/${{ matrix.dataset }}.jsonl"
+      - name: Run frozen developmental endgame transfer
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          mkdir -p experiments/mathgraph/results/endgame
+          python experiments/mathgraph/run_796_endgame_transfer.py \
+            --id '${{ matrix.rid }}' \
+            --input '/tmp/sair_eval/${{ matrix.dataset }}.jsonl' \
+            --output 'experiments/mathgraph/results/endgame/${{ matrix.rid }}.json' \
+            --frontier-seconds 30 \
+            --given-seconds 10 \
+            --frontier-rounds 3 \
+            --given-steps 16 \
+            --candidate-budget 512 \
+            --behavioural-keep 512 \
+            --probe-partners 64 \
+            --closure-rounds 2 \
+            --closure-new-per-round 128 \
+            --tail-novelty-max 80
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-endgame-${{ matrix.rid }}
+          path: experiments/mathgraph/results/endgame/${{ matrix.rid }}.json
+          if-no-files-found: error
