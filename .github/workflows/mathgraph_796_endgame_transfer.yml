@@ -63,3 +63,4 @@ jobs:
           name: mathgraph-endgame-${{ matrix.rid }}
           path: experiments/mathgraph/results/endgame/${{ matrix.rid }}.json
           if-no-files-found: error
+# trigger: frozen-three-endgame-20260829
