@@ -1,0 +1,31 @@
+{
+  "production_checkpoint": {
+    "head": "2751794",
+    "score": "72 TRUE + 96 FALSE = 168/200",
+    "wall_seconds": 416.5
+  },
+  "diagnostic_portfolios": {
+    "wider_edge_deeper": {
+      "verified_equality_edge_cap": 512,
+      "generations": 3,
+      "wall_seconds_per_row": 10,
+      "new_public_official_acceptances": [
+        "true_2935_3138"
+      ],
+      "matching_external_phenotypes_tested": 2,
+      "new_external_acceptances": 0,
+      "production_decision": "not promoted"
+    },
+    "derived_representation_reentry": {
+      "frontier_roots_per_side": 32,
+      "generations": 2,
+      "new_public_acceptances": 0,
+      "production_decision": "rejected"
+    }
+  },
+  "remaining_public_residuals": {
+    "true": 28,
+    "false": 4
+  },
+  "conclusion": "More quotient generations and matching inside derived target representations do not provide broad additional connectivity under the tested bounds."
+}

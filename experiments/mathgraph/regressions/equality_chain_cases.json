@@ -1,0 +1,65 @@
+[
+  {
+    "id": "chain_direct_instance",
+    "eq1_id": 910001,
+    "eq2_id": 910002,
+    "equation1": "x ◇ y = x",
+    "equation2": "(x ◇ y) ◇ z = x ◇ y"
+  },
+  {
+    "id": "chain_two_source_transitivity",
+    "eq1_id": 910003,
+    "eq2_id": 910004,
+    "equation1": "x ◇ x = x ◇ y",
+    "equation2": "x ◇ y = x ◇ z"
+  },
+  {
+    "id": "chain_reversed_source",
+    "eq1_id": 910005,
+    "eq2_id": 910006,
+    "equation1": "x ◇ y = y",
+    "equation2": "z = x ◇ z"
+  },
+  {
+    "id": "chain_left_congruence",
+    "eq1_id": 910007,
+    "eq2_id": 910008,
+    "equation1": "x ◇ x = x",
+    "equation2": "(x ◇ x) ◇ z = x ◇ z"
+  },
+  {
+    "id": "chain_right_congruence",
+    "eq1_id": 910009,
+    "eq2_id": 910010,
+    "equation1": "x ◇ x = x",
+    "equation2": "z ◇ (x ◇ x) = z ◇ x"
+  },
+  {
+    "id": "chain_nested_congruence",
+    "eq1_id": 910011,
+    "eq2_id": 910012,
+    "equation1": "x ◇ x = x",
+    "equation2": "w ◇ ((x ◇ x) ◇ z) = w ◇ (x ◇ z)"
+  },
+  {
+    "id": "chain_convergent_intermediate",
+    "eq1_id": 910013,
+    "eq2_id": 910014,
+    "equation1": "x ◇ x = x ◇ y",
+    "equation2": "x ◇ y = x ◇ z"
+  },
+  {
+    "id": "chain_false_idempotent_commutative",
+    "eq1_id": 910015,
+    "eq2_id": 910016,
+    "equation1": "x ◇ x = x",
+    "equation2": "x ◇ y = y ◇ x"
+  },
+  {
+    "id": "chain_false_associative_commutative",
+    "eq1_id": 910017,
+    "eq2_id": 910018,
+    "equation1": "x ◇ (y ◇ z) = (x ◇ y) ◇ z",
+    "equation2": "x ◇ y = y ◇ x"
+  }
+]

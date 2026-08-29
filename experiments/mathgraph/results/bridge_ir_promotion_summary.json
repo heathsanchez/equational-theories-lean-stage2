@@ -1,0 +1,157 @@
+{
+  "audit": {
+    "activation_to_proof_conversion": 0.222222,
+    "audit_type": "external-large-balanced",
+    "deep_marginal_diagnostic_gain": 0,
+    "false_control_invalid_outcomes": 0,
+    "fast_marginal_activation_rows": 6,
+    "fast_marginal_accepted_true": 1,
+    "initial_no_match_opportunities": 40,
+    "matched_false_controls": 40,
+    "matching_distance": {
+      "maximum": 17.04,
+      "mean": 5.95725,
+      "median": 5.55
+    },
+    "medium_marginal_diagnostic_gain": 1,
+    "probe_accepted_true": 1,
+    "probe_activation_rows": 3,
+    "probe_fast_activation_rate": 0.225,
+    "probe_fast_accepted_true": 2,
+    "probe_fast_gain_rate": 0.05,
+    "probe_fast_seconds_per_gain": 36.728341,
+    "source_cluster_bootstrap_interval_95": [
+      0.0,
+      0.125
+    ],
+    "source_families_with_any_diagnostic_hit": 3,
+    "unused_true_opportunities": 40,
+    "wilson_interval_95": [
+      0.013821,
+      0.165039
+    ],
+    "zero_event_false_control_one_sided_upper_95": 0.072158
+  },
+  "baseline": {
+    "accepted_false": 96,
+    "accepted_total": 162,
+    "accepted_true": 66,
+    "authoritative_head": "f9430e5d6210e1e0fe5b8878a5b3b35b3c86d0ce",
+    "manifest_sha256": "f3a87079fe15ae167ce52dc2f07589b357be8f803742f0118b387836487a07f2",
+    "solver_bytes": 177344,
+    "solver_sha256": "b096ebef09a5cc11de9ad22f37a196111d29979beb8f759463643bba44f6b231",
+    "unresolved": 38
+  },
+  "bridge_ir": {
+    "anti_unification_enabled": false,
+    "implementation_commit": "f243df7c118e9cedd606c341c057e4c244cd4f42",
+    "largest_certificate_bytes": 1963,
+    "largest_external_proof_dag_nodes": 22,
+    "maximum_probe_fast_bridge_depth": 2,
+    "nonorientable_evidence_enabled": false,
+    "production_portfolio": [],
+    "ranking": "activation-first",
+    "reverse_decreasing_rules_enabled": true,
+    "solver_bytes": 211218,
+    "solver_sha256": "68729dde1e27c544e5d3e12504ea5878d57ad0af70cf16c80bb238433976dcf8"
+  },
+  "clean_production": {
+    "development": {
+      "accepted_false": 39,
+      "accepted_true": 34,
+      "elapsed_seconds": 151.29,
+      "unresolved": 27
+    },
+    "holdout": {
+      "accepted_false": 57,
+      "accepted_true": 32,
+      "elapsed_seconds": 175.53,
+      "unresolved": 11
+    },
+    "invalid_outcomes": 0,
+    "llm_calls": 0,
+    "net_gain_over_162": 0,
+    "sample_20": {
+      "accepted_false": 10,
+      "accepted_true": 1,
+      "elapsed_seconds": 35.99,
+      "unresolved": 9
+    },
+    "sample_200": {
+      "accepted_false": 96,
+      "accepted_true": 66,
+      "elapsed_seconds": 320.95,
+      "unresolved": 38
+    },
+    "seconds_per_added_acceptance": null
+  },
+  "development": {
+    "accepted_false": 39,
+    "accepted_true": 34,
+    "bridge_accepted_true_gain": 0,
+    "no_match_activation_rows": 1,
+    "no_match_activations": 93,
+    "selected_configuration": {
+      "anti_unification": false,
+      "depth": 2,
+      "nonorientable_evidence": false,
+      "portfolio": [
+        "bridge-probe",
+        "bridge-fast"
+      ],
+      "ranking": "activation-first",
+      "reverse_expansion": true
+    }
+  },
+  "harnesses": {
+    "marathon": {
+      "passed": 25,
+      "total": 25
+    },
+    "solo_solver_cases": {
+      "passed": 66,
+      "total": 66
+    }
+  },
+  "integrity": {
+    "audit_closure_sha256": "aa88c2a21ab7168da78abb367105238df96a32f3e0f28a149f762e80ac4324a7",
+    "audit_inputs_sha256": "c9422887172d2f2f7f4620001cb92ecc0f669b96fda44193feff13050ac273fd",
+    "audit_labels_sha256": "07b65fdb099595e7de1c1bee8e2bbc8ed278b3f5cc641398568d6de7a3f73b32",
+    "audit_manifest_sha256": "157de2be84dd9ef07d48b2d24f78bb3972747143f820330605807ea7236845de",
+    "audit_raw_sha256": "36207db7a5715c2741f285de6ab6a40792c3fb5d9f4a33a835afcb95ab973987",
+    "audit_summary_sha256": "e6b532b786048170690bf160ac97900338952805ac65cc18b8a8dee816cbf1ba",
+    "labels_loaded_after_outputs_closed": true,
+    "provenance_sha256": "63a8111cf8d6968e364d582f5800d09076cb4fea967053948914a868ed6f4f43"
+  },
+  "metamorphic": {
+    "external_hits": 3,
+    "invalid_outcomes": 0,
+    "official_acceptances": 12,
+    "variants": 12
+  },
+  "promotion": {
+    "decision": "diagnostic-only",
+    "passed": false,
+    "reasons": [
+      "probe-plus-fast gained 2 external TRUE rows; 4 were required",
+      "activation-to-proof conversion was 22.22%; 25% was required",
+      "source-cluster bootstrap lower bound was zero",
+      "runtime was 36.73 seconds per external gain",
+      "clean sample_200 TRUE gain was zero"
+    ]
+  },
+  "residual": {
+    "dominant_obstruction": "no bounded replayable bridge equality matches the target representation",
+    "false": 4,
+    "no_match_phenotype_after": 30,
+    "no_match_phenotype_before": 31,
+    "no_match_to_activation_without_proof": 1,
+    "true": 34
+  },
+  "synthetic": {
+    "abstention_and_soundness_controls": 6,
+    "cases": 30,
+    "false_control_true_judge_calls": 0,
+    "official_true_acceptances": 24
+  }
+}

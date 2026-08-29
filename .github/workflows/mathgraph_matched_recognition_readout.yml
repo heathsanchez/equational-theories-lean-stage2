@@ -1,0 +1,60 @@
+name: MathGraph matched recognition readout
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - .github/workflows/mathgraph_matched_recognition_readout.yml
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+jobs:
+  readout:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download all frozen matched artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/matched
+          gh run download 33248238365 -D /tmp/matched
+      - name: Aggregate scientific endpoints
+        run: |
+          python - <<'PY'
+          import json, pathlib, re
+          rows=[]
+          for p in pathlib.Path('/tmp/matched').rglob('*.json'):
+              if 'matched-blind' not in p.name: continue
+              d=json.loads(p.read_text())
+              s=str(p)
+              arm='normalized' if '-normalized-' in s else 'raw' if '-raw-' in s else '?'
+              judge=d.get('judge')
+              accepted=isinstance(judge,dict) and judge.get('status')=='accepted'
+              rows.append({
+                'id':d.get('id'),'arm':arm,'target_found':bool(d.get('target_found')),
+                'accepted':accepted,'judge_status':judge.get('status') if isinstance(judge,dict) else None,
+                'cross_enumerated':d.get('cross_enumerated',0),'future_calls':d.get('future_calls'),
+                'target_origin':d.get('target_origin'),'closure_rounds_completed':d.get('closure_rounds_completed')
+              })
+          rows.sort(key=lambda x:(x['id'],x['arm']))
+          by={}
+          for r in rows: by.setdefault(r['arm'],[]).append(r)
+          summary={a:{'n':len(rs),'target_found':sum(r['target_found'] for r in rs),'accepted':sum(r['accepted'] for r in rs),'active':sum((r['cross_enumerated'] or 0)>0 for r in rs)} for a,rs in by.items()}
+          pairs=[]
+          ids=sorted(set(r['id'] for r in rows))
+          for i in ids:
+              q={r['arm']:r for r in rows if r['id']==i}
+              pairs.append({'id':i,'normalized':q.get('normalized'),'raw':q.get('raw')})
+          out={'source_run':33248238365,'summary':summary,'pairs':pairs}
+          pathlib.Path('/tmp/matched-readout.json').write_text(json.dumps(out,indent=2))
+          print('MATCHED_RECOGNITION_READOUT '+json.dumps(summary,sort_keys=True))
+          for p in pairs:
+              n=p['normalized']; r=p['raw']
+              print('PAIR',p['id'],'normalized=',None if not n else (n['target_found'],n['judge_status'],n['target_origin'],n['cross_enumerated']),'raw=',None if not r else (r['target_found'],r['judge_status'],r['target_origin'],r['cross_enumerated']))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-matched-recognition-readout
+          path: /tmp/matched-readout.json

@@ -1,0 +1,21 @@
+{
+  "schema": "mathgraph.combined-residual-characterization.v1",
+  "after_verified_specialists": {
+    "true": 6,
+    "false": 0,
+    "ids": [
+      "evaluation_hard_0196",
+      "evaluation_normal_0036",
+      "evaluation_normal_0040",
+      "evaluation_normal_0158",
+      "evaluation_order5_0014",
+      "evaluation_order5_0042"
+    ]
+  },
+  "true_obstruction": {
+    "paramodulation": "portfolio exhausted",
+    "completion": "no candidate",
+    "flagship_full_candidate": "the deep-constancy stage emits a candidate for all six, but all six are officially rejected because the inferred lemma type contains an unsynthesizable placeholder"
+  },
+  "recommended_next": "Replace the invalid placeholder-based deep-constancy candidate with an explicit replayed lemma statement and proof DAG, then retest the same generic route on external source-family controls."
+}

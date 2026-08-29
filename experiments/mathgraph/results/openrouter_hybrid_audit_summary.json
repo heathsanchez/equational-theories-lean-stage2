@@ -1,0 +1,54 @@
+{
+  "schema_version": "mathgraph.openrouter-hybrid-audit.v1",
+  "date": "2026-07-28",
+  "production_solver": {
+    "sha256": "9b0d3c375ec39d53d3665541142051018a3364c7d4e4c289d58c5c32643d13b5",
+    "score": {
+      "true": 85,
+      "false": 96,
+      "total": 181,
+      "denominator": 200
+    },
+    "modified": false
+  },
+  "protocol": {
+    "api": "OpenRouter chat completions",
+    "temperature": 0,
+    "structured_json": true,
+    "official_local_lean_verification": true,
+    "secret_persisted": false
+  },
+  "openai_gpt_oss_120b": {
+    "model": "openai/gpt-oss-120b",
+    "true_opportunities": 5,
+    "false_controls": 4,
+    "maximum_rounds": 3,
+    "accepted_true": 0,
+    "accepted_false_control_as_true": 0,
+    "officially_accepted_certificates": 0,
+    "lean_rejections": 8,
+    "unparsed_final_responses": 1,
+    "api_cost_usd": 0.02086165,
+    "wall_seconds": 45.982879,
+    "raw_result_sha256": "eeb0da95f4975663a1bd024cdaef5e7df5f7dc5110b955623ff0a202c7e58ac9"
+  },
+  "google_gemma_4_31b_it": {
+    "model": "google/gemma-4-31b-it",
+    "true_opportunities": 2,
+    "false_controls": 1,
+    "maximum_rounds": 1,
+    "maximum_output_tokens": 4096,
+    "accepted_true": 0,
+    "accepted_false_control_as_true": 0,
+    "parseable_proofs": 0,
+    "length_terminated": 3,
+    "api_cost_usd": 0.00501194,
+    "wall_seconds": 69.470167,
+    "raw_result_sha256": "cda29f3e62d84da6cf7b03cebee7d37fda15d44a14ca58efc12eeb125c693052"
+  },
+  "decision": {
+    "llm_fallback_promoted": false,
+    "reason": "No officially accepted incremental proof was observed. The deterministic 181/200 solver remains the highest-confidence submission.",
+    "hybrid_status": "fail-closed experimental alternate only"
+  }
+}

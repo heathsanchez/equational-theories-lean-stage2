@@ -1,0 +1,35 @@
+name: mathgraph-796-0040-standardized-apart
+on:
+  push:
+    branches: [mathgraph/residual-router-796-20260826]
+    paths:
+      - 'experiments/mathgraph/run_796_0040_standardized_apart_self_overlap.py'
+      - '.github/workflows/mathgraph-796-0040-standardized-apart.yml'
+  workflow_dispatch:
+jobs:
+  separator:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Setup Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Download official normal evaluation
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Run standardized-apart self-overlap separator
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_standardized_apart_self_overlap.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --output experiments/mathgraph/results/796-0040-standardized-apart.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-796-0040-standardized-apart
+          path: experiments/mathgraph/results/796-0040-standardized-apart.json

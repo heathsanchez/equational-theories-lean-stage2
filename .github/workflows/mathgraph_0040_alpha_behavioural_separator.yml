@@ -1,0 +1,110 @@
+name: MathGraph 0040 alpha behavioural separator
+on:
+  push:
+    branches: [mathgraph/residual-router-796-20260826]
+  workflow_dispatch:
+jobs:
+  separator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+      - name: Setup official-pinned judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Download evaluation normal calibration set
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Run alpha behavioural separator probe
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_alpha_behavioural_separator.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 30 \
+            --partners 12 \
+            --max-collisions 200 \
+            --output experiments/mathgraph/results/796-0040-alpha-behavioural-separator.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0040-alpha-behavioural-separator
+          path: experiments/mathgraph/results/796-0040-alpha-behavioural-separator.json
+          if-no-files-found: error
+
+  endgame:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: evaluation_normal_0036
+            dataset: evaluation_normal
+          - rid: evaluation_order5_0014
+            dataset: evaluation_order5
+          - rid: evaluation_order5_0042
+            dataset: evaluation_order5
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+      - name: Setup official-pinned judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Fetch official evaluation set
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/${{ matrix.dataset }}.jsonl" -o "/tmp/sair_eval/${{ matrix.dataset }}.jsonl"
+      - name: Run frozen developmental endgame transfer
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          mkdir -p experiments/mathgraph/results/endgame
+          python experiments/mathgraph/run_796_endgame_transfer.py \
+            --id '${{ matrix.rid }}' \
+            --input '/tmp/sair_eval/${{ matrix.dataset }}.jsonl' \
+            --output 'experiments/mathgraph/results/endgame/${{ matrix.rid }}.json' \
+            --frontier-seconds 30 \
+            --given-seconds 10 \
+            --frontier-rounds 3 \
+            --given-steps 16 \
+            --candidate-budget 512 \
+            --behavioural-keep 512 \
+            --probe-partners 64 \
+            --closure-rounds 2 \
+            --closure-new-per-round 128 \
+            --tail-novelty-max 80
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-endgame-${{ matrix.rid }}
+          path: experiments/mathgraph/results/endgame/${{ matrix.rid }}.json
+          if-no-files-found: error

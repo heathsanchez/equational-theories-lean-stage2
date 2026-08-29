@@ -1,0 +1,92 @@
+name: MathGraph matched blind recognition 0081-0100
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - .github/workflows/mathgraph_recognition_matched_blind_0081_0100.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  matched-recognition:
+    strategy:
+      fail-fast: false
+      matrix:
+        rid:
+          - evaluation_normal_0081
+          - evaluation_normal_0082
+          - evaluation_normal_0083
+          - evaluation_normal_0084
+          - evaluation_normal_0085
+          - evaluation_normal_0086
+          - evaluation_normal_0087
+          - evaluation_normal_0088
+          - evaluation_normal_0089
+          - evaluation_normal_0090
+          - evaluation_normal_0091
+          - evaluation_normal_0092
+          - evaluation_normal_0093
+          - evaluation_normal_0094
+          - evaluation_normal_0095
+          - evaluation_normal_0096
+          - evaluation_normal_0097
+          - evaluation_normal_0098
+          - evaluation_normal_0099
+          - evaluation_normal_0100
+        recognition:
+          - normalized
+          - raw
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+      - name: Setup official-pinned judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Download normal evaluation set
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - name: Frozen matched recognition test
+        run: |
+          source .env.judge
+          if [ '${{ matrix.recognition }}' = 'normalized' ]; then
+            RUNNER='experiments/mathgraph/run_796_blind_transfer.py'
+          else
+            RUNNER='experiments/mathgraph/run_796_blind_transfer_raw_recognition.py'
+          fi
+          python "$RUNNER" \
+            --id '${{ matrix.rid }}' \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --frontier-seconds 12 \
+            --given-seconds 5 \
+            --frontier-rounds 3 \
+            --given-steps 16 \
+            --candidate-budget 512 \
+            --behavioural-keep 512 \
+            --probe-partners 64 \
+            --closure-rounds 2 \
+            --closure-new-per-round 128 \
+            --tail-novelty-max 80 \
+            --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-${{ matrix.recognition }}-matched-blind.json'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: 'mathgraph-${{ matrix.rid }}-${{ matrix.recognition }}-matched-blind'
+          path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-${{ matrix.recognition }}-matched-blind.json'
+          if-no-files-found: ignore

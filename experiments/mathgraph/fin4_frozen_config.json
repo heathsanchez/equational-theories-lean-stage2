@@ -1,0 +1,46 @@
+{
+  "solver_sha256": "ddb646624106d143a6b0882b1ec46fa9e047dc40214310010b5dda89f55f2eb7",
+  "development_result_sha256": "1918d45fbebc7abdfc579186ceae6e280888efdf0bcbff9e715da3070b8a46f1",
+  "synthetic_result_sha256": "4c30791fcc89ac0c31a0cd91bc49e26c8d0be4c8289efe91aed92f93e349fe41",
+  "selected_support": "nested support with sound direct-root and unique-responsible-cell restriction",
+  "selected_propagation": "incremental conservative dependency queue with reversible domain trail",
+  "selected_branching": "support-aware MRV and deterministic target/source value scoring",
+  "selected_symmetry": "conservative partial stabilizer enabled",
+  "selected_routing": "two-stage",
+  "portfolio": [
+    {
+      "name": "fin4-probe",
+      "target_witness_limit": 16,
+      "maximum_states": 10000,
+      "seconds": 0.2,
+      "maximum_source_models": 4
+    },
+    {
+      "name": "fin4-fast",
+      "target_witness_limit": 64,
+      "maximum_states": 75000,
+      "seconds": 0.75,
+      "maximum_source_models": 16,
+      "run_after_probe_miss": true
+    }
+  ],
+  "diagnostic_only": [
+    {
+      "name": "fin4-medium",
+      "development_gain": 0
+    },
+    {
+      "name": "fin4-deep-diagnostic",
+      "production_eligible": false
+    }
+  ],
+  "development": {
+    "accepted_true": 34,
+    "accepted_false": 40,
+    "fin4_gain": 3,
+    "probe_gain": 2,
+    "fast_marginal_gain": 1,
+    "medium_marginal_gain": 0
+  },
+  "promotion_rule": "holdout FALSE gain >= 1 with all prior verdicts preserved and zero invalid outcomes"
+}

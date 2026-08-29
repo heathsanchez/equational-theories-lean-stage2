@@ -1,0 +1,112 @@
+name: MathGraph 796 production parity + 0040
+on:
+  push:
+    branches: [mathgraph/residual-router-796-20260826]
+  workflow_dispatch:
+jobs:
+  production_parity:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib in CI workspace
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          s=s.replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c')
+          p.write_text(s)
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+          cat lean-toolchain
+          grep -n 'mathlib4.git' -A1 lakefile.lean
+      - name: Setup official-pinned Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Assert production pins
+        run: |
+          source .env.judge
+          "$HOME/.elan/bin/lean" --version
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.32.2'
+          grep -q '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
+      - name: Download public evaluation calibration sets
+        run: |
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/evaluation_normal.jsonl" -o /tmp/sair_eval/evaluation_normal.jsonl
+          curl -fL --retry 3 "$base/evaluation_hard.jsonl" -o /tmp/sair_eval/evaluation_hard.jsonl
+          curl -fL --retry 3 "$base/evaluation_order5.jsonl" -o /tmp/sair_eval/evaluation_order5.jsonl
+      - name: Run historical six under official judge pins
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_six_residual_probe.py \
+            --normal /tmp/sair_eval/evaluation_normal.jsonl \
+            --hard /tmp/sair_eval/evaluation_hard.jsonl \
+            --order5 /tmp/sair_eval/evaluation_order5.jsonl \
+            --timeout 60 \
+            --output experiments/mathgraph/results/796-six-production-parity.json
+      - name: Run generic rigid-definition expansion corridor
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_generic_expansion_corridor.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --output experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
+      - name: Run incremental given-clause generic search gate
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_given_clause_search.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --keep 64 \
+            --partners 256 \
+            --output experiments/mathgraph/results/796-0040-given-clause-search.json
+      - name: Census corridor under given-clause search
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_given_clause_corridor_census.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --keep 64 \
+            --partners 256 \
+            --output experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
+      - name: Separate unguided f258 representative from f259 scheduling
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_f258_to_f259_separator.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 120 \
+            --output experiments/mathgraph/results/796-0040-f258-to-f259-separator.json
+      - name: Run hybrid frontier and given-clause shared-pool closure
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_hybrid_pool_closure.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --seconds 180 \
+            --output experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
+      - name: Test independent frontier and given-clause cross-portfolio bridge
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_0040_cross_portfolio_bridge.py \
+            --input /tmp/sair_eval/evaluation_normal.jsonl \
+            --frontier-seconds 120 \
+            --given-seconds 10 \
+            --output experiments/mathgraph/results/796-0040-cross-portfolio-bridge.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-796-production-parity
+          path: |
+            experiments/mathgraph/results/796-six-production-parity.json
+            experiments/mathgraph/results/796-0040-generic-expansion-corridor.json
+            experiments/mathgraph/results/796-0040-given-clause-search.json
+            experiments/mathgraph/results/796-0040-given-clause-corridor-census.json
+            experiments/mathgraph/results/796-0040-f258-to-f259-separator.json
+            experiments/mathgraph/results/796-0040-hybrid-pool-closure.json
+            experiments/mathgraph/results/796-0040-cross-portfolio-bridge.json
+          if-no-files-found: error
