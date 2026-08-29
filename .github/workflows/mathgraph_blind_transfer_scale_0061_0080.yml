@@ -1,4 +1,5 @@
 name: MathGraph blind transfer scale 0061-0080
+# trigger after workflow registration
 on:
   push:
     branches: [mathgraph/residual-router-796-20260826]
