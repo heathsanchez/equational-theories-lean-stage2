@@ -1,4 +1,4 @@
-name: MathGraph 0040 fast f278 closure census
+name: MathGraph 0040 fast f278 promotion rank census
 on:
   push:
     branches:
@@ -33,10 +33,10 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Test fast post-hoc f278 census
+      - name: Measure post-hoc f278 promotion rank
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_0040_fast_f278_census_compat.py \
+          python experiments/mathgraph/run_796_0040_fast_f278_rank_census_compat.py \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
             --frontier-seconds 30 \
             --given-seconds 10 \
@@ -48,8 +48,8 @@ jobs:
             --closure-rounds 2 \
             --closure-new-per-round 64 \
             --tail-novelty-max 80 \
-            --output experiments/mathgraph/results/796-0040-fast-f278-census.json
+            --output experiments/mathgraph/results/796-0040-fast-f278-rank-census.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-fast-f278-census
-          path: experiments/mathgraph/results/796-0040-fast-f278-census.json
+          name: mathgraph-0040-fast-f278-rank-census
+          path: experiments/mathgraph/results/796-0040-fast-f278-rank-census.json
