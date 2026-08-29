@@ -6,159 +6,72 @@ on:
     branches: [main]
     paths:
       - .github/research-triggers/five-residual-handoff.json
-  pull_request:
-    branches: [main]
-    types: [opened, reopened, synchronize]
 
 permissions:
   contents: read
 
 jobs:
-  probe:
-    if: github.event_name != 'pull_request' || github.event.pull_request.title == '[MathGraph Trigger] Five Residual Handoff Probe'
-    runs-on: ubuntu-latest
+  final-three-797:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - rid: evaluation_normal_0036
+            split: evaluation_normal
+          - rid: evaluation_order5_0014
+            split: evaluation_order5
+          - rid: evaluation_order5_0042
+            split: evaluation_order5
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
-      - name: Checkout frozen 795/800 research baseline
+      - name: Checkout frozen 796 research branch
         uses: actions/checkout@v4
         with:
-          ref: mathgraph/superposition-selector-tournament-20260820
+          ref: mathgraph/residual-router-796-20260826
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Install dataset tooling
-        run: python -m pip install 'datasets>=3,<5'
-
-      - name: Probe final-rule handoff on the five frozen residuals
-        shell: bash
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
         run: |
-          set -euo pipefail
-          mkdir -p experiments/mathgraph/results
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
           python - <<'PY'
-          import importlib.util, inspect, json, sys, time
           from pathlib import Path
-          from datasets import load_dataset
-
-          IDS={
-            'evaluation_normal_0036',
-            'evaluation_normal_0040',
-            'evaluation_hard_0196',
-            'evaluation_order5_0014',
-            'evaluation_order5_0042',
-          }
-          CONFIGS=['evaluation_normal','evaluation_hard','evaluation_order5']
-          spec=importlib.util.spec_from_file_location('mg_handoff','submissions/mathgraph/solver.py')
-          m=importlib.util.module_from_spec(spec); sys.modules[spec.name]=m; spec.loader.exec_module(m)
-          rows=[]
-          for cfg in CONFIGS:
-            rows += [dict(r) for r in load_dataset('SAIRfoundation/equational-theories-selected-problems',cfg,split='train') if r.get('id') in IDS]
-          if {r['id'] for r in rows} != IDS:
-            raise RuntimeError('five-residual dataset mismatch')
-
-          limits=dict(m.COMPACT_SUPERPOSITION_PROBE)
-          limits.update({
-            'maximum_term_size':65,
-            'maximum_replay_term_size':260,
-            'maximum_depth':12,
-            'maximum_rules':768,
-            'maximum_rounds':64,
-            'new_clauses_per_round':512,
-            'maximum_clauses':12000,
-            'normalization_steps':256,
-            'maximum_proof_nodes':50000,
-          })
-
-          def term_vars(t):
-            try: return sorted(m.term_variables(t))
-            except Exception: return []
-
-          def recipe_summary(p):
-            if p is None: return None
-            d={'type':type(p).__name__}
-            for k in ('kind','cost','lhs','rhs','data'):
-              if hasattr(p,k):
-                v=getattr(p,k)
-                if k in ('lhs','rhs'):
-                  try: v=m.render_term(v)
-                  except Exception: v=repr(v)
-                else:
-                  v=repr(v)[:1000]
-                d[k]=v
-            return d
-
-          out={'schema':'mathgraph.five-residual-rule-handoff-probe.v1','rows':[]}
-          for row in sorted(rows,key=lambda r:r['id']):
-            src=m.parse_equation(row['equation1']); tgt=m.parse_equation(row['equation2'])
-            eng=m.TargetGroundedRefutation(src,tgt,time.monotonic()+12.0,dict(limits))
-            solved=eng.solve()
-            rules=list(eng.search.rules())
-            rec={
-              'id':row['id'],
-              'baseline_found':bool(solved),
-              'clauses':len(eng.search.clauses),
-              'rules':len(rules),
-              'rounds':getattr(eng.search,'rounds',None),
-              'superpositions':getattr(eng.search,'superpositions',None),
-              'reductions':getattr(eng.search,'reductions',None),
-              'signatures':{
-                n:str(inspect.signature(getattr(eng.search,n)))
-                for n in ('normalize','compile','critical_pair','interreduce','add_clause','instantiate','target_proof','rules')
-                if callable(getattr(eng.search,n,None))
-              },
-            }
-            handoff={}
-            try:
-              tl,tr=eng.search.target[:2]
-              nl,pl=eng.search.normalize(tl,rules)
-              nr,pr=eng.search.normalize(tr,rules)
-              handoff={
-                'left_nf':m.render_term(nl),
-                'right_nf':m.render_term(nr),
-                'meet':nl==nr,
-                'left_proof':recipe_summary(pl),
-                'right_proof':recipe_summary(pr),
-              }
-            except Exception as e:
-              handoff={'error':type(e).__name__+': '+str(e)}
-            rec['final_rule_handoff']=handoff
-
-            candidates=[]
-            for i,c in enumerate(eng.search.clauses):
-              lhs,rhs=c.lhs,c.rhs
-              vl,vr=term_vars(lhs),term_vars(rhs)
-              bare=(lhs[0]=='var') or (rhs[0]=='var')
-              omitted=False
-              if lhs[0]=='var': omitted=lhs[1] not in set(vr)
-              if rhs[0]=='var': omitted=omitted or rhs[1] not in set(vl)
-              try: sz=m.term_size(lhs)+m.term_size(rhs)
-              except Exception: sz=999999
-              candidates.append({
-                'index':i,
-                'lhs':m.render_term(lhs),
-                'rhs':m.render_term(rhs),
-                'vars_l':vl,'vars_r':vr,
-                'bare_side':bare,
-                'variable_omission':omitted,
-                'size':sz,
-                'cost':getattr(c,'cost',None),
-                'kind':getattr(c,'kind',None),
-                'proof_id':getattr(c,'proof_id',None),
-              })
-            candidates.sort(key=lambda x:(0 if x['variable_omission'] else 1,0 if x['bare_side'] else 1,x['size'],x['cost'] if isinstance(x['cost'],int) else 10**9,x['index']))
-            rec['derived_structural_frontier']=candidates[:40]
-            out['rows'].append(rec)
-            print(json.dumps({'id':rec['id'],'found':rec['baseline_found'],'handoff':handoff,'top':candidates[:5]},sort_keys=True),flush=True)
-
-          Path('experiments/mathgraph/results/five-residual-rule-handoff-probe.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
+          p=Path('lakefile.lean')
+          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
+          Path('lake-manifest.json').unlink(missing_ok=True)
           PY
-
-      - name: Upload probe artifact
-        uses: actions/upload-artifact@v4
+      - name: Setup official-pinned judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Download selected evaluation split
+        run: |
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          curl -fL --retry 3 "$base/${{ matrix.split }}.jsonl" -o "/tmp/sair_eval/${{ matrix.split }}.jsonl"
+      - name: Run frozen 0040-derived mechanism on final residual
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_796_blind_transfer_any_split.py \
+            --id '${{ matrix.rid }}' \
+            --input '/tmp/sair_eval/${{ matrix.split }}.jsonl' \
+            --frontier-seconds 12 \
+            --given-seconds 5 \
+            --frontier-rounds 3 \
+            --given-steps 16 \
+            --candidate-budget 512 \
+            --behavioural-keep 512 \
+            --probe-partners 64 \
+            --closure-rounds 2 \
+            --closure-new-per-round 128 \
+            --tail-novelty-max 80 \
+            --output 'experiments/mathgraph/results/797-${{ matrix.rid }}-final-three-blind.json'
+      - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: mathgraph-five-residual-rule-handoff-probe
-          path: experiments/mathgraph/results/five-residual-rule-handoff-probe.json
-          if-no-files-found: error
-          retention-days: 30
+          name: 'mathgraph-797-${{ matrix.rid }}-final-three-blind'
+          path: 'experiments/mathgraph/results/797-${{ matrix.rid }}-final-three-blind.json'
+          if-no-files-found: ignore
