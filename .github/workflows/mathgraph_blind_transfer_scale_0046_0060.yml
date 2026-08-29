@@ -1,5 +1,8 @@
 name: MathGraph blind transfer scale 0046-0060
 on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
   workflow_dispatch:
 permissions:
   contents: read
