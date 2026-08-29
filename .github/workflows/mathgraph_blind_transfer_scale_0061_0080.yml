@@ -1,5 +1,5 @@
-name: MathGraph blind transfer scale 0061-0080
-# registered frozen blind-transfer scale; this commit triggers the matrix
+name: MathGraph 796 final-three blind transfer
+# Reuse the registered workflow path, but test only the exact final three residuals.
 on:
   push:
     branches: [mathgraph/residual-router-796-20260826]
@@ -10,11 +10,17 @@ jobs:
   transfer:
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 3
       matrix:
-        rid: [evaluation_normal_0061, evaluation_normal_0062, evaluation_normal_0063, evaluation_normal_0064, evaluation_normal_0065, evaluation_normal_0066, evaluation_normal_0067, evaluation_normal_0068, evaluation_normal_0069, evaluation_normal_0070, evaluation_normal_0071, evaluation_normal_0072, evaluation_normal_0073, evaluation_normal_0074, evaluation_normal_0075, evaluation_normal_0076, evaluation_normal_0077, evaluation_normal_0078, evaluation_normal_0079, evaluation_normal_0080]
+        include:
+          - rid: evaluation_normal_0036
+            dataset: evaluation_normal
+          - rid: evaluation_order5_0014
+            dataset: evaluation_order5
+          - rid: evaluation_order5_0042
+            dataset: evaluation_order5
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -30,14 +36,39 @@ jobs:
       - name: Setup official-pinned judge
         env: {SKIP_DOCKER: '1'}
         run: bash scripts/setup.sh
-      - run: mkdir -p /tmp/sair_eval && curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Frozen blind transfer
+      - name: Fetch exact public evaluation family
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 "https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/${{ matrix.dataset }}.jsonl" -o "/tmp/sair_eval/${{ matrix.dataset }}.jsonl"
+      - name: Frozen 0040-derived blind transfer on exact residual
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_blind_transfer.py --id '${{ matrix.rid }}' --input /tmp/sair_eval/evaluation_normal.jsonl --frontier-seconds 12 --given-seconds 5 --frontier-rounds 3 --given-steps 16 --candidate-budget 512 --behavioural-keep 512 --probe-partners 64 --closure-rounds 2 --closure-new-per-round 128 --tail-novelty-max 80 --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-blind-transfer-scale.json'
+          python experiments/mathgraph/run_796_blind_transfer.py --id '${{ matrix.rid }}' --input '/tmp/sair_eval/${{ matrix.dataset }}.jsonl' --frontier-seconds 12 --given-seconds 5 --frontier-rounds 3 --given-steps 16 --candidate-budget 512 --behavioural-keep 512 --probe-partners 64 --closure-rounds 2 --closure-new-per-round 128 --tail-novelty-max 80 --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-final-three.json'
+      - name: Print deciding gate
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          rid='${{ matrix.rid }}'
+          p=pathlib.Path(f'experiments/mathgraph/results/796-{rid}-final-three.json')
+          if not p.exists():
+              print('FINAL_THREE_GATE', json.dumps({'id':rid,'result_file':False}))
+          else:
+              d=json.loads(p.read_text())
+              j=d.get('judge') or {}
+              print('FINAL_THREE_GATE', json.dumps({
+                  'id': rid,
+                  'result_file': True,
+                  'cross_enumerated': d.get('cross_enumerated'),
+                  'target_found': d.get('target_found'),
+                  'target_origin': d.get('target_origin'),
+                  'judge_status': j.get('judge_status', j.get('status')),
+                  'proof_nodes': j.get('proof_nodes'),
+              }, sort_keys=True))
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: 'mathgraph-${{ matrix.rid }}-blind-transfer-scale'
-          path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-blind-transfer-scale.json'
+          name: 'mathgraph-${{ matrix.rid }}-final-three'
+          path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-final-three.json'
           if-no-files-found: ignore
