@@ -41,7 +41,9 @@ def main():
             s.critical_pair=lambda o,i,oi,ii,path: orig(expand_recipe(o),expand_recipe(i),oi,ii,path)
             return eng,s,orig,expand_recipe
         def orient(c,rev):return c if not rev else m.Recipe(c.rhs,c.lhs,'symmetry',(c,))
-        def exact_target(r):return (r.lhs,r.rhs)==target[:2] or (r.rhs,r.lhs)==target[:2]
+        def exact_target(eng,r):
+            rr=eng.inline_recipe(r)
+            return (rr.lhs,rr.rhs)==target[:2] or (rr.rhs,rr.lhs)==target[:2]
         def finish(eng,s,r):
             rr=eng.inline_recipe(r)
             if (rr.lhs,rr.rhs)==(target[1],target[0]):rr=m.Recipe(rr.rhs,rr.lhs,'symmetry',(rr,))
@@ -139,7 +141,7 @@ def main():
                                 z=origf(aa,bb,0,pi,path)
                                 if z is None:continue
                                 calls+=1; out.add(sig_of(z))
-                                if exact_target(z):target_child=z
+                                if exact_target(ef,z):target_child=z
             return out,target_child,calls
 
         baseline=set(); baseline_calls=0
@@ -195,7 +197,7 @@ def main():
                                     z=origf(aa,bb,ni,pi,path)
                                     if z is None:continue
                                     closure_enum+=1
-                                    if exact_target(z):target_recipe=z; target_origin=label; break
+                                    if exact_target(ef,z):target_recipe=z; target_origin=label; break
                                 if target_recipe:break
                             if target_recipe:break
                         if target_recipe:break
