@@ -1,4 +1,4 @@
-name: MathGraph 0040 fast f278 promotion rank census
+name: MathGraph 0040 beam-128 promotion test
 on:
   push:
     branches:
@@ -33,7 +33,7 @@ jobs:
         run: |
           mkdir -p /tmp/sair_eval
           curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
-      - name: Measure post-hoc f278 promotion rank
+      - name: Test beam 128 after f278 rank localization
         run: |
           source .env.judge
           python experiments/mathgraph/run_796_0040_fast_f278_rank_census_compat.py \
@@ -46,10 +46,10 @@ jobs:
             --behavioural-keep 512 \
             --probe-partners 64 \
             --closure-rounds 2 \
-            --closure-new-per-round 64 \
+            --closure-new-per-round 128 \
             --tail-novelty-max 80 \
-            --output experiments/mathgraph/results/796-0040-fast-f278-rank-census.json
+            --output experiments/mathgraph/results/796-0040-beam-128-promotion-test.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mathgraph-0040-fast-f278-rank-census
-          path: experiments/mathgraph/results/796-0040-fast-f278-rank-census.json
+          name: mathgraph-0040-beam-128-promotion-test
+          path: experiments/mathgraph/results/796-0040-beam-128-promotion-test.json
