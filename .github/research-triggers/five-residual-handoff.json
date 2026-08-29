@@ -1,7 +1,7 @@
 {
-  "protocol": "SAIR_STAGE2_FIVE_RESIDUAL_DEVELOPMENTAL_CAPSTONE_V1",
+  "protocol": "SAIR_STAGE2_FINAL_THREE_FROZEN_0040_TRANSFER_V1",
   "precommit_sha256": "0a41861173d8f90b88aa815784bde0d773ee9495db6cd2137ebb76f015c4517c",
-  "baseline_branch": "mathgraph/superposition-selector-tournament-20260820",
-  "purpose": "Probe final derived-rule normalization handoff on the frozen five residuals without Vampire derivation access.",
-  "trigger_nonce": 2
+  "baseline_branch": "mathgraph/residual-router-796-20260826",
+  "purpose": "Run the frozen 0040-derived mechanism blindly on the genuine final three 796 residuals under the official-pinned judge.",
+  "trigger_nonce": 3
 }
