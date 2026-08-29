@@ -1,5 +1,10 @@
 name: MathGraph blind transfer recognition ablation
 on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - .github/workflows/mathgraph_blind_transfer_recognition_ablation.yml
   workflow_dispatch:
 permissions:
   contents: read
@@ -9,8 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         rid:
-          - evaluation_normal_0042
-          - evaluation_normal_0044
+          - evaluation_normal_0062
+          - evaluation_normal_0064
+          - evaluation_normal_0066
+          - evaluation_normal_0070
+          - evaluation_normal_0072
+          - evaluation_normal_0078
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -42,8 +51,8 @@ jobs:
           python experiments/mathgraph/run_796_blind_transfer_raw_recognition.py \
             --id '${{ matrix.rid }}' \
             --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --frontier-seconds 30 \
-            --given-seconds 10 \
+            --frontier-seconds 12 \
+            --given-seconds 5 \
             --frontier-rounds 3 \
             --given-steps 16 \
             --candidate-budget 512 \
@@ -54,6 +63,8 @@ jobs:
             --tail-novelty-max 80 \
             --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-raw-recognition-ablation.json'
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: 'mathgraph-${{ matrix.rid }}-raw-recognition-ablation'
           path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-raw-recognition-ablation.json'
+          if-no-files-found: ignore
