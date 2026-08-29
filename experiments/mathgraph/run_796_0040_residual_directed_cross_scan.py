@@ -47,7 +47,7 @@ tail=r'''        # Residual-directed cross scan.  No target_score preselection a
         # gets the same bounded continuation family; no syntactic rank truncates it.
         for qi,q in enumerate(raw):
             scanned+=1
-            if exact_target(q):
+            if exact_target(ef,q):
                 target_recipe=q; target_origin='cross-direct'; break
             for pi,p in enumerate(pool):
                 for A,B,label in ((q,p,'cross-partner'),(p,q,'partner-cross')):
@@ -59,7 +59,7 @@ tail=r'''        # Residual-directed cross scan.  No target_score preselection a
                                 z=origf(aa,bb,qi,pi,path)
                                 if z is None: continue
                                 closure_enum+=1
-                                if exact_target(z):
+                                if exact_target(ef,z):
                                     target_recipe=z; target_origin=label; break
                             if target_recipe: break
                         if target_recipe: break
