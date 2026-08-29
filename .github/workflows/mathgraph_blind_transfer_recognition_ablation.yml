@@ -68,3 +68,5 @@ jobs:
           name: 'mathgraph-${{ matrix.rid }}-raw-recognition-ablation'
           path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-raw-recognition-ablation.json'
           if-no-files-found: ignore
+
+# trigger: six-row recognition ablation
