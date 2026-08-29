@@ -1,8 +1,5 @@
 name: MathGraph blind transfer scale 0046-0060
 on:
-  push:
-    branches:
-      - mathgraph/residual-router-796-20260826
   workflow_dispatch:
 permissions:
   contents: read
@@ -12,67 +9,26 @@ jobs:
       fail-fast: false
       max-parallel: 15
       matrix:
-        rid:
-          - evaluation_normal_0046
-          - evaluation_normal_0047
-          - evaluation_normal_0048
-          - evaluation_normal_0049
-          - evaluation_normal_0050
-          - evaluation_normal_0051
-          - evaluation_normal_0052
-          - evaluation_normal_0053
-          - evaluation_normal_0054
-          - evaluation_normal_0055
-          - evaluation_normal_0056
-          - evaluation_normal_0057
-          - evaluation_normal_0058
-          - evaluation_normal_0059
-          - evaluation_normal_0060
+        rid: [evaluation_normal_0046, evaluation_normal_0047, evaluation_normal_0048, evaluation_normal_0049, evaluation_normal_0050, evaluation_normal_0051, evaluation_normal_0052, evaluation_normal_0053, evaluation_normal_0054, evaluation_normal_0055, evaluation_normal_0056, evaluation_normal_0057, evaluation_normal_0058, evaluation_normal_0059, evaluation_normal_0060]
     runs-on: ubuntu-24.04
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        with: {python-version: '3.11'}
       - run: python -m pip install 'openai>=1,<2'
       - name: Pin official Stage 2 Lean and Mathlib
         run: |
           printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
           python - <<'PY'
           from pathlib import Path
-          p=Path('lakefile.lean')
-          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
-          Path('lake-manifest.json').unlink(missing_ok=True)
+          p=Path('lakefile.lean'); p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c')); Path('lake-manifest.json').unlink(missing_ok=True)
           PY
       - name: Setup official-pinned judge
-        env:
-          SKIP_DOCKER: '1'
+        env: {SKIP_DOCKER: '1'}
         run: bash scripts/setup.sh
-      - name: Download normal evaluation set
-        run: |
-          mkdir -p /tmp/sair_eval
-          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
+      - run: mkdir -p /tmp/sair_eval && curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_normal.jsonl' -o /tmp/sair_eval/evaluation_normal.jsonl
       - name: Frozen blind transfer
         run: |
           source .env.judge
-          python experiments/mathgraph/run_796_blind_transfer.py \
-            --id '${{ matrix.rid }}' \
-            --input /tmp/sair_eval/evaluation_normal.jsonl \
-            --frontier-seconds 12 \
-            --given-seconds 5 \
-            --frontier-rounds 3 \
-            --given-steps 16 \
-            --candidate-budget 512 \
-            --behavioural-keep 512 \
-            --probe-partners 64 \
-            --closure-rounds 2 \
-            --closure-new-per-round 128 \
-            --tail-novelty-max 80 \
-            --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-blind-transfer-scale.json'
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: 'mathgraph-${{ matrix.rid }}-blind-transfer-scale'
-          path: 'experiments/mathgraph/results/796-${{ matrix.rid }}-blind-transfer-scale.json'
-          if-no-files-found: ignore
+          python experiments/mathgraph/run_796_blind_transfer.py --id '${{ matrix.rid }}' --input /tmp/sair_eval/evaluation_normal.jsonl --frontier-seconds 12 --given-seconds 5 --frontier-rounds 3 --given-steps 16 --candidate-budget 512 --behavioural-keep 512 --probe-partners 64 --closure-rounds 2 --closure-new-per-round 128 --tail-novelty-max 80 --output 'experiments/mathgraph/results/796-${{ matrix.rid }}-blind-transfer-scale.json'
