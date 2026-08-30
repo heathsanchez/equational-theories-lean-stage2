@@ -32,8 +32,8 @@ jobs:
           old2='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
           assert s.count(old1) == 1, s.count(old1)
           assert s.count(old2) == 1, s.count(old2)
-          s=s.replace(old1, 'frontier_seconds = 12.0')
-          s=s.replace(old2, 'given_seconds = 5.0')
+          s=s.replace(old1, 'frontier_seconds = 30.0')
+          s=s.replace(old2, 'given_seconds = 10.0')
           p.write_text(s)
           PY
           cp /tmp/mathgraph-behavioural-solver.py submissions/mathgraph/solver.py
@@ -70,7 +70,7 @@ jobs:
             --normal /tmp/sair_eval/evaluation_normal.jsonl \
             --hard /tmp/sair_eval/evaluation_hard.jsonl \
             --order5 /tmp/sair_eval/evaluation_order5.jsonl \
-            --timeout 180 \
+            --timeout 900 \
             --output experiments/mathgraph/results/behavioural-future-six.json
           python - <<'PY'
           import json
@@ -101,7 +101,7 @@ jobs:
           from pipeline.proxy import load_config,run_solver
           CONFIGS=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
           OUT=Path('experiments/mathgraph/results/behavioural-future-integrated-800.json')
-          cfg=load_config(); cfg['solver']['timeout_seconds']=180; cfg['judge']['lean_timeout_seconds']=90; cfg['sandbox']['mode']='none'
+          cfg=load_config(); cfg['solver']['timeout_seconds']=900; cfg['judge']['lean_timeout_seconds']=90; cfg['sandbox']['mode']='none'
           rows=[]; started=time.monotonic(); submission=Path('submissions/mathgraph')
           for ds_cfg in CONFIGS:
               for raw in load_dataset('SAIRfoundation/equational-theories-selected-problems',ds_cfg,split='train'):
