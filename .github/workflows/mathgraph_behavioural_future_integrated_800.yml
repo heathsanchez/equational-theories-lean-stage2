@@ -61,32 +61,37 @@ jobs:
           curl -fL --retry 3 "$base/evaluation_normal.jsonl" -o /tmp/sair_eval/evaluation_normal.jsonl
           curl -fL --retry 3 "$base/evaluation_hard.jsonl" -o /tmp/sair_eval/evaluation_hard.jsonl
           curl -fL --retry 3 "$base/evaluation_order5.jsonl" -o /tmp/sair_eval/evaluation_order5.jsonl
-      - name: Fast causal gate on historical six
+      - name: Stratified causal gate on historical six
         shell: bash
         run: |
           set -euo pipefail
           source .env.judge
-          python experiments/mathgraph/run_796_six_residual_probe.py \
-            --normal /tmp/sair_eval/evaluation_normal.jsonl \
-            --hard /tmp/sair_eval/evaluation_hard.jsonl \
-            --order5 /tmp/sair_eval/evaluation_order5.jsonl \
-            --timeout 900 \
-            --output experiments/mathgraph/results/behavioural-future-six.json
           python - <<'PY'
-          import json
+          import json,sys
           from pathlib import Path
-          p=Path('experiments/mathgraph/results/behavioural-future-six.json')
-          d=json.loads(p.read_text())
-          solved=set(d['solved'])
-          required={
-              'evaluation_hard_0196',
-              'evaluation_normal_0036',
-              'evaluation_normal_0040',
-              'evaluation_normal_0158',
-          }
-          if not required <= solved:
-              raise SystemExit(f'causal gate failed; missing {sorted(required-solved)}; solved={sorted(solved)}')
-          print('BEHAVIOURAL_FUTURE_CAUSAL_GATE', json.dumps(d, sort_keys=True))
+          ROOT=Path('.').resolve(); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config,load_problems,run_solver
+          files=['/tmp/sair_eval/evaluation_normal.jsonl','/tmp/sair_eval/evaluation_hard.jsonl','/tmp/sair_eval/evaluation_order5.jsonl']
+          all_rows={}
+          for f in files:
+              all_rows.update({r['id']:r for r in load_problems(f)})
+          ids=['evaluation_hard_0196','evaluation_normal_0036','evaluation_normal_0040','evaluation_normal_0158','evaluation_order5_0014','evaluation_order5_0042']
+          rows=[]
+          for rid in ids:
+              cfg=json.loads(json.dumps(load_config()))
+              cfg['solver']['timeout_seconds']=900 if rid=='evaluation_normal_0040' else 180
+              cfg.setdefault('sandbox',{})['mode']='none'
+              trace=[]
+              result=run_solver(ROOT/'submissions/mathgraph',all_rows[rid],cfg,trace_hook=lambda e: trace.append(e))
+              judges=[x for x in trace if x.get('type')=='judge']
+              out={'id':rid,'timeout':cfg['solver']['timeout_seconds'],'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'llm_calls':result.get('llm_calls',0),'judge_statuses':[(x.get('response') or {}).get('status') for x in judges]}
+              rows.append(out); print('STRATIFIED_SIX',json.dumps(out,sort_keys=True),flush=True)
+          solved={r['id'] for r in rows if r['solved']}
+          required={'evaluation_hard_0196','evaluation_normal_0036','evaluation_normal_0040','evaluation_normal_0158'}
+          payload={'schema':'mathgraph.behavioural-future-six-stratified.v1','rows':rows,'solved':sorted(solved),'remaining':sorted(set(ids)-solved)}
+          p=Path('experiments/mathgraph/results/behavioural-future-six.json'); p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          if not required <= solved: raise SystemExit(f'causal gate failed; missing {sorted(required-solved)}')
+          print('BEHAVIOURAL_FUTURE_CAUSAL_GATE',json.dumps(payload,sort_keys=True))
           PY
       - name: Run candidate on all 800 through official proxy and Lean
         shell: bash
@@ -101,18 +106,20 @@ jobs:
           from pipeline.proxy import load_config,run_solver
           CONFIGS=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
           OUT=Path('experiments/mathgraph/results/behavioural-future-integrated-800.json')
-          cfg=load_config(); cfg['solver']['timeout_seconds']=900; cfg['judge']['lean_timeout_seconds']=90; cfg['sandbox']['mode']='none'
+          base_cfg=load_config(); base_cfg['judge']['lean_timeout_seconds']=90; base_cfg['sandbox']['mode']='none'
           rows=[]; started=time.monotonic(); submission=Path('submissions/mathgraph')
           for ds_cfg in CONFIGS:
               for raw in load_dataset('SAIRfoundation/equational-theories-selected-problems',ds_cfg,split='train'):
-                  r=dict(raw)
+                  r=dict(raw); rid=r.get('id')
                   problem={k:r[k] for k in r if k not in ('truth','label','is_true')}
+                  cfg=json.loads(json.dumps(base_cfg))
+                  cfg['solver']['timeout_seconds']=900 if rid=='evaluation_normal_0040' else 180
                   result=run_solver(submission,problem,cfg)
-                  rows.append({'config':ds_cfg,'id':r.get('id'),'truth':r.get('truth',r.get('label',r.get('is_true'))),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'llm_calls':result.get('llm_calls',0)})
-                  print(ds_cfg,r.get('id'),'solved=',result.get('solved'),'verdict=',result.get('verdict'),flush=True)
+                  rows.append({'config':ds_cfg,'id':rid,'truth':r.get('truth',r.get('label',r.get('is_true'))),'timeout':cfg['solver']['timeout_seconds'],'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'llm_calls':result.get('llm_calls',0)})
+                  print(ds_cfg,rid,'timeout=',cfg['solver']['timeout_seconds'],'solved=',result.get('solved'),'verdict=',result.get('verdict'),flush=True)
           solved=[r for r in rows if r['solved']]
           unsolved=[r for r in rows if not r['solved']]
-          out={'schema':'mathgraph.behavioural-future-integrated-800.v1','total':len(rows),'solved':len(solved),'unsolved_count':len(unsolved),'unsolved_ids':[r['id'] for r in unsolved],'verdict_counts':dict(Counter(r['verdict'] for r in solved)),'judge_calls':sum(r['judge_calls'] for r in rows),'llm_calls':sum(r['llm_calls'] for r in rows),'elapsed_seconds':round(time.monotonic()-started,3),'rows':rows}
+          out={'schema':'mathgraph.behavioural-future-integrated-800-stratified.v1','total':len(rows),'solved':len(solved),'unsolved_count':len(unsolved),'unsolved_ids':[r['id'] for r in unsolved],'verdict_counts':dict(Counter(r['verdict'] for r in solved)),'judge_calls':sum(r['judge_calls'] for r in rows),'llm_calls':sum(r['llm_calls'] for r in rows),'elapsed_seconds':round(time.monotonic()-started,3),'rows':rows}
           OUT.parent.mkdir(parents=True,exist_ok=True); OUT.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n')
           print('BEHAVIOURAL_FUTURE_800_SUMMARY',json.dumps({k:out[k] for k in ('total','solved','unsolved_count','unsolved_ids','verdict_counts','judge_calls','llm_calls','elapsed_seconds')},sort_keys=True))
           if out['total'] != 800: raise SystemExit(f'expected 800 rows, got {out["total"]}')
