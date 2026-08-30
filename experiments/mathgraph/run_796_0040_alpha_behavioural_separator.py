@@ -6,7 +6,7 @@ that carrier only to execute the current representation experiment on the
 remaining order-5 residual 0042. No proof IDs, hidden traces, named
 intermediates, or row-specific lemmas are used.
 
-Trigger-only refresh 3: active-probe basis patch; experimental budgets unchanged.
+Trigger-only refresh 4: strict local depth-3 refinement; broad budgets unchanged.
 """
 import argparse, json, subprocess, sys, urllib.request
 from pathlib import Path
@@ -38,13 +38,15 @@ def main():
         '--frontier-seconds', '12', '--given-seconds', '5',
         '--frontier-rounds', '3', '--given-steps', '16',
         '--candidate-budget', '256', '--probe-partners', '16',
-        '--collision-members', '4', '--child-width', '8', '--effect-keep', '32',
+        '--collision-members', '4', '--child-width', '8',
+        '--depth3-members', '3', '--depth3-child-width', '4',
+        '--effect-keep', '32',
     ]
     print('MSI_ADAPTIVE_START', RID, flush=True)
     rc = subprocess.call(cmd, cwd=ROOT)
     rec = {'schema':'mathgraph.msi-adaptive-compositional-carrier.v1','id':RID,'returncode':rc,
            'carrier_only':True,'candidate_budget':256,'probe_partners':16,
-           'collision_members':4,'child_width':8}
+           'collision_members':4,'child_width':8,'depth3_members':3,'depth3_child_width':4}
     if raw.exists():
         try: rec['result'] = json.loads(raw.read_text())
         except Exception as exc: rec['result_read_error'] = f'{type(exc).__name__}: {exc}'
