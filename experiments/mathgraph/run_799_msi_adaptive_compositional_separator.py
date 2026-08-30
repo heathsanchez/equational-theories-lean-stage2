@@ -40,9 +40,11 @@ start=s.index("        retained=[]; behavioural_tests=0; future_calls=0; novelty
 end=s.index("        judged=finish(ef,sf,target_recipe) if target_recipe is not None else None",start)
 replacement=f'''        # Build the one-step indexed quotient first.
         behavioural_tests=0; future_calls=0; target_recipe=None; target_origin=None
-        one_step={{}}
+        one_step={{}}; probe_hits={{}}
         for score,q in candidates:
             fp,child,n=future_signature(q); behavioural_tests+=1; future_calls+=n
+            for obs in fp:
+                probe_hits[obs[0]]=probe_hits.get(obs[0],0)+1
             if child is not None:
                 target_recipe=child; target_origin='adaptive-one-step-evaluation'; break
             ek=tuple(sorted(fp))
@@ -53,11 +55,17 @@ replacement=f'''        # Build the one-step indexed quotient first.
 
         depth2_classes_tested=0; depth2_classes_split=0; fresh_separators=[]; split_mult=[]
         compose_calls=0
-        small_probes=probes[:min(len(probes),8)]
+        # Choose the depth-2 basis only from probe coordinates that actually
+        # participated in one-step observations. This is target-independent and
+        # avoids a vacuous "depth-2 stable" result caused by inactive probes.
+        selected_probe_indices=[i for i,_ in sorted(probe_hits.items(),key=lambda kv:(-kv[1],kv[0]))[:min(8,len(probe_hits))]]
+        small_probes=[probes[i] for i in selected_probe_indices]
+        selected_probe_hits=[probe_hits[i] for i in selected_probe_indices]
         def depth2_signature(rule):
             nonlocal compose_calls,target_recipe,target_origin
             first=[]; seen1=set()
-            for pi,p in enumerate(small_probes):
+            for local_pi,p in enumerate(small_probes):
+                pi=selected_probe_indices[local_pi]
                 for order,(A,B) in enumerate(((rule,p),(p,rule))):
                     for ar in (False,True):
                         aa=orient(A,ar)
@@ -134,7 +142,7 @@ replacement=f'''        # Build the one-step indexed quotient first.
 '''
 s=s[:start]+replacement+s[end:]
 old_out="        out={'id':RID,'frontier_clauses':len(sf.clauses),'frontier_enumerated':enumf,'given_clauses':len(sg.clauses),'given_steps':givens,'given_enumerated':enumg,'cross_enumerated':cross_enum,'candidate_budget':len(candidates),'probe_partners':len(probes),'baseline_future_signatures':len(baseline),'baseline_future_calls':baseline_calls,'behavioural_tests':behavioural_tests,'future_calls':future_calls,'behavioural_retained':len(retained),'novelty_sizes':novelty_sizes,'closure_enumerated':closure_enum,'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged}\n"
-new_out="        out={'id':RID,'mode':'msi-adaptive-compositional-separator','frontier_clauses':len(sf.clauses),'frontier_enumerated':enumf,'given_clauses':len(sg.clauses),'given_steps':givens,'given_enumerated':enumg,'cross_enumerated':cross_enum,'candidate_budget':len(candidates),'probe_partners':len(probes),'baseline_future_signatures':len(baseline),'baseline_future_calls':baseline_calls,'behavioural_tests':behavioural_tests,'future_calls':future_calls,'one_step_class_count':one_step_class_count,'still_merged_collision_count':still_merged_collision_count,'depth2_classes_tested':depth2_classes_tested,'depth2_classes_split':depth2_classes_split,'first_instability_depth':first_instability_depth,'fresh_separators':len(fresh_separators),'max_split_multiplicity':max_split,'median_split_multiplicity':median_split,'representatives_retained':len(retained),'compose_calls':compose_calls,'closure_enumerated':closure_enum,'closure_generated':closure_generated,'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged}\n"
+new_out="        out={'id':RID,'mode':'msi-adaptive-compositional-separator','frontier_clauses':len(sf.clauses),'frontier_enumerated':enumf,'given_clauses':len(sg.clauses),'given_steps':givens,'given_enumerated':enumg,'cross_enumerated':cross_enum,'candidate_budget':len(candidates),'probe_partners':len(probes),'baseline_future_signatures':len(baseline),'baseline_future_calls':baseline_calls,'behavioural_tests':behavioural_tests,'future_calls':future_calls,'one_step_class_count':one_step_class_count,'still_merged_collision_count':still_merged_collision_count,'active_probe_count':len(probe_hits),'selected_probe_indices':selected_probe_indices,'selected_probe_hits':selected_probe_hits,'depth2_classes_tested':depth2_classes_tested,'depth2_classes_split':depth2_classes_split,'first_instability_depth':first_instability_depth,'fresh_separators':len(fresh_separators),'max_split_multiplicity':max_split,'median_split_multiplicity':median_split,'representatives_retained':len(retained),'compose_calls':compose_calls,'closure_enumerated':closure_enum,'closure_generated':closure_generated,'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged}\n"
 if old_out not in s: raise SystemExit('output marker not found')
 s=s.replace(old_out,new_out,1)
 with tempfile.NamedTemporaryFile(mode='w',suffix='_msi_adaptive.py',prefix='_mg_',dir=SRC.parent,delete=False) as fh:
