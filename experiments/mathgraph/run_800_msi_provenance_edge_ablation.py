@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Frozen-budget provenance-bearing continuation-edge ablation for order-5 residuals.
 
-This wraps the already-frozen adaptive compositional separator.  It does not
+This wraps the already-frozen adaptive compositional separator. It does not
 increase search depth, frontier time, candidate budget, probe count, collision
-width, or closure budget.  It instruments the exact depth-2 continuation
+width, or closure budget. It instruments the exact depth-2 continuation
 boundary that previously discarded provenance and asks whether merged classes
 split when continuation identity / applicability is retained.
 
@@ -14,7 +14,7 @@ basis and compare six representations:
   full provenance; erase order; erase path; erase orientations; erase partner;
   endpoint-only.
 Applicability (including undefined coordinates) is recorded separately from
-successful-output behaviour.  No proof IDs, hidden traces, named intermediates,
+successful-output behaviour. No proof IDs, hidden traces, named intermediates,
 or target-specific lemmas are used.
 """
 import subprocess, sys, tempfile
@@ -35,7 +35,7 @@ def main():
     # Literal runtime braces are doubled so they survive that generation layer.
     block = r'''        selected_probe_hits=[probe_hits[i] for i in selected_probe_indices]
 
-        # Provenance-edge ablation.  Search depth/basis are frozen; only the
+        # Provenance-edge ablation. Search depth/basis are frozen; only the
         # representation of an already-enumerated continuation changes.
         provenance_modes=('full','minus_order','minus_path','minus_orientations','minus_partner','endpoint_only')
         provenance_split_classes={{k:0 for k in provenance_modes}}
@@ -90,7 +90,7 @@ def main():
 
         def member_signature(records,universe,mode,with_outputs=True):
             # A projected coordinate is applicable if any full coordinate that
-            # maps to it succeeds.  Coordinates absent from this member but
+            # maps to it succeeds. Coordinates absent from this member but
             # present elsewhere in the class are explicitly UNDEFINED.
             app={{}}
             success=[]
@@ -116,7 +116,7 @@ def main():
                 else: obs.append((pk,str(ek[0]),fp))
             return (domain,tuple(sorted(obs,key=str)))
 
-        # Replay only the already-defined one-step collision classes.  This is
+        # Replay only the already-defined one-step collision classes. This is
         # a representation census, not another proof-search expansion.
         for cls_i,cls in enumerate(collision_classes):
             members=sorted(cls,key=lambda x:x[0])[:{a.collision_members}]
@@ -142,8 +142,6 @@ def main():
                 if len(set(map(str,full_sigs)))>1:
                     provenance_split_classes[mode]+=1
                     if mode=='full' and len(provenance_examples)<8:
-                        # Keep a compact exact witness: one projected coordinate
-                        # whose applicability differs across members, if any.
                         differing=[]
                         for pk in sorted(universe,key=str):
                             vals=[]
@@ -162,11 +160,24 @@ def main():
 '''
     s = s.replace(marker, block, 1)
 
-    old = "'compose_calls':compose_calls,'closure_enumerated':closure_enum,'closure_generated':closure_generated,'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged}\n"
-    new = "'compose_calls':compose_calls,'provenance_modes':list(provenance_modes),'provenance_split_classes':provenance_split_classes,'provenance_domain_split_classes':provenance_domain_split_classes,'provenance_attempts':provenance_attempts,'provenance_successes':provenance_successes,'provenance_same_endpoint_multi_maps':provenance_same_endpoint_multi_maps,'provenance_same_endpoint_max_maps':provenance_same_endpoint_max_maps,'provenance_future_calls':provenance_future_calls,'provenance_examples':provenance_examples,'closure_enumerated':closure_enum,'closure_generated':closure_generated,'target_found':target_recipe is not None,'target_origin':target_origin,'judge':judged}\n"
-    if old not in s:
-        raise SystemExit('adaptive output marker not found')
-    s = s.replace(old, new, 1)
+    # Patch only the stable field seam rather than matching the entire output
+    # record; the latter changed as the adaptive experiment accumulated metrics.
+    seam = "'compose_calls':compose_calls,"
+    injected = (
+        "'compose_calls':compose_calls,"
+        "'provenance_modes':list(provenance_modes),"
+        "'provenance_split_classes':provenance_split_classes,"
+        "'provenance_domain_split_classes':provenance_domain_split_classes,"
+        "'provenance_attempts':provenance_attempts,"
+        "'provenance_successes':provenance_successes,"
+        "'provenance_same_endpoint_multi_maps':provenance_same_endpoint_multi_maps,"
+        "'provenance_same_endpoint_max_maps':provenance_same_endpoint_max_maps,"
+        "'provenance_future_calls':provenance_future_calls,"
+        "'provenance_examples':provenance_examples,"
+    )
+    if seam not in s:
+        raise SystemExit('adaptive output compose seam not found')
+    s = s.replace(seam, injected, 1)
     s = s.replace("'mode':'msi-adaptive-compositional-separator'",
                   "'mode':'msi-provenance-edge-ablation'", 1)
 
