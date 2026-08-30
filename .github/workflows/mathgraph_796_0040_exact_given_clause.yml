@@ -4,6 +4,56 @@ on:
     branches: [mathgraph/residual-router-796-20260826]
   workflow_dispatch:
 jobs:
+  adaptive_depth3_0042:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          p.write_text(p.read_text().replace('896cc56a395e1615786fac56564a3fe6bfeebcc4','905b95818eb32af7874a58b427f50c1711a5e96c'))
+          Path('lake-manifest.json').unlink(missing_ok=True)
+          PY
+      - name: Setup official-pinned judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Fetch order5 evaluation set
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/evaluation_order5.jsonl' -o /tmp/sair_eval/evaluation_order5.jsonl
+      - name: Run strict local depth-3 adaptive MSI separator
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_799_msi_adaptive_compositional_separator.py \
+            --id evaluation_order5_0042 \
+            --input /tmp/sair_eval/evaluation_order5.jsonl \
+            --output experiments/mathgraph/results/799-evaluation_order5_0042-msi-adaptive-depth3.json \
+            --frontier-seconds 12 \
+            --given-seconds 5 \
+            --frontier-rounds 3 \
+            --given-steps 16 \
+            --candidate-budget 256 \
+            --probe-partners 16 \
+            --collision-members 4 \
+            --child-width 8 \
+            --depth3-members 3 \
+            --depth3-child-width 4 \
+            --effect-keep 32
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mathgraph-0042-msi-adaptive-depth3
+          path: experiments/mathgraph/results/799-evaluation_order5_0042-msi-adaptive-depth3.json
+          if-no-files-found: error
+
   production_parity:
     runs-on: ubuntu-24.04
     timeout-minutes: 50
