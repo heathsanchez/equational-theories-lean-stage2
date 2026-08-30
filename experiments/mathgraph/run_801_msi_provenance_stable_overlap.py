@@ -35,13 +35,16 @@ def main():
         raise SystemExit('split-index marker not found')
     s = s.replace(old, new, 1)
 
-    marker = "        def depth3_signature(rule):\n"
-    block = """        provenance_depth3_stable_indices=set()\n        for members0 in depth2_remaining:\n            if members0:\n                ci=provenance_collision_index_by_member.get(id(members0[0][1]))\n                if ci is not None: provenance_depth3_stable_indices.add(ci)\n        provenance_stable_overlap={k:len(v & provenance_depth3_stable_indices) for k,v in provenance_split_indices.items()}\n        provenance_stable_overlap_indices={k:sorted(v & provenance_depth3_stable_indices) for k,v in provenance_split_indices.items()}\n        provenance_depth3_stable_count=len(provenance_depth3_stable_indices)\n\n        def depth3_signature(rule):\n"""
-    if marker not in s:
-        raise SystemExit('depth3 marker not found')
-    s = s.replace(marker, block, 1)
+    # run_800 is itself a source-generating wrapper.  Patch its generated
+    # adaptive source after the provenance block has been inserted, instead of
+    # trying to find depth3_signature in the wrapper text itself.
+    wrapper_seam = "    s = s.replace(marker, block, 1)\n\n    # Patch only the stable field seam"
+    wrapper_insert = '''    s = s.replace(marker, block, 1)\n\n    overlap_marker = "        def depth3_signature(rule):\\n"\n    overlap_block = """        provenance_depth3_stable_indices=set()\n        for members0 in depth2_remaining:\n            if members0:\n                ci=provenance_collision_index_by_member.get(id(members0[0][1]))\n                if ci is not None: provenance_depth3_stable_indices.add(ci)\n        provenance_stable_overlap={k:len(v & provenance_depth3_stable_indices) for k,v in provenance_split_indices.items()}\n        provenance_stable_overlap_indices={k:sorted(v & provenance_depth3_stable_indices) for k,v in provenance_split_indices.items()}\n        provenance_depth3_stable_count=len(provenance_depth3_stable_indices)\n\n        def depth3_signature(rule):\n"""\n    if overlap_marker not in s:\n        raise SystemExit('generated depth3 marker not found')\n    s = s.replace(overlap_marker, overlap_block, 1)\n\n    # Patch only the stable field seam'''
+    if wrapper_seam not in s:
+        raise SystemExit('run800 post-provenance seam not found')
+    s = s.replace(wrapper_seam, wrapper_insert, 1)
 
-    seam = "\"'provenance_examples':provenance_examples,\"\n"
+    seam = "        \"'provenance_examples':provenance_examples,\"\n"
     injected = (seam +
         "        \"'provenance_split_indices':{k:sorted(v) for k,v in provenance_split_indices.items()},\"\n"
         "        \"'provenance_depth3_stable_count':provenance_depth3_stable_count,\"\n"
