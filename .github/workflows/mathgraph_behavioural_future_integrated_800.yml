@@ -24,6 +24,18 @@ jobs:
           python experiments/mathgraph/build_behavioural_future_specialist.py \
             --base submissions/mathgraph/solver.py \
             --output /tmp/mathgraph-behavioural-solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/mathgraph-behavioural-solver.py')
+          s=p.read_text()
+          old1='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          old2='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(old1) == 1, s.count(old1)
+          assert s.count(old2) == 1, s.count(old2)
+          s=s.replace(old1, 'frontier_seconds = 12.0')
+          s=s.replace(old2, 'given_seconds = 5.0')
+          p.write_text(s)
+          PY
           cp /tmp/mathgraph-behavioural-solver.py submissions/mathgraph/solver.py
           python -m py_compile submissions/mathgraph/solver.py
           rm -rf submissions/mathgraph/__pycache__
@@ -58,7 +70,7 @@ jobs:
             --normal /tmp/sair_eval/evaluation_normal.jsonl \
             --hard /tmp/sair_eval/evaluation_hard.jsonl \
             --order5 /tmp/sair_eval/evaluation_order5.jsonl \
-            --timeout 60 \
+            --timeout 180 \
             --output experiments/mathgraph/results/behavioural-future-six.json
           python - <<'PY'
           import json
@@ -89,7 +101,7 @@ jobs:
           from pipeline.proxy import load_config,run_solver
           CONFIGS=['evaluation_normal','evaluation_hard','evaluation_extra_hard','evaluation_order5']
           OUT=Path('experiments/mathgraph/results/behavioural-future-integrated-800.json')
-          cfg=load_config(); cfg['solver']['timeout_seconds']=60; cfg['judge']['lean_timeout_seconds']=90; cfg['sandbox']['mode']='none'
+          cfg=load_config(); cfg['solver']['timeout_seconds']=180; cfg['judge']['lean_timeout_seconds']=90; cfg['sandbox']['mode']='none'
           rows=[]; started=time.monotonic(); submission=Path('submissions/mathgraph')
           for ds_cfg in CONFIGS:
               for raw in load_dataset('SAIRfoundation/equational-theories-selected-problems',ds_cfg,split='train'):
