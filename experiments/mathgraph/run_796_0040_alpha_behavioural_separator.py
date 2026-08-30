@@ -5,6 +5,9 @@ The registered alpha workflow supplies the historical CLI. This launcher uses
 that carrier only to execute the current representation experiment on the
 remaining order-5 residual 0042. No proof IDs, hidden traces, named
 intermediates, or row-specific lemmas are used.
+
+A push touching this carrier is intentionally sufficient to trigger the
+registered alpha workflow; no experimental parameter below is changed here.
 """
 import argparse, json, subprocess, sys, urllib.request
 from pathlib import Path
