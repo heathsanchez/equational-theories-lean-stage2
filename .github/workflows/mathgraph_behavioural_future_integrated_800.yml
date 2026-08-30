@@ -2,7 +2,7 @@ name: MathGraph Behavioural Future Integrated 800
 on:
   push:
     branches:
-      - mathgraph/residual-router-796-20260826
+      - mathgraph/behavioural-future-798-gate-20260831
     paths:
       - experiments/mathgraph/build_behavioural_future_specialist.py
       - .github/workflows/mathgraph_behavioural_future_integrated_800.yml
@@ -117,7 +117,7 @@ jobs:
           git config user.name 'MathGraph CI'
           git config user.email '32909488+heathsanchez@users.noreply.github.com'
           git commit -m 'Promote behavioural-future Stage 2 fallback [skip ci]'
-          git push origin HEAD:mathgraph/residual-router-796-20260826
+          git push origin HEAD:mathgraph/behavioural-future-798-gate-20260831
       - uses: actions/upload-artifact@v4
         if: always()
         with:
