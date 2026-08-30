@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
-"""Registered-workflow carrier for the MSI adaptive compositional separator.
+"""Registered-workflow carrier for the MSI continuation-witness portal.
 
 The registered alpha workflow supplies the historical CLI. This launcher uses
 that carrier only to execute the current representation experiment on the
-remaining order-5 residual 0042. No proof IDs, hidden traces, named
-intermediates, or row-specific lemmas are used.
-
-Trigger-only refresh 4: strict local depth-3 refinement; broad budgets unchanged.
+remaining order-5 residual 0042. The portal reifies the depth-2 continuation
+contexts that actually distinguished merged behavioural classes, rather than
+retaining the class representatives themselves. No proof IDs, hidden traces,
+named intermediates, or row-specific lemmas are used.
 """
 import argparse, json, subprocess, sys, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-RUNNER = ROOT / 'experiments/mathgraph/run_799_msi_adaptive_compositional_separator.py'
+RUNNER = ROOT / 'experiments/mathgraph/run_799_msi_continuation_witness_portal.py'
 BASE = 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
 RID = 'evaluation_order5_0042'
 
@@ -30,7 +30,7 @@ def main():
     if not order5.exists():
         urllib.request.urlretrieve(f'{BASE}/evaluation_order5.jsonl', order5)
 
-    raw = ROOT / 'experiments/mathgraph/results/799-evaluation_order5_0042-msi-adaptive-compositional-separator.json'
+    raw = ROOT / 'experiments/mathgraph/results/799-evaluation_order5_0042-msi-continuation-witness-portal.json'
     raw.parent.mkdir(parents=True, exist_ok=True)
     cmd = [
         sys.executable, str(RUNNER), '--id', RID,
@@ -42,18 +42,19 @@ def main():
         '--depth3-members', '3', '--depth3-child-width', '4',
         '--effect-keep', '32',
     ]
-    print('MSI_ADAPTIVE_START', RID, flush=True)
+    print('MSI_WITNESS_PORTAL_START', RID, flush=True)
     rc = subprocess.call(cmd, cwd=ROOT)
-    rec = {'schema':'mathgraph.msi-adaptive-compositional-carrier.v1','id':RID,'returncode':rc,
+    rec = {'schema':'mathgraph.msi-continuation-witness-portal-carrier.v1','id':RID,'returncode':rc,
            'carrier_only':True,'candidate_budget':256,'probe_partners':16,
-           'collision_members':4,'child_width':8,'depth3_members':3,'depth3_child_width':4}
+           'collision_members':4,'child_width':8,'depth3_members':3,'depth3_child_width':4,
+           'portal':'depth2-continuation-witnesses'}
     if raw.exists():
         try: rec['result'] = json.loads(raw.read_text())
         except Exception as exc: rec['result_read_error'] = f'{type(exc).__name__}: {exc}'
     dst = Path(a.output)
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(json.dumps(rec, indent=2, sort_keys=True)+'\n')
-    print('MSI_ADAPTIVE_DONE', json.dumps(rec, sort_keys=True), flush=True)
+    print('MSI_WITNESS_PORTAL_DONE', json.dumps(rec, sort_keys=True), flush=True)
     raise SystemExit(rc)
 
 if __name__ == '__main__':
