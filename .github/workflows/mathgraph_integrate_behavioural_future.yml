@@ -1,0 +1,38 @@
+name: MathGraph integrate behavioural future
+
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - .github/workflows/mathgraph_integrate_behavioural_future.yml
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/residual-router-796-20260826
+          fetch-depth: 0
+      - name: Build integrated solver
+        run: |
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py \
+            --output /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          bytes=$(wc -c </tmp/solver.py)
+          echo "integrated_solver_bytes=$bytes"
+          test "$bytes" -le 500000
+          mv /tmp/solver.py submissions/mathgraph/solver.py
+      - name: Commit integrated solver
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add submissions/mathgraph/solver.py
+          git diff --cached --quiet && { echo "No integration change"; exit 0; }
+          git commit -m "Integrate verified behavioural-future Stage 2 fallback"
+          git push origin HEAD:mathgraph/residual-router-796-20260826
