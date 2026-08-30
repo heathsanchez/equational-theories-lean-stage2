@@ -21,7 +21,9 @@ def main():
     s = SRC.read_text()
 
     old = "        fresh_separators=[]; split_mult=[]; depth3_split_mult=[]\n"
-    new = "        fresh_separators=[]; split_mult=[]; depth3_split_mult=[]\n        depth2_witnesses={}\n"
+    # This text is inserted inside the adaptive runner's f-string template, so
+    # literal braces must be doubled here to survive that generation layer.
+    new = "        fresh_separators=[]; split_mult=[]; depth3_split_mult=[]\n        depth2_witnesses={{}}\n"
     if old not in s:
         raise SystemExit('fresh-separator marker not found')
     s = s.replace(old, new, 1)
