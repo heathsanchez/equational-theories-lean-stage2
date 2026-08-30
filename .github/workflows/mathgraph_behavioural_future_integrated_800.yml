@@ -26,6 +26,8 @@ jobs:
             --output /tmp/mathgraph-behavioural-solver.py
           cp /tmp/mathgraph-behavioural-solver.py submissions/mathgraph/solver.py
           python -m py_compile submissions/mathgraph/solver.py
+          rm -rf submissions/mathgraph/__pycache__
+          test "$(find submissions/mathgraph -mindepth 1 -maxdepth 1 -type f | wc -l)" -eq 1
           test "$(wc -c < submissions/mathgraph/solver.py)" -le 500000
       - name: Cache Lean and Lake packages
         uses: actions/cache@v4
