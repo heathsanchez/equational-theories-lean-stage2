@@ -1,0 +1,46 @@
+name: MathGraph recursive MSI pair-state probe
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - experiments/mathgraph/recursive_pair_state_probe.py
+      - .github/workflows/mathgraph_stage2_recursive_pair_state.yml
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    env:
+      PYTHONHASHSEED: '0'
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build frozen solver
+        shell: bash
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+      - name: Fetch fresh 0036
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          r=next(r for r in rows if r['id']=='order5_normal_0036')
+          open('/tmp/row.json','w').write(json.dumps(r))
+          PY
+      - name: Run recursive pair-state probe
+        run: python experiments/mathgraph/recursive_pair_state_probe.py --solver /tmp/solver.py --row /tmp/row.json
