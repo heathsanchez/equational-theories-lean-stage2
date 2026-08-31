@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Inject a monotone verifier-certified dependency-development ratchet.
+"""Inject a verifier-certified dependency-development ratchet.
 
-The ratchet is problem-blind.  It repeatedly discovers replayable source
-consequences that strictly reduce variable dependence, preserves the minimal
-residual-relative version space of equally strong reductions, promotes that
-small cohort into a fresh proof world, and searches again.  Every promoted law
-remains a Recipe derived from the original source.  A universal bare-variable
-omission is terminal: CompactSuperposition.collapse_proof constructs the
-original target from it and the usual replay + Lean judge boundary applies.
+The ratchet is problem-blind. It discovers replayable source consequences that
+strictly reduce variable dependence, preserves equally minimal repairs, and
+promotes that residual-relative version space into a fresh proof world. When a
+strict reduction is temporarily unavailable, it permits a small replay-certified
+neutral stratum at the same dependency profile as discovery scaffolding, then
+asks again for a strict reduction. Every promoted result remains replayable from
+the original source. A universal bare-variable omission is terminal.
 """
 
 import argparse
@@ -15,9 +15,8 @@ from pathlib import Path
 
 MARKER = "    try:\n        # World A: streaming frontier.\n"
 
-PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permission to
-    # forget at a time, preserving equally minimal repairs until attachment
-    # decides between them.
+PORTAL = r'''    # Developmental dependency ratchet: strict information loss is the
+    # progress measure; bounded same-profile laws are only temporary bridges.
     def dependence_profile(recipe):
         left_vars = term_variables(recipe.lhs)
         right_vars = term_variables(recipe.rhs)
@@ -61,10 +60,8 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
         return not any(name.startswith("@") for name in endpoints)
 
     def informative_dependency_law(recipe):
-        # Interreduction/expansion can leave distinct internal terms that print
-        # as the same observable endpoint.  Neither t=t nor a representation-
-        # level alias of t=t carries any new law, even if its support profile is
-        # tiny.  Require non-reflexivity both structurally and after rendering.
+        # Expansion can leave distinct internal terms with the same observable
+        # endpoint. Neither structural nor rendered t=t is informative.
         if recipe.lhs == recipe.rhs:
             return False
         if render_term(recipe.lhs) == render_term(recipe.rhs):
@@ -81,15 +78,26 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             "terminal": terminal_omission(recipe),
         }
 
+    def replay_candidate(search, candidate):
+        nodes, root = search.compile(candidate)
+        return replay_dag(
+            source, nodes, root,
+            maximum_term_size=300, maximum_nodes=60000,
+        )
+
     def discover_improvement(search, expand_recipe, current_profile, generation):
         seen = set()
-        replayed = []
+        strict_replayed = []
         enumerated = 0
         rejected_reflexive = 0
-        for local_round in range(3):
+        neutral_replayed_total = 0
+        neutral_added_total = 0
+        neutral_examples = []
+        for local_round in range(4):
             rules = search.rules()
             snapshot = list(rules)
-            proposals = []
+            strict_proposals = []
+            neutral_proposals = []
             for outer_index, outer in enumerate(snapshot):
                 for inner_index, inner in enumerate(snapshot):
                     for path in nonvariable_positions(
@@ -116,39 +124,57 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
                             continue
                         seen.add(key)
                         profile = dependence_profile(candidate)
-                        if profile >= current_profile:
-                            continue
-                        proposals.append((candidate_rank(candidate), candidate))
+                        if profile < current_profile:
+                            strict_proposals.append((candidate_rank(candidate), candidate))
+                        elif profile == current_profile:
+                            neutral_proposals.append((candidate_rank(candidate), candidate))
                     if search.expired():
                         break
                 if search.expired():
                     break
-            proposals.sort(key=lambda item: item[0])
-            added = 0
-            for _, candidate in proposals[:96]:
-                nodes, root = search.compile(candidate)
-                replay_ok = replay_dag(
-                    source, nodes, root,
-                    maximum_term_size=300, maximum_nodes=60000,
-                )
-                if replay_ok:
-                    replayed.append(candidate)
-                    if search.add_clause(candidate):
-                        search.superpositions += 1
-                        added += 1
+
+            strict_proposals.sort(key=lambda item: item[0])
+            for _, candidate in strict_proposals[:96]:
+                if replay_candidate(search, candidate):
+                    strict_replayed.append(candidate)
                     if terminal_omission(candidate):
-                        replayed.sort(key=candidate_rank)
-                        return candidate, replayed, enumerated, rejected_reflexive
-                if added >= 32:
+                        strict_replayed.sort(key=candidate_rank)
+                        return (
+                            candidate, strict_replayed, enumerated,
+                            rejected_reflexive, neutral_replayed_total,
+                            neutral_added_total, neutral_examples,
+                        )
+            if strict_replayed:
+                strict_replayed.sort(key=candidate_rank)
+                return (
+                    strict_replayed[0], strict_replayed, enumerated,
+                    rejected_reflexive, neutral_replayed_total,
+                    neutral_added_total, neutral_examples,
+                )
+
+            # No strict improvement at this frontier. Admit only a bounded
+            # same-profile replayable stratum and recompute critical pairs.
+            # These are temporary bridges, not counted as development.
+            neutral_proposals.sort(key=lambda item: item[0])
+            neutral_added_round = 0
+            for _, candidate in neutral_proposals[:96]:
+                if not replay_candidate(search, candidate):
+                    continue
+                neutral_replayed_total += 1
+                if len(neutral_examples) < 8:
+                    neutral_examples.append(dependency_snapshot(candidate))
+                if search.add_clause(candidate):
+                    search.superpositions += 1
+                    neutral_added_round += 1
+                    neutral_added_total += 1
+                if neutral_added_round >= 24:
                     break
-            if replayed or search.expired():
+            if neutral_added_round == 0 or search.expired():
                 break
-        replayed.sort(key=candidate_rank)
+
         return (
-            replayed[0] if replayed else None,
-            replayed,
-            enumerated,
-            rejected_reflexive,
+            None, strict_replayed, enumerated, rejected_reflexive,
+            neutral_replayed_total, neutral_added_total, neutral_examples,
         )
 
     promoted = []
@@ -176,9 +202,10 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             })
             break
 
-        selected, replayed, enumerated, rejected_reflexive = discover_improvement(
-            search, expand_recipe, current_profile, generation
-        )
+        (
+            selected, replayed, enumerated, rejected_reflexive,
+            neutral_replayed, neutral_added, neutral_examples,
+        ) = discover_improvement(search, expand_recipe, current_profile, generation)
         record = {
             "generation": generation,
             "start_profile": list(current_profile),
@@ -186,20 +213,20 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             "promoted_added": promoted_added,
             "enumerated": enumerated,
             "rejected_reflexive": rejected_reflexive,
+            "neutral_replayed": neutral_replayed,
+            "neutral_added": neutral_added,
+            "neutral_examples": neutral_examples,
             "replayable_improvements": len(replayed),
             "replayable_top": [dependency_snapshot(r) for r in replayed[:8]],
             "selected": None,
             "cohort": [],
         }
         if selected is None:
-            record["event"] = "plateau"
+            record["event"] = "plateau-after-neutral-closure"
             ratchet_trace.append(record)
             break
 
         selected_profile = dependence_profile(selected)
-        # The residual does not justify choosing arbitrarily between distinct
-        # equally minimal repairs. Preserve the small version space and let
-        # attachment in the rebuilt proof world decide what composes.
         cohort = [
             r for r in replayed if dependence_profile(r) == selected_profile
         ][:8]
@@ -219,8 +246,6 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
                 known.add((law.lhs, law.rhs))
         current_profile = selected_profile
 
-        # Test the reorganized representation immediately with the whole
-        # equally minimal repair cohort attached.
         for law in cohort:
             if search.add_clause(law):
                 search.superpositions += 1
