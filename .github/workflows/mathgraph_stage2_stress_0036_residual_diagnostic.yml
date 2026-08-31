@@ -43,14 +43,14 @@ jobs:
           rm -rf /tmp/__pycache__
           echo "DIAGNOSTIC_BASELINE sha256=$(sha256sum /tmp/solver.py | awk '{print $1}') bytes=$(wc -c < /tmp/solver.py | tr -d ' ')"
 
-      - name: Instrument early recognition census
+      - name: Instrument cheap early recognition census
         run: |
           set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           p=Path('/tmp/solver.py'); s=p.read_text()
           needle1='''        raw.sort(key=lambda item: item[0])\n        candidates = []\n'''
-          repl1='''        raw.sort(key=lambda item: item[0])\n        raw_direct_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(raw)\n            if (candidate.lhs, candidate.rhs) == target[:2]\n            or (candidate.lhs, candidate.rhs) == (target[1], target[0])\n        ]\n        raw_inlined_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(raw)\n            if exact_target(frontier_engine, candidate)\n        ]\n        print(\n            "MATHGRAPH_DIAGNOSTIC " + json.dumps({\n                "stage": "raw-cross",\n                "raw_count": len(raw),\n                "direct_target_hits": len(raw_direct_target_ranks),\n                "first_direct_target_rank": raw_direct_target_ranks[0] if raw_direct_target_ranks else None,\n                "inlined_target_hits": len(raw_inlined_target_ranks),\n                "first_inlined_target_rank": raw_inlined_target_ranks[0] if raw_inlined_target_ranks else None,\n            }, separators=(",", ":")),\n            file=sys.stderr, flush=True,\n        )\n        candidates = []\n'''
+          repl1='''        raw.sort(key=lambda item: item[0])\n        raw_direct_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(raw)\n            if (candidate.lhs, candidate.rhs) == target[:2]\n            or (candidate.lhs, candidate.rhs) == (target[1], target[0])\n        ]\n        print(\n            "MATHGRAPH_DIAGNOSTIC " + json.dumps({\n                "stage": "raw-cross",\n                "raw_count": len(raw),\n                "direct_target_hits": len(raw_direct_target_ranks),\n                "first_direct_target_rank": raw_direct_target_ranks[0] if raw_direct_target_ranks else None,\n            }, separators=(",", ":")),\n            file=sys.stderr, flush=True,\n        )\n        candidates = []\n'''
           assert s.count(needle1)==1
           s=s.replace(needle1,repl1,1)
           needle2='''        retained = []\n        novelty_sizes = []\n'''
@@ -75,7 +75,7 @@ jobs:
           open('/tmp/row.json','w').write(json.dumps(row))
           PY
 
-      - name: Run early-exit frozen behavioural census
+      - name: Run cheap early-exit frozen behavioural census
         run: |
           set -euo pipefail
           python - <<'PY'
