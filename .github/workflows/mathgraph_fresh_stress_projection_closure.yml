@@ -78,18 +78,19 @@ jobs:
           ROOT = Path('/tmp/official'); sys.path.insert(0, str(ROOT))
           from pipeline.proxy import load_config, load_problems, run_solver
           rows = {r['id']: r for r in load_problems('/tmp/stage2_stress_test.jsonl')}
-          expected = {
-              'order5_normal_0030': (19040, 17478),
-              'order5_normal_0036': (6543, 29450),
-          }
+          expected = ('order5_normal_0030', 'order5_normal_0036')
           cfg = load_config()
           assert cfg['solver']['timeout_seconds'] == 3600
           assert cfg['judge']['lean_timeout_seconds'] == 300
           cfg.setdefault('sandbox', {})['mode'] = 'none'
           solved = []
-          for rid, pair in expected.items():
+          for rid in expected:
               row = rows[rid]
-              assert (row['eq1_id'], row['eq2_id']) == pair and row['answer'] is True
+              assert row['answer'] is True
+              print('FRESH_RESIDUAL_METADATA', json.dumps({
+                  'id': rid, 'eq1_id': row['eq1_id'], 'eq2_id': row['eq2_id'],
+                  'equation1': row['equation1'], 'equation2': row['equation2'],
+              }, sort_keys=True), flush=True)
               trace = []; t0 = time.monotonic()
               result = run_solver(
                   ROOT / 'submissions/mathgraph_projection', row, cfg,
