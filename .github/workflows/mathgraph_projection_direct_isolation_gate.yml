@@ -18,6 +18,7 @@ jobs:
     env:
       PYTHONHASHSEED: '0'
       OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+      CLEAN_BASE_SHA: 1281b7111aeeeaeb672df0f8c861734fb7277ebf
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,7 +27,9 @@ jobs:
       - name: Build isolated diagnostic closure candidate
         run: |
           set -euo pipefail
-          python experiments/mathgraph/build_projection_closure_diagnostic.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          curl -fL --retry 4 "https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/${CLEAN_BASE_SHA}/submissions/mathgraph/solver.py" -o /tmp/base_solver.py
+          python -m py_compile /tmp/base_solver.py
+          python experiments/mathgraph/build_projection_closure_diagnostic.py --base /tmp/base_solver.py --output /tmp/solver.py
           python - <<'PY'
           from pathlib import Path
           p=Path('/tmp/solver.py'); s=p.read_text()
