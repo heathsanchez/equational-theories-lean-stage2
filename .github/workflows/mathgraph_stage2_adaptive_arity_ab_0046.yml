@@ -5,6 +5,7 @@ on:
     branches: [mathgraph/stress-0036-residual-20260831]
     paths:
       - '.github/workflows/mathgraph_stage2_adaptive_arity_ab_0046.yml'
+      - 'experiments/mathgraph/build_adaptive_arity_specialist.py'
   workflow_dispatch:
 
 permissions:
@@ -18,13 +19,12 @@ jobs:
       PYTHONHASHSEED: '0'
       OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
       CHAMPION_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
-      ADAPTIVE_SHA256: d8e429ebc6a76587a28c2d0c1955857fccca30422d9dd7c6036d4fae76e4ea0f
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Build exact champion and adaptive candidates
+      - name: Build exact champion and isolated adaptive candidates
         run: |
           set -euo pipefail
           python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/champion.py
@@ -42,8 +42,8 @@ jobs:
           python experiments/mathgraph/determinize_solver_order.py /tmp/adaptive.py
           python -m py_compile /tmp/champion.py /tmp/adaptive.py
           test "$(sha256sum /tmp/champion.py | awk '{print $1}')" = "$CHAMPION_SHA256"
-          test "$(sha256sum /tmp/adaptive.py | awk '{print $1}')" = "$ADAPTIVE_SHA256"
-          echo "AB_SOLVERS champion=$CHAMPION_SHA256 adaptive=$ADAPTIVE_SHA256"
+          test "$(wc -c < /tmp/adaptive.py | tr -d ' ')" -le 500000
+          echo "AB_SOLVERS champion=$(sha256sum /tmp/champion.py | awk '{print $1}') adaptive=$(sha256sum /tmp/adaptive.py | awk '{print $1}') adaptive_bytes=$(wc -c < /tmp/adaptive.py | tr -d ' ')"
       - name: Checkout pinned official harness
         run: |
           set -euo pipefail
@@ -69,7 +69,7 @@ jobs:
           set -euo pipefail
           curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
           test "$(wc -l < /tmp/stress.jsonl | tr -d ' ')" = '200'
-      - name: Run controlled champion adaptive champion comparison
+      - name: Run controlled champion isolated-adaptive champion comparison
         working-directory: /tmp/official
         shell: bash
         run: |
@@ -99,5 +99,8 @@ jobs:
                   'llm_calls':result.get('llm_calls',0),
               }
               out.append(rec); print('AB_0046_TRIAL',json.dumps(rec,sort_keys=True),flush=True)
+          assert out[0]['solved'] and out[0]['judge_statuses']==['accepted']
+          assert out[1]['solved'] and out[1]['judge_statuses']==['accepted']
+          assert out[2]['solved'] and out[2]['judge_statuses']==['accepted']
           print('AB_0046_RESULT',json.dumps(out,sort_keys=True),flush=True)
           PY
