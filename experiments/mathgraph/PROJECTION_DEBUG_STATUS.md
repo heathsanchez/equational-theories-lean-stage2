@@ -1,0 +1,1 @@
+Projection closure debugging is active on branch mathgraph/fresh-stress-projection-closure-20260831. The diagnostic workflow captures exact generated Lean certificates and full judge responses for fresh stress residuals 0030 and 0036.
