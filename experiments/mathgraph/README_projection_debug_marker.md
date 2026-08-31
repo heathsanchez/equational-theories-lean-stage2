@@ -1,0 +1,1 @@
+Diagnostic marker for projection closure certificate capture. The corresponding workflow preserves the exact generated Lean certificate and judge response for fresh stress residuals 0030 and 0036. No benchmark-specific proof content is embedded here.
