@@ -5,6 +5,7 @@ on:
     branches: [mathgraph/stress-0036-residual-20260831]
     paths:
       - '.github/workflows/mathgraph_stage2_stress_dependency_ratchet_replay_probe.yml'
+      - 'experiments/mathgraph/inject_dependency_ratchet.py'
   workflow_dispatch:
 
 permissions:
