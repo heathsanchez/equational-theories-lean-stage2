@@ -1,0 +1,11 @@
+name: MathGraph projection debug capture trigger
+on:
+  push:
+    branches: [mathgraph/fresh-stress-projection-closure-20260831]
+permissions:
+  contents: read
+jobs:
+  noop:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo diagnostic-trigger
