@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/mathgraph_stage2_adaptive_arity_ab_0046.yml'
       - 'experiments/mathgraph/build_adaptive_arity_specialist.py'
+      - 'experiments/mathgraph/build_adaptive_arity_specialist_v3.py'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/champion.py
-          python experiments/mathgraph/build_adaptive_arity_specialist.py --base submissions/mathgraph/solver.py --output /tmp/adaptive.py
+          python experiments/mathgraph/build_adaptive_arity_specialist_v3.py --base submissions/mathgraph/solver.py --output /tmp/adaptive.py
           python - <<'PY'
           from pathlib import Path
           for name in ('champion','adaptive'):
