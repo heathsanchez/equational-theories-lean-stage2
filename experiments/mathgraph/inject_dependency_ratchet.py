@@ -61,10 +61,15 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
         return not any(name.startswith("@") for name in endpoints)
 
     def informative_dependency_law(recipe):
-        # Interreduction may turn a nontrivial proof recipe into t = t. Such a
-        # reflexive endpoint carries no new information and must never count as
-        # a representation improvement merely because its support is tiny.
-        return recipe.lhs != recipe.rhs
+        # Interreduction/expansion can leave distinct internal terms that print
+        # as the same observable endpoint.  Neither t=t nor a representation-
+        # level alias of t=t carries any new law, even if its support profile is
+        # tiny.  Require non-reflexivity both structurally and after rendering.
+        if recipe.lhs == recipe.rhs:
+            return False
+        if render_term(recipe.lhs) == render_term(recipe.rhs):
+            return False
+        return True
 
     def dependency_snapshot(recipe):
         return {
