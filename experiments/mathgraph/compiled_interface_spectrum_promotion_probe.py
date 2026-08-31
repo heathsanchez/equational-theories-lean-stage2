@@ -59,12 +59,16 @@ def main():
                             if c is not None:out.add(alpha(c))
         return frozenset(out)
     old={future(q) for q in objects}; seen=set(); spectrum={}; census=replayed=projected=0; chosen=None; chosen_info=None
-    x=('var','x'); xx=('op',x,x)
-    s.deadline=time.monotonic()+55.0;rules=s.rules()
+    x=('var','x'); xx=('op',x,x); candidate_budget=256
+    # Candidate-bounded rather than wall-clock-bounded: runner throughput must not decide
+    # which quotient interfaces exist. The long deadline is only a safety ceiling.
+    s.deadline=time.monotonic()+600.0;rules=s.rules(); stop=False
     for oi,o in enumerate(rules):
+        if stop: break
         for ii,i in enumerate(rules):
+            if stop: break
             for path in m.nonvariable_positions(o.lhs,maximum_depth=12,include_root=True):
-                if s.expired():break
+                if s.expired(): stop=True; break
                 c=s.critical_pair(o,i,oi,ii,path)
                 if c is None:continue
                 c=s.interreduce(c,rules);names=m.term_variables(c.lhs)|m.term_variables(c.rhs)
@@ -73,21 +77,21 @@ def main():
                 if key in seen:continue
                 seen.add(key);census+=1
                 ns,r=s.compile(c)
-                if not m.replay_dag(source,ns,r,maximum_term_size=320,maximum_nodes=70000):continue
-                replayed+=1;fs=future(c)
-                if fs in old:continue
-                raw=canon(c.lhs,c.rhs);pe,ps=setup(raw,5.0);pn,pr=ps.compile(c)
-                if not m.replay_dag(source,pn,pr,maximum_term_size=320,maximum_nodes=70000):continue
-                projected+=1;ep=(pn[pr].lhs,pn[pr].rhs);act=canon(ep[0],ep[1])
-                if act[2]!=('x',):continue
-                k=(m.render_term(act[0]),m.render_term(act[1]))
-                rec={'lhs':k[0],'rhs':k[1],'future_size':len(fs),'proof_nodes':len(pn),'raw_lhs':m.render_term(c.lhs),'raw_rhs':m.render_term(c.rhs)}
-                prev=spectrum.get(k)
-                if prev is None or (rec['proof_nodes'],-rec['future_size'])<(prev['proof_nodes'],-prev['future_size']):spectrum[k]=rec
-                if chosen is None and ((act[0],act[1])==(x,xx) or (act[0],act[1])==(xx,x)):
-                    chosen=c; chosen_info=rec
-            if s.expired():break
-        if s.expired():break
+                if m.replay_dag(source,ns,r,maximum_term_size=320,maximum_nodes=70000):
+                    replayed+=1;fs=future(c)
+                    if fs not in old:
+                        raw=canon(c.lhs,c.rhs);pe,ps=setup(raw,5.0);pn,pr=ps.compile(c)
+                        if m.replay_dag(source,pn,pr,maximum_term_size=320,maximum_nodes=70000):
+                            projected+=1;ep=(pn[pr].lhs,pn[pr].rhs);act=canon(ep[0],ep[1])
+                            if act[2]==('x',):
+                                k=(m.render_term(act[0]),m.render_term(act[1]))
+                                rec={'lhs':k[0],'rhs':k[1],'future_size':len(fs),'proof_nodes':len(pn),'raw_lhs':m.render_term(c.lhs),'raw_rhs':m.render_term(c.rhs)}
+                                prev=spectrum.get(k)
+                                if prev is None or (rec['proof_nodes'],-rec['future_size'])<(prev['proof_nodes'],-prev['future_size']):spectrum[k]=rec
+                                if chosen is None and ((act[0],act[1])==(x,xx) or (act[0],act[1])==(xx,x)):
+                                    chosen=c; chosen_info=rec
+                if census>=candidate_budget:
+                    stop=True; break
     vals=sorted(spectrum.values(),key=lambda r:(m.term_size(m.parse_equation(r['lhs']+' = '+r['rhs'])[0])+m.term_size(m.parse_equation(r['lhs']+' = '+r['rhs'])[1]),-r['future_size'],r['lhs'],r['rhs']))[:40]
     target_rec={'found':False,'replay':False}
     if chosen is not None:
@@ -99,5 +103,5 @@ def main():
             if (q.lhs,q.rhs)==(target[1],target[0]): q=m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
             if (q.lhs,q.rhs)==target[:2]:
                 nn,rr=ts.compile(q); target_rec['replay']=m.replay_dag(source,nn,rr,maximum_term_size=320,maximum_nodes=70000); target_rec['proof_nodes']=len(nn); target_rec['proof_cost']=q.cost
-    print('SPECTRUM_PROMOTION '+json.dumps({'id':row['id'],'census':census,'replayed':replayed,'projected':projected,'idempotence':chosen_info,'interfaces':vals,'target':target_rec},sort_keys=True),flush=True)
+    print('SPECTRUM_PROMOTION '+json.dumps({'id':row['id'],'candidate_budget':candidate_budget,'census':census,'replayed':replayed,'projected':projected,'idempotence':chosen_info,'interfaces':vals,'target':target_rec},sort_keys=True),flush=True)
 if __name__=='__main__':main()
