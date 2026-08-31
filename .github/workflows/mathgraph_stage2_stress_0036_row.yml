@@ -1,4 +1,4 @@
-name: MathGraph fresh stress 0036 row
+name: MathGraph fresh stress residual rows
 
 on:
   push:
@@ -14,7 +14,7 @@ jobs:
   row:
     runs-on: ubuntu-24.04
     steps:
-      - name: Fetch and print exact fresh residual
+      - name: Fetch and print exact fresh residuals
         run: |
           set -euo pipefail
           curl -fL --retry 4 \
@@ -23,6 +23,7 @@ jobs:
           python - <<'PY'
           import json
           rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
-          r=next(r for r in rows if r['id']=='order5_normal_0036')
-          print('FRESH_0036_ROW '+json.dumps(r,sort_keys=True),flush=True)
+          for rid in ('order5_normal_0030','order5_normal_0036'):
+              r=next(r for r in rows if r['id']==rid)
+              print('FRESH_RESIDUAL_ROW '+json.dumps(r,sort_keys=True),flush=True)
           PY
