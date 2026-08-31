@@ -2,7 +2,8 @@ name: MathGraph quotient-class promotion probe
 
 on:
   push:
-    branches: [mathgraph/stress-0036-residual-20260831]
+    branches:
+      - mathgraph/stress-0036-residual-20260831
     paths:
       - experiments/mathgraph/quotient_class_promotion_probe.py
       - .github/workflows/mathgraph_stage2_quotient_class_promotion.yml
@@ -14,18 +15,22 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        rid: [order5_normal_0030, order5_normal_0036]
+        rid:
+          - order5_normal_0030
+          - order5_normal_0036
     env:
       PYTHONHASHSEED: '0'
       FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        with: {python-version: '3.11'}
+        with:
+          python-version: '3.11'
       - name: Build exact frozen solver
         run: |
           set -euo pipefail
-          python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
           python - <<'PY'
           from pathlib import Path
           p=Path('/tmp/solver.py'); s=p.read_text()
@@ -37,15 +42,25 @@ jobs:
           python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
           test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
       - name: Fetch fresh row
-        env: {RID: ${{ matrix.rid }}}
+        env:
+          RID: ${{ matrix.rid }}
         run: |
-          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
           python - <<'PY'
-          import json,os
+          import json, os
           rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
           r=next(r for r in rows if r['id']==os.environ['RID'])
+          assert r['answer'] is True
           open('/tmp/row.json','w').write(json.dumps(r))
+          print('QUOTIENT_PROMOTION_ROW '+json.dumps(r,sort_keys=True),flush=True)
           PY
       - name: Promote new continuation classes and restart
         run: |
-          python experiments/mathgraph/quotient_class_promotion_probe.py --solver /tmp/solver.py --row /tmp/row.json --world-seconds 24 --discover-seconds 12 --warm-seconds 120 --probes 32 --objects 192
+          set -euo pipefail
+          python experiments/mathgraph/quotient_class_promotion_probe.py \
+            --solver /tmp/solver.py --row /tmp/row.json \
+            --world-seconds 24 --discover-seconds 12 --warm-seconds 120 \
+            --probes 32 --objects 192
