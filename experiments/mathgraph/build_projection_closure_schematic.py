@@ -5,7 +5,17 @@ import build_projection_closure_specialist as base
 
 COMPACT = r'''    def compact_certificate(recipe):
         """Share learned schematic consequences while preserving DAG replay."""
-        helper = {id(search.clauses[0]): ("h", tuple(source[2]))}
+        root_clause = search.clauses[0]
+        if (root_clause.lhs, root_clause.rhs) == (source[0], source[1]):
+            root_reversed = False
+        elif (root_clause.lhs, root_clause.rhs) == (source[1], source[0]):
+            root_reversed = True
+        else:
+            return None
+        # CompactSuperposition.add_clause may orient the source before storing
+        # it.  Preserve that orientation when the stored seed is referenced as
+        # a shared helper; otherwise `h` proves the exact reverse equality.
+        helper = {id(root_clause): ("h", tuple(source[2]), root_reversed)}
         lines = ["import JudgeProblem", "", "def submission : Goal := by", "  intro G _ h"]
 
         def clause_variables(clause):
@@ -29,12 +39,13 @@ COMPACT = r'''    def compact_certificate(recipe):
         def expression(current, environment, allowed, anchor):
             known = helper.get(id(current))
             if known is not None:
-                name, binders = known
+                name, binders, reverse = known
                 arguments = [
                     rendered(transform(("var", variable), environment), allowed, anchor)
                     for variable in binders
                 ]
-                return name + "".join(" (" + arg + ")" for arg in arguments)
+                result = name + "".join(" (" + arg + ")" for arg in arguments)
+                return "Eq.symm (" + result + ")" if reverse else result
             if current.kind == "instantiate":
                 mapping = {
                     variable: transform(value, environment)
@@ -96,7 +107,7 @@ COMPACT = r'''    def compact_certificate(recipe):
             )
             lines.append("    intro " + " ".join(safe))
             lines.append("    exact " + body)
-            helper[id(clause)] = (name, variables)
+            helper[id(clause)] = (name, variables, False)
 
         target_vars = tuple(target[2])
         if not target_vars:
