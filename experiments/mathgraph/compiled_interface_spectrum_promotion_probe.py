@@ -20,30 +20,31 @@ def main():
             return ('op',f(t[1]),f(t[2]))
         return f(lhs),f(rhs),tuple(dict.fromkeys(names.values()))
     def orient(q,r):return q if not r else m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
-    e,s=setup(target,30.0)
-    for _ in range(3):
-        rules=s.rules();snap=list(rules);props=[]
+
+    # Build the pre-quotient world with structural budgets only. Earlier runs used a 30s
+    # deadline here, so runner speed changed the clause world before quotienting.
+    e,s=setup(target,1200.0)
+    pre_rounds=3; pre_proposal_budget=512; pre_add_budget=64
+    pre_trace=[]
+    for _ in range(pre_rounds):
+        rules=s.rules();snap=list(rules);props=[]; proposed=0
+        stop_round=False
         for oi,o in enumerate(snap):
+            if stop_round:break
             for ii,i in enumerate(snap):
+                if stop_round:break
                 for path in m.nonvariable_positions(o.lhs,maximum_depth=12,include_root=True):
-                    if s.expired():break
                     c=s.critical_pair(o,i,oi,ii,path)
                     if c is None:continue
-                    c=s.interreduce(c,rules);props.append((s.target_score(c),c))
-                    if len(props)>=128:
-                        props.sort(key=lambda x:x[0]);added=0
-                        for _,q in props:
-                            if s.add_clause(q):s.superpositions+=1;added+=1
-                            if added>=64:break
-                        props=[];rules=s.rules()
-                if s.expired():break
-            if s.expired():break
-        if props and not s.expired():
-            props.sort(key=lambda x:x[0]);added=0
-            for _,q in props:
-                if s.add_clause(q):s.superpositions+=1;added+=1
-                if added>=64:break
-        if s.expired():break
+                    c=s.interreduce(c,rules);props.append((s.target_score(c),c));proposed+=1
+                    if proposed>=pre_proposal_budget:
+                        stop_round=True;break
+        props.sort(key=lambda x:x[0]);added=0
+        for _,q in props:
+            if s.add_clause(q):s.superpositions+=1;added+=1
+            if added>=pre_add_budget:break
+        pre_trace.append({'proposed':proposed,'added':added,'clauses':len(s.clauses)})
+
     objects=sorted(s.clauses,key=s.target_score)[:224];probes=objects[:40]
     def alpha(q):return str(s.alpha_signature(q.lhs,q.rhs))
     def future(q):
@@ -61,14 +62,13 @@ def main():
     old={future(q) for q in objects}; seen=set(); spectrum={}; census=replayed=projected=0; chosen=None; chosen_info=None
     x=('var','x'); xx=('op',x,x); candidate_budget=256
     # Candidate-bounded rather than wall-clock-bounded: runner throughput must not decide
-    # which quotient interfaces exist. The long deadline is only a safety ceiling.
-    s.deadline=time.monotonic()+600.0;rules=s.rules(); stop=False
+    # which quotient interfaces exist. Deadline is only a safety ceiling.
+    s.deadline=time.monotonic()+1200.0;rules=s.rules(); stop=False
     for oi,o in enumerate(rules):
         if stop: break
         for ii,i in enumerate(rules):
             if stop: break
             for path in m.nonvariable_positions(o.lhs,maximum_depth=12,include_root=True):
-                if s.expired(): stop=True; break
                 c=s.critical_pair(o,i,oi,ii,path)
                 if c is None:continue
                 c=s.interreduce(c,rules);names=m.term_variables(c.lhs)|m.term_variables(c.rhs)
@@ -80,7 +80,7 @@ def main():
                 if m.replay_dag(source,ns,r,maximum_term_size=320,maximum_nodes=70000):
                     replayed+=1;fs=future(c)
                     if fs not in old:
-                        raw=canon(c.lhs,c.rhs);pe,ps=setup(raw,5.0);pn,pr=ps.compile(c)
+                        raw=canon(c.lhs,c.rhs);pe,ps=setup(raw,30.0);pn,pr=ps.compile(c)
                         if m.replay_dag(source,pn,pr,maximum_term_size=320,maximum_nodes=70000):
                             projected+=1;ep=(pn[pr].lhs,pn[pr].rhs);act=canon(ep[0],ep[1])
                             if act[2]==('x',):
@@ -103,5 +103,5 @@ def main():
             if (q.lhs,q.rhs)==(target[1],target[0]): q=m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
             if (q.lhs,q.rhs)==target[:2]:
                 nn,rr=ts.compile(q); target_rec['replay']=m.replay_dag(source,nn,rr,maximum_term_size=320,maximum_nodes=70000); target_rec['proof_nodes']=len(nn); target_rec['proof_cost']=q.cost
-    print('SPECTRUM_PROMOTION '+json.dumps({'id':row['id'],'candidate_budget':candidate_budget,'census':census,'replayed':replayed,'projected':projected,'idempotence':chosen_info,'interfaces':vals,'target':target_rec},sort_keys=True),flush=True)
+    print('SPECTRUM_PROMOTION '+json.dumps({'id':row['id'],'pre_trace':pre_trace,'candidate_budget':candidate_budget,'census':census,'replayed':replayed,'projected':projected,'idempotence':chosen_info,'interfaces':vals,'target':target_rec},sort_keys=True),flush=True)
 if __name__=='__main__':main()
