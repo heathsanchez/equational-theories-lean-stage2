@@ -1,0 +1,132 @@
+name: MathGraph canonical hostile-hash 200
+
+on:
+  push:
+    branches: [mathgraph/fresh-stress-projection-closure-20260831]
+    paths:
+      - '.github/workflows/mathgraph_canonical_hashseed_200.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stress:
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [1, 3]
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      PYTHONHASHSEED: '${{ matrix.seed }}'
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+      EXPECTED_SHA256: 2df0d30e7bed845338fd6957a71d0f9e38201baba6eae19439394e78de6ae3d6
+      EXPECTED_BYTES: '351404'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify canonical submission bytes
+        run: |
+          set -euo pipefail
+          test "$(sha256sum submissions/mathgraph/solver.py | awk '{print $1}')" = "$EXPECTED_SHA256"
+          test "$(wc -c < submissions/mathgraph/solver.py | tr -d ' ')" = "$EXPECTED_BYTES"
+          python -m py_compile submissions/mathgraph/solver.py
+          test "$(find submissions/mathgraph -mindepth 1 -maxdepth 1 -type f -printf '%f\n' | grep -v '^solver.py$' | wc -l)" = '0'
+          test "$(find submissions/mathgraph -mindepth 1 -maxdepth 1 -type d | wc -l)" = '0'
+      - name: Checkout pinned official Stage 2 harness
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official
+          git checkout "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/mathgraph_canonical
+          cp "$GITHUB_WORKSPACE/submissions/mathgraph/solver.py" submissions/mathgraph_canonical/solver.py
+          test "$(sha256sum submissions/mathgraph_canonical/solver.py | awk '{print $1}')" = "$EXPECTED_SHA256"
+      - name: Setup pinned official Lean judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+      - name: Fetch Stage 2 stress set
+        run: |
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stage2_stress_test.jsonl
+          test "$(wc -l < /tmp/stage2_stress_test.jsonl | tr -d ' ')" = '200'
+      - name: Run canonical solver on shard
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          export STRESS_SHARD='${{ matrix.shard }}'
+          export HASH_SEED='${{ matrix.seed }}'
+          python - <<'PY'
+          import json, os, sys, time, traceback
+          from pathlib import Path
+          ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config, load_problems, run_solver
+          shard=int(os.environ['STRESS_SHARD']); seed=int(os.environ['HASH_SEED']); nshards=16
+          rows=load_problems('/tmp/stage2_stress_test.jsonl'); assert len(rows)==200
+          selected=[r for i,r in enumerate(rows) if i % nshards == shard]
+          cfg=load_config(); assert cfg['solver']['timeout_seconds']==3600; assert cfg['judge']['lean_timeout_seconds']==300
+          cfg.setdefault('sandbox',{})['mode']='none'
+          out=Path(f'/tmp/canonical-seed{seed}-shard{shard:02d}.json'); results=[]
+          for row in selected:
+              trace=[]; t0=time.monotonic()
+              try:
+                  result=run_solver(ROOT/'submissions/mathgraph_canonical',row,cfg,trace_hook=lambda e:trace.append(e))
+                  judges=[x for x in trace if x.get('type')=='judge']; statuses=[(x.get('response') or {}).get('status') for x in judges]
+                  rec={'seed':seed,'id':row['id'],'difficulty':row.get('difficulty'),'ground_truth':row.get('answer'),'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed_seconds':round(time.monotonic()-t0,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0),'error':None}
+              except Exception as exc:
+                  rec={'seed':seed,'id':row.get('id'),'difficulty':row.get('difficulty'),'ground_truth':row.get('answer'),'elapsed_seconds':round(time.monotonic()-t0,3),'solved':False,'verdict':None,'judge_calls':0,'judge_statuses':[],'llm_calls':0,'error':f'{type(exc).__name__}: {exc}','traceback':traceback.format_exc()}
+              results.append(rec); out.write_text(json.dumps(results,indent=2,sort_keys=True)); print('CANONICAL_HASH_RESULT',json.dumps(rec,sort_keys=True),flush=True)
+          print('CANONICAL_HASH_SHARD_DONE',json.dumps({'seed':seed,'shard':shard,'cases':len(results),'solved':sum(bool(r['solved']) for r in results),'accepted':sum('accepted' in r['judge_statuses'] for r in results),'llm_calls':sum(r['llm_calls'] for r in results)},sort_keys=True),flush=True)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: canonical-seed${{ matrix.seed }}-shard-${{ matrix.shard }}
+          path: /tmp/canonical-seed*.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  aggregate:
+    if: always()
+    needs: stress
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: canonical-seed*-shard-*
+          path: /tmp/results
+          merge-multiple: true
+      - name: Require 200 of 200 for each hostile seed
+        run: |
+          python - <<'PY'
+          import json
+          from collections import Counter, defaultdict
+          from pathlib import Path
+          rows=[]
+          for f in sorted(Path('/tmp/results').glob('canonical-seed*.json')): rows.extend(json.loads(f.read_text()))
+          by=defaultdict(list)
+          for r in rows: by[int(r['seed'])].append(r)
+          summary={}
+          for seed in (1,3):
+              rs=by[seed]; ids=[r['id'] for r in rs]; failed=[r for r in rs if not r.get('solved')]
+              s={'rows':len(rs),'unique_ids':len(set(ids)),'solved':sum(bool(r.get('solved')) for r in rs),'accepted':sum('accepted' in (r.get('judge_statuses') or []) for r in rs),'llm_calls':sum(int(r.get('llm_calls',0)) for r in rs),'judge_calls':sum(int(r.get('judge_calls',0)) for r in rs),'failed_ids':[r['id'] for r in failed]}
+              summary[str(seed)]=s
+              if s != {'rows':200,'unique_ids':200,'solved':200,'accepted':200,'llm_calls':0,'judge_calls':200,'failed_ids':[]}:
+                  raise SystemExit('HASH_SEED_REGRESSION '+str(seed)+' '+repr(s))
+          Path('/tmp/CANONICAL_HASHSEED_SUMMARY.json').write_text(json.dumps(summary,indent=2,sort_keys=True))
+          print('CANONICAL_HASHSEED_200_OF_200_BOTH',json.dumps(summary,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: canonical-hostile-hash-200-summary
+          path: /tmp/CANONICAL_HASHSEED_SUMMARY.json
+          retention-days: 90
