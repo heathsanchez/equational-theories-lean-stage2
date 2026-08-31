@@ -59,6 +59,15 @@ jobs:
       - name: Compute bounded continuation quotient
         run: |
           set -euo pipefail
-          python experiments/mathgraph/local_future_quotient_probe.py \
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('experiments/mathgraph/local_future_quotient_probe.py')
+          s=p.read_text()
+          needle='    source_profile = profile(source_recipe)\n    reducer_candidates = []'
+          repl='    source_profile = profile(source_recipe)\n    # Independent residual budget: quotient construction must not censor repair discovery.\n    search.deadline = time.monotonic() + 12.0\n    reducer_candidates = []'
+          assert s.count(needle)==1
+          Path('/tmp/local_future_quotient_probe.py').write_text(s.replace(needle,repl))
+          PY
+          python /tmp/local_future_quotient_probe.py \
             --solver /tmp/solver.py --row /tmp/row.json \
-            --seconds 32 --probe-partners 32 --objects 192
+            --seconds 24 --probe-partners 32 --objects 192
