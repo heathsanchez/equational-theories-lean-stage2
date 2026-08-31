@@ -1,0 +1,254 @@
+name: MathGraph verifier-derived regime schema portal
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_stress_regime_schema_portal.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        residual: [order5_normal_0030, order5_normal_0036]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONHASHSEED: '0'
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild exact frozen solver
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+          test "$(wc -c < /tmp/solver.py | tr -d ' ')" = '339289'
+
+      - name: Install generic verifier-derived collapse schema portal
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          marker='''    try:\n        # World A: streaming frontier.\n'''
+          assert s.count(marker)==1
+          portal=r'''    # Generic regime-development portal.  The schema vocabulary is fixed and
+    # problem-blind.  A schema is promoted only if the existing proof engine
+    # derives it from the source and the resulting DAG replays independently.
+    def prove_regime_schema(goal, seconds):
+        limits = dict(base)
+        limits["seconds"] = seconds
+        engine = TargetGroundedRefutation(
+            source, goal, time.monotonic() + seconds, limits
+        )
+        search = engine.search
+        found = search.solve()
+        if found is None:
+            return None, {"found": False, "replay": False}
+        inlined = engine.inline_recipe(found)
+        if (inlined.lhs, inlined.rhs) == (goal[1], goal[0]):
+            inlined = Recipe(
+                inlined.rhs, inlined.lhs, "symmetry", (inlined,)
+            )
+        if (inlined.lhs, inlined.rhs) != goal[:2]:
+            return None, {"found": True, "replay": False, "endpoint": False}
+        nodes, root = search.compile(inlined)
+        replay_ok = replay_dag(
+            source, nodes, root,
+            maximum_term_size=300, maximum_nodes=60000,
+        )
+        if not replay_ok:
+            return None, {
+                "found": True, "replay": False,
+                "proof_nodes": len(nodes),
+            }
+
+        # Target grounding may have introduced private reverse constants.
+        # Materialize them back to ordinary source-language terms before the
+        # proved law is inserted into the original-target proof world.
+        def expand_term(term):
+            if term[0] == "var" and term[1] in engine.reverse_constants:
+                return expand_term(engine.reverse_constants[term[1]])
+            if term[0] == "op":
+                return ("op", expand_term(term[1]), expand_term(term[2]))
+            return term
+
+        def expand_recipe(recipe, cache=None):
+            cache = {} if cache is None else cache
+            key = id(recipe)
+            if key in cache:
+                return cache[key]
+            parents = tuple(expand_recipe(q, cache) for q in recipe.parents)
+            data = recipe.data
+            if recipe.kind == "source":
+                substitution, reverse = data
+                data = (
+                    tuple((k, expand_term(v)) for k, v in substitution),
+                    reverse,
+                )
+            elif recipe.kind == "instantiate":
+                data = tuple((k, expand_term(v)) for k, v in data)
+            elif recipe.kind == "congruence":
+                data = (data[0], expand_term(data[1]))
+            out = Recipe(
+                expand_term(recipe.lhs), expand_term(recipe.rhs),
+                recipe.kind, parents, data,
+            )
+            cache[key] = out
+            return out
+
+        return expand_recipe(inlined), {
+            "found": True, "replay": True,
+            "proof_nodes": len(nodes),
+        }
+
+    schema_specs = [
+        ("carrier-collapse", "x = y"),
+        ("idempotence", "x * x = x"),
+        ("left-projection", "x * y = x"),
+        ("right-projection", "x * y = y"),
+    ]
+    schema_trace = []
+    certified_laws = []
+    for schema_name, schema_text in schema_specs:
+        schema_goal = parse_equation(schema_text)
+        t_schema = time.monotonic()
+        law, info = prove_regime_schema(schema_goal, 30.0)
+        rec = {
+            "schema": schema_name,
+            "text": schema_text,
+            "elapsed": round(time.monotonic() - t_schema, 3),
+            **info,
+        }
+        schema_trace.append(rec)
+        if law is not None:
+            certified_laws.append((schema_name, law))
+
+    restart_info = {
+        "certified": len(certified_laws),
+        "added": 0,
+        "found": False,
+        "replay_judge": False,
+    }
+    if certified_laws:
+        warm_engine, warm, _, _ = setup(60.0)
+        for _, law in certified_laws:
+            if warm.add_clause(law):
+                restart_info["added"] += 1
+        warm_found = warm.solve()
+        restart_info.update({
+            "found": warm_found is not None,
+            "rounds": warm.rounds,
+            "superpositions": warm.superpositions,
+            "clauses": len(warm.clauses),
+        })
+        if warm_found is not None:
+            accepted = finish(warm_engine, warm, warm_found)
+            restart_info["replay_judge"] = bool(accepted)
+            open('/tmp/mathgraph_schema_trace.json','w').write(json.dumps({
+                "schemas": schema_trace,
+                "restart": restart_info,
+            }, sort_keys=True))
+            if accepted:
+                return True
+
+    open('/tmp/mathgraph_schema_trace.json','w').write(json.dumps({
+        "schemas": schema_trace,
+        "restart": restart_info,
+    }, sort_keys=True))
+    return False
+
+'''
+          s=s.replace(marker,portal+marker,1)
+          compile(s,str(p),'exec'); p.write_text(s)
+          PY
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+          test "$(wc -c < /tmp/solver.py | tr -d ' ')" -le 500000
+
+      - name: Checkout pinned official Stage 2 harness
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official
+          git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/mathgraph_regime_schema
+          cp /tmp/solver.py submissions/mathgraph_regime_schema/solver.py
+
+      - name: Setup pinned official Lean judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+
+      - name: Fetch exact fresh row
+        env:
+          RID: ${{ matrix.residual }}
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json, os
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          r=next(r for r in rows if r['id']==os.environ['RID'])
+          assert r['answer'] is True
+          open('/tmp/row.json','w').write(json.dumps(r))
+          print('REGIME_SCHEMA_ROW '+json.dumps(r,sort_keys=True),flush=True)
+          PY
+
+      - name: Run regime schema portal under official judge
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json, os, sys, time
+          from pathlib import Path
+          ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config, run_solver
+          row=json.load(open('/tmp/row.json'))
+          cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
+          trace=[]; t=time.monotonic()
+          result=run_solver(ROOT/'submissions/mathgraph_regime_schema',row,cfg,trace_hook=lambda e: trace.append(e))
+          judges=[x for x in trace if x.get('type')=='judge']
+          statuses=[(x.get('response') or {}).get('status') for x in judges]
+          rec={'id':row['id'],'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),
+               'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),
+               'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0)}
+          if os.path.exists('/tmp/mathgraph_schema_trace.json'):
+              print('REGIME_SCHEMA_TRACE '+open('/tmp/mathgraph_schema_trace.json').read(),flush=True)
+          print('REGIME_SCHEMA_RESULT '+json.dumps(rec,sort_keys=True),flush=True)
+          if rec['solved'] and (rec['judge_calls'] != 1 or 'accepted' not in statuses or rec['llm_calls'] != 0):
+              raise SystemExit('INVALID_POSITIVE')
+          PY
