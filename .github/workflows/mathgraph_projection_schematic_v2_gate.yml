@@ -1,0 +1,80 @@
+name: MathGraph projection schematic v2 gate
+
+on:
+  push:
+    branches: [mathgraph/fresh-stress-projection-closure-20260831]
+    paths: ['.github/workflows/mathgraph_projection_schematic_v2_gate.yml']
+  workflow_dispatch:
+permissions: {contents: read}
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Build isolated corrected schematic candidate
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_projection_closure_early_schematic.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'; b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          s=s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0')
+          block='''    # Generic source-only closure before finite-model and deep routes.\n    if run_projection_closure_fallback(source, target, timeout):\n        return\n\n'''
+          assert s.count(block)==1
+          p.write_text(s.replace(block,block+'    return\n\n',1))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+          echo "candidate_sha256=$(sha256sum /tmp/solver.py | awk '{print $1}')"
+          echo "candidate_bytes=$(wc -c < /tmp/solver.py | tr -d ' ')"
+      - name: Checkout official harness
+        run: |
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official && git checkout "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/mathgraph_projection && cp /tmp/solver.py submissions/mathgraph_projection/solver.py
+      - name: Setup judge
+        working-directory: /tmp/official
+        env: {SKIP_DOCKER: '1'}
+        run: bash scripts/setup.sh
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+      - name: Fetch stress data
+        run: |
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stage2_stress_test.jsonl
+          test "$(wc -l < /tmp/stage2_stress_test.jsonl | tr -d ' ')" = '200'
+      - name: Require both corrected schematic proofs accepted
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json,sys,time
+          from pathlib import Path
+          ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config,load_problems,run_solver
+          rows={r['id']:r for r in load_problems('/tmp/stage2_stress_test.jsonl')}; cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
+          ids=('order5_normal_0030','order5_normal_0036'); ok=[]
+          for rid in ids:
+              trace=[]; t=time.monotonic(); result=run_solver(ROOT/'submissions/mathgraph_projection',rows[rid],cfg,trace_hook=lambda e:trace.append(e))
+              judges=[e for e in trace if e.get('type')=='judge']; responses=[e.get('response') or {} for e in judges]; statuses=[r.get('status') for r in responses]
+              rec={'id':rid,'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0)}
+              print('SCHEMATIC_V2_RESULT',json.dumps(rec,sort_keys=True),flush=True)
+              if statuses!=['accepted']: print('SCHEMATIC_V2_RESPONSE',json.dumps(responses,sort_keys=True,default=str),flush=True)
+              if rec['solved'] and rec['verdict']=='true' and statuses==['accepted'] and rec['llm_calls']==0: ok.append(rid)
+          if set(ok)!=set(ids): raise SystemExit('SCHEMATIC_V2_MISSING '+repr(sorted(set(ids)-set(ok))))
+          print('SCHEMATIC_V2_BOTH_PASS',json.dumps(sorted(ok)),flush=True)
+          PY
