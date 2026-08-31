@@ -62,10 +62,27 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
         endpoints = term_variables(recipe.lhs) | term_variables(recipe.rhs)
         return not any(name.startswith("@") for name in endpoints)
 
+    def informative_dependency_law(recipe):
+        # Interreduction may turn a nontrivial proof recipe into t = t.  Such a
+        # reflexive endpoint carries no new information and must never count as
+        # a representation improvement merely because its support is tiny.
+        return recipe.lhs != recipe.rhs
+
+    def dependency_snapshot(recipe):
+        return {
+            "lhs": render_term(recipe.lhs),
+            "rhs": render_term(recipe.rhs),
+            "profile": list(dependence_profile(recipe)),
+            "size": term_size(recipe.lhs) + term_size(recipe.rhs),
+            "cost": recipe.cost,
+            "terminal": terminal_omission(recipe),
+        }
+
     def discover_improvement(search, expand_recipe, current_profile, generation):
         seen = set()
         replayed = []
         enumerated = 0
+        rejected_reflexive = 0
         for local_round in range(3):
             rules = search.rules()
             snapshot = list(rules)
@@ -85,6 +102,9 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
                         candidate = search.interreduce(candidate, rules)
                         candidate = expand_recipe(candidate)
                         enumerated += 1
+                        if not informative_dependency_law(candidate):
+                            rejected_reflexive += 1
+                            continue
                         key = (
                             search.alpha_signature(candidate.lhs, candidate.rhs),
                             candidate.lhs, candidate.rhs,
@@ -114,13 +134,19 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
                         search.superpositions += 1
                         added += 1
                     if terminal_omission(candidate):
-                        return candidate, replayed, enumerated
+                        replayed.sort(key=candidate_rank)
+                        return candidate, replayed, enumerated, rejected_reflexive
                 if added >= 32:
                     break
             if replayed or search.expired():
                 break
         replayed.sort(key=candidate_rank)
-        return (replayed[0] if replayed else None), replayed, enumerated
+        return (
+            replayed[0] if replayed else None,
+            replayed,
+            enumerated,
+            rejected_reflexive,
+        )
 
     promoted = []
     current_profile = dependence_profile(Recipe(source[0], source[1], "reflexivity"))
@@ -149,7 +175,7 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             })
             break
 
-        selected, replayed, enumerated = discover_improvement(
+        selected, replayed, enumerated, rejected_reflexive = discover_improvement(
             search, expand_recipe, current_profile, generation
         )
         record = {
@@ -158,7 +184,9 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             "promoted_in": len(promoted),
             "promoted_added": promoted_added,
             "enumerated": enumerated,
+            "rejected_reflexive": rejected_reflexive,
             "replayable_improvements": len(replayed),
+            "replayable_top": [dependency_snapshot(r) for r in replayed[:8]],
             "selected": None,
         }
         if selected is None:
@@ -169,14 +197,7 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
         selected_profile = dependence_profile(selected)
         record.update({
             "event": "promotion",
-            "selected": {
-                "lhs": render_term(selected.lhs),
-                "rhs": render_term(selected.rhs),
-                "profile": list(selected_profile),
-                "size": term_size(selected.lhs) + term_size(selected.rhs),
-                "cost": selected.cost,
-                "terminal": terminal_omission(selected),
-            },
+            "selected": dependency_snapshot(selected),
         })
         ratchet_trace.append(record)
         if not selected_profile < current_profile:
