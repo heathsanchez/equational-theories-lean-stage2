@@ -1,0 +1,121 @@
+name: MathGraph source-fiber invariance portal
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_stress_fiber_invariance_portal.yml'
+      - 'experiments/mathgraph/inject_fiber_invariance_portal.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        residual: [order5_normal_0030, order5_normal_0036]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild exact frozen solver
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+          test "$(wc -c < /tmp/solver.py | tr -d ' ')" = '339289'
+
+      - name: Install generic source-fiber invariance portal
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/inject_fiber_invariance_portal.py /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+          test "$(wc -c < /tmp/solver.py | tr -d ' ')" -le 500000
+
+      - name: Checkout pinned official Stage 2 harness
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official
+          git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/mathgraph_fiber
+          cp /tmp/solver.py submissions/mathgraph_fiber/solver.py
+
+      - name: Setup pinned official Lean judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+
+      - name: Fetch exact fresh row
+        env:
+          RID: ${{ matrix.residual }}
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json, os
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          r=next(r for r in rows if r['id']==os.environ['RID'])
+          assert r['answer'] is True
+          open('/tmp/row.json','w').write(json.dumps(r))
+          print('FIBER_ROW '+json.dumps(r,sort_keys=True),flush=True)
+          PY
+
+      - name: Run source-fiber portal under official judge
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json, os, sys, time
+          from pathlib import Path
+          ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config, run_solver
+          row=json.load(open('/tmp/row.json'))
+          cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
+          trace=[]; t=time.monotonic()
+          result=run_solver(ROOT/'submissions/mathgraph_fiber',row,cfg,trace_hook=lambda e: trace.append(e))
+          judges=[x for x in trace if x.get('type')=='judge']
+          statuses=[(x.get('response') or {}).get('status') for x in judges]
+          rec={'id':row['id'],'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),
+               'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),
+               'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0)}
+          if os.path.exists('/tmp/mathgraph_fiber_trace.json'):
+              print('FIBER_TRACE '+open('/tmp/mathgraph_fiber_trace.json').read(),flush=True)
+          print('FIBER_RESULT '+json.dumps(rec,sort_keys=True),flush=True)
+          if rec['solved'] and (rec['judge_calls'] != 1 or 'accepted' not in statuses or rec['llm_calls'] != 0):
+              raise SystemExit('INVALID_POSITIVE')
+          PY
