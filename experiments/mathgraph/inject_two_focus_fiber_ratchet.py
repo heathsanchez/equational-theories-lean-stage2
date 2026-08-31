@@ -3,14 +3,15 @@
 
 The current dependency ratchet can discover replay-certified laws of the form
 x = F(x,y), but then plateaus because ordinary critical-pair search represents
-one overlap at a time.  This portal changes the representation: it keeps two
+one overlap at a time. This portal changes the representation: it keeps two
 independent instantiations of such a law related through their shared anchor,
 and also relates distinct equally minimal reducers through that anchor.
 
 Every generated fiber is an explicit Recipe built from replay-certified source
-consequences, replayed again from the original source before promotion.  No
-problem IDs, proof IDs, benchmark labels, or target-specific bridge equations
-are stored in the mechanism.
+consequences and replayed again from the original source before promotion. The
+first deciding test after promotion is not a larger generic search: it asks
+whether the relational fibers expose a *second strict dependency collapse*.
+Only if such a collapse exists is the reorganized world searched for the target.
 """
 
 import argparse
@@ -130,15 +131,68 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
         best = tf_profile(certified[0])
         return [q for q in certified if tf_profile(q) == best][:8], diagnostics, enumerated, rejected
 
+    def tf_discover_second_collapse(search, expand_recipe, current_profile):
+        """Ask whether the attached fiber representation unlocks more forgetting."""
+        proposals = []
+        seen = set()
+        enumerated = 0
+        rejected = 0
+        rules = search.rules()
+        snapshot = list(rules)
+        for outer_index, outer in enumerate(snapshot):
+            for inner_index, inner in enumerate(snapshot):
+                for path in nonvariable_positions(
+                    outer.lhs, maximum_depth=12, include_root=True
+                ):
+                    if search.expired():
+                        break
+                    candidate = search.critical_pair(
+                        outer, inner, outer_index, inner_index, path
+                    )
+                    if candidate is None:
+                        continue
+                    candidate = search.interreduce(candidate, rules)
+                    candidate = expand_recipe(candidate)
+                    enumerated += 1
+                    if not tf_informative(candidate):
+                        rejected += 1
+                        continue
+                    if not tf_profile(candidate) < current_profile:
+                        continue
+                    key = (
+                        search.alpha_signature(candidate.lhs, candidate.rhs),
+                        candidate.lhs, candidate.rhs,
+                    )
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    proposals.append((tf_rank(candidate), candidate))
+                if search.expired():
+                    break
+            if search.expired():
+                break
+        proposals.sort(key=lambda item: item[0])
+        certified = []
+        diagnostics = []
+        for _, candidate in proposals[:128]:
+            replay_ok, proof_nodes = tf_replay(search, candidate)
+            diagnostics.append({
+                **tf_snapshot(candidate),
+                "replay": bool(replay_ok),
+                "proof_nodes": proof_nodes,
+            })
+            if replay_ok:
+                certified.append(candidate)
+        if not certified:
+            return [], diagnostics, enumerated, rejected
+        best = tf_profile(certified[0])
+        return [q for q in certified if tf_profile(q) == best][:8], diagnostics, enumerated, rejected
+
     def tf_variable_form(recipe):
         if recipe.lhs[0] == "var":
-            anchor = recipe.lhs[1]
-            body = recipe.rhs
-            return "left", anchor, body
+            return "left", recipe.lhs[1], recipe.rhs
         if recipe.rhs[0] == "var":
-            anchor = recipe.rhs[1]
-            body = recipe.lhs
-            return "right", anchor, body
+            return "right", recipe.rhs[1], recipe.lhs
         return None
 
     def tf_instantiate(recipe, mapping):
@@ -150,8 +204,6 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
         )
 
     def tf_compose_shared_anchor(first, second):
-        # Both instances are either anchor = body or body = anchor.  Compose
-        # through the common anchor to retain the relation between both bodies.
         f = tf_variable_form(first)
         s = tf_variable_form(second)
         if f is None or s is None:
@@ -188,14 +240,10 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
     tf_fibers = []
     tf_fiber_trace = []
 
-    # Need three in-scope names: shared anchor plus two independently varied
-    # focus variables.  This is a representation requirement, not a row test.
     if len(tf_target_vars) >= 3:
         anchor_name = tf_target_vars[0]
         parameter_a = tf_target_vars[1]
         parameter_b = tf_target_vars[2]
-
-        # Self-fibers: F(x,a) = F(x,b) for each independently discovered law.
         instances = []
         for reducer_index, reducer in enumerate(tf_reducers):
             pair = tf_instantiation_pair(
@@ -219,9 +267,6 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
             if replay_ok:
                 tf_fibers.append(fiber)
 
-        # Cross-fibers: preserve relations between distinct equally minimal
-        # repairs instead of arbitrarily selecting one member of the version
-        # space.  Test both parameter alignments.
         for i in range(len(instances)):
             for j in range(i + 1, len(instances)):
                 ri, ia, ib = instances[i]
@@ -246,8 +291,6 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
                     if replay_ok:
                         tf_fibers.append(fiber)
 
-    # Canonicalize before promotion; only replay-certified source consequences
-    # enter the new representation.
     tf_unique = []
     tf_seen = set()
     for law in sorted(tf_fibers, key=tf_rank):
@@ -260,7 +303,10 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
         tf_seen.add(key)
         tf_unique.append(law)
 
-    warm_engine, warm, _, _ = setup(120.0)
+    # Fresh representation world. First ask the causal question: did fibers
+    # unlock a stricter support collapse? Do not spend a generic 120 s merely
+    # to rediscover the already-known negative.
+    warm_engine, warm, _, warm_expand = setup(75.0)
     reducer_added = 0
     fiber_added = 0
     for law in tf_reducers:
@@ -270,11 +316,23 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
         if warm.add_clause(law):
             fiber_added += 1
 
+    current_profile = tf_profile(tf_reducers[0]) if tf_reducers else (9, 9, 9)
+    second, second_trace, second_enumerated, second_rejected = (
+        tf_discover_second_collapse(warm, warm_expand, current_profile)
+        if (reducer_added or fiber_added) and tf_reducers
+        else ([], [], 0, 0)
+    )
+    second_added = 0
+    for law in second:
+        if warm.add_clause(law):
+            second_added += 1
+
     warm_found = None
-    if reducer_added or fiber_added:
+    if second:
         collapse = warm.collapse_proof()
         warm_found = collapse if collapse is not None else warm.target_proof(warm.rules())
         if warm_found is None:
+            # A new representation transition justifies one bounded search.
             warm_found = warm.solve()
 
     tf_info = {
@@ -287,6 +345,11 @@ PORTAL = r'''    # Two-focus fiber portal: represent the relation between two
         "fiber_trace": tf_fiber_trace[:24],
         "reducer_added": reducer_added,
         "fiber_added": fiber_added,
+        "second_collapse_count": len(second),
+        "second_collapse_enumerated": second_enumerated,
+        "second_collapse_rejected": second_rejected,
+        "second_collapse_trace": second_trace[:24],
+        "second_added": second_added,
         "clauses": len(warm.clauses),
         "rounds": warm.rounds,
         "superpositions": warm.superpositions,
