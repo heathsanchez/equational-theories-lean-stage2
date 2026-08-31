@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Inject a monotone verifier-certified dependency-development ratchet.
 
-The ratchet is problem-blind.  It repeatedly discovers a replayable source
-consequence that strictly reduces variable dependence, promotes exactly one
-best reduction into a fresh proof world, and searches again.  Every promoted
-law remains a Recipe derived from the original source.  A universal bare-
-variable omission is terminal: CompactSuperposition.collapse_proof constructs
-the original target from it and the usual replay + Lean judge boundary applies.
+The ratchet is problem-blind.  It repeatedly discovers replayable source
+consequences that strictly reduce variable dependence, preserves the minimal
+residual-relative version space of equally strong reductions, promotes that
+small cohort into a fresh proof world, and searches again.  Every promoted law
+remains a Recipe derived from the original source.  A universal bare-variable
+omission is terminal: CompactSuperposition.collapse_proof constructs the
+original target from it and the usual replay + Lean judge boundary applies.
 """
 
 import argparse
@@ -15,7 +16,8 @@ from pathlib import Path
 MARKER = "    try:\n        # World A: streaming frontier.\n"
 
 PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permission to
-    # forget at a time, followed by a fresh proof world.
+    # forget at a time, preserving equally minimal repairs until attachment
+    # decides between them.
     def dependence_profile(recipe):
         left_vars = term_variables(recipe.lhs)
         right_vars = term_variables(recipe.rhs)
@@ -55,15 +57,11 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
         )
 
     def ordinary_variables(recipe):
-        # Recipes are expanded before this test, so private reverse constants
-        # should be gone.  Synthetic standardize-apart names are allowed: the
-        # compiler universally specializes them if they disappear from the
-        # final equality.
         endpoints = term_variables(recipe.lhs) | term_variables(recipe.rhs)
         return not any(name.startswith("@") for name in endpoints)
 
     def informative_dependency_law(recipe):
-        # Interreduction may turn a nontrivial proof recipe into t = t.  Such a
+        # Interreduction may turn a nontrivial proof recipe into t = t. Such a
         # reflexive endpoint carries no new information and must never count as
         # a representation improvement merely because its support is tiny.
         return recipe.lhs != recipe.rhs
@@ -162,8 +160,6 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             if search.add_clause(law):
                 promoted_added += 1
 
-        # A previously promoted law may already be terminal in the rebuilt
-        # representation.  Ask the existing collapse constructor first.
         collapse = search.collapse_proof()
         if collapse is not None:
             final_engine, final_search, final_recipe = engine, search, collapse
@@ -188,6 +184,7 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             "replayable_improvements": len(replayed),
             "replayable_top": [dependency_snapshot(r) for r in replayed[:8]],
             "selected": None,
+            "cohort": [],
         }
         if selected is None:
             record["event"] = "plateau"
@@ -195,20 +192,33 @@ PORTAL = r'''    # Monotone developmental ratchet: one verifier-certified permis
             break
 
         selected_profile = dependence_profile(selected)
+        # The residual does not justify choosing arbitrarily between distinct
+        # equally minimal repairs. Preserve the small version space and let
+        # attachment in the rebuilt proof world decide what composes.
+        cohort = [
+            r for r in replayed if dependence_profile(r) == selected_profile
+        ][:8]
         record.update({
-            "event": "promotion",
+            "event": "promotion-cohort",
             "selected": dependency_snapshot(selected),
+            "cohort": [dependency_snapshot(r) for r in cohort],
         })
         ratchet_trace.append(record)
-        if not selected_profile < current_profile:
+        if not selected_profile < current_profile or not cohort:
             break
-        promoted.append(selected)
+
+        known = {(r.lhs, r.rhs) for r in promoted}
+        for law in cohort:
+            if (law.lhs, law.rhs) not in known:
+                promoted.append(law)
+                known.add((law.lhs, law.rhs))
         current_profile = selected_profile
 
-        # Test the newly reorganized world immediately before seeking another
-        # representation change.
-        if search.add_clause(selected):
-            search.superpositions += 1
+        # Test the reorganized representation immediately with the whole
+        # equally minimal repair cohort attached.
+        for law in cohort:
+            if search.add_clause(law):
+                search.superpositions += 1
         collapse = search.collapse_proof()
         if collapse is not None:
             final_engine, final_search, final_recipe = engine, search, collapse
