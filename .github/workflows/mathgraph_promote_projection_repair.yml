@@ -1,0 +1,63 @@
+name: MathGraph promote projection repair
+
+on:
+  push:
+    branches: [mathgraph/fresh-stress-projection-closure-20260831]
+    paths:
+      - '.github/workflows/mathgraph_promote_projection_repair.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-24.04
+    env:
+      EXPECTED_SHA256: 2df0d30e7bed845338fd6957a71d0f9e38201baba6eae19439394e78de6ae3d6
+      EXPECTED_BYTES: '351404'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/fresh-stress-projection-closure-20260831
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Rebuild exact verified 200 of 200 candidate
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_projection_closure_early_schematic.py \
+            --base submissions/mathgraph/solver.py \
+            --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+          actual_sha=$(sha256sum /tmp/solver.py | awk '{print $1}')
+          actual_bytes=$(wc -c < /tmp/solver.py | tr -d ' ')
+          echo "PROMOTION_CANDIDATE sha256=$actual_sha bytes=$actual_bytes"
+          test "$actual_sha" = "$EXPECTED_SHA256"
+          test "$actual_bytes" = "$EXPECTED_BYTES"
+          grep -q 'MATHGRAPH_PROJECTION_CLOSURE_V1' /tmp/solver.py
+          ! grep -q 'order5_normal_0030' /tmp/solver.py
+          ! grep -q 'order5_normal_0036' /tmp/solver.py
+          cp /tmp/solver.py submissions/mathgraph/solver.py
+      - name: Commit canonical solver
+        run: |
+          set -euo pipefail
+          test "$(sha256sum submissions/mathgraph/solver.py | awk '{print $1}')" = "$EXPECTED_SHA256"
+          test "$(wc -c < submissions/mathgraph/solver.py | tr -d ' ')" = "$EXPECTED_BYTES"
+          git config user.name 'Heath Sanchez'
+          git config user.email '32909488+heathsanchez@users.noreply.github.com'
+          git add submissions/mathgraph/solver.py
+          git diff --cached --check
+          git diff --cached --quiet && { echo 'canonical solver already exact'; exit 0; }
+          git commit -m 'Promote frozen 200 of 200 Stage 2 solver'
+          git push origin HEAD:mathgraph/fresh-stress-projection-closure-20260831
