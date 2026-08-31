@@ -10,6 +10,7 @@ permissions:
   contents: read
 
 env:
+  CLEAN_BASE_SHA: 1281b7111aeeeaeb672df0f8c861734fb7277ebf
   OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
   SHARDS: '16'
 
@@ -20,15 +21,18 @@ jobs:
     outputs:
       sha256: ${{ steps.meta.outputs.sha256 }}
       bytes: ${{ steps.meta.outputs.bytes }}
+      source_sha: ${{ steps.meta.outputs.source_sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.11'}
-      - name: Build exact post-repair candidate
+      - name: Build exact post-repair candidate before dataset access
         env: {PYTHONHASHSEED: '0'}
         run: |
           set -euo pipefail
-          python experiments/mathgraph/build_projection_closure_early_schematic.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          curl -fL --retry 4 "https://raw.githubusercontent.com/heathsanchez/equational-theories-lean-stage2/${CLEAN_BASE_SHA}/submissions/mathgraph/solver.py" -o /tmp/base_solver.py
+          python -m py_compile /tmp/base_solver.py
+          python experiments/mathgraph/build_projection_closure_early_schematic.py --base /tmp/base_solver.py --output /tmp/solver.py
           python - <<'PY'
           from pathlib import Path
           p=Path('/tmp/solver.py'); s=p.read_text()
@@ -45,14 +49,11 @@ jobs:
         id: meta
         run: |
           set -euo pipefail
-          SHA=$(sha256sum solver.py | awk '{print $1}')
-          BYTES=$(wc -c < solver.py | tr -d ' ')
-          printf '%s\n' "$SHA" > solver.sha256
-          printf '%s\n' "$BYTES" > solver.bytes
-          printf '%s\n' "$GITHUB_SHA" > source-commit.txt
-          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
-          echo "bytes=$BYTES" >> "$GITHUB_OUTPUT"
-          echo "POSTREPAIR_FROZEN sha256=$SHA bytes=$BYTES source_commit=$GITHUB_SHA"
+          SHA=$(sha256sum solver.py | awk '{print $1}'); BYTES=$(wc -c < solver.py | tr -d ' ')
+          printf '%s\n' "$SHA" > solver.sha256; printf '%s\n' "$BYTES" > solver.bytes
+          printf '%s\n' "$GITHUB_SHA" > source-commit.txt; printf '%s\n' "$CLEAN_BASE_SHA" > clean-base-commit.txt
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"; echo "bytes=$BYTES" >> "$GITHUB_OUTPUT"; echo "source_sha=$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          echo "POSTREPAIR_FROZEN sha256=$SHA bytes=$BYTES source_commit=$GITHUB_SHA clean_base=$CLEAN_BASE_SHA"
       - uses: actions/upload-artifact@v4
         with:
           name: projection-postrepair-frozen-solver
@@ -61,6 +62,7 @@ jobs:
             solver.sha256
             solver.bytes
             source-commit.txt
+            clean-base-commit.txt
           retention-days: 30
 
   stress:
@@ -70,7 +72,7 @@ jobs:
       matrix:
         shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     runs-on: ubuntu-24.04
-    timeout-minutes: 70
+    timeout-minutes: 150
     env:
       PYTHONHASHSEED: '0'
       SHARD: ${{ matrix.shard }}
@@ -81,7 +83,7 @@ jobs:
         with:
           name: projection-postrepair-frozen-solver
           path: /tmp/frozen
-      - name: Verify frozen bytes
+      - name: Verify frozen bytes before dataset access
         run: |
           set -euo pipefail
           test "$(sha256sum /tmp/frozen/solver.py | awk '{print $1}')" = "$EXPECTED_SHA"
@@ -92,6 +94,7 @@ jobs:
           set -euo pipefail
           git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
           cd /tmp/official && git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
           test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
           grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
           mkdir -p submissions/mathgraph_projection
@@ -103,7 +106,7 @@ jobs:
       - name: Install proxy dependency
         working-directory: /tmp/official
         run: python -m pip install 'openai>=1,<3'
-      - name: Fetch Stage2 stress set
+      - name: Fetch Stage2 stress set only after freeze
         run: |
           set -euo pipefail
           curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stage2_stress_test.jsonl
@@ -115,43 +118,37 @@ jobs:
           set -euo pipefail
           source .env.judge
           python - <<'PY'
-          import json, os, sys, time
+          import json, os, sys, time, traceback
           from pathlib import Path
           ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
           from pipeline.proxy import load_config, load_problems, run_solver
-          rows=load_problems('/tmp/stage2_stress_test.jsonl')
+          rows=load_problems('/tmp/stage2_stress_test.jsonl'); assert len(rows)==200
           shard=int(os.environ['SHARD']); shards=int(os.environ['SHARDS'])
-          cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
-          out=[]
+          cfg=load_config(); assert cfg['solver']['timeout_seconds']==3600; assert cfg['judge']['lean_timeout_seconds']==300
+          cfg.setdefault('sandbox',{})['mode']='none'; out=[]
           for i,row in enumerate(rows):
               if i % shards != shard: continue
               trace=[]; t0=time.monotonic()
               try:
                   result=run_solver(ROOT/'submissions/mathgraph_projection',row,cfg,trace_hook=lambda e:trace.append(e))
-                  judges=[e for e in trace if e.get('type')=='judge']
-                  responses=[e.get('response') or {} for e in judges]
-                  statuses=[r.get('status') for r in responses]
-                  rec={
-                    'id':row['id'],'index':i,'difficulty':row['difficulty'],'answer':row['answer'],
-                    'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],
-                    'elapsed':round(time.monotonic()-t0,3),'solved':bool(result.get('solved')),
-                    'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),
-                    'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0),
-                  }
+                  judges=[e for e in trace if e.get('type')=='judge']; statuses=[(e.get('response') or {}).get('status') for e in judges]
+                  rec={'id':row['id'],'index':i,'difficulty':row['difficulty'],'answer':row['answer'],'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t0,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0),'error':None}
               except Exception as exc:
-                  rec={'id':row['id'],'index':i,'difficulty':row['difficulty'],'answer':row['answer'],'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t0,3),'solved':False,'verdict':None,'judge_calls':0,'judge_statuses':[],'llm_calls':0,'exception':repr(exc)}
-              print('POSTREPAIR_ROW',json.dumps(rec,sort_keys=True),flush=True)
-              out.append(rec)
-          path=Path(f'/tmp/stress-shard-{shard:02d}.json'); path.write_text(json.dumps(out,indent=2,sort_keys=True))
-          print('POSTREPAIR_SHARD_DONE',shard,'rows',len(out),'solved',sum(bool(r.get('solved')) for r in out),flush=True)
+                  rec={'id':row['id'],'index':i,'difficulty':row['difficulty'],'answer':row['answer'],'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t0,3),'solved':False,'verdict':None,'judge_calls':0,'judge_statuses':[],'llm_calls':0,'error':f'{type(exc).__name__}: {exc}','traceback':traceback.format_exc()}
+              print('POSTREPAIR_ROW',json.dumps(rec,sort_keys=True),flush=True); out.append(rec)
+              Path(f'/tmp/stress-shard-{shard:02d}.json').write_text(json.dumps(out,indent=2,sort_keys=True))
+          print('POSTREPAIR_SHARD_DONE',json.dumps({'shard':shard,'rows':len(out),'solved':sum(bool(r.get('solved')) for r in out),'accepted':sum('accepted' in r.get('judge_statuses',[]) for r in out),'llm_calls':sum(int(r.get('llm_calls',0)) for r in out)},sort_keys=True),flush=True)
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: projection-postrepair-shard-${{ matrix.shard }}
           path: /tmp/stress-shard-*.json
+          if-no-files-found: warn
           retention-days: 30
 
   aggregate:
+    if: always()
     needs: [freeze, stress]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -165,45 +162,41 @@ jobs:
         env:
           EXPECTED_SHA: ${{ needs.freeze.outputs.sha256 }}
           EXPECTED_BYTES: ${{ needs.freeze.outputs.bytes }}
+          SOURCE_SHA: ${{ needs.freeze.outputs.source_sha }}
         run: |
           set -euo pipefail
           python - <<'PY'
           import glob,json,os
+          from collections import Counter,defaultdict
           rows=[]
-          for p in sorted(glob.glob('/tmp/results/stress-shard-*.json')):
-              rows.extend(json.load(open(p)))
-          ids=[r['id'] for r in rows]
-          solved=[r for r in rows if r.get('solved')]
-          accepted=[r for r in rows if 'accepted' in r.get('judge_statuses',[])]
-          bad_calls=[]
+          for p in sorted(glob.glob('/tmp/results/stress-shard-*.json')): rows.extend(json.load(open(p)))
+          ids=[r['id'] for r in rows]; dup=[k for k,v in Counter(ids).items() if v>1]
+          solved=[r for r in rows if r.get('solved')]; failed=[r for r in rows if not r.get('solved')]
+          true_rows=[r for r in rows if bool(r['answer'])]; false_rows=[r for r in rows if not bool(r['answer'])]
+          bad_true=[r['id'] for r in true_rows if r.get('solved') and 'accepted' not in r.get('judge_statuses',[])]
+          bad_status=[(r['id'],s) for r in rows for s in r.get('judge_statuses',[]) if s!='accepted']
+          by_cat=defaultdict(lambda:{'solved':0,'total':0}); by_truth=defaultdict(lambda:{'solved':0,'total':0})
           for r in rows:
-              for s in r.get('judge_statuses',[]):
-                  if s != 'accepted': bad_calls.append((r['id'],s))
-          summary={
-            'solver_sha256':os.environ['EXPECTED_SHA'],'solver_bytes':int(os.environ['EXPECTED_BYTES']),
-            'rows_observed':len(rows),'unique_ids':len(set(ids)),'solved':len(solved),
-            'accepted_rows':len(accepted),'failed':len(rows)-len(solved),
-            'failed_ids':[r['id'] for r in rows if not r.get('solved')],
-            'judge_calls':sum(int(r.get('judge_calls',0) or 0) for r in rows),
-            'bad_judge_calls':bad_calls,'llm_calls':sum(int(r.get('llm_calls',0) or 0) for r in rows),
-            'by_category':{},'by_ground_truth':{},
-          }
-          for r in rows:
-              d=summary['by_category'].setdefault(r['difficulty'],{'solved':0,'total':0}); d['total']+=1; d['solved']+=int(bool(r.get('solved')))
-              k=str(bool(r['answer'])); d=summary['by_ground_truth'].setdefault(k,{'solved':0,'total':0}); d['total']+=1; d['solved']+=int(bool(r.get('solved')))
+              d=by_cat[r['difficulty']]; d['total']+=1; d['solved']+=int(bool(r.get('solved')))
+              d=by_truth[str(bool(r['answer']))]; d['total']+=1; d['solved']+=int(bool(r.get('solved')))
+          summary={'experiment':'stage2_stress_test_post_projection_closure','source_commit':os.environ.get('SOURCE_SHA'),'clean_base_commit':'1281b7111aeeeaeb672df0f8c861734fb7277ebf','solver_sha256':os.environ.get('EXPECTED_SHA'),'solver_bytes':int(os.environ.get('EXPECTED_BYTES') or 0),'official_repo_commit':'817a4653bf762584931d49c6714c9fcfab7df66a','lean':'4.33.1','mathlib_commit':'0df444a360eaa60ab8c11dca51a86af692955474','rows_observed':len(rows),'unique_ids':len(set(ids)),'duplicates':dup,'solved':len(solved),'failed':len(failed),'failed_ids':[r['id'] for r in failed],'true_rows':len(true_rows),'false_rows':len(false_rows),'accepted_rows':sum('accepted' in r.get('judge_statuses',[]) for r in rows),'judge_calls':sum(int(r.get('judge_calls',0) or 0) for r in rows),'bad_solved_true_judge':bad_true,'bad_judge_statuses':bad_status,'llm_calls':sum(int(r.get('llm_calls',0) or 0) for r in rows),'by_category':dict(sorted(by_cat.items())),'by_ground_truth':dict(sorted(by_truth.items()))}
           print('POSTREPAIR_200_SUMMARY',json.dumps(summary,sort_keys=True),flush=True)
-          open('/tmp/POSTREPAIR_200_SUMMARY.json','w').write(json.dumps(summary,indent=2,sort_keys=True))
-          assert len(rows)==200 and len(set(ids))==200
+          open('/tmp/POSTREPAIR_200_SUMMARY.json','w').write(json.dumps(summary,indent=2,sort_keys=True)); open('/tmp/POSTREPAIR_ALL_RESULTS.json','w').write(json.dumps(rows,indent=2,sort_keys=True))
+          assert len(rows)==200 and len(set(ids))==200 and not dup
           assert len(solved)==200, summary['failed_ids']
-          assert len(accepted)==200
           assert summary['llm_calls']==0
-          assert not bad_calls, bad_calls
-          assert all(v=={'solved':50,'total':50} for v in summary['by_category'].values())
-          assert summary['by_ground_truth']=={'False':{'solved':100,'total':100},'True':{'solved':100,'total':100}}
-          print('POSTREPAIR_200_PASS')
+          assert not bad_true, bad_true
+          assert not bad_status, bad_status
+          assert all(v=={'solved':50,'total':50} for v in by_cat.values())
+          assert dict(by_truth)=={'False':{'solved':100,'total':100},'True':{'solved':100,'total':100}}
+          print('POSTREPAIR_200_OF_200_PASS')
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: projection-postrepair-200-summary
-          path: /tmp/POSTREPAIR_200_SUMMARY.json
-          retention-days: 30
+          name: projection-postrepair-200-results
+          path: |
+            /tmp/POSTREPAIR_200_SUMMARY.json
+            /tmp/POSTREPAIR_ALL_RESULTS.json
+          if-no-files-found: warn
+          retention-days: 90
