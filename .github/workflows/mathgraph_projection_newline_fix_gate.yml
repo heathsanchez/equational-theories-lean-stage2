@@ -1,0 +1,116 @@
+name: MathGraph projection compact newline fix gate
+
+on:
+  push:
+    branches: [mathgraph/fresh-stress-projection-closure-20260831]
+    paths:
+      - '.github/workflows/mathgraph_projection_newline_fix_gate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONHASHSEED: '0'
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build isolated candidate with unambiguous real newlines
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_projection_closure_early_schematic.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          # The outer builder uses a raw template. Force the generated runtime
+          # serializer to construct actual LF characters without escape ambiguity.
+          old='        return "\\n".join(lines) + "\\n"\n'
+          new='        return chr(10).join(lines) + chr(10)\n'
+          assert s.count(old)==1, s.count(old)
+          s=s.replace(old,new,1)
+          # Isolate the source-only closure: if it abstains, do not let later
+          # portfolio routes mask the scientific result.
+          block='''    # Generic source-only closure before finite-model and deep routes.\n    if run_projection_closure_fallback(source, target, timeout):\n        return\n\n'''
+          assert s.count(block)==1
+          s=s.replace(block,block+'    return\n\n',1)
+          p.write_text(s)
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          bytes=$(wc -c < /tmp/solver.py | tr -d ' ')
+          sha=$(sha256sum /tmp/solver.py | awk '{print $1}')
+          test "$bytes" -le 500000
+          echo "NEWLINE_FIX_CANDIDATE sha256=$sha bytes=$bytes"
+
+      - name: Checkout pinned official harness
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official
+          git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/mathgraph_projection
+          cp /tmp/solver.py submissions/mathgraph_projection/solver.py
+
+      - name: Setup official Lean 4.33.1 judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+
+      - name: Fetch stress set
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          test "$(wc -l < /tmp/stress.jsonl | tr -d ' ')" = '200'
+
+      - name: Require both residuals Lean accepted
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json,sys,time
+          from pathlib import Path
+          ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config,load_problems,run_solver
+          rows={r['id']:r for r in load_problems('/tmp/stress.jsonl')}
+          cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
+          wanted=('order5_normal_0030','order5_normal_0036')
+          passed=[]
+          for rid in wanted:
+              row=rows[rid]; trace=[]; t=time.monotonic()
+              result=run_solver(ROOT/'submissions/mathgraph_projection',row,cfg,trace_hook=lambda e:trace.append(e))
+              judges=[e for e in trace if e.get('type')=='judge']
+              statuses=[(e.get('response') or {}).get('status') for e in judges]
+              messages=[(e.get('response') or {}).get('message') for e in judges]
+              rec={'id':rid,'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],
+                   'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),
+                   'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),
+                   'judge_statuses':statuses,'judge_messages':messages,
+                   'llm_calls':result.get('llm_calls',0)}
+              print('NEWLINE_FIX_RESULT '+json.dumps(rec,sort_keys=True),flush=True)
+              if rec['solved'] and rec['verdict']=='true' and rec['judge_calls']==1 and statuses==['accepted'] and rec['llm_calls']==0:
+                  passed.append(rid)
+          if set(passed)!=set(wanted):
+              raise SystemExit('NEWLINE_FIX_MISSING '+repr(sorted(set(wanted)-set(passed))))
+          print('NEWLINE_FIX_BOTH_PASS '+json.dumps(sorted(passed)),flush=True)
+          PY
