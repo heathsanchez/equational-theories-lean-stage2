@@ -32,6 +32,7 @@ jobs:
           test "$(sha256sum submissions/mathgraph/solver.py | awk '{print $1}')" = "$EXPECTED_SHA256"
           test "$(wc -c < submissions/mathgraph/solver.py | tr -d ' ')" = "$EXPECTED_BYTES"
           python -m py_compile submissions/mathgraph/solver.py
+          rm -rf submissions/mathgraph/__pycache__
           test "$(find submissions/mathgraph -mindepth 1 -maxdepth 1 -type f -printf '%f\n' | grep -v '^solver.py$' | wc -l)" = '0'
           test "$(find submissions/mathgraph -mindepth 1 -maxdepth 1 -type d | wc -l)" = '0'
       - name: Checkout pinned official Stage 2 harness
@@ -109,7 +110,7 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          from collections import Counter, defaultdict
+          from collections import defaultdict
           from pathlib import Path
           rows=[]
           for f in sorted(Path('/tmp/results').glob('canonical-seed*.json')): rows.extend(json.loads(f.read_text()))
