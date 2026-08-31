@@ -27,9 +27,6 @@ SHARED = r'''    def shared_dag_certificate(nodes, root):
         target_vars = tuple(target[2])
         allowed_vars = set(target_vars)
 
-        # Collect only terms that actually occur in proof expressions (plus
-        # explicit rfl types).  compile() has already specialized all internal
-        # schematic variables to in-scope target variables.
         composites = set()
         all_seen_vars = set()
 
@@ -50,17 +47,13 @@ SHARED = r'''    def shared_dag_certificate(nodes, root):
                 "congruence on left child", "congruence on right child"
             ):
                 collect(node.context[1])
-            else:
-                # rfl is the only branch whose equality type cannot be elided.
-                if node.kind not in ("symmetry", "transitivity"):
-                    collect(node.lhs)
-                    collect(node.rhs)
+            elif node.kind not in ("symmetry", "transitivity"):
+                collect(node.lhs)
+                collect(node.rhs)
 
         if not all_seen_vars.issubset(allowed_vars):
             return None, 0
 
-        # Every composite term gets one local name.  Sorting by term size means
-        # each definition can refer only to already-defined proper subterms.
         terms = sorted(composites, key=lambda q: (term_size(q), render_term(q)))
         aliases = {term: "t" + str(i) for i, term in enumerate(terms)}
 
@@ -92,7 +85,7 @@ SHARED = r'''    def shared_dag_certificate(nodes, root):
             if node.kind in ("source instance", "source reentry"):
                 mapping = dict(node.substitution)
                 expression = "h" + "".join(
-                    " (" + render_shared(mapping[v]) + ")" for v in mapping
+                    " (" + render_shared(mapping[v]) + ")" for v in source[2]
                 )
                 if node.orientation:
                     expression = "Eq.symm (" + expression + ")"
@@ -126,7 +119,7 @@ SHARED = r'''    def shared_dag_certificate(nodes, root):
                     + " = " + render_shared(node.rhs) + " := rfl"
                 )
         lines.append("  exact " + names[root])
-        return "\\n".join(lines) + "\\n", len(ordered)
+        return "\n".join(lines) + "\n", len(ordered)
 
 '''
 
