@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/mathgraph_stage2_stress_dependency_collapse_search.yml'
       - 'experiments/mathgraph/inject_dependency_collapse_search.py'
+      - 'experiments/mathgraph/move_behavioural_portal_early.py'
   workflow_dispatch:
 
 permissions:
@@ -50,6 +51,7 @@ jobs:
         run: |
           set -euo pipefail
           python experiments/mathgraph/inject_dependency_collapse_search.py /tmp/solver.py
+          python experiments/mathgraph/move_behavioural_portal_early.py /tmp/solver.py
           python -m py_compile /tmp/solver.py
           rm -rf /tmp/__pycache__
           test "$(wc -c < /tmp/solver.py | tr -d ' ')" -le 500000
