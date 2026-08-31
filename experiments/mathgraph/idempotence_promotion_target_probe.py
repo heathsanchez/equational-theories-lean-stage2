@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """Promote the first replay-certified compiled idempotence interface and retest fresh 0036.
 
-Rebuilds the same bounded quotient world used by the successful compiled-interface spectrum,
-selects the first novel consequence whose compiled observable interface is x = x*x, verifies
-that consequence against the original source, then promotes only that proof-bearing consequence
-into a fresh target search. No benchmark-specific bridge lemma is supplied.
+This is deliberately bound-identical to compiled_interface_spectrum_probe.py through
+interface discovery. Once the same quotient->compiled-interface path yields x = x*x,
+only that proof-bearing raw consequence is promoted into a fresh target search.
 """
 import argparse, importlib.util, json, time
 
@@ -18,18 +17,19 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--solver',required=True); ap.add_argument('--row',required=True)
     args=ap.parse_args(); m=load(args.solver); row=json.load(open(args.row))
     source=m.parse_equation(row['equation1']); target=m.parse_equation(row['equation2'])
-    base=dict(m.COMPACT_SUPERPOSITION_PROBE); base.update({'maximum_term_size':80,'maximum_replay_term_size':360,'maximum_depth':14,'maximum_rules':1024,'maximum_rounds':180,'new_clauses_per_round':96,'maximum_clauses':20000,'normalization_steps':360,'maximum_proof_nodes':100000})
+    # EXACTLY match the successful compiled-interface spectrum probe.
+    base=dict(m.COMPACT_SUPERPOSITION_PROBE); base.update({'maximum_term_size':75,'maximum_replay_term_size':320,'maximum_depth':12,'maximum_rules':896,'maximum_rounds':96,'new_clauses_per_round':64,'maximum_clauses':14000,'normalization_steps':256,'maximum_proof_nodes':70000})
     def setup(goal,seconds):
         lim=dict(base); lim['seconds']=seconds
         e=m.TargetGroundedRefutation(source,goal,time.monotonic()+seconds,lim); return e,e.search
-    def canon_pair(lhs,rhs):
+    def canon(lhs,rhs):
         names={}
         def f(t):
             if t[0]=='var':
                 if t[1] not in names:names[t[1]]=chr(ord('x')+len(names))
                 return ('var',names[t[1]])
             return ('op',f(t[1]),f(t[2]))
-        cl,cr=f(lhs),f(rhs); return cl,cr,tuple(dict.fromkeys(names.values()))
+        return f(lhs),f(rhs),tuple(dict.fromkeys(names.values()))
     def orient(q,r): return q if not r else m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
 
     e,s=setup(target,30.0)
@@ -73,7 +73,7 @@ def main():
         return frozenset(out)
     old={future(q) for q in objects}
     x=('var','x'); xx=('op',x,x); desired={(x,xx),(xx,x)}
-    chosen=None; info=None; census=0; replayed=0; projected=0
+    chosen=None; info=None; census=replayed=projected=0
     s.deadline=time.monotonic()+55.0; rules=s.rules(); seen=set()
     for oi,o in enumerate(rules):
         for ii,i in enumerate(rules):
@@ -87,17 +87,16 @@ def main():
                 if key in seen: continue
                 seen.add(key); census+=1
                 ns,r=s.compile(c)
-                if not m.replay_dag(source,ns,r,maximum_term_size=360,maximum_nodes=100000): continue
-                replayed+=1
-                fs=future(c)
+                if not m.replay_dag(source,ns,r,maximum_term_size=320,maximum_nodes=70000): continue
+                replayed+=1; fs=future(c)
                 if fs in old: continue
-                raw_iface=canon_pair(c.lhs,c.rhs)
-                pe,ps=setup(raw_iface,5.0); pnodes,proot=ps.compile(c)
-                if not m.replay_dag(source,pnodes,proot,maximum_term_size=360,maximum_nodes=100000): continue
-                projected+=1
-                endpoint=(pnodes[proot].lhs,pnodes[proot].rhs); actual=canon_pair(*endpoint)
-                if actual[2]==('x',) and (actual[0],actual[1]) in desired:
-                    chosen=c; info={'future_size':len(fs),'proof_nodes':len(pnodes),'raw_lhs':m.render_term(c.lhs),'raw_rhs':m.render_term(c.rhs),'compiled_lhs':m.render_term(endpoint[0]),'compiled_rhs':m.render_term(endpoint[1])}; break
+                raw=canon(c.lhs,c.rhs); pe,ps=setup(raw,5.0); pn,pr=ps.compile(c)
+                if not m.replay_dag(source,pn,pr,maximum_term_size=320,maximum_nodes=70000): continue
+                projected+=1; ep=(pn[pr].lhs,pn[pr].rhs); act=canon(ep[0],ep[1])
+                if act[2]==('x',) and (act[0],act[1]) in desired:
+                    chosen=c
+                    info={'future_size':len(fs),'proof_nodes':len(pn),'raw_lhs':m.render_term(c.lhs),'raw_rhs':m.render_term(c.rhs),'compiled_lhs':m.render_term(ep[0]),'compiled_rhs':m.render_term(ep[1])}
+                    break
             if s.expired() or chosen is not None: break
         if s.expired() or chosen is not None: break
 
@@ -112,7 +111,7 @@ def main():
         q=te.inline_recipe(tq)
         if (q.lhs,q.rhs)==(target[1],target[0]): q=m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
         if (q.lhs,q.rhs)==target[:2]:
-            nn,rr=ts.compile(q); tr['replay']=m.replay_dag(source,nn,rr,maximum_term_size=360,maximum_nodes=100000); tr['proof_nodes']=len(nn); tr['proof_cost']=q.cost
+            nn,rr=ts.compile(q); tr['replay']=m.replay_dag(source,nn,rr,maximum_term_size=320,maximum_nodes=70000); tr['proof_nodes']=len(nn); tr['proof_cost']=q.cost
     report['target']=tr
     print('IDEMPOTENCE_PROMOTION '+json.dumps(report,sort_keys=True),flush=True)
 
