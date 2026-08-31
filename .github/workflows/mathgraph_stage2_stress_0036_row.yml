@@ -1,0 +1,28 @@
+name: MathGraph fresh stress 0036 row
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_stress_0036_row.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  row:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Fetch and print exact fresh residual
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          r=next(r for r in rows if r['id']=='order5_normal_0036')
+          print('FRESH_0036_ROW '+json.dumps(r,sort_keys=True),flush=True)
+          PY
