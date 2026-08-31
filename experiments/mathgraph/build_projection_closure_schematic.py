@@ -108,7 +108,7 @@ COMPACT = r'''    def compact_certificate(recipe):
                 recipe, environment, set(target_vars), target_vars[0]
             )
         )
-        return "\\n".join(lines) + "\\n"
+        return "\n".join(lines) + "\n"
 
 '''
 
