@@ -84,7 +84,7 @@ def main():
                 if census>=256: stop=True; break
 
     def rank(k):
-        l,r=m.parse_equation(k[0]+' = '+k[1]); rec=spectrum[k]
+        parsed=m.parse_equation(k[0]+' = '+k[1]); l,r=parsed[0],parsed[1]; rec=spectrum[k]
         return (m.term_size(l)+m.term_size(r),-rec['future_size'],rec['proof_nodes'],k[0],k[1])
     ordered=sorted(spectrum,key=rank)
     bundles=[]
