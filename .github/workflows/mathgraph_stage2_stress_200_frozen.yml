@@ -1,0 +1,231 @@
+name: MathGraph frozen Stage 2 stress 200
+
+on:
+  push:
+    branches: [mathgraph/stress200-frozen-b68536-20260831]
+    paths:
+      - .github/workflows/mathgraph_stage2_stress_200_frozen.yml
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      PYTHONHASHSEED: '0'
+      SOURCE_HEAD: b68536b6c65a8f6396c8dae03ba75dc95654a38d
+      OFFICIAL_HEAD: 817a4653bf762584931d49c6714c9fcfab7df66a
+      SHARD_COUNT: '8'
+      SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build exact frozen candidate before reading stress data
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "$SOURCE_HEAD"
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py \
+            --output /tmp/candidate.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('/tmp/candidate.py')
+          s = p.read_text()
+          a = 'frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b = 'given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a) == 1 and s.count(b) == 1
+          p.write_text(s.replace(a, 'frontier_seconds = 30.0').replace(b, 'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/candidate.py
+          python -m py_compile /tmp/candidate.py
+          rm -rf /tmp/__pycache__
+          bytes=$(wc -c < /tmp/candidate.py)
+          sha=$(sha256sum /tmp/candidate.py | awk '{print $1}')
+          echo "FROZEN_CANDIDATE source=$SOURCE_HEAD bytes=$bytes sha256=$sha"
+          test "$bytes" -le 500000
+          printf '%s\n' "$sha" > /tmp/candidate.sha256
+          printf '%s\n' "$bytes" > /tmp/candidate.bytes
+
+      - name: Checkout pinned official 4.33.1 judge
+        run: |
+          set -euo pipefail
+          git init /tmp/official
+          git -C /tmp/official remote add origin https://github.com/SAIRcompetition/equational-theories-lean-stage2.git
+          git -C /tmp/official fetch --depth 1 origin "$OFFICIAL_HEAD"
+          git -C /tmp/official checkout --detach FETCH_HEAD
+          test "$(git -C /tmp/official rev-parse HEAD)" = "$OFFICIAL_HEAD"
+          echo "OFFICIAL_TOOLCHAIN $(cat /tmp/official/lean-toolchain)"
+          grep -q 'leanprover/lean4:v4.33.1' /tmp/official/lean-toolchain
+          mkdir -p /tmp/official/submissions/mathgraph
+          cp /tmp/candidate.py /tmp/official/submissions/mathgraph/solver.py
+          test "$(find /tmp/official/submissions/mathgraph -mindepth 1 -maxdepth 1 -type f -printf '%f\n')" = 'solver.py'
+          test "$(sha256sum /tmp/official/submissions/mathgraph/solver.py | awk '{print $1}')" = "$(cat /tmp/candidate.sha256)"
+
+      - name: Setup exact official judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: |
+          set -euo pipefail
+          python -m pip install 'openai>=1,<3'
+          bash scripts/setup.sh
+          source .env.judge
+          lean --version
+
+      - name: Fetch and freeze Stage 2 stress dataset
+        run: |
+          set -euo pipefail
+          curl -fL --retry 3 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stage2_stress_test.jsonl
+          test "$(wc -l < /tmp/stage2_stress_test.jsonl)" -eq 200
+          echo "STRESS_DATASET rows=200 sha256=$(sha256sum /tmp/stage2_stress_test.jsonl | awk '{print $1}')"
+          sha256sum /tmp/stage2_stress_test.jsonl | awk '{print $1}' > /tmp/stress.sha256
+
+      - name: Run untouched frozen candidate on stress shard
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json, os, sys, time
+          from collections import Counter
+          from pathlib import Path
+
+          ROOT = Path('/tmp/official')
+          sys.path.insert(0, str(ROOT))
+          from pipeline.proxy import load_config, load_problems, run_solver
+
+          rows = load_problems('/tmp/stage2_stress_test.jsonl')
+          shard = int(os.environ['SHARD'])
+          nshards = int(os.environ['SHARD_COUNT'])
+          selected = rows[shard::nshards]
+          cfg0 = load_config()
+          cfg0.setdefault('sandbox', {})['mode'] = 'none'
+
+          records = []
+          for row in selected:
+              cfg = json.loads(json.dumps(cfg0))
+              trace = []
+              t0 = time.monotonic()
+              try:
+                  result = run_solver(
+                      ROOT / 'submissions/mathgraph', row, cfg,
+                      trace_hook=lambda e: trace.append(e),
+                  )
+                  judges = [x for x in trace if x.get('type') == 'judge']
+                  errors = [x for x in trace if x.get('type') == 'error']
+                  rec = {
+                      'id': row['id'],
+                      'difficulty': row.get('difficulty'),
+                      'answer': row.get('answer'),
+                      'elapsed': round(time.monotonic() - t0, 3),
+                      'solved': bool(result.get('solved')),
+                      'verdict': result.get('verdict'),
+                      'judge_calls': result.get('judge_calls', 0),
+                      'judge_statuses': [(x.get('response') or {}).get('status') for x in judges],
+                      'llm_calls': result.get('llm_calls', 0),
+                      'errors': [x.get('message') for x in errors],
+                  }
+              except Exception as exc:
+                  rec = {
+                      'id': row['id'], 'difficulty': row.get('difficulty'),
+                      'answer': row.get('answer'),
+                      'elapsed': round(time.monotonic() - t0, 3),
+                      'solved': False, 'verdict': None, 'judge_calls': 0,
+                      'judge_statuses': [], 'llm_calls': 0,
+                      'errors': [f'{type(exc).__name__}: {exc}'],
+                  }
+              records.append(rec)
+              print('STRESS200_CASE ' + json.dumps(rec, sort_keys=True), flush=True)
+
+          summary = {
+              'shard': shard,
+              'count': len(records),
+              'solved': sum(r['solved'] for r in records),
+              'llm_calls': sum(r['llm_calls'] for r in records),
+              'candidate_sha256': Path('/tmp/candidate.sha256').read_text().strip(),
+              'candidate_bytes': int(Path('/tmp/candidate.bytes').read_text()),
+              'dataset_sha256': Path('/tmp/stress.sha256').read_text().strip(),
+              'official_head': os.environ['OFFICIAL_HEAD'],
+              'source_head': os.environ['SOURCE_HEAD'],
+              'by_difficulty': dict(Counter(r['difficulty'] for r in records if r['solved'])),
+              'failures': [r for r in records if not r['solved']],
+          }
+          out = Path(f'/tmp/stress_shard_{shard}.json')
+          out.write_text(json.dumps(summary, indent=2, sort_keys=True))
+          print('STRESS200_SHARD ' + json.dumps(summary, sort_keys=True), flush=True)
+          PY
+
+      - name: Upload frozen stress result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stress-shard-${{ matrix.shard }}
+          path: /tmp/stress_shard_${{ matrix.shard }}.json
+          if-no-files-found: error
+
+      - name: Assert shard clean
+        run: |
+          python - <<'PY'
+          import json, os
+          p=f"/tmp/stress_shard_{os.environ['SHARD']}.json"
+          d=json.load(open(p))
+          if d['solved'] != d['count'] or d['llm_calls'] != 0:
+              raise SystemExit(f"shard failed: {d['solved']}/{d['count']} solved, llm={d['llm_calls']}")
+          print(f"STRESS200_SHARD_PASS shard={d['shard']} solved={d['solved']}/{d['count']} llm=0")
+          PY
+
+  aggregate:
+    if: always()
+    needs: verify
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: stress-shard-*
+          path: /tmp/results
+          merge-multiple: true
+      - name: Aggregate first frozen generalization pass
+        run: |
+          python - <<'PY'
+          import glob, json
+          from collections import Counter
+          files=sorted(glob.glob('/tmp/results/stress_shard_*.json'))
+          rows=[json.load(open(f)) for f in files]
+          if len(rows) != 8:
+              raise SystemExit(f'expected 8 shard artifacts, found {len(rows)}')
+          hashes={r['candidate_sha256'] for r in rows}
+          data_hashes={r['dataset_sha256'] for r in rows}
+          source={r['source_head'] for r in rows}
+          official={r['official_head'] for r in rows}
+          total=sum(r['count'] for r in rows)
+          solved=sum(r['solved'] for r in rows)
+          llm=sum(r['llm_calls'] for r in rows)
+          failures=[x for r in rows for x in r['failures']]
+          by=Counter()
+          for r in rows: by.update(r['by_difficulty'])
+          summary={
+              'total': total, 'solved': solved, 'llm_calls': llm,
+              'candidate_sha256': sorted(hashes),
+              'dataset_sha256': sorted(data_hashes),
+              'source_head': sorted(source),
+              'official_head': sorted(official),
+              'solved_by_difficulty': dict(by),
+              'failure_ids': [x['id'] for x in failures],
+          }
+          print('STRESS200_FINAL ' + json.dumps(summary, sort_keys=True))
+          if len(hashes)!=1 or len(data_hashes)!=1 or len(source)!=1 or len(official)!=1:
+              raise SystemExit('freeze mismatch across shards')
+          if total != 200 or solved != 200 or llm != 0:
+              raise SystemExit(f'first frozen pass: {solved}/{total}, llm={llm}, failures={summary["failure_ids"]}')
+          print('STRESS200_PASS 200/200 ZERO_LLM')
+          PY
