@@ -17,15 +17,21 @@ jobs:
     env:
       PYTHONHASHSEED: '0'
       OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+      ISOLATION_SOURCE_SHA: e8fadce708df43ed7cdbd598b673941e2120053d
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Build diagnostic isolated candidate
+      - name: Rebuild exact successful isolation source state with certificate capture
         run: |
           set -euo pipefail
-          python experiments/mathgraph/build_projection_closure_early_schematic.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          git worktree add --detach /tmp/source "$ISOLATION_SOURCE_SHA"
+          python /tmp/source/experiments/mathgraph/build_projection_closure_early_schematic.py \
+            --base /tmp/source/submissions/mathgraph/solver.py \
+            --output /tmp/solver.py
           python - <<'PY'
           from pathlib import Path
           p=Path('/tmp/solver.py'); s=p.read_text()
@@ -36,17 +42,15 @@ jobs:
           block='''    # Generic source-only closure before finite-model and deep routes.\n    if run_projection_closure_fallback(source, target, timeout):\n        return\n\n'''
           assert s.count(block)==1
           s=s.replace(block, block+'    return\n\n', 1)
-          # Wrap judge so every TRUE certificate and complete judge response are captured.
-          marker='def judge(verdict, certificate):\n'
+          # Preserve proof generation exactly; only mirror the compact certificate
+          # to disk immediately before its existing size check/judge call.
+          marker='''        code = compact_certificate(recipe)\n        if code is None:\n            return False\n        code_bytes = len(code.encode("utf-8"))\n'''
+          replacement='''        code = compact_certificate(recipe)\n        if code is None:\n            return False\n        with open("/tmp/mg-last-cert.lean", "w", encoding="utf-8") as _mg_diag:\n            _mg_diag.write(code)\n        code_bytes = len(code.encode("utf-8"))\n'''
           assert s.count(marker)==1
-          s=s.replace(marker, 'def _mg_original_judge(verdict, certificate):\n', 1)
-          hook='''\n_mg_diag_counter = 0\ndef judge(verdict, certificate):\n    global _mg_diag_counter\n    _mg_diag_counter += 1\n    from pathlib import Path as _MGPath\n    _MGPath(f"/tmp/mg-cert-{_mg_diag_counter}.lean").write_text(certificate, encoding="utf-8")\n    response = _mg_original_judge(verdict, certificate)\n    _MGPath(f"/tmp/mg-judge-{_mg_diag_counter}.json").write_text(json.dumps(response, indent=2, sort_keys=True), encoding="utf-8")\n    print("MG_DIAG_JUDGE", json.dumps({"n":_mg_diag_counter,"verdict":verdict,"bytes":len(certificate.encode("utf-8")),"response":response}, sort_keys=True), file=sys.stderr, flush=True)\n    return response\n\n'''
-          insert='def run_projection_closure_fallback(source, target, timeout):\n'
-          assert s.count(insert)==1
-          s=s.replace(insert, hook+insert, 1)
+          s=s.replace(marker,replacement,1)
           p.write_text(s)
           PY
-          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          python /tmp/source/experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
           python -m py_compile /tmp/solver.py
           echo "candidate_sha256=$(sha256sum /tmp/solver.py | awk '{print $1}')"
           echo "candidate_bytes=$(wc -c < /tmp/solver.py | tr -d ' ')"
@@ -87,24 +91,21 @@ jobs:
           cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
           out=Path('/tmp/diag'); out.mkdir(exist_ok=True)
           for rid in ('order5_normal_0030','order5_normal_0036'):
-              for p in Path('/tmp').glob('mg-cert-*.lean'): p.unlink()
-              for p in Path('/tmp').glob('mg-judge-*.json'): p.unlink()
+              cert=Path('/tmp/mg-last-cert.lean')
+              if cert.exists(): cert.unlink()
               row=rows[rid]; trace=[]; t=time.monotonic()
               try:
                   result=run_solver(ROOT/'submissions/mathgraph_projection',row,cfg,trace_hook=lambda e:trace.append(e))
                   err=None
               except Exception as exc:
                   result={}; err=f'{type(exc).__name__}: {exc}'
-              statuses=[(e.get('response') or {}).get('status') for e in trace if e.get('type')=='judge']
-              rec={'id':rid,'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0),'error':err}
+              judge_events=[e for e in trace if e.get('type')=='judge']
+              rec={'id':rid,'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_events':judge_events,'llm_calls':result.get('llm_calls',0),'error':err}
               (out/f'{rid}.json').write_text(json.dumps(rec,indent=2,sort_keys=True))
-              certs=sorted(Path('/tmp').glob('mg-cert-*.lean'))
-              judges=sorted(Path('/tmp').glob('mg-judge-*.json'))
-              if certs: shutil.copy(certs[-1],out/f'{rid}.lean')
-              if judges: shutil.copy(judges[-1],out/f'{rid}-judge.json')
+              if cert.exists(): shutil.copy(cert,out/f'{rid}.lean')
               print('DIAG_RESULT',json.dumps(rec,sort_keys=True),flush=True)
           PY
-          for f in /tmp/diag/*; do echo "===== $f ====="; cat "$f"; done
+          for f in /tmp/diag/*.json; do echo "===== $f ====="; cat "$f"; done
           exit 0
       - uses: actions/upload-artifact@v4
         with:
