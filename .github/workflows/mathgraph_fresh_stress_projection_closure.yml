@@ -25,7 +25,7 @@ jobs:
       - name: Build deterministic generic candidate
         run: |
           set -euo pipefail
-          python experiments/mathgraph/build_projection_closure_specialist.py \
+          python experiments/mathgraph/build_projection_closure_schematic.py \
             --base submissions/mathgraph/solver.py --output /tmp/solver.py
           python - <<'PY'
           from pathlib import Path
@@ -59,14 +59,14 @@ jobs:
       - name: Install proxy dependency
         working-directory: /tmp/official
         run: python -m pip install 'openai>=1,<3'
-      - name: Fetch stress row
+      - name: Fetch stress set
         run: |
           set -euo pipefail
           curl -fL --retry 4 \
             'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
             -o /tmp/stage2_stress_test.jsonl
           test "$(wc -l < /tmp/stage2_stress_test.jsonl | tr -d ' ')" = '200'
-      - name: Require fresh residual Lean acceptance
+      - name: Require both fresh residuals Lean accepted
         working-directory: /tmp/official
         shell: bash
         run: |
@@ -78,32 +78,36 @@ jobs:
           ROOT = Path('/tmp/official'); sys.path.insert(0, str(ROOT))
           from pipeline.proxy import load_config, load_problems, run_solver
           rows = {r['id']: r for r in load_problems('/tmp/stage2_stress_test.jsonl')}
-          row = rows['order5_normal_0036']
-          assert row['eq1_id'] == 6543 and row['eq2_id'] == 29450 and row['answer'] is True
+          expected = {
+              'order5_normal_0030': (19040, 17478),
+              'order5_normal_0036': (6543, 29450),
+          }
           cfg = load_config()
           assert cfg['solver']['timeout_seconds'] == 3600
           assert cfg['judge']['lean_timeout_seconds'] == 300
           cfg.setdefault('sandbox', {})['mode'] = 'none'
-          trace = []; t0 = time.monotonic()
-          result = run_solver(
-              ROOT / 'submissions/mathgraph_projection', row, cfg,
-              trace_hook=lambda e: trace.append(e),
-          )
-          judges = [x for x in trace if x.get('type') == 'judge']
-          statuses = [(x.get('response') or {}).get('status') for x in judges]
-          out = {
-              'id': row['id'], 'eq1_id': row['eq1_id'], 'eq2_id': row['eq2_id'],
-              'elapsed': round(time.monotonic() - t0, 3),
-              'solved': bool(result.get('solved')), 'verdict': result.get('verdict'),
-              'judge_calls': result.get('judge_calls', 0),
-              'judge_statuses': statuses, 'llm_calls': result.get('llm_calls', 0),
-          }
-          print('FRESH_PROJECTION_CLOSURE', json.dumps(out, sort_keys=True), flush=True)
-          if not out['solved'] or out['verdict'] != 'true':
-              raise SystemExit('fresh residual not solved')
-          if statuses != ['accepted']:
-              raise SystemExit(f'expected one accepted judge call, got {statuses}')
-          if out['llm_calls'] != 0:
-              raise SystemExit('unexpected LLM call')
-          print('FRESH_PROJECTION_CLOSURE_PASS')
+          solved = []
+          for rid, pair in expected.items():
+              row = rows[rid]
+              assert (row['eq1_id'], row['eq2_id']) == pair and row['answer'] is True
+              trace = []; t0 = time.monotonic()
+              result = run_solver(
+                  ROOT / 'submissions/mathgraph_projection', row, cfg,
+                  trace_hook=lambda e: trace.append(e),
+              )
+              judges = [x for x in trace if x.get('type') == 'judge']
+              statuses = [(x.get('response') or {}).get('status') for x in judges]
+              out = {
+                  'id': rid, 'eq1_id': row['eq1_id'], 'eq2_id': row['eq2_id'],
+                  'elapsed': round(time.monotonic() - t0, 3),
+                  'solved': bool(result.get('solved')), 'verdict': result.get('verdict'),
+                  'judge_calls': result.get('judge_calls', 0),
+                  'judge_statuses': statuses, 'llm_calls': result.get('llm_calls', 0),
+              }
+              print('FRESH_PROJECTION_CLOSURE', json.dumps(out, sort_keys=True), flush=True)
+              if out['solved'] and out['verdict'] == 'true' and statuses == ['accepted'] and out['llm_calls'] == 0:
+                  solved.append(rid)
+          if set(solved) != set(expected):
+              raise SystemExit(f'missing {sorted(set(expected) - set(solved))}')
+          print('FRESH_PROJECTION_CLOSURE_BOTH_PASS', json.dumps(sorted(solved)))
           PY
