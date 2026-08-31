@@ -135,3 +135,5 @@ jobs:
           name: stress-shard-${{ matrix.shard }}
           path: /tmp/stress-shard-${{ matrix.shard }}.json
           if-no-files-found: warn
+
+# workflow exists before this trigger commit so GitHub registers the push event
