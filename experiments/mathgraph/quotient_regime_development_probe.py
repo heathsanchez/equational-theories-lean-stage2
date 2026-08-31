@@ -2,9 +2,9 @@
 """Test whether a new bounded-future quotient class develops into a stronger regime law.
 
 The first stage discovers a strict reducer whose continuation signature is absent from a
-bounded pre-repair quotient.  Its alpha-canonical equation is then re-proved independently
-from the original source, making the law portable.  Finally a fixed problem-blind grammar
-of small collapse schemas is searched with that derived law available.  Every positive
+bounded pre-repair quotient. Its alpha-canonical equation is then re-proved independently
+from the original source, making the law portable. Finally a fixed problem-blind grammar
+of small collapse schemas is searched with that derived law available. Every positive
 must replay from the original source.
 """
 import argparse, importlib.util, json, time
@@ -36,7 +36,6 @@ def main():
         if rv<lv:return (2,len(lv-rv),len(lv))
         return (3,len(lv|rv),len(lv|rv))
 
-    # Build the same pre-repair world that exposed the quotient split.
     e,s=setup(original_target,24.0)
     for _ in range(3):
         rules=s.rules(); snap=list(rules); props=[]
@@ -102,7 +101,6 @@ def main():
         print('QUOTIENT_REGIME '+json.dumps({'id':row['id'],'new_class':False},sort_keys=True));return
     discovered=candidates[0][3]
 
-    # Canonicalize the discovered endpoint by first-occurrence alpha renaming.
     names={}
     def canon(t):
         if t[0]=='var':
@@ -113,7 +111,6 @@ def main():
     cvars=tuple(dict.fromkeys(list(names.values())))
     canonical_goal=(cl,cr,cvars)
 
-    # Re-prove the canonical schema independently so its proof is portable.
     ce,cs=setup(canonical_goal,75.0); cf=cs.solve(); portable=None; canonical_info={'found':cf is not None,'replay':False}
     if cf is not None:
         ci=ce.inline_recipe(cf)
@@ -137,7 +134,9 @@ def main():
                     z=m.Recipe(expand_term(q.lhs),expand_term(q.rhs),q.kind,ps,data);cache[k]=z;return z
                 portable=expand_recipe(ci)
 
-    schemas=[('carrier-collapse','x = y'),('idempotence','x * x = x'),('left-projection','x * y = x'),('right-projection','x * y = y'),('left-absorb-right','x * (x * y) = x'),('left-absorb-left','x * (y * x) = x'),('right-absorb-right','(x * y) * x = x'),('right-absorb-left','(y * x) * x = x')]
+    # Projection first: small-model diagnostics make it the highest-information generic schema,
+    # while the vocabulary itself remains fixed and problem-blind.
+    schemas=[('left-projection','x * y = x'),('idempotence','x * x = x'),('right-projection','x * y = y'),('carrier-collapse','x = y'),('left-absorb-right','x * (x * y) = x'),('left-absorb-left','x * (y * x) = x'),('right-absorb-right','(x * y) * x = x'),('right-absorb-left','(y * x) * x = x')]
     traces=[]; certified=[]
     if portable is not None:
         for name,text in schemas:
@@ -149,8 +148,11 @@ def main():
                     ns,r=gs.compile(gi); ok=m.replay_dag(source,ns,r,maximum_term_size=300,maximum_nodes=60000);rec['replay']=ok;rec['proof_nodes']=len(ns)
                     if ok:certified.append((name,gi,ge,gs))
             traces.append(rec)
+            # A certified left projection is terminal for this source regime; no need to spend
+            # budget on weaker alternatives before testing the original target.
+            if name=='left-projection' and rec['replay']:
+                break
 
-    # If a stronger generic schema is certified, restart the original target with it.
     target_info={'found':False,'replay':False}
     if certified:
         te,ts=setup(original_target,120.0); added=0
