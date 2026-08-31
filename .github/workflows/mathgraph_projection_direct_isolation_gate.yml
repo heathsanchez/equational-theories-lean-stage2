@@ -35,8 +35,6 @@ jobs:
           s=s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0')
           block='''    # Generic source-only closure before finite-model and deep routes.\n    if run_projection_closure_fallback(source, target, timeout):\n        return\n\n'''
           assert s.count(block)==1
-          # Isolation: if the generic closure abstains, exit immediately instead
-          # of allowing any later portfolio route to mask the scientific result.
           s=s.replace(block, block+'    return\n\n', 1)
           p.write_text(s)
           PY
@@ -64,16 +62,18 @@ jobs:
         run: |
           curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stage2_stress_test.jsonl
           test "$(wc -l < /tmp/stage2_stress_test.jsonl | tr -d ' ')" = '200'
-      - name: Isolate projection closure on both residuals
+      - name: Isolate projection closure and capture exact judge residuals
         working-directory: /tmp/official
         shell: bash
         run: |
           set -euo pipefail
           source .env.judge
+          mkdir -p /tmp/projection-diagnostics
           python - <<'PY'
           import json,sys,time
           from pathlib import Path
           ROOT=Path('/tmp/official'); sys.path.insert(0,str(ROOT))
+          OUT=Path('/tmp/projection-diagnostics')
           from pipeline.proxy import load_config,load_problems,run_solver
           rows={r['id']:r for r in load_problems('/tmp/stage2_stress_test.jsonl')}
           cfg=load_config(); cfg.setdefault('sandbox',{})['mode']='none'
@@ -82,10 +82,29 @@ jobs:
           for rid in ids:
               row=rows[rid]; trace=[]; t=time.monotonic()
               result=run_solver(ROOT/'submissions/mathgraph_projection',row,cfg,trace_hook=lambda e:trace.append(e))
-              statuses=[(e.get('response') or {}).get('status') for e in trace if e.get('type')=='judge']
+              judges=[e for e in trace if e.get('type')=='judge']
+              statuses=[(e.get('response') or {}).get('status') for e in judges]
               rec={'id':rid,'eq1_id':row['eq1_id'],'eq2_id':row['eq2_id'],'elapsed':round(time.monotonic()-t,3),'solved':bool(result.get('solved')),'verdict':result.get('verdict'),'judge_calls':result.get('judge_calls',0),'judge_statuses':statuses,'llm_calls':result.get('llm_calls',0)}
               print('DIRECT_CLOSURE_RESULT',json.dumps(rec,sort_keys=True),flush=True)
+              (OUT/f'{rid}.result.json').write_text(json.dumps(rec,indent=2,sort_keys=True))
+              (OUT/f'{rid}.trace.json').write_text(json.dumps(trace,indent=2,sort_keys=True))
+              if judges:
+                  j=judges[-1]
+                  code=((j.get('request') or {}).get('code') or '')
+                  response=j.get('response') or {}
+                  (OUT/f'{rid}.lean').write_text(code)
+                  (OUT/f'{rid}.judge.json').write_text(json.dumps(response,indent=2,sort_keys=True))
+                  print('DIRECT_CLOSURE_JUDGE',rid,json.dumps(response,sort_keys=True),flush=True)
+                  print('DIRECT_CLOSURE_CODE_BYTES',rid,len(code.encode('utf-8')),flush=True)
               if rec['solved'] and rec['verdict']=='true' and statuses==['accepted'] and rec['llm_calls']==0: passed.append(rid)
+          (OUT/'summary.json').write_text(json.dumps({'passed':passed,'missing':sorted(set(ids)-set(passed))},indent=2,sort_keys=True))
           if set(passed)!=set(ids): raise SystemExit('DIRECT_CLOSURE_MISSING '+repr(sorted(set(ids)-set(passed))))
           print('DIRECT_CLOSURE_BOTH_PASS',json.dumps(sorted(passed)),flush=True)
           PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: projection-closure-exact-lean-residuals
+          path: /tmp/projection-diagnostics
+          if-no-files-found: warn
+          retention-days: 30
