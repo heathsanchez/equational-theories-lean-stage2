@@ -1,0 +1,7 @@
+name: projection debug capture 2
+on: workflow_dispatch
+jobs:
+  noop:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo noop
