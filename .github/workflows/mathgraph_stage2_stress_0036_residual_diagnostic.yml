@@ -1,0 +1,101 @@
+name: MathGraph fresh stress 0036 residual diagnostic
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_stress_0036_residual_diagnostic.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      PYTHONHASHSEED: '0'
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild and verify untouched frozen solver
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+          test "$(wc -c < /tmp/solver.py | tr -d ' ')" = '339289'
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+          echo "DIAGNOSTIC_BASELINE sha256=$(sha256sum /tmp/solver.py | awk '{print $1}') bytes=$(wc -c < /tmp/solver.py | tr -d ' ')"
+
+      - name: Instrument recognition census without changing search choices
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          needle1='''        raw.sort(key=lambda item: item[0])\n        candidates = []\n'''
+          repl1='''        raw.sort(key=lambda item: item[0])\n        raw_direct_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(raw)\n            if (candidate.lhs, candidate.rhs) == target[:2]\n            or (candidate.lhs, candidate.rhs) == (target[1], target[0])\n        ]\n        print(\n            "MATHGRAPH_DIAGNOSTIC " + json.dumps({\n                "stage": "raw-cross",\n                "raw_count": len(raw),\n                "direct_target_hits": len(raw_direct_target_ranks),\n                "first_direct_target_rank": raw_direct_target_ranks[0] if raw_direct_target_ranks else None,\n            }, separators=(",", ":")),\n            file=sys.stderr, flush=True,\n        )\n        candidates = []\n'''
+          assert s.count(needle1)==1
+          s=s.replace(needle1,repl1,1)
+          needle2='''        retained = []\n        novelty_sizes = []\n'''
+          repl2='''        candidate_direct_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(candidates)\n            if (candidate.lhs, candidate.rhs) == target[:2]\n            or (candidate.lhs, candidate.rhs) == (target[1], target[0])\n        ]\n        candidate_inlined_target_ranks = [\n            i + 1 for i, (_, candidate) in enumerate(candidates)\n            if exact_target(frontier_engine, candidate)\n        ]\n        print(\n            "MATHGRAPH_DIAGNOSTIC " + json.dumps({\n                "stage": "candidate-budget",\n                "candidate_count": len(candidates),\n                "direct_target_hits": len(candidate_direct_target_ranks),\n                "first_direct_target_rank": candidate_direct_target_ranks[0] if candidate_direct_target_ranks else None,\n                "inlined_target_hits": len(candidate_inlined_target_ranks),\n                "first_inlined_target_rank": candidate_inlined_target_ranks[0] if candidate_inlined_target_ranks else None,\n            }, separators=(",", ":")),\n            file=sys.stderr, flush=True,\n        )\n        retained = []\n        novelty_sizes = []\n'''
+          assert s.count(needle2)==1
+          s=s.replace(needle2,repl2,1)
+          compile(s,str(p),'exec'); p.write_text(s)
+          PY
+
+      - name: Fetch fresh stress row
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          row=next(r for r in rows if r['id']=='order5_normal_0036')
+          assert row['answer'] is True
+          print('FRESH_RESIDUAL_ROW '+json.dumps(row,sort_keys=True),flush=True)
+          open('/tmp/row.json','w').write(json.dumps(row))
+          PY
+
+      - name: Run isolated frozen behavioural fallback with census
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util, json, time
+          row=json.load(open('/tmp/row.json'))
+          spec=importlib.util.spec_from_file_location('mgdiag','/tmp/solver.py')
+          mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+          judge_calls=[]
+          def fake_judge(verdict, code):
+              judge_calls.append((verdict,len(code.encode('utf-8'))))
+              print('DIAGNOSTIC_JUDGE_CANDIDATE '+json.dumps({'verdict':verdict,'bytes':len(code.encode('utf-8'))}),flush=True)
+              return {'status':'accepted'}
+          mod.judge=fake_judge
+          source=mod.parse_equation(row['equation1'])
+          target=mod.parse_equation(row['equation2'])
+          t=time.monotonic()
+          found=mod.run_behavioural_future_fallback(source,target,3600)
+          print('FRESH_0036_DIAGNOSTIC_DONE '+json.dumps({
+              'elapsed':round(time.monotonic()-t,3),
+              'fallback_returned':bool(found),
+              'judge_candidates':len(judge_calls),
+          },sort_keys=True),flush=True)
+          PY
