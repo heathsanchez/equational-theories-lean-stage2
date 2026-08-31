@@ -1,0 +1,82 @@
+name: MathGraph dependency ratchet replay probe
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_stress_dependency_ratchet_replay_probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        residual: [order5_normal_0030, order5_normal_0036]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      PYTHONHASHSEED: '0'
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Build exact frozen solver with ratchet
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py \
+            --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+          python experiments/mathgraph/inject_dependency_ratchet.py /tmp/solver.py
+          python -m py_compile /tmp/solver.py
+          rm -rf /tmp/__pycache__
+
+      - name: Fetch fresh row
+        env:
+          RID: ${{ matrix.residual }}
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' \
+            -o /tmp/stress.jsonl
+          python - <<'PY'
+          import json, os
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl')]
+          r=next(r for r in rows if r['id']==os.environ['RID'])
+          open('/tmp/row.json','w').write(json.dumps(r))
+          PY
+
+      - name: Run replay-only ratchet probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import importlib.util, json, os, time
+          row=json.load(open('/tmp/row.json'))
+          spec=importlib.util.spec_from_file_location('mgsolver','/tmp/solver.py')
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          m.judge=lambda verdict, code: {'status':'accepted'}
+          source=m.parse_equation(row['equation1'])
+          target=m.parse_equation(row['equation2'])
+          t=time.monotonic()
+          found=m.run_behavioural_future_fallback(source,target,3600)
+          rec={'id':row['id'],'elapsed':round(time.monotonic()-t,3),'accepted_stub':bool(found)}
+          if os.path.exists('/tmp/mathgraph_ratchet_trace.json'):
+              print('RATCHET_REPLAY_TRACE '+open('/tmp/mathgraph_ratchet_trace.json').read(),flush=True)
+          print('RATCHET_REPLAY_RESULT '+json.dumps(rec,sort_keys=True),flush=True)
+          PY
