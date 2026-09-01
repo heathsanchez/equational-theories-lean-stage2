@@ -186,7 +186,7 @@ def main():
                 ctx = (ctx[0], partial_subst(ctx[1], raw_map))
             subst = tuple((v, partial_subst(val, raw_map)) for v, val in n.substitution)
             term_origins = tuple(
-                (v, partial_subst(val, raw_map), origins)
+                (v, partial_subst(val, raw_map), tuple(pid + offset for pid in origins))
                 for v, val, origins in n.term_origins
             ) if n.term_origins else ()
             context_record = None
