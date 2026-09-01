@@ -1,0 +1,32 @@
+name: MathGraph idempotence calibration
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - 'experiments/mathgraph/calibrate_idempotence_recovery.py'
+      - '.github/workflows/mathgraph_stage2_idempotence_calibration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  calibrate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    env:
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch frozen 200-row stress corpus
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+          test "$(wc -l < /tmp/stress.jsonl | tr -d ' ')" = '200'
+          test "$(sha256sum /tmp/stress.jsonl | awk '{print $1}')" = '7e8e9be1b1f0dc32b492473dd5b5ef1d6850a321f5d16dcf63ba81c94a5ffc41'
+      - name: Recover known 0036 idempotence before trusting cheap negatives
+        run: python experiments/mathgraph/calibrate_idempotence_recovery.py /tmp/stress.jsonl
