@@ -46,7 +46,6 @@ def main():
             if added>=64: break
         pre.append({'generation':gen,'proposed':proposed,'added':added,'clauses':len(s.clauses)})
 
-    # Target-blind discovery: replay-certified one-variable projected interfaces.
     seen=set(); recipes=[]; meta=[]; census=replayed=projected=0; rules=s.rules(); s.deadline=time.monotonic()+12.0
     for oi,o in enumerate(rules):
         for ii,i in enumerate(rules):
@@ -70,7 +69,6 @@ def main():
             if s.expired() or census>=176: break
         if s.expired() or census>=176: break
 
-    # Keep a structurally diverse front, independent of target.
     order=sorted(range(len(recipes)), key=lambda j:(m.term_size(recipes[j].lhs)+m.term_size(recipes[j].rhs), meta[j]['proof_nodes'], meta[j]['lhs'], meta[j]['rhs']))
     chosen=[]; sigs=set()
     for j in order:
@@ -80,15 +78,16 @@ def main():
         if len(chosen)>=32: break
     nodes=[recipes[j] for j in chosen]
 
-    # Structured attachment: explicit derivational graph. Each child keeps its parent recipes.
-    ae,asrch=setup(target,20.0); graph_seen=set(); edges=0; generated=0; exact=None; traces=[]
-    frontier=nodes
-    all_nodes=list(nodes)
+    ae,asrch=setup(target,30.0); graph_seen=set(); edges=0; exact=None; traces=[]; frontier=nodes; all_nodes=list(nodes); total_generated=0
     for gen in range(1,4):
-        cand=[]
-        partners=all_nodes[:32]
+        cand=[]; gen_generated=0
+        # preserve recursion: each new frontier can interact with the original interfaces and the previous frontier.
+        partners=(nodes + all_nodes[-32:])[:64]
+        stop=False
         for ai,a0 in enumerate(frontier[:32]):
+            if stop: break
             for bi,b0 in enumerate(partners):
+                if stop: break
                 for ra in (False,True):
                     a1=a0 if not ra else m.Recipe(a0.rhs,a0.lhs,'symmetry',(a0,))
                     for rb in (False,True):
@@ -100,21 +99,18 @@ def main():
                             if c.lhs==c.rhs: continue
                             k=(asrch.alpha_signature(c.lhs,c.rhs),c.lhs,c.rhs)
                             if k in graph_seen: continue
-                            graph_seen.add(k); generated+=1
+                            graph_seen.add(k); gen_generated+=1; total_generated+=1
                             if is_target(c):
                                 ok,pn=replay(c)
                                 if ok:
-                                    exact={'generation':gen,'proof_nodes':pn,'lhs':m.render_term(c.lhs),'rhs':m.render_term(c.rhs)}; break
+                                    exact={'generation':gen,'proof_nodes':pn,'lhs':m.render_term(c.lhs),'rhs':m.render_term(c.rhs)}; stop=True; break
                             cand.append(c)
-                            if generated>=4096: break
-                        if exact or generated>=4096: break
-                    if exact or generated>=4096: break
-                if exact or generated>=4096: break
-            if exact or generated>=4096: break
-        # Target is allowed only here, at attachment: rank graph continuations by target_score.
+                            if gen_generated>=4096: stop=True; break
+                        if stop: break
+                    if stop: break
         cand.sort(key=lambda q:(asrch.target_score(q),m.term_size(q.lhs)+m.term_size(q.rhs),m.render_term(q.lhs),m.render_term(q.rhs)))
         frontier=cand[:32]; all_nodes.extend(frontier)
-        traces.append({'generation':gen,'children':len(cand),'frontier':len(frontier),'edges':edges,'generated':generated})
+        traces.append({'generation':gen,'children':len(cand),'frontier':len(frontier),'edges':edges,'generated_this_generation':gen_generated,'generated_total':total_generated,'best_target_score':asrch.target_score(frontier[0]) if frontier else None})
         if exact or not frontier: break
 
     out={'id':row['id'],'elapsed':round(time.monotonic()-t0,4),'pre_trace':pre,'census':census,'replayed':replayed,'projected':projected,'interfaces':len(recipes),'chosen':len(nodes),'graph_trace':traces,'exact':exact,'recovered':exact is not None}
