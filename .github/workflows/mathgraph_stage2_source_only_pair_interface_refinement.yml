@@ -1,4 +1,5 @@
 name: MathGraph source-only pair interface refinement
+# Trigger after workflow registration; no science change.
 on:
   push:
     branches: [mathgraph/stress-0036-residual-20260831]
