@@ -1,0 +1,72 @@
+name: MathGraph residual portfolio A-B 0046
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_portfolio_ab_0046.yml'
+      - 'experiments/mathgraph/build_residual_portfolio_specialist.py'
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  ab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      PYTHONHASHSEED: '0'
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+      CHAMPION_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Build exact champion and portfolio
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/champion.py
+          python experiments/mathgraph/build_residual_portfolio_specialist.py --base submissions/mathgraph/solver.py --output /tmp/portfolio.py
+          python - <<'PY'
+          from pathlib import Path
+          for name in ('champion','portfolio'):
+              p=Path('/tmp/'+name+'.py');s=p.read_text();a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))';b='given_seconds = min(5.0, max(0.5, timeout / 80.0))';assert s.count(a)==1 and s.count(b)==1;p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/champion.py
+          python experiments/mathgraph/determinize_solver_order.py /tmp/portfolio.py
+          python -m py_compile /tmp/champion.py /tmp/portfolio.py
+          test "$(sha256sum /tmp/champion.py | awk '{print $1}')" = "$CHAMPION_SHA256"
+          test "$(wc -c < /tmp/portfolio.py | tr -d ' ')" -le 500000
+          echo "PORTFOLIO_SOLVERS champion=$(sha256sum /tmp/champion.py | awk '{print $1}') portfolio=$(sha256sum /tmp/portfolio.py | awk '{print $1}') portfolio_bytes=$(wc -c < /tmp/portfolio.py | tr -d ' ')"
+      - name: Checkout pinned official harness
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official && git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+          mkdir -p submissions/champion submissions/portfolio
+          cp /tmp/champion.py submissions/champion/solver.py
+          cp /tmp/portfolio.py submissions/portfolio/solver.py
+      - name: Setup pinned official Lean judge
+        working-directory: /tmp/official
+        env: {SKIP_DOCKER: '1'}
+        run: bash scripts/setup.sh
+      - name: Install proxy dependency
+        working-directory: /tmp/official
+        run: python -m pip install 'openai>=1,<3'
+      - name: Fetch frozen stress
+        run: curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+      - name: Controlled champion portfolio champion 0046
+        working-directory: /tmp/official
+        run: |
+          set -euo pipefail; source .env.judge
+          python - <<'PY'
+          import json,sys,time
+          from pathlib import Path
+          ROOT=Path('/tmp/official');sys.path.insert(0,str(ROOT))
+          from pipeline.proxy import load_config,load_problems,run_solver
+          row=next(r for r in load_problems('/tmp/stress.jsonl') if r['id']=='order4_hard_0046');cfg=load_config();cfg.setdefault('sandbox',{})['mode']='none';out=[]
+          for label,sub in [('champion_1','champion'),('portfolio','portfolio'),('champion_2','champion')]:
+              trace=[];t=time.monotonic();r=run_solver(ROOT/'submissions'/sub,row,cfg,trace_hook=lambda e:trace.append(e));judges=[x for x in trace if x.get('type')=='judge'];rec={'label':label,'elapsed_seconds':round(time.monotonic()-t,3),'solved':bool(r.get('solved')),'verdict':r.get('verdict'),'judge_calls':r.get('judge_calls',0),'judge_statuses':[(x.get('response') or {}).get('status') for x in judges],'llm_calls':r.get('llm_calls',0)};out.append(rec);print('PORTFOLIO_AB_0046_TRIAL',json.dumps(rec,sort_keys=True),flush=True)
+          assert all(x['solved'] and x['judge_statuses']==['accepted'] and x['llm_calls']==0 for x in out)
+          print('PORTFOLIO_AB_0046_RESULT',json.dumps(out,sort_keys=True),flush=True)
+          PY
