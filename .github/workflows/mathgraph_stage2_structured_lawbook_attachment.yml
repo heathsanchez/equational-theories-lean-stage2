@@ -37,6 +37,8 @@ jobs:
               r=next(r for r in rows if r['id']==rid)
               open('/tmp/'+rid+'.json','w').write(json.dumps(r,sort_keys=True))
           PY
+      - name: Source-only first-class pair interface refinement
+        run: python experiments/mathgraph/source_only_pair_interface_refinement.py --solver /tmp/solver.py --row /tmp/order5_normal_0036.json
       - name: Calibrate structured attachment
         run: python experiments/mathgraph/structured_lawbook_attachment_probe.py --solver /tmp/solver.py --row /tmp/order5_normal_0036.json --goal idempotence
       - name: Attack actual 0036
