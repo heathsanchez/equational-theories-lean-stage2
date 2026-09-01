@@ -1,14 +1,14 @@
-name: MathGraph source-only interface graph attachment
+name: MathGraph source-only interface graph
 on:
   push:
     branches: [mathgraph/stress-0036-residual-20260831]
     paths:
-      - 'experiments/mathgraph/source_only_interface_graph_attachment.py'
+      - 'experiments/mathgraph/source_only_interface_graph_probe.py'
       - '.github/workflows/mathgraph_stage2_source_only_interface_graph.yml'
 permissions:
   contents: read
 jobs:
-  graph:
+  graph0036:
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     env:
@@ -35,7 +35,7 @@ jobs:
           PY
           python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
           test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
-      - name: Freeze 0036 positive control
+      - name: Freeze 0036 calibration row
         shell: bash
         run: |
           set -euo pipefail
@@ -47,8 +47,8 @@ jobs:
           r=next(r for r in rows if r['id']=='order5_normal_0036')
           open('/tmp/row.json','w').write(json.dumps(r,sort_keys=True))
           PY
-      - name: Discover source-only interfaces then traverse derivational graph
+      - name: Close proof-bearing source-only interface graph
         shell: bash
         run: |
           set -euo pipefail
-          python experiments/mathgraph/source_only_interface_graph_attachment.py --solver /tmp/solver.py --row /tmp/row.json
+          python experiments/mathgraph/source_only_interface_graph_probe.py --solver /tmp/solver.py --row /tmp/row.json
