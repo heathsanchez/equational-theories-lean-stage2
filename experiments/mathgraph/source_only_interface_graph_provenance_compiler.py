@@ -96,11 +96,11 @@ def main():
         if (n.lhs,n.rhs)==(rhs,lhs): return append_node(m.EqualityNode(lhs,rhs,'symmetry',parents=(root,),constructor='interface-graph'))
         raise RuntimeError('proof endpoint mismatch')
     def clone_law(rec,T):
-        remap={}
+        local=[]; remap={}
+        def add_local(nn): local.append(nn); return len(local)-1
         for old_id,n in enumerate(rec['nodes']):
             parents=tuple(remap[p] for p in n.parents)
-            lhs=subst_all(n.lhs,T); rhs=subst_all(n.rhs,T)
-            kind=n.kind
+            lhs=subst_all(n.lhs,T); rhs=subst_all(n.rhs,T); kind=n.kind
             if kind in ('source instance','source reentry'):
                 sub=tuple((v,subst_all(val,T)) for v,val in n.substitution)
                 nn=m.EqualityNode(lhs,rhs,'source instance',substitution=sub,orientation=n.orientation,constructor='interface-law')
@@ -110,8 +110,21 @@ def main():
                 side,sib=n.context; nn=m.EqualityNode(lhs,rhs,kind,parents=parents,context=(side,subst_all(sib,T)),constructor='interface-law')
             elif kind=='reflexivity': nn=m.EqualityNode(lhs,rhs,'reflexivity',constructor='interface-law')
             else: raise RuntimeError('unsupported node kind '+kind)
-            remap[old_id]=append_node(nn)
-        root=remap[rec['root']]
+            remap[old_id]=add_local(nn)
+        local_root=remap[rec['root']]
+        if not m.replay_dag(source,local,local_root,maximum_term_size=400,maximum_nodes=90000):
+            bad=None
+            for i,n in enumerate(local):
+                if not m.replay_dag(source,local[:i+1],i,maximum_term_size=400,maximum_nodes=90000):
+                    bad={'index':i,'kind':n.kind,'lhs':m.render_term(n.lhs),'rhs':m.render_term(n.rhs),'parents':list(n.parents),'substitution':[(v,m.render_term(t)) for v,t in n.substitution]}; break
+            print('PROVENANCE_CLONE_FAILURE '+json.dumps({'law_lhs':rec['lhs'],'law_rhs':rec['rhs'],'T':m.render_term(T),'bad':bad},sort_keys=True),flush=True)
+            raise RuntimeError('cloned law local replay failed')
+        offset=len(dag); local_to_global={}
+        for i,n in enumerate(local):
+            parents=tuple(offset+p for p in n.parents)
+            nn=m.EqualityNode(n.lhs,n.rhs,n.kind,parents=parents,substitution=n.substitution,context=n.context,orientation=n.orientation,constructor=n.constructor)
+            local_to_global[i]=append_node(nn)
+        root=local_to_global[local_root]
         want=(subst_x(rec['lhs_t'],T),subst_x(rec['rhs_t'],T))
         return orient(root,want[0],want[1])
 
@@ -156,9 +169,7 @@ def main():
         for T in bases:
             l=subst_x(rec['lhs_t'],T); r=subst_x(rec['rhs_t'],T)
             if max(m.term_size(l),m.term_size(r))>31: continue
-            root=clone_law(rec,T)
-            if not m.replay_dag(source,dag,root,maximum_term_size=400,maximum_nodes=200000): raise RuntimeError('cloned law replay failed')
-            link(l,r,root); instantiated+=1
+            root=clone_law(rec,T); link(l,r,root); instantiated+=1
 
     congruence_edges=0
     for _ in range(6):
