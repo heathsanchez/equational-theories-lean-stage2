@@ -20,8 +20,8 @@ def main():
     row=json.load(open(args.row))
     problem={
         'id':'mathgraph_graph_path_idempotence_0036',
-        'eq1_id':row.get('eq1_id',0),
-        'eq2_id':-1,
+        'eq1_id':int(row.get('eq1_id',0) or 0),
+        'eq2_id':0,
         'equation1':row['equation1'],
         'equation2':'x = x * x',
     }
