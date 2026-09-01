@@ -1,0 +1,100 @@
+name: MathGraph source-only interface graph Lean gate
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - '.github/workflows/mathgraph_stage2_source_only_interface_graph_lean_gate.yml'
+      - 'experiments/mathgraph/source_only_interface_graph_compile_probe.py'
+permissions:
+  contents: read
+jobs:
+  lean0036:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONHASHSEED: '0'
+      OFFICIAL_REPO_SHA: 817a4653bf762584931d49c6714c9fcfab7df66a
+      FROZEN_SHA256: f039604f35f03b9c2caf20226e54250777653554093443d205fd2fcd9558f404
+      STRESS_SHA256: 7e8e9be1b1f0dc32b492473dd5b5ef1d6850a321f5d16dcf63ba81c94a5ffc41
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Build exact frozen solver
+        shell: bash
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/build_behavioural_future_specialist.py --base submissions/mathgraph/solver.py --output /tmp/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          a='frontier_seconds = min(12.0, max(0.5, timeout / 40.0))'
+          b='given_seconds = min(5.0, max(0.5, timeout / 80.0))'
+          assert s.count(a)==1 and s.count(b)==1
+          p.write_text(s.replace(a,'frontier_seconds = 30.0').replace(b,'given_seconds = 10.0'))
+          PY
+          python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
+          test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+      - name: Freeze 0036 row and generate replay-certified certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+          test "$(sha256sum /tmp/stress.jsonl | awk '{print $1}')" = "$STRESS_SHA256"
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open('/tmp/stress.jsonl') if x.strip()]
+          r=next(r for r in rows if r['id']=='order5_normal_0036')
+          open('/tmp/row.json','w').write(json.dumps(r,sort_keys=True))
+          PY
+          python experiments/mathgraph/source_only_interface_graph_compile_probe.py --solver /tmp/solver.py --row /tmp/row.json --certificate /tmp/interface_idempotence.lean
+          test -s /tmp/interface_idempotence.lean
+      - name: Checkout exact official Stage 2 judge
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --filter=blob:none https://github.com/SAIRcompetition/equational-theories-lean-stage2.git /tmp/official
+          cd /tmp/official
+          git checkout "$OFFICIAL_REPO_SHA"
+          test "$(git rev-parse HEAD)" = "$OFFICIAL_REPO_SHA"
+          test "$(cat lean-toolchain)" = 'leanprover/lean4:v4.33.1'
+          grep -q '0df444a360eaa60ab8c11dca51a86af692955474' lake-manifest.json
+      - name: Setup exact official Lean judge
+        working-directory: /tmp/official
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Verify generated idempotence certificate with official judge
+        working-directory: /tmp/official
+        shell: bash
+        run: |
+          set -euo pipefail
+          source .env.judge
+          python - <<'PY'
+          import json, sys
+          sys.path.insert(0, '/tmp/official')
+          from judge.verify import verify_answer
+          row=json.load(open('/tmp/row.json'))
+          problem={
+              'id': row['id'] + '_source_only_idempotence',
+              'eq1_id': row['eq1_id'],
+              'eq2_id': 9000036,
+              'equation1': row['equation1'],
+              'equation2': 'x = x * x',
+          }
+          code=open('/tmp/interface_idempotence.lean').read()
+          raw=json.dumps({'verdict':'true','code':code})
+          result=verify_answer(problem, raw)
+          print('OFFICIAL_IDEMPOTENCE_JUDGE', json.dumps({
+              'status': result.get('status'),
+              'error_code': result.get('error_code'),
+              'message': result.get('message'),
+              'axioms': result.get('axioms'),
+              'direct_declarations': result.get('direct_declarations'),
+          }, sort_keys=True), flush=True)
+          if result.get('status') != 'accepted':
+              print('LEAN_STDOUT', result.get('stdout',''), flush=True)
+              print('LEAN_STDERR', result.get('stderr',''), flush=True)
+              raise SystemExit(2)
+          PY
