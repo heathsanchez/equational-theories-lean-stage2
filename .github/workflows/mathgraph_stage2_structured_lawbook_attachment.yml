@@ -25,7 +25,7 @@ jobs:
           PY
           python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
           test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
-      - name: Freeze rows
+      - name: Freeze 0036 row
         run: |
           set -euo pipefail
           curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
@@ -33,15 +33,8 @@ jobs:
           python - <<'PY'
           import json
           rows=[json.loads(x) for x in open('/tmp/stress.jsonl') if x.strip()]
-          for rid in ('order5_normal_0036','order5_normal_0030'):
-              r=next(r for r in rows if r['id']==rid)
-              open('/tmp/'+rid+'.json','w').write(json.dumps(r,sort_keys=True))
+          r=next(r for r in rows if r['id']=='order5_normal_0036')
+          open('/tmp/order5_normal_0036.json','w').write(json.dumps(r,sort_keys=True))
           PY
       - name: Source-only first-class pair interface refinement
         run: python experiments/mathgraph/source_only_pair_interface_refinement.py --solver /tmp/solver.py --row /tmp/order5_normal_0036.json
-      - name: Calibrate structured attachment
-        run: python experiments/mathgraph/structured_lawbook_attachment_probe.py --solver /tmp/solver.py --row /tmp/order5_normal_0036.json --goal idempotence
-      - name: Attack actual 0036
-        run: python experiments/mathgraph/structured_lawbook_attachment_probe.py --solver /tmp/solver.py --row /tmp/order5_normal_0036.json --goal actual
-      - name: Attack actual 0030
-        run: python experiments/mathgraph/structured_lawbook_attachment_probe.py --solver /tmp/solver.py --row /tmp/order5_normal_0030.json --goal actual
