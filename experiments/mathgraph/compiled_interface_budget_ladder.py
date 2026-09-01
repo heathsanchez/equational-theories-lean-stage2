@@ -5,7 +5,7 @@ def load(path):
     spec=importlib.util.spec_from_file_location('mgsolver',path)
     m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
-def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
+def run(m,row,pre_seconds,projection_seconds,rounds,objects_n,probes_n,census_cap):
     source=m.parse_equation(row['equation1']); target=m.parse_equation(row['equation2'])
     base=dict(m.COMPACT_SUPERPOSITION_PROBE); base.update({'maximum_term_size':75,'maximum_replay_term_size':320,'maximum_depth':12,'maximum_rules':896,'maximum_rounds':96,'new_clauses_per_round':64,'maximum_clauses':14000,'normalization_steps':256,'maximum_proof_nodes':70000})
     def setup(goal,sec):
@@ -20,9 +20,10 @@ def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
             return ('op',f(t[1]),f(t[2]))
         return f(lhs),f(rhs),tuple(dict.fromkeys(names.values()))
     def orient(q,r): return q if not r else m.Recipe(q.rhs,q.lhs,'symmetry',(q,))
-    t0=time.monotonic(); e,s=setup(target,seconds)
-    for _ in range(rounds):
-        rules=s.rules(); snap=list(rules); props=[]
+    t0=time.monotonic(); e,s=setup(target,pre_seconds)
+    pre_trace=[]
+    for generation in range(rounds):
+        rules=s.rules(); snap=list(rules); props=[]; added_total=0
         for oi,o in enumerate(snap):
             for ii,i in enumerate(snap):
                 for path in m.nonvariable_positions(o.lhs,maximum_depth=12,include_root=True):
@@ -33,7 +34,7 @@ def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
                     if len(props)>=128:
                         props.sort(key=lambda x:x[0]); added=0
                         for _,q in props:
-                            if s.add_clause(q): s.superpositions+=1; added+=1
+                            if s.add_clause(q): s.superpositions+=1; added+=1; added_total+=1
                             if added>=64: break
                         props=[]; rules=s.rules()
                 if s.expired(): break
@@ -41,8 +42,9 @@ def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
         if props and not s.expired():
             props.sort(key=lambda x:x[0]); added=0
             for _,q in props:
-                if s.add_clause(q): s.superpositions+=1; added+=1
+                if s.add_clause(q): s.superpositions+=1; added+=1; added_total+=1
                 if added>=64: break
+        pre_trace.append({'generation':generation+1,'added':added_total,'clauses':len(s.clauses),'expired':s.expired()})
         if s.expired(): break
     objects=sorted(s.clauses,key=s.target_score)[:objects_n]; probes=objects[:probes_n]
     def alpha(q): return str(s.alpha_signature(q.lhs,q.rhs))
@@ -59,8 +61,8 @@ def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
                             if c is not None: out.add(alpha(c))
         return frozenset(out)
     old={future(q) for q in objects}; seen=set(); census=replayed=projected=0
-    # Keep the same mechanism, but use the remaining calibrated wall budget and early-stop on the positive control.
-    s.deadline=time.monotonic()+seconds; rules=s.rules()
+    # Projection gets a fresh independent budget. This matches the calibrated positive-control architecture.
+    s.deadline=time.monotonic()+projection_seconds; rules=s.rules()
     for oi,o in enumerate(rules):
         for ii,i in enumerate(rules):
             for path in m.nonvariable_positions(o.lhs,maximum_depth=12,include_root=True):
@@ -82,21 +84,22 @@ def run(m,row,seconds,rounds,objects_n,probes_n,census_cap):
                 if act[2]!=('x',): continue
                 lhs=m.render_term(act[0]); rhs=m.render_term(act[1])
                 if lhs=='x' and rhs=='(x ◇ x)':
-                    return {'recovered':True,'elapsed':round(time.monotonic()-t0,4),'seconds':seconds,'rounds':rounds,'objects':objects_n,'probes':probes_n,'census_cap':census_cap,'census':census,'replayed':replayed,'projected':projected,'proof_nodes':len(pn),'future_size':len(fs)}
+                    return {'recovered':True,'elapsed':round(time.monotonic()-t0,4),'pre_seconds':pre_seconds,'projection_seconds':projection_seconds,'rounds':rounds,'objects':objects_n,'probes':probes_n,'census_cap':census_cap,'census':census,'replayed':replayed,'projected':projected,'proof_nodes':len(pn),'future_size':len(fs),'pre_trace':pre_trace}
             if s.expired() or census>=census_cap: break
         if s.expired() or census>=census_cap: break
-    return {'recovered':False,'elapsed':round(time.monotonic()-t0,4),'seconds':seconds,'rounds':rounds,'objects':objects_n,'probes':probes_n,'census_cap':census_cap,'census':census,'replayed':replayed,'projected':projected}
+    return {'recovered':False,'elapsed':round(time.monotonic()-t0,4),'pre_seconds':pre_seconds,'projection_seconds':projection_seconds,'rounds':rounds,'objects':objects_n,'probes':probes_n,'census_cap':census_cap,'census':census,'replayed':replayed,'projected':projected,'pre_trace':pre_trace}
 
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('--solver',required=True); ap.add_argument('--row',required=True); a=ap.parse_args()
     m=load(a.solver); row=json.load(open(a.row))
+    # Each rung independently reduces the two calibrated phases. The last rung reproduces 30s pre + 55s projection.
     ladder=[
-      (8,1,48,8,48),
-      (12,1,64,12,64),
-      (18,2,96,16,96),
-      (25,2,128,24,128),
-      (35,3,160,32,176),
-      (50,3,224,40,227),
+      (3,3,1,48,8,48),
+      (5,5,1,64,12,64),
+      (8,8,2,96,16,96),
+      (12,12,2,128,24,128),
+      (20,25,3,160,32,176),
+      (30,55,3,224,40,227),
     ]
     out=[]
     for cfg in ladder:
