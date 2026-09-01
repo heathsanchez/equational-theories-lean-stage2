@@ -25,9 +25,9 @@ def main():
     def subst_x(t,repl):
         if t[0]=='var': return repl if t[1]=='x' else t
         return ('op',subst_x(t[1],repl),subst_x(t[2],repl))
-    def subst_all(t,repl):
-        if t[0]=='var': return repl
-        return ('op',subst_all(t[1],repl),subst_all(t[2],repl))
+    def subst_named(t,name,repl):
+        if t[0]=='var': return repl if t[1]==name else t
+        return ('op',subst_named(t[1],name,repl),subst_named(t[2],name,repl))
     def skey(s,q): return (m.term_size(q.lhs)+m.term_size(q.rhs),str(s.alpha_signature(q.lhs,q.rhs)),m.render_term(q.lhs),m.render_term(q.rhs))
     def tkey(t): return (m.term_size(t),m.render_term(t))
 
@@ -68,8 +68,10 @@ def main():
                 if not m.replay_dag(source,pn,pr,maximum_term_size=400,maximum_nodes=90000): continue
                 projected+=1; ep=(pn[pr].lhs,pn[pr].rhs); act=canon(ep[0],ep[1])
                 if act[2]!=('x',): continue
+                epvars=sorted(m.term_variables(ep[0])|m.term_variables(ep[1]))
+                if len(epvars)!=1: continue
                 k=(m.render_term(act[0]),m.render_term(act[1]))
-                rec={'lhs_t':act[0],'rhs_t':act[1],'lhs':k[0],'rhs':k[1],'proof_nodes':len(pn),'nodes':pn,'root':pr}
+                rec={'lhs_t':act[0],'rhs_t':act[1],'lhs':k[0],'rhs':k[1],'proof_nodes':len(pn),'nodes':pn,'root':pr,'dag_var':epvars[0]}
                 prev=spectrum.get(k)
                 if prev is None or rec['proof_nodes']<prev['proof_nodes']: spectrum[k]=rec
             if s.expired() or census>=176: break
@@ -96,19 +98,32 @@ def main():
         if (n.lhs,n.rhs)==(rhs,lhs): return append_node(m.EqualityNode(lhs,rhs,'symmetry',parents=(root,),constructor='interface-graph'))
         raise RuntimeError('proof endpoint mismatch')
     def clone_law(rec,T):
-        local=[]; remap={}
+        local=[]; remap={}; exposed=rec['dag_var']
+        def st(t): return subst_named(t,exposed,T)
         def add_local(nn): local.append(nn); return len(local)-1
         for old_id,n in enumerate(rec['nodes']):
             parents=tuple(remap[p] for p in n.parents)
-            lhs=subst_all(n.lhs,T); rhs=subst_all(n.rhs,T); kind=n.kind
+            lhs=st(n.lhs); rhs=st(n.rhs); kind=n.kind
             if kind in ('source instance','source reentry'):
-                sub=tuple((v,subst_all(val,T)) for v,val in n.substitution)
-                nn=m.EqualityNode(lhs,rhs,'source instance',substitution=sub,orientation=n.orientation,constructor='interface-law')
-            elif kind=='symmetry': nn=m.EqualityNode(lhs,rhs,'symmetry',parents=parents,constructor='interface-law')
-            elif kind=='transitivity': nn=m.EqualityNode(lhs,rhs,'transitivity',parents=parents,constructor='interface-law')
+                sub=tuple((v,st(val)) for v,val in n.substitution)
+                term_origins=tuple((v,st(term),tuple(remap[p] for p in pids)) for v,term,pids in n.term_origins)
+                nn=m.EqualityNode(lhs,rhs,kind,parents=parents,substitution=sub,orientation=n.orientation,generation=n.generation,term_origins=term_origins,constructor=n.constructor,derivation_depth=n.derivation_depth)
+            elif kind=='symmetry': nn=m.EqualityNode(lhs,rhs,'symmetry',parents=parents,constructor=n.constructor,derivation_depth=n.derivation_depth)
+            elif kind=='transitivity':
+                overlap=None
+                if n.overlap_record is not None:
+                    vals=list(n.overlap_record); vals[0]=remap[vals[0]]; vals[1]=remap[vals[1]]
+                    for j in (5,6,7,8,9): vals[j]=st(vals[j])
+                    overlap=tuple(vals)
+                nn=m.EqualityNode(lhs,rhs,'transitivity',parents=parents,constructor=n.constructor,derivation_depth=n.derivation_depth,overlap_record=overlap)
             elif kind in ('congruence on left child','congruence on right child'):
-                side,sib=n.context; nn=m.EqualityNode(lhs,rhs,kind,parents=parents,context=(side,subst_all(sib,T)),constructor='interface-law')
-            elif kind=='reflexivity': nn=m.EqualityNode(lhs,rhs,'reflexivity',constructor='interface-law')
+                side,sib=n.context
+                cr=None
+                if n.context_record is not None:
+                    root_term,path,original,replacement,result=n.context_record
+                    cr=(st(root_term),path,st(original),st(replacement),st(result))
+                nn=m.EqualityNode(lhs,rhs,kind,parents=parents,context=(side,st(sib)),constructor=n.constructor,derivation_depth=n.derivation_depth,context_record=cr)
+            elif kind=='reflexivity': nn=m.EqualityNode(lhs,rhs,'reflexivity',constructor=n.constructor,derivation_depth=n.derivation_depth)
             else: raise RuntimeError('unsupported node kind '+kind)
             remap[old_id]=add_local(nn)
         local_root=remap[rec['root']]
@@ -117,12 +132,16 @@ def main():
             for i,n in enumerate(local):
                 if not m.replay_dag(source,local[:i+1],i,maximum_term_size=400,maximum_nodes=90000):
                     bad={'index':i,'kind':n.kind,'lhs':m.render_term(n.lhs),'rhs':m.render_term(n.rhs),'parents':list(n.parents),'substitution':[(v,m.render_term(t)) for v,t in n.substitution]}; break
-            print('PROVENANCE_CLONE_FAILURE '+json.dumps({'law_lhs':rec['lhs'],'law_rhs':rec['rhs'],'T':m.render_term(T),'bad':bad},sort_keys=True),flush=True)
+            print('PROVENANCE_CLONE_FAILURE '+json.dumps({'law_lhs':rec['lhs'],'law_rhs':rec['rhs'],'dag_var':exposed,'T':m.render_term(T),'bad':bad},sort_keys=True),flush=True)
             raise RuntimeError('cloned law local replay failed')
         offset=len(dag); local_to_global={}
         for i,n in enumerate(local):
             parents=tuple(offset+p for p in n.parents)
-            nn=m.EqualityNode(n.lhs,n.rhs,n.kind,parents=parents,substitution=n.substitution,context=n.context,orientation=n.orientation,constructor=n.constructor)
+            term_origins=tuple((v,term,tuple(offset+p for p in pids)) for v,term,pids in n.term_origins)
+            overlap=None
+            if n.overlap_record is not None:
+                vals=list(n.overlap_record); vals[0]+=offset; vals[1]+=offset; overlap=tuple(vals)
+            nn=m.EqualityNode(n.lhs,n.rhs,n.kind,parents=parents,substitution=n.substitution,context=n.context,orientation=n.orientation,generation=n.generation,term_origins=term_origins,constructor=n.constructor,derivation_depth=n.derivation_depth,context_record=n.context_record,overlap_record=overlap)
             local_to_global[i]=append_node(nn)
         root=local_to_global[local_root]
         want=(subst_x(rec['lhs_t'],T),subst_x(rec['rhs_t'],T))
