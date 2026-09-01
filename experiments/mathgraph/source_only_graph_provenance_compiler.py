@@ -47,10 +47,14 @@ def main():
             return repl if t[1] == var else t
         return ('op', subst_var(t[1],var,repl), subst_var(t[2],var,repl))
 
+    def specialize_all(t, repl):
+        if t[0] == 'var':
+            return repl
+        return ('op', specialize_all(t[1],repl), specialize_all(t[2],repl))
+
     def tkey(t):
         return (m.term_size(t), m.render_term(t))
 
-    # Target-blind three-generation source development, matching the positive graph probe.
     t0 = time.monotonic(); e,s = setup(neutral,20.0); pre=[]
     for gen in range(1,4):
         rules=s.rules(); snap=list(rules); props=[]; proposed=0; stop=False
@@ -69,7 +73,6 @@ def main():
             if added >= 64: break
         pre.append({'generation':gen,'proposed':proposed,'added':added,'clauses':len(s.clauses)})
 
-    # Preserve the actual replayable DAG for every projected unary interface.
     seen=set(); spectrum={}; census=replayed=projected=0; rules=s.rules(); s.deadline=time.monotonic()+12.0
     for oi,o in enumerate(rules):
         for ii,i in enumerate(rules):
@@ -117,7 +120,6 @@ def main():
             if m.term_size(z)<=15: universe.add(z)
     universe=set(sorted(universe,key=tkey)[:256])
 
-    # Global proof DAG and explicit equality graph. Every graph edge carries a replayable root.
     nodes=[]; adj={t:[] for t in universe}; parent={t:t for t in universe}; rank={t:0 for t in universe}
     proof_cache={}
 
@@ -145,7 +147,7 @@ def main():
         union(a,b)
 
     def clone_instantiated(rec, T):
-        src=rec['pn']; root=rec['pr']; var=rec['proof_var']
+        src=rec['pn']; root=rec['pr']
         needed=set()
         def visit(i):
             if i in needed: return
@@ -153,7 +155,8 @@ def main():
             needed.add(i)
         visit(root)
         idmap={}
-        def mt(t): return subst_var(t,var,T)
+        def mt(t): return specialize_all(t,T)
+        start=len(nodes)
         for old in sorted(needed):
             n=src[old]
             parents_new=tuple(idmap[p] for p in n.parents)
@@ -178,6 +181,7 @@ def main():
             idmap[old]=len(nodes); nodes.append(nn)
         rr=idmap[root]
         if not m.replay_dag(source,nodes,rr,maximum_term_size=512,maximum_nodes=70000):
+            del nodes[start:]
             raise RuntimeError('instantiated law DAG failed replay')
         return rr
 
@@ -192,17 +196,17 @@ def main():
         j=len(nodes); nodes.append(m.EqualityNode(n.rhs,n.lhs,'symmetry',parents=(i,))); proof_cache[k]=j; return j
 
     def trans(i,j):
-        a,b=nodes[i],nodes[j]
-        if a.rhs!=b.lhs: raise RuntimeError('bad transitivity join')
+        aa,b=nodes[i],nodes[j]
+        if aa.rhs!=b.lhs: raise RuntimeError('bad transitivity join')
         k=('trans',i,j)
         if k in proof_cache: return proof_cache[k]
-        z=len(nodes); nodes.append(m.EqualityNode(a.lhs,b.rhs,'transitivity',parents=(i,j))); proof_cache[k]=z; return z
+        z=len(nodes); nodes.append(m.EqualityNode(aa.lhs,b.rhs,'transitivity',parents=(i,j))); proof_cache[k]=z; return z
 
-    def between(a,b):
-        if a==b: return refl(a)
-        k=('between',a,b)
+    def between(aa,b):
+        if aa==b: return refl(aa)
+        k=('between',aa,b)
         if k in proof_cache: return proof_cache[k]
-        q=deque([a]); prev={a:None}; pe={}
+        q=deque([aa]); prev={aa:None}; pe={}
         while q:
             u=q.popleft()
             if u==b: break
@@ -227,7 +231,6 @@ def main():
             ensure(l); ensure(rr)
             proot=clone_instantiated(r,T)
             if (nodes[proot].lhs,nodes[proot].rhs)!=(l,rr):
-                # Projection can reverse the canonical orientation; normalize explicitly.
                 if (nodes[proot].lhs,nodes[proot].rhs)==(rr,l): proot=sym(proot)
                 else: raise RuntimeError('instantiated endpoint mismatch')
             add_edge(l,rr,proot,{'kind':'law_subst','law':idx,'subst':m.render_term(T)})
@@ -244,7 +247,6 @@ def main():
             if find(t)==find(u): continue
             pl=between(t[1],u[1]); pr=between(t[2],u[2])
             if pl is None or pr is None: raise RuntimeError('missing child proof')
-            # t=(tl,tr) -> (ul,tr) -> u=(ul,ur)
             nl=nodes[pl]
             lroot=len(nodes); nodes.append(m.EqualityNode(('op',nl.lhs,t[2]),('op',nl.rhs,t[2]),'congruence on left child',parents=(pl,),context=('left',t[2])))
             nr=nodes[pr]
