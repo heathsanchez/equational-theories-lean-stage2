@@ -1,0 +1,34 @@
+name: MathGraph source-only collapse microprobe
+
+on:
+  push:
+    branches: [mathgraph/stress-0036-residual-20260831]
+    paths:
+      - 'experiments/mathgraph/source_collapse_microprobe.py'
+      - '.github/workflows/mathgraph_stage2_source_collapse_microprobe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch frozen 200-row stress corpus
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_stress_test.jsonl' -o /tmp/stress.jsonl
+          test "$(wc -l < /tmp/stress.jsonl | tr -d ' ')" = '200'
+          sha256sum /tmp/stress.jsonl
+      - name: Run one-second source-only collapse probe on all rows
+        run: |
+          set -euo pipefail
+          python experiments/mathgraph/source_collapse_microprobe.py /tmp/stress.jsonl --seconds 1.0
