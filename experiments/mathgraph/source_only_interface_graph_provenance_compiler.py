@@ -90,7 +90,7 @@ def main():
             if m.term_size(z)<=15: universe.add(z)
     universe=set(sorted(universe,key=tkey)[:256])
 
-    dag=[]
+    dag=[]; skipped_oversize=0
     def append_node(node): dag.append(node); return len(dag)-1
     def orient(root,lhs,rhs):
         n=dag[root]
@@ -98,12 +98,15 @@ def main():
         if (n.lhs,n.rhs)==(rhs,lhs): return append_node(m.EqualityNode(lhs,rhs,'symmetry',parents=(root,),constructor='interface-graph'))
         raise RuntimeError('proof endpoint mismatch')
     def clone_law(rec,T):
+        nonlocal skipped_oversize
         local=[]; remap={}; exposed=rec['dag_var']
         def st(t): return subst_named(t,exposed,T)
         def add_local(nn): local.append(nn); return len(local)-1
         for old_id,n in enumerate(rec['nodes']):
             parents=tuple(remap[p] for p in n.parents)
             lhs=st(n.lhs); rhs=st(n.rhs); kind=n.kind
+            if max(m.term_size(lhs),m.term_size(rhs))>400:
+                skipped_oversize+=1; return None
             if kind in ('source instance','source reentry'):
                 sub=tuple((v,st(val)) for v,val in n.substitution)
                 term_origins=tuple((v,st(term),tuple(remap[p] for p in pids)) for v,term,pids in n.term_origins)
@@ -131,7 +134,12 @@ def main():
             bad=None
             for i,n in enumerate(local):
                 if not m.replay_dag(source,local[:i+1],i,maximum_term_size=400,maximum_nodes=90000):
-                    bad={'index':i,'kind':n.kind,'lhs':m.render_term(n.lhs),'rhs':m.render_term(n.rhs),'parents':list(n.parents),'substitution':[(v,m.render_term(t)) for v,t in n.substitution]}; break
+                    expected=None
+                    if n.kind in ('source instance','source reentry'):
+                        mp=dict(n.substitution); el=m.substitute(source[0],mp); er=m.substitute(source[1],mp)
+                        if n.orientation: el,er=er,el
+                        expected={'lhs':m.render_term(el),'rhs':m.render_term(er),'lhs_match':n.lhs==el,'rhs_match':n.rhs==er,'generation':n.generation,'term_origins':len(n.term_origins)}
+                    bad={'index':i,'kind':n.kind,'lhs':m.render_term(n.lhs),'rhs':m.render_term(n.rhs),'parents':list(n.parents),'substitution':[(v,m.render_term(t)) for v,t in n.substitution],'expected':expected}; break
             print('PROVENANCE_CLONE_FAILURE '+json.dumps({'law_lhs':rec['lhs'],'law_rhs':rec['rhs'],'dag_var':exposed,'T':m.render_term(T),'bad':bad},sort_keys=True),flush=True)
             raise RuntimeError('cloned law local replay failed')
         offset=len(dag); local_to_global={}
@@ -188,7 +196,9 @@ def main():
         for T in bases:
             l=subst_x(rec['lhs_t'],T); r=subst_x(rec['rhs_t'],T)
             if max(m.term_size(l),m.term_size(r))>31: continue
-            root=clone_law(rec,T); link(l,r,root); instantiated+=1
+            root=clone_law(rec,T)
+            if root is None: continue
+            link(l,r,root); instantiated+=1
 
     congruence_edges=0
     for _ in range(6):
@@ -211,7 +221,7 @@ def main():
     certificate_bytes=None; certificate_lines=None
     if replay:
         code,_=m.make_dag_certificate(target,dag,root); certificate_bytes=len(code.encode()); certificate_lines=len(code.splitlines())
-    out={'id':row['id'],'elapsed':round(time.monotonic()-t0,4),'pre_trace':pre,'census':census,'replayed':replayed,'projected':projected,'interfaces':len(spectrum),'selected':len(ordered),'graph_nodes':len(universe),'instantiated_edges':instantiated,'congruence_edges':congruence_edges,'connected_idempotence':root is not None,'direct_provenance_replay':replay,'dag_nodes':len(dag),'certificate_bytes':certificate_bytes,'certificate_lines':certificate_lines,'target_revealed_after_closure':True}
+    out={'id':row['id'],'elapsed':round(time.monotonic()-t0,4),'pre_trace':pre,'census':census,'replayed':replayed,'projected':projected,'interfaces':len(spectrum),'selected':len(ordered),'graph_nodes':len(universe),'instantiated_edges':instantiated,'skipped_oversize':skipped_oversize,'congruence_edges':congruence_edges,'connected_idempotence':root is not None,'direct_provenance_replay':replay,'dag_nodes':len(dag),'certificate_bytes':certificate_bytes,'certificate_lines':certificate_lines,'target_revealed_after_closure':True}
     print('SOURCE_ONLY_INTERFACE_GRAPH_PROVENANCE '+json.dumps(out,sort_keys=True),flush=True)
     if not replay: raise SystemExit(2)
 
