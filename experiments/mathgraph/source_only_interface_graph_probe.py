@@ -29,7 +29,6 @@ def main():
     def tkey(t): return (m.term_size(t),m.render_term(t))
 
     t0=time.monotonic(); e,s=setup(neutral,20.0); pre=[]
-    # Target-blind structural development: fixed three generations.
     for gen in range(1,4):
         rules=s.rules(); snap=list(rules); props=[]; proposed=0; stop=False
         for oi,o in enumerate(snap):
@@ -73,12 +72,7 @@ def main():
             if s.expired() or census>=176: break
         if s.expired() or census>=176: break
 
-    # Target-blind interface selection: simplicity/proof size only.
     ordered=sorted(spectrum.values(), key=lambda r:(m.term_size(r['lhs_t'])+m.term_size(r['rhs_t']),r['proof_nodes'],r['lhs'],r['rhs']))[:32]
-
-    # Build a bounded proof-bearing graph. Nodes are canonical unary terms. Edges are
-    # replay-certified laws instantiated uniformly, plus congruence edges induced by
-    # already-known equalities. Target is not consulted until closure is complete.
     x=('var','x'); xx=('op',x,x)
     universe={x,xx}
     for r in ordered:
@@ -86,7 +80,6 @@ def main():
             universe.add(t)
             if t[0]=='op': addsubs(t[1]); addsubs(t[2])
         addsubs(r['lhs_t']); addsubs(r['rhs_t'])
-    # enrich with small binary combinations of simple nodes
     simple=sorted(universe,key=tkey)[:24]
     for u in simple:
         for v in simple:
@@ -98,6 +91,8 @@ def main():
     def ensure(t):
         if t not in parent:
             parent[t]=t; rank[t]=0; adj[t]=[]; universe.add(t)
+        if t[0]=='op':
+            ensure(t[1]); ensure(t[2])
     def find(t):
         p=parent[t]
         if p!=t: parent[t]=find(p)
@@ -121,7 +116,6 @@ def main():
             link(l,rr,{'kind':'law_subst','law':idx,'subst':m.render_term(T),'law_lhs':r['lhs'],'law_rhs':r['rhs'],'proof_nodes':r['proof_nodes']})
             instantiated+=1
 
-    # Fixed-point congruence closure over generated op terms.
     congruence_edges=0
     for _round in range(6):
         changed=False
