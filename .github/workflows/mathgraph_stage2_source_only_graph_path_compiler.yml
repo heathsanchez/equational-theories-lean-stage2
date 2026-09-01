@@ -30,6 +30,17 @@ jobs:
           PY
           python experiments/mathgraph/determinize_solver_order.py /tmp/solver.py
           test "$(sha256sum /tmp/solver.py | awk '{print $1}')" = "$FROZEN_SHA256"
+      - name: Adapt certificate API for diagnostic only
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('/tmp/solver.py'); s=p.read_text()
+          old='    return "\\n".join(lines) + "\\n", len(ordered)'
+          new='    return "\\n".join(lines) + "\\n"'
+          assert s.count(old)==1
+          p.write_text(s.replace(old,new))
+          PY
       - name: Freeze 0036
         shell: bash
         run: |
