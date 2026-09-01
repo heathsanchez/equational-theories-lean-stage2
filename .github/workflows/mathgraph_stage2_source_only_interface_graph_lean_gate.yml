@@ -50,6 +50,26 @@ jobs:
           PY
           python experiments/mathgraph/source_only_interface_graph_compile_probe.py --solver /tmp/solver.py --row /tmp/row.json --certificate /tmp/interface_idempotence.lean
           test -s /tmp/interface_idempotence.lean
+          python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          spec=importlib.util.spec_from_file_location('mgsolver','/tmp/solver.py')
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          p=Path('/tmp/interface_idempotence.lean'); code=p.read_text()
+          before=len(code.encode('utf-8'))
+          if hasattr(m,'_mg_elide_have_types'):
+              old_lines=code.splitlines()
+              new_lines=m._mg_elide_have_types(code).splitlines()
+              code='\n'.join(
+                  old if ':=' in old and old.rstrip().endswith(':= rfl') else new
+                  for old,new in zip(old_lines,new_lines)
+              )+'\n'
+              p.write_text(code)
+          after=len(code.encode('utf-8'))
+          print(f'CERTIFICATE_BYTES before={before} after={after}',flush=True)
+          if after>100000:
+              raise SystemExit(4)
+          PY
       - name: Checkout exact official Stage 2 judge
         shell: bash
         run: |
