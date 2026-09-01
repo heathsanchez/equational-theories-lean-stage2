@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-import argparse, json, os, pathlib, subprocess, sys
+import argparse, json, os, pathlib, re, subprocess, sys
+
+
+def compact_certificate(code):
+    out=[]
+    for line in code.splitlines():
+        m=re.match(r'^(\s*have\s+p\d+)\s+:\s+.*\s+:=\s+(.*)$',line)
+        if m:
+            out.append(m.group(1)+' := '+m.group(2))
+        else:
+            out.append(line)
+    return '\n'.join(out)+'\n'
 
 
 def main():
@@ -16,7 +27,9 @@ def main():
     start='CERTIFICATE_BEGIN\n'; end='\nCERTIFICATE_END'
     if start not in p.stdout or end not in p.stdout:
         raise RuntimeError('compiler did not emit certificate markers')
-    code=p.stdout.split(start,1)[1].split(end,1)[0]+'\n'
+    raw=p.stdout.split(start,1)[1].split(end,1)[0]+'\n'
+    code=compact_certificate(raw)
+    print('GRAPH_CERTIFICATE_COMPRESSION '+json.dumps({'raw_bytes':len(raw.encode()),'compact_bytes':len(code.encode()),'under_50000':len(code.encode())<=50000},sort_keys=True),flush=True)
     row=json.load(open(args.row))
     problem={
         'id':'mathgraph_graph_path_idempotence_0036',
@@ -37,7 +50,7 @@ def main():
     if result.get('stderr'): print('LEAN_STDERR\n'+str(result['stderr']),flush=True)
     out=root/'experiments/mathgraph/results/graph-path-idempotence-official-gate.json'
     out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(json.dumps({'problem':problem,'result':result,'certificate_bytes':len(code.encode())},sort_keys=True,default=str,indent=2))
+    out.write_text(json.dumps({'problem':problem,'result':result,'raw_certificate_bytes':len(raw.encode()),'certificate_bytes':len(code.encode())},sort_keys=True,default=str,indent=2))
     if result.get('status')!='accepted': raise SystemExit(2)
 
 if __name__=='__main__': main()
