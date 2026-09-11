@@ -55,7 +55,11 @@ jobs:
           target.write_bytes(solver)
           print(f"restored {target}: {len(solver)} bytes sha256={digest}")
           PY
-          python -m py_compile submissions/mathgraph_solo_hybrid/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("submissions/mathgraph_solo_hybrid/solver.py")
+          compile(p.read_text(), str(p), "exec")
+          PY
       - name: Commit exact solver bytes to branch
         run: |
           if git diff --quiet -- submissions/mathgraph_solo_hybrid/solver.py; then
@@ -101,6 +105,14 @@ jobs:
           p.write_text(s.replace(old, new))
           PY
           rm -f lake-manifest.json
+      - name: Require Gemma API credential
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          test -n "${OPENROUTER_API_KEY:-}" || {
+            echo "OPENROUTER_API_KEY repository secret is not configured."
+            exit 1
+          }
       - name: Set up exact official Lean judge
         env:
           SKIP_DOCKER: '1'
