@@ -12,7 +12,7 @@ if str(ROOT) not in sys.path:
 
 from pipeline.proxy import load_config, load_problems, run_solver
 
-ERROR_INDICES = (3, 11, 34, 41, 50)
+DEFAULT_ERROR_INDICES = (3, 11, 34, 41, 50)
 
 
 def main():
@@ -20,11 +20,13 @@ def main():
     ap.add_argument("--main", required=True)
     ap.add_argument("--output", required=True)
     ap.add_argument("--timeout", type=float, default=3600.0)
+    ap.add_argument("--indices", nargs="+", type=int, default=list(DEFAULT_ERROR_INDICES))
     args = ap.parse_args()
+    error_indices = tuple(args.indices)
 
     rows = list(load_problems(args.main))
     by_index = {int(row.get("index", i + 1)): row for i, row in enumerate(rows)}
-    missing = [i for i in ERROR_INDICES if i not in by_index]
+    missing = [i for i in error_indices if i not in by_index]
     if missing:
         raise SystemExit(f"missing Stage 2 main indices: {missing}; rows={len(rows)}")
 
@@ -42,7 +44,7 @@ def main():
     config.setdefault("sandbox", {})["mode"] = "none"
 
     out_rows = []
-    for index in ERROR_INDICES:
+    for index in error_indices:
         row = by_index[index]
         trace = []
         started = time.monotonic()
@@ -98,7 +100,7 @@ def main():
         "diagnostic_only": True,
         "solver": solver_meta,
         "dataset_rows": len(rows),
-        "error_indices": list(ERROR_INDICES),
+        "error_indices": list(error_indices),
         "rows": out_rows,
         "solved": [x["index"] for x in out_rows if x["solved"]],
         "unsolved": [x["index"] for x in out_rows if not x["solved"]],
