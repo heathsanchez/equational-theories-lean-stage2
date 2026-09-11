@@ -42,6 +42,7 @@ jobs:
               raise SystemExit(f"unexpected payload parts: {[p.name for p in parts]}")
 
           encoded = "".join(p.read_text().strip() for p in parts)
+          encoded += "=" * (-len(encoded) % 4)
           solver = zlib.decompress(base64.b64decode(encoded))
           digest = hashlib.sha256(solver).hexdigest()
 
