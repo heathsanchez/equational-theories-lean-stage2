@@ -1,4 +1,4 @@
-name: MathGraph Stage2 deterministic Solo baseline
+name: MathGraph Stage2 main evaluation exact Solo replay
 
 on:
   push:
@@ -74,7 +74,7 @@ jobs:
           git push origin "HEAD:$branch"
 
   solo:
-    name: Deterministic Solo position ${{ matrix.position }}
+    name: Main evaluation exact Solo position ${{ matrix.position }}
     needs: prepare
     strategy:
       fail-fast: false
@@ -114,11 +114,12 @@ jobs:
           source .env.judge
           lean --version
           grep -n '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
-      - name: Fetch public Stage 2 main evaluation
+      - name: Fetch released Stage 2 main evaluation
         run: |
           mkdir -p /tmp/sair_eval
           base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
-          curl -fL --retry 3 "$base/stage2_stress_test.jsonl" -o /tmp/sair_eval/stage2_stress_test.jsonl
+          curl -fL --retry 3 "$base/stage2_evaluation_main.jsonl" -o /tmp/sair_eval/stage2_evaluation_main.jsonl
+          test "$(wc -l < /tmp/sair_eval/stage2_evaluation_main.jsonl)" -eq 200
       - name: Verify exact submitted Solo solver
         run: |
           test "$(wc -c < submissions/mathgraph_solo_hybrid/solver.py)" -eq 423718
@@ -128,18 +129,18 @@ jobs:
           p = Path("submissions/mathgraph_solo_hybrid/solver.py")
           compile(p.read_text(), str(p), "exec")
           PY
-      - name: Replay exact solver with LLM disabled
+      - name: Replay exact solver on actual main evaluation row with LLM disabled
         run: |
           unset OPENROUTER_API_KEY OPENAI_API_KEY
           source .env.judge
           python experiments/mathgraph/run_stage2_gemma_error_solo.py \
-            --dataset /tmp/sair_eval/stage2_stress_test.jsonl \
+            --dataset /tmp/sair_eval/stage2_evaluation_main.jsonl \
             --position '${{ matrix.position }}' \
             --timeout 3600 \
-            --output "experiments/mathgraph/results/stage2-deterministic-solo-${{ matrix.position }}.json"
+            --output "experiments/mathgraph/results/stage2-main-eval-exact-solo-${{ matrix.position }}.json"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: stage2-deterministic-solo-${{ matrix.position }}
-          path: experiments/mathgraph/results/stage2-deterministic-solo-${{ matrix.position }}.json
+          name: stage2-main-eval-exact-solo-${{ matrix.position }}
+          path: experiments/mathgraph/results/stage2-main-eval-exact-solo-${{ matrix.position }}.json
           if-no-files-found: warn
