@@ -37,7 +37,7 @@ jobs:
           payload_dir = Path("experiments/mathgraph/payload")
           parts = sorted(payload_dir.glob("stage2_solo_solver.zlib.b64.part*"))
           if [p.name for p in parts] != [
-              f"stage2_solo_solver.zlib.b64.part{i:02d}" for i in range(9)
+              f"stage2_solo_solver.zlib.b64.part{i:02d}" for i in range(10)
           ]:
               raise SystemExit(f"unexpected payload parts: {[p.name for p in parts]}")
 
