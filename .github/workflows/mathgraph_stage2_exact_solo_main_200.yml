@@ -1,0 +1,99 @@
+name: MathGraph Stage2 exact Solo full main 200
+
+on:
+  push:
+    branches:
+      - mathgraph/stage2-gemma-5-errors-v1
+    paths:
+      - .github/workflows/mathgraph_stage2_exact_solo_main_200.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shard:
+    name: Main 200 shard ${{ matrix.shard }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/stage2-gemma-5-errors-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install proxy dependency
+        run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          old='896cc56a395e1615786fac56564a3fe6bfeebcc4'
+          new='905b95818eb32af7874a58b427f50c1711a5e96c'
+          if old in s:
+              p.write_text(s.replace(old,new))
+          elif new not in s:
+              raise SystemExit('expected Mathlib pin not found')
+          PY
+          rm -f lake-manifest.json
+      - name: Set up exact official Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Verify clean exact submission
+        run: |
+          test "$(wc -c < submissions/mathgraph_solo_hybrid/solver.py)" -eq 423718
+          test "$(sha256sum submissions/mathgraph_solo_hybrid/solver.py | awk '{print $1}')" = '42c96092bad4b03ce13ab80df927675b65ab65225bff1d971ff328949a6ef7f4'
+          rm -rf submissions/mathgraph_solo_hybrid/__pycache__
+          test "$(find submissions/mathgraph_solo_hybrid -mindepth 1 -maxdepth 1 | wc -l)" -eq 1
+      - name: Fetch released Stage 2 main evaluation
+        run: |
+          mkdir -p /tmp/sair_eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_evaluation_main.jsonl' -o /tmp/sair_eval/stage2_evaluation_main.jsonl
+          test "$(wc -l < /tmp/sair_eval/stage2_evaluation_main.jsonl)" -eq 200
+      - name: Replay 25-row shard with LLM disabled
+        run: |
+          unset OPENROUTER_API_KEY OPENAI_API_KEY
+          source .env.judge
+          mkdir -p experiments/mathgraph/results/main200
+          start=$(( ${{ matrix.shard }} * 25 + 1 ))
+          end=$(( start + 24 ))
+          for pos in $(seq "$start" "$end"); do
+            python experiments/mathgraph/run_stage2_gemma_error_solo.py \
+              --dataset /tmp/sair_eval/stage2_evaluation_main.jsonl \
+              --position "$pos" \
+              --timeout 3600 \
+              --output "experiments/mathgraph/results/main200/${pos}.json"
+          done
+          python - <<'PY'
+          import json, pathlib
+          shard=int("${{ matrix.shard }}")
+          start=shard*25+1
+          rows=[json.loads(pathlib.Path(f"experiments/mathgraph/results/main200/{i}.json").read_text()) for i in range(start,start+25)]
+          summary={
+            "shard":shard,
+            "start":start,
+            "end":start+24,
+            "solved":[r["position"] for r in rows if r["solved"]],
+            "unsolved":[r["position"] for r in rows if not r["solved"]],
+            "judge_calls":sum((r.get("judge_calls") or 0) for r in rows),
+            "llm_calls":sum((r.get("llm_calls") or 0) for r in rows),
+            "reached_llm_seam":[r["position"] for r in rows if r.get("reached_llm_seam")],
+          }
+          pathlib.Path(f"experiments/mathgraph/results/main200/shard-{shard}-summary.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+          print("MAIN200_SHARD_SUMMARY",json.dumps(summary,sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-solo-main200-shard-${{ matrix.shard }}
+          path: experiments/mathgraph/results/main200/
+          if-no-files-found: warn
