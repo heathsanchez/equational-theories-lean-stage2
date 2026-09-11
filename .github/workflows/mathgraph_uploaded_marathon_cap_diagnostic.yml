@@ -1,0 +1,179 @@
+name: MathGraph uploaded Marathon cap diagnostic
+
+on:
+  push:
+    branches:
+      - mathgraph/stage2-gemma-5-errors-v1
+    paths:
+      - experiments/mathgraph/reconstruct_uploaded_marathon.py
+      - .github/workflows/mathgraph_uploaded_marathon_cap_diagnostic.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    name: ${{ matrix.category }} cap ${{ matrix.cap }}
+    strategy:
+      fail-fast: false
+      matrix:
+        category: [order4_normal, order4_hard, order4_extra_hard, order5_normal]
+        cap: [65536, 32768]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/stage2-gemma-5-errors-v1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Marathon dependency
+        run: python -m pip install 'openai>=1,<2'
+
+      - name: Reconstruct exact uploaded Marathon solver
+        run: |
+          rm -rf /tmp/marathon_solver
+          mkdir -p /tmp/marathon_solver
+          python experiments/mathgraph/reconstruct_uploaded_marathon.py \
+            --source submissions/mathgraph_solo_hybrid/solver.py \
+            --output /tmp/marathon_solver/solver.py \
+            --max-output-tokens '${{ matrix.cap }}'
+          if [ '${{ matrix.cap }}' = '65536' ]; then
+            test "$(wc -c < /tmp/marathon_solver/solver.py)" -eq 427661
+            test "$(sha256sum /tmp/marathon_solver/solver.py | awk '{print $1}')" = '3d6e5848b615af7ee7565e33a8ef835f3454a1094fce8a6dc346a96e9795235f'
+          fi
+          test "$(find /tmp/marathon_solver -mindepth 1 -maxdepth 1 | wc -l)" -eq 1
+
+      - name: Fetch and isolate evaluation category
+        run: |
+          mkdir -p /tmp/eval
+          curl -fL --retry 3 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_evaluation_main.jsonl' \
+            -o /tmp/eval/all.jsonl
+          python - <<'PY'
+          import json, os
+          cat=os.environ["CATEGORY"]
+          rows=[json.loads(x) for x in open("/tmp/eval/all.jsonl") if x.strip()]
+          picked=[r for r in rows if r.get("difficulty")==cat]
+          if len(picked)!=50:
+              raise SystemExit(f"{cat}: expected 50 rows, got {len(picked)}")
+          with open("/tmp/eval/category.jsonl","w") as f:
+              for r in picked:
+                  f.write(json.dumps(r,separators=(",",":"))+"\n")
+          print(cat, len(picked), picked[0]["id"], picked[-1]["id"])
+          PY
+        env:
+          CATEGORY: ${{ matrix.category }}
+
+      - name: Start deterministic fake upstream
+        run: |
+          cat > /tmp/stub_upstream.py <<'PY'
+          import json, time
+          from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+          LOG="/tmp/stub_requests.jsonl"
+          class H(BaseHTTPRequestHandler):
+              def log_message(self,*a): pass
+              def do_POST(self):
+                  n=int(self.headers.get("Content-Length","0"))
+                  raw=self.rfile.read(n)
+                  try: req=json.loads(raw)
+                  except Exception: req={}
+                  with open(LOG,"a") as f:
+                      f.write(json.dumps({"path":self.path,"model":req.get("model"),"max_tokens":req.get("max_tokens"),"messages":req.get("messages")},separators=(",",":"))+"\n")
+                  chars=0
+                  for m in req.get("messages") or []:
+                      c=m.get("content","") if isinstance(m,dict) else ""
+                      if isinstance(c,str): chars += len(c)
+                  prompt=max(1,chars//4)
+                  body=json.dumps({
+                      "id":"chatcmpl-mathgraph-stub",
+                      "object":"chat.completion",
+                      "created":int(time.time()),
+                      "model":req.get("model","stub"),
+                      "choices":[{"index":0,"message":{"role":"assistant","content":"{}"},"finish_reason":"stop"}],
+                      "usage":{"prompt_tokens":prompt,"completion_tokens":1,"total_tokens":prompt+1}
+                  }).encode()
+                  self.send_response(200)
+                  self.send_header("Content-Type","application/json")
+                  self.send_header("Content-Length",str(len(body)))
+                  self.end_headers()
+                  self.wfile.write(body)
+          ThreadingHTTPServer(("127.0.0.1",18080),H).serve_forever()
+          PY
+          : > /tmp/stub_requests.jsonl
+          python /tmp/stub_upstream.py >/tmp/stub_stdout.log 2>/tmp/stub_stderr.log &
+          echo $! > /tmp/stub.pid
+          sleep 1
+
+      - name: Run exact Marathon protocol without Lean scoring
+        env:
+          OPENAI_BASE_URL: http://127.0.0.1:18080/v1
+          OPENROUTER_API_KEY: mathgraph-diagnostic-dummy-key
+        run: |
+          rm -rf /tmp/marathon_run
+          python scripts/run_marathon.py \
+            --solver /tmp/marathon_solver \
+            --manifest /tmp/eval/category.jsonl \
+            --budget-seconds 15000 \
+            --budget-tokens 1638400 \
+            --output-dir /tmp/marathon_run \
+            --no-score
+
+      - name: Summarize residual and budget behaviour
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          manifest=[json.loads(x) for x in Path("/tmp/eval/category.jsonl").read_text().splitlines() if x.strip()]
+          ans=[]
+          p=Path("/tmp/marathon_run/answers.jsonl")
+          if p.exists():
+              for x in p.read_text().splitlines():
+                  try: ans.append(json.loads(x))
+                  except Exception: pass
+          ids={x.get("id") for x in ans if isinstance(x,dict) and x.get("id")}
+          req=[]
+          q=Path("/tmp/stub_requests.jsonl")
+          if q.exists():
+              for x in q.read_text().splitlines():
+                  try: req.append(json.loads(x))
+                  except Exception: pass
+          all_ids=[x["id"] for x in manifest]
+          residual=[x for x in all_ids if x not in ids]
+          tok=Path("/tmp/marathon_run/_proxy_state/tokens_used.txt")
+          summary={
+              "category":os.environ["CATEGORY"],
+              "configured_max_output_tokens":int(os.environ["CAP"]),
+              "n":len(manifest),
+              "answers_written":len(ans),
+              "unique_answer_ids":len(ids),
+              "residual_count":len(residual),
+              "residual_ids":residual,
+              "stub_llm_requests":len(req),
+              "stub_max_tokens_values":sorted({r.get("max_tokens") for r in req}),
+              "all_residuals_reached_llm":len(req)==len(residual),
+              "tokens_settled":int(tok.read_text()) if tok.exists() else None,
+          }
+          out=Path("/tmp/marathon_diag.json")
+          out.write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+          print("MARATHON_CAP_DIAGNOSTIC",json.dumps(summary,sort_keys=True))
+          PY
+        env:
+          CATEGORY: ${{ matrix.category }}
+          CAP: ${{ matrix.cap }}
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: marathon-cap-${{ matrix.category }}-${{ matrix.cap }}
+          path: |
+            /tmp/marathon_diag.json
+            /tmp/marathon_run/run.log
+            /tmp/marathon_run/answers.jsonl
+            /tmp/stub_requests.jsonl
+          if-no-files-found: warn
