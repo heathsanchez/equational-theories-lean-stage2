@@ -6,6 +6,12 @@ on:
       - mathgraph/stage2-gemma-5-errors-v1
     paths:
       - .github/workflows/mathgraph_stage2_gemma_error_solo.yml
+  pull_request:
+    branches:
+      - main
+    types: [opened]
+    paths:
+      - .github/workflows/mathgraph_stage2_gemma_error_solo.yml
   workflow_dispatch:
 
 permissions:
@@ -18,7 +24,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
           fetch-depth: 0
       - name: Reconstruct and verify exact submitted Solo solver
         run: |
@@ -55,11 +61,12 @@ jobs:
             echo "Exact solver already committed."
             exit 0
           fi
+          branch="${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add submissions/mathgraph_solo_hybrid/solver.py
           git commit -m "Restore exact submitted Stage2 Solo solver"
-          git push origin "HEAD:${GITHUB_REF_NAME}"
+          git push origin "HEAD:$branch"
 
   solo:
     name: Gemma Solo position ${{ matrix.position }}
@@ -73,7 +80,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref_name }}
+          ref: ${{ github.head_ref || github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
