@@ -12,7 +12,7 @@ if str(ROOT) not in sys.path:
 
 from pipeline.proxy import load_config, load_problems, run_solver
 
-POSITIONS = (1, 3, 11, 34, 41, 50)
+POSITIONS = tuple(range(1, 201))
 EXPECTED_SOLVER_BYTES = 423718
 EXPECTED_SOLVER_SHA256 = "42c96092bad4b03ce13ab80df927675b65ab65225bff1d971ff328949a6ef7f4"
 
