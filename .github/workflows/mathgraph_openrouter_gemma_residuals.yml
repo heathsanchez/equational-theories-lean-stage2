@@ -115,9 +115,10 @@ jobs:
           completion=client.chat.completions.create(
               model='google/gemma-4-31b-it',
               messages=[{'role':'user','content':prompt}],
-              max_tokens=32768,
+              max_tokens=65536,
               temperature=0.0,
               seed=0,
+              extra_body={'provider': {'order': ['deepinfra/bf16'], 'allow_fallbacks': False}},
           )
           choice=completion.choices[0]
           content=getattr(choice.message,'content',None) or getattr(choice.message,'reasoning',None) or getattr(choice.message,'reasoning_content',None) or ''
@@ -134,7 +135,9 @@ jobs:
               'difficulty':row.get('difficulty'),
               'published_answer':row.get('answer'),
               'model':'google/gemma-4-31b-it',
-              'requested_max_tokens':32768,
+              'provider':'deepinfra/bf16',
+              'fallback':False,
+              'requested_max_tokens':65536,
               'finish_reason':getattr(choice,'finish_reason',None),
               'prompt_tokens':getattr(usage,'prompt_tokens',None) if usage else None,
               'completion_tokens':getattr(usage,'completion_tokens',None) if usage else None,
