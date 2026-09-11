@@ -131,7 +131,11 @@ jobs:
         run: |
           test "$(wc -c < submissions/mathgraph_solo_hybrid/solver.py)" -eq 423718
           test "$(sha256sum submissions/mathgraph_solo_hybrid/solver.py | awk '{print $1}')" = '42c96092bad4b03ce13ab80df927675b65ab65225bff1d971ff328949a6ef7f4'
-          python -m py_compile submissions/mathgraph_solo_hybrid/solver.py
+          python - <<'PY'
+          from pathlib import Path
+          p = Path("submissions/mathgraph_solo_hybrid/solver.py")
+          compile(p.read_text(), str(p), "exec")
+          PY
       - name: Replay Gemma Solo
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
