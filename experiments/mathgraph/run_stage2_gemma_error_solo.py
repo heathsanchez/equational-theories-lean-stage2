@@ -74,7 +74,8 @@ def main():
         for line in str(event.get("stderr", "")).splitlines()
     ]
     entry = {
-        "schema": "mathgraph.stage2-gemma-solo-replay.v1",
+        "schema": "mathgraph.stage2-deterministic-solo-baseline.v1",
+        "execution_mode": "deterministic_baseline_no_llm_credentials",
         "position": args.position,
         "known_success_control": args.position == 1,
         "id": row.get("id"),
@@ -94,6 +95,8 @@ def main():
         "verdict": result.get("verdict"),
         "judge_calls": result.get("judge_calls"),
         "llm_calls": result.get("llm_calls"),
+        "reached_llm_seam": bool(result.get("llm_calls")),
+        "solved_before_llm": bool(result.get("solved")) and not bool(result.get("llm_calls")),
         "judge_statuses": [
             (x.get("response") or {}).get("status") for x in judge_events
         ],
@@ -112,7 +115,7 @@ def main():
     }
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     Path(args.output).write_text(json.dumps(entry, indent=2, sort_keys=True) + "\n")
-    print("STAGE2_GEMMA_SOLO_REPLAY", json.dumps(entry, sort_keys=True), flush=True)
+    print("STAGE2_DETERMINISTIC_SOLO_BASELINE", json.dumps(entry, sort_keys=True), flush=True)
     if exception:
         raise SystemExit(2)
 
