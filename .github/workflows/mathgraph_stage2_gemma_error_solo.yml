@@ -1,4 +1,4 @@
-name: MathGraph Stage2 Gemma Solo five errors
+name: MathGraph Stage2 deterministic Solo baseline
 
 on:
   push:
@@ -74,7 +74,7 @@ jobs:
           git push origin "HEAD:$branch"
 
   solo:
-    name: Gemma Solo position ${{ matrix.position }}
+    name: Deterministic Solo position ${{ matrix.position }}
     needs: prepare
     strategy:
       fail-fast: false
@@ -105,14 +105,6 @@ jobs:
           p.write_text(s.replace(old, new))
           PY
           rm -f lake-manifest.json
-      - name: Require Gemma API credential
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-        run: |
-          test -n "${OPENROUTER_API_KEY:-}" || {
-            echo "OPENROUTER_API_KEY repository secret is not configured."
-            exit 1
-          }
       - name: Set up exact official Lean judge
         env:
           SKIP_DOCKER: '1'
@@ -136,20 +128,18 @@ jobs:
           p = Path("submissions/mathgraph_solo_hybrid/solver.py")
           compile(p.read_text(), str(p), "exec")
           PY
-      - name: Replay Gemma Solo
-        env:
-          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      - name: Replay exact solver with LLM disabled
         run: |
+          unset OPENROUTER_API_KEY OPENAI_API_KEY
           source .env.judge
           python experiments/mathgraph/run_stage2_gemma_error_solo.py \
             --dataset /tmp/sair_eval/stage2_stress_test.jsonl \
             --position '${{ matrix.position }}' \
             --timeout 3600 \
-            --output "experiments/mathgraph/results/stage2-gemma-solo-${{ matrix.position }}.json"
+            --output "experiments/mathgraph/results/stage2-deterministic-solo-${{ matrix.position }}.json"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: stage2-gemma-solo-${{ matrix.position }}
-          path: experiments/mathgraph/results/stage2-gemma-solo-${{ matrix.position }}.json
+          name: stage2-deterministic-solo-${{ matrix.position }}
+          path: experiments/mathgraph/results/stage2-deterministic-solo-${{ matrix.position }}.json
           if-no-files-found: warn
