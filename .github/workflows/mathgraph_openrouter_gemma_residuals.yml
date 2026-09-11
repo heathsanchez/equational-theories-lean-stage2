@@ -118,7 +118,7 @@ jobs:
               max_tokens=65536,
               temperature=0.0,
               seed=0,
-              extra_body={'provider': {'order': ['deepinfra/bf16'], 'allow_fallbacks': False}},
+              extra_body={'provider': {'order': ['deepinfra'], 'allow_fallbacks': False}},
           )
           choice=completion.choices[0]
           content=getattr(choice.message,'content',None) or getattr(choice.message,'reasoning',None) or getattr(choice.message,'reasoning_content',None) or ''
@@ -135,7 +135,7 @@ jobs:
               'difficulty':row.get('difficulty'),
               'published_answer':row.get('answer'),
               'model':'google/gemma-4-31b-it',
-              'provider':'deepinfra/bf16',
+              'provider':'deepinfra',
               'fallback':False,
               'requested_max_tokens':65536,
               'finish_reason':getattr(choice,'finish_reason',None),
