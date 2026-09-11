@@ -1,0 +1,158 @@
+name: MathGraph OpenRouter Gemma residual test
+
+on:
+  push:
+    branches:
+      - mathgraph/stage2-gemma-5-errors-v1
+    paths:
+      - .github/workflows/mathgraph_openrouter_gemma_residuals.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gemma:
+    name: Gemma residual ${{ matrix.id }}
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        id:
+          - stage2_evaluation_main_0153
+          - stage2_evaluation_main_0177
+          - stage2_evaluation_main_0183
+          - stage2_evaluation_main_0184
+          - stage2_evaluation_main_0186
+          - stage2_evaluation_main_0188
+          - stage2_evaluation_main_0200
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/stage2-gemma-5-errors-v1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Require OpenRouter key
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: |
+          if [ -z "$OPENROUTER_API_KEY" ]; then
+            echo "::error::OPENROUTER_API_KEY GitHub Actions secret is not configured"
+            exit 2
+          fi
+
+      - name: Install OpenAI SDK
+        run: python -m pip install 'openai>=1,<2'
+
+      - name: Pin current official judge
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.33.1' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          s=re.sub(r'@ "[0-9a-f]{40}"', '@ "0df444a360eaa60ab8c11dca51a86af692955474"', s, count=1)
+          p.write_text(s)
+          PY
+          rm -f lake-manifest.json
+
+      - name: Set up current official Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+
+      - name: Reconstruct exact uploaded Marathon solver
+        run: |
+          rm -rf /tmp/marathon_solver
+          mkdir -p /tmp/marathon_solver
+          python experiments/mathgraph/reconstruct_uploaded_marathon.py \
+            --source submissions/mathgraph_solo_hybrid/solver.py \
+            --output /tmp/marathon_solver/solver.py \
+            --max-output-tokens 65536
+          test "$(wc -c < /tmp/marathon_solver/solver.py)" -eq 427661
+          test "$(sha256sum /tmp/marathon_solver/solver.py | awk '{print $1}')" = '3d6e5848b615af7ee7565e33a8ef835f3454a1094fce8a6dc346a96e9795235f'
+
+      - name: Fetch released evaluation set
+        run: |
+          mkdir -p /tmp/eval
+          curl -fL --retry 3 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_evaluation_main.jsonl' \
+            -o /tmp/eval/all.jsonl
+          test "$(wc -l < /tmp/eval/all.jsonl)" -eq 200
+
+      - name: Call exact Gemma route through OpenRouter and judge
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TARGET_ID: ${{ matrix.id }}
+        run: |
+          source .env.judge
+          python - <<'PY'
+          import importlib.util, json, os
+          from pathlib import Path
+          from openai import OpenAI
+          from judge.verify import verify_answer
+
+          target_id=os.environ["TARGET_ID"]
+          rows=[json.loads(x) for x in Path('/tmp/eval/all.jsonl').read_text().splitlines() if x.strip()]
+          row=next(r for r in rows if r.get('id')==target_id)
+
+          spec=importlib.util.spec_from_file_location('uploaded_marathon_solver','/tmp/marathon_solver/solver.py')
+          mod=importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(mod)
+
+          prompt=mod.mathgraph_marathon_prompt(row,'gemma')
+          client=OpenAI(
+              api_key=os.environ['OPENROUTER_API_KEY'],
+              base_url='https://openrouter.ai/api/v1',
+              timeout=600.0,
+          )
+          completion=client.chat.completions.create(
+              model='google/gemma-4-31b-it',
+              messages=[{'role':'user','content':prompt}],
+              max_tokens=32768,
+              temperature=0.0,
+              seed=0,
+          )
+          choice=completion.choices[0]
+          content=getattr(choice.message,'content',None) or getattr(choice.message,'reasoning',None) or getattr(choice.message,'reasoning_content',None) or ''
+          proof=mod.extract_mathgraph_proof(content)
+          code=mod.make_mathgraph_true_certificate(proof) if proof is not None else None
+          judge=None
+          if code is not None:
+              raw=json.dumps({'verdict':'true','code':code},separators=(',',':'))
+              judge=verify_answer(row,raw)
+
+          usage=getattr(completion,'usage',None)
+          result={
+              'id':target_id,
+              'difficulty':row.get('difficulty'),
+              'published_answer':row.get('answer'),
+              'model':'google/gemma-4-31b-it',
+              'requested_max_tokens':32768,
+              'finish_reason':getattr(choice,'finish_reason',None),
+              'prompt_tokens':getattr(usage,'prompt_tokens',None) if usage else None,
+              'completion_tokens':getattr(usage,'completion_tokens',None) if usage else None,
+              'total_tokens':getattr(usage,'total_tokens',None) if usage else None,
+              'response_chars':len(content),
+              'proof_extracted':proof is not None,
+              'certificate_constructed':code is not None,
+              'judge_status':judge.get('status') if judge else None,
+              'judge_error_code':judge.get('error_code') if judge else None,
+              'judge_message':judge.get('message') if judge else None,
+          }
+          Path('/tmp/gemma-result.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n')
+          print('OPENROUTER_GEMMA_RESIDUAL',json.dumps(result,sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: openrouter-gemma-${{ matrix.id }}
+          path: /tmp/gemma-result.json
+          if-no-files-found: warn
