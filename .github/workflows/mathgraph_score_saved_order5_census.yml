@@ -1,0 +1,100 @@
+name: MathGraph score saved Order5 census answers
+
+on:
+  push:
+    branches:
+      - mathgraph/stage2-gemma-5-errors-v1
+    paths:
+      - .github/workflows/mathgraph_score_saved_order5_census.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  score:
+    name: Score saved Order5 shard ${{ matrix.shard }}
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/stage2-gemma-5-errors-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Pin current official judge
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.33.1' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          s=re.sub(r'@ "[0-9a-f]{40}"', '@ "0df444a360eaa60ab8c11dca51a86af692955474"', s, count=1)
+          p.write_text(s)
+          PY
+          rm -f lake-manifest.json
+      - name: Set up current official Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Download saved census artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          mkdir -p /tmp/saved
+          gh run download 34653511962 -n "order5-fast-census-${SHARD}" -D /tmp/saved
+          find /tmp/saved -maxdepth 3 -type f -print
+          test -f /tmp/saved/answers.jsonl
+      - name: Recreate exact shard manifest
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          mkdir -p /tmp/eval
+          curl -fL --retry 3 'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_evaluation_main.jsonl' -o /tmp/eval/all.jsonl
+          python - <<'PY'
+          import json,os
+          rows=[json.loads(x) for x in open('/tmp/eval/all.jsonl') if x.strip()]
+          rows=[r for r in rows if r.get('difficulty')=='order5_normal']
+          s=int(os.environ['SHARD']); rows=rows[s*10:(s+1)*10]
+          assert len(rows)==10
+          with open('/tmp/eval/shard.jsonl','w') as f:
+              for r in rows:f.write(json.dumps(r,separators=(',',':'))+'\n')
+          PY
+      - name: Score saved answers only
+        env:
+          SHARD: ${{ matrix.shard }}
+        run: |
+          source .env.judge
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          from pipeline.marathon_score import score_marathon
+          s=score_marathon(
+              manifest_path=Path('/tmp/eval/shard.jsonl'),
+              manifest_problems=None,
+              output_path=Path('/tmp/saved/answers.jsonl'),
+          )
+          d=s.to_dict()
+          print('ORDER5_SAVED_SCORE',json.dumps({
+              'shard':int(os.environ['SHARD']),
+              'score':d.get('score'),
+              'attempted':d.get('attempted'),
+              'not_attempted':d.get('not_attempted'),
+              'by_status':d.get('by_status'),
+          },sort_keys=True))
+          Path('/tmp/score.json').write_text(json.dumps(d,indent=2,sort_keys=True)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: order5-saved-score-${{ matrix.shard }}
+          path: /tmp/score.json
+          if-no-files-found: warn
