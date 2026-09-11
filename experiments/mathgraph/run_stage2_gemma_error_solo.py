@@ -26,10 +26,10 @@ def main():
     args = ap.parse_args()
 
     rows = list(load_problems(args.dataset))
-    order5 = [row for row in rows if row.get("difficulty") == "order5_normal"]
-    if len(order5) != 50:
-        raise SystemExit(f"expected 50 order5_normal rows, got {len(order5)}")
-    row = order5[args.position - 1]
+    by_index = {int(row.get("index", i + 1)): row for i, row in enumerate(rows)}
+    if args.position not in by_index:
+        raise SystemExit(f"missing evaluation index {args.position}; rows={len(rows)}")
+    row = by_index[args.position]
 
     solver_path = ROOT / "submissions/mathgraph_solo_hybrid/solver.py"
     solver_bytes = solver_path.read_bytes()
@@ -74,7 +74,7 @@ def main():
         for line in str(event.get("stderr", "")).splitlines()
     ]
     entry = {
-        "schema": "mathgraph.stage2-deterministic-solo-baseline.v1",
+        "schema": "mathgraph.stage2-main-evaluation-exact-solo-replay.v1",
         "execution_mode": "deterministic_baseline_no_llm_credentials",
         "position": args.position,
         "known_success_control": args.position == 1,
@@ -115,7 +115,7 @@ def main():
     }
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     Path(args.output).write_text(json.dumps(entry, indent=2, sort_keys=True) + "\n")
-    print("STAGE2_DETERMINISTIC_SOLO_BASELINE", json.dumps(entry, sort_keys=True), flush=True)
+    print("STAGE2_MAIN_EVALUATION_EXACT_SOLO_REPLAY", json.dumps(entry, sort_keys=True), flush=True)
     if exception:
         raise SystemExit(2)
 
