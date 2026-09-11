@@ -1,0 +1,86 @@
+name: MathGraph Stage 2 main error replay
+on:
+  push:
+    branches:
+      - mathgraph/residual-router-796-20260826
+    paths:
+      - .github/workflows/mathgraph_stage2_main_error_replay.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay:
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [3, 11, 34, 41, 50]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python dependency used by pipeline proxy
+        run: python -m pip install 'openai>=1,<2'
+      - name: Pin official Stage 2 Lean and Mathlib
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.32.2' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('lakefile.lean')
+          s = p.read_text()
+          old = '896cc56a395e1615786fac56564a3fe6bfeebcc4'
+          new = '905b95818eb32af7874a58b427f50c1711a5e96c'
+          if old in s:
+              p.write_text(s.replace(old, new))
+          elif new not in s:
+              raise SystemExit('expected Mathlib pin not found')
+          PY
+          rm -f lake-manifest.json
+      - name: Setup exact official judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Fetch released Stage 2 main evaluation set
+        run: |
+          mkdir -p /tmp/sair_eval
+          base='https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data'
+          if curl -fL --retry 3 "$base/stage2_evaluation_main.jsonl" -o /tmp/sair_eval/stage2_main.jsonl; then
+            echo 'using stage2_evaluation_main.jsonl'
+          else
+            curl -fL --retry 3 "$base/stage2_stress_test.jsonl" -o /tmp/sair_eval/stage2_main.jsonl
+            echo 'using stage2_stress_test.jsonl fallback'
+          fi
+          wc -l /tmp/sair_eval/stage2_main.jsonl
+          python - <<'PY'
+          import json
+          rows=[json.loads(x) for x in open('/tmp/sair_eval/stage2_main.jsonl') if x.strip()]
+          print('rows', len(rows))
+          for i in (3,11,34,41,50):
+              r=next((r for j,r in enumerate(rows,1) if int(r.get('index',j))==i), None)
+              print(i, None if r is None else {k:r.get(k) for k in ('id','difficulty','eq1_id','eq2_id','answer')})
+          if len(rows) != 200:
+              raise SystemExit(f'expected 200 rows, got {len(rows)}')
+          PY
+      - name: Record solver identity
+        run: |
+          wc -c submissions/mathgraph/solver.py
+          sha256sum submissions/mathgraph/solver.py
+          git rev-parse HEAD
+      - name: Replay problem ${{ matrix.index }} under official judge
+        run: |
+          source .env.judge
+          python experiments/mathgraph/run_stage2_main_error_replay.py \
+            --main /tmp/sair_eval/stage2_main.jsonl \
+            --indices ${{ matrix.index }} \
+            --timeout 3600 \
+            --output experiments/mathgraph/results/stage2-main-error-${{ matrix.index }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mathgraph-stage2-main-error-${{ matrix.index }}
+          path: experiments/mathgraph/results/stage2-main-error-${{ matrix.index }}.json
+          if-no-files-found: warn
