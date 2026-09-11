@@ -103,6 +103,12 @@ def main():
         "stderr_metrics": [line for line in stderr_lines if "MATHGRAPH_METRICS" in line],
         "stderr_tail": stderr_lines[-60:],
         "trace_event_types": [x.get("type") for x in trace],
+        "proxy_log_types": [x.get("type") for x in result.get("log", [])],
+        "proxy_errors": [
+            x.get("message")
+            for x in result.get("log", [])
+            if x.get("type") == "error" and x.get("message")
+        ][-10:],
     }
     Path(args.output).parent.mkdir(parents=True, exist_ok=True)
     Path(args.output).write_text(json.dumps(entry, indent=2, sort_keys=True) + "\n")
