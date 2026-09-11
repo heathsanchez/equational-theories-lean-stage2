@@ -9,11 +9,61 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
+  prepare:
+    name: Restore exact submitted Solo solver
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+      - name: Reconstruct and verify exact submitted Solo solver
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import base64
+          import hashlib
+          import zlib
+
+          payload_dir = Path("experiments/mathgraph/payload")
+          parts = sorted(payload_dir.glob("stage2_solo_solver.zlib.b64.part*"))
+          if [p.name for p in parts] != [
+              f"stage2_solo_solver.zlib.b64.part{i:02d}" for i in range(9)
+          ]:
+              raise SystemExit(f"unexpected payload parts: {[p.name for p in parts]}")
+
+          encoded = "".join(p.read_text().strip() for p in parts)
+          solver = zlib.decompress(base64.b64decode(encoded))
+          digest = hashlib.sha256(solver).hexdigest()
+
+          if len(solver) != 423718:
+              raise SystemExit(f"wrong solver size: {len(solver)}")
+          if digest != "42c96092bad4b03ce13ab80df927675b65ab65225bff1d971ff328949a6ef7f4":
+              raise SystemExit(f"wrong solver sha256: {digest}")
+
+          target = Path("submissions/mathgraph_solo_hybrid/solver.py")
+          target.write_bytes(solver)
+          print(f"restored {target}: {len(solver)} bytes sha256={digest}")
+          PY
+          python -m py_compile submissions/mathgraph_solo_hybrid/solver.py
+      - name: Commit exact solver bytes to branch
+        run: |
+          if git diff --quiet -- submissions/mathgraph_solo_hybrid/solver.py; then
+            echo "Exact solver already committed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add submissions/mathgraph_solo_hybrid/solver.py
+          git commit -m "Restore exact submitted Stage2 Solo solver"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+
   solo:
     name: Gemma Solo position ${{ matrix.position }}
+    needs: prepare
     strategy:
       fail-fast: false
       matrix:
@@ -22,6 +72,8 @@ jobs:
     timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
@@ -47,6 +99,7 @@ jobs:
         run: bash scripts/setup.sh
       - name: Confirm exact judge pins
         run: |
+          source .env.judge
           lean --version
           grep -n '905b95818eb32af7874a58b427f50c1711a5e96c' lake-manifest.json
       - name: Fetch public Stage 2 main evaluation
