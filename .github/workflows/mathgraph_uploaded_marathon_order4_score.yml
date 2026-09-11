@@ -1,0 +1,113 @@
+name: MathGraph uploaded Marathon order4 official score
+
+on:
+  push:
+    branches:
+      - mathgraph/stage2-gemma-5-errors-v1
+    paths:
+      - .github/workflows/mathgraph_uploaded_marathon_order4_score.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  score:
+    name: Score ${{ matrix.category }}
+    strategy:
+      fail-fast: false
+      matrix:
+        category: [order4_normal, order4_hard, order4_extra_hard]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: mathgraph/stage2-gemma-5-errors-v1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependency
+        run: python -m pip install 'openai>=1,<2'
+      - name: Pin current official judge
+        run: |
+          printf '%s\n' 'leanprover/lean4:v4.33.1' > lean-toolchain
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('lakefile.lean')
+          s=p.read_text()
+          import re
+          s=re.sub(r'@ "[0-9a-f]{40}"', '@ "0df444a360eaa60ab8c11dca51a86af692955474"', s, count=1)
+          p.write_text(s)
+          PY
+          rm -f lake-manifest.json
+      - name: Set up current official Lean judge
+        env:
+          SKIP_DOCKER: '1'
+        run: bash scripts/setup.sh
+      - name: Reconstruct exact uploaded Marathon solver
+        run: |
+          rm -rf /tmp/marathon_solver
+          mkdir -p /tmp/marathon_solver
+          python experiments/mathgraph/reconstruct_uploaded_marathon.py \
+            --source submissions/mathgraph_solo_hybrid/solver.py \
+            --output /tmp/marathon_solver/solver.py \
+            --max-output-tokens 65536
+          test "$(wc -c < /tmp/marathon_solver/solver.py)" -eq 427661
+          test "$(sha256sum /tmp/marathon_solver/solver.py | awk '{print $1}')" = '3d6e5848b615af7ee7565e33a8ef835f3454a1094fce8a6dc346a96e9795235f'
+      - name: Fetch category
+        env:
+          CATEGORY: ${{ matrix.category }}
+        run: |
+          mkdir -p /tmp/eval
+          curl -fL --retry 3 \
+            'https://huggingface.co/datasets/SAIRfoundation/equational-theories-selected-problems/resolve/main/data/stage2_evaluation_main.jsonl' \
+            -o /tmp/eval/all.jsonl
+          python - <<'PY'
+          import json, os
+          rows=[json.loads(x) for x in open('/tmp/eval/all.jsonl') if x.strip()]
+          picked=[r for r in rows if r.get('difficulty')==os.environ['CATEGORY']]
+          assert len(picked)==50, len(picked)
+          with open('/tmp/eval/category.jsonl','w') as f:
+              for r in picked: f.write(json.dumps(r,separators=(',',':'))+'\n')
+          PY
+      - name: Run and score exact Marathon solver
+        run: |
+          unset OPENROUTER_API_KEY OPENAI_API_KEY OPENAI_BASE_URL
+          rm -rf /tmp/marathon_score
+          source .env.judge
+          python scripts/run_marathon.py \
+            --solver /tmp/marathon_solver \
+            --manifest /tmp/eval/category.jsonl \
+            --budget-seconds 15000 \
+            --budget-tokens 1638400 \
+            --output-dir /tmp/marathon_score
+      - name: Emit exact score summary
+        if: always()
+        env:
+          CATEGORY: ${{ matrix.category }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path('/tmp/marathon_score/summary.json')
+          if not p.exists():
+              raise SystemExit('missing score summary')
+          d=json.loads(p.read_text())
+          print('UPLOADED_MARATHON_OFFICIAL_SCORE', json.dumps({
+              'category':os.environ['CATEGORY'],
+              'score':d.get('score'),
+              'attempted':d.get('attempted'),
+              'not_attempted':d.get('not_attempted'),
+              'by_status':d.get('by_status'),
+              'wall_seconds':d.get('wall_seconds'),
+              'tokens_used':d.get('tokens_used'),
+              'tokens_exhausted':d.get('tokens_exhausted'),
+          },sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: uploaded-marathon-score-${{ matrix.category }}
+          path: /tmp/marathon_score/
+          if-no-files-found: warn
