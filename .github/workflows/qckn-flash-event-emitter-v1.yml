@@ -1,0 +1,38 @@
+name: SAIR QCKN Flash event emitter v1
+
+on:
+  push:
+    branches: [qckn-flash-event-emitter-v1]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  emit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify committed promotion authority
+        run: |
+          python - <<'PY'
+          import json
+          p='experiments/mathgraph/residual12/promotion_qualification_summary.json'
+          r=json.load(open(p))
+          assert r['status']=='PROMOTION_QUALIFIED'
+          assert r['artifact']['digest']=='sha256:9e0ba5752993cdb935f6063dd8a75d3773e5429a548ae313535b11889efb1110'
+          assert r['workflow_run']=='https://github.com/metalogiclabs/mathgraph/actions/runs/32700065430'
+          PY
+      - name: Run emitter tests
+        working-directory: experiments/mathgraph/residual12
+        run: python -m unittest test_emit_qckn_flash_event -v
+      - name: Emit canonical Flash event
+        run: |
+          mkdir -p /tmp/qckn-flash-event
+          python experiments/mathgraph/residual12/emit_qckn_flash_event.py --commit "$GITHUB_SHA" --out /tmp/qckn-flash-event
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sair-qckn-flash-event-v1
+          path: /tmp/qckn-flash-event/
+          if-no-files-found: error
